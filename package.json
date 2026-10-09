@@ -9,7 +9,9 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "data:generate": "node scripts/generate-game-data.mjs",
-    "data:check": "node scripts/generate-game-data.mjs --check"
+    "data:check": "node scripts/generate-game-data.mjs --check",
+    "icons:fetch": "node scripts/fetch-icons.mjs",
+    "icons:check": "node scripts/fetch-icons.mjs --check"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -21,6 +23,7 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
+    "sharp": "^0.34.5",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   }

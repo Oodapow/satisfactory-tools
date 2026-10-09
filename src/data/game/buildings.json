@@ -10,6 +10,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "IconDesc_AlienPowerAugmenter_512",
     "size": {
       "width": 30,
       "length": 30,
@@ -39,6 +40,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_AssemblerMk1_512",
     "size": {
       "width": 9,
       "length": 16,
@@ -69,6 +71,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_RoadBarrier_512",
     "size": {
       "width": 1,
       "length": 1,
@@ -91,6 +94,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_LowBarrier_512",
     "size": {
       "width": 4,
       "length": 0.6,
@@ -113,6 +117,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_TallBarrier_512",
     "size": {
       "width": 4,
       "length": 0.6,
@@ -135,6 +140,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_Beam_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -157,6 +163,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_CableBeam_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -179,6 +186,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_ClusterCableBeam_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -201,6 +209,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_RoundedConcretePillar_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -223,6 +232,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_BeamConnector_512",
     "size": {
       "width": 1.106918,
       "length": 1.106918,
@@ -245,6 +255,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_BeamConnectorDouble_512",
     "size": {
       "width": 2.096659,
       "length": 1.106918,
@@ -267,6 +278,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_CrossBeam_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -289,6 +301,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_HBeam_512",
     "size": {
       "width": 0.8,
       "length": 1,
@@ -311,6 +324,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_BeamPainted_512",
     "size": {
       "width": 1.000011,
       "length": 1.000001,
@@ -333,6 +347,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_ShelfBeam_512",
     "size": {
       "width": 0.796586,
       "length": 1.000001,
@@ -355,6 +370,7 @@
       "category": "Organisation",
       "subCategory": "Beams"
     },
+    "iconTexture": "IconDesc_BeamSupport_512",
     "size": {
       "width": 2.000001,
       "length": 2.000001,
@@ -377,6 +393,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_GarageDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -399,6 +416,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_GarageDoorConcrete_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -421,6 +439,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_GarageDoorSteel_513",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -443,6 +462,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_Blender_512",
     "size": {
       "width": 12,
       "length": 10,
@@ -473,6 +493,7 @@
       "category": "Special",
       "subCategory": "BlueprintDesigners"
     },
+    "iconTexture": "IconDesc_BlueprintDesigner_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -491,6 +512,7 @@
       "category": "Special",
       "subCategory": "BlueprintDesigners"
     },
+    "iconTexture": "IconDesc_BlueprintDesignerMK2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -509,6 +531,7 @@
       "category": "Special",
       "subCategory": "BlueprintDesigners"
     },
+    "iconTexture": "IconDesc_BlueprintDesignerMK3_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -527,6 +550,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_CandyCaneDecor_512",
     "size": {
       "width": 1,
       "length": 1,
@@ -549,6 +573,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkCross_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -571,6 +596,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkRamp_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -593,6 +619,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkStairs_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -615,6 +642,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkStraight_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -637,6 +665,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkT_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -659,6 +688,7 @@
       "category": "Organisation",
       "subCategory": "Catwalks"
     },
+    "iconTexture": "IconDesc_CatwalkTurn_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -677,6 +707,7 @@
       "category": "Organisation",
       "subCategory": "Lights"
     },
+    "iconTexture": "IconDesc_CeilingLight_512",
     "size": {
       "width": 11,
       "length": 12,
@@ -699,6 +730,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_CentralStorage_512",
     "size": {
       "width": 5,
       "length": 9,
@@ -728,6 +760,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_ChainLinkFence_512",
     "size": {
       "width": 0.5,
       "length": 4,
@@ -750,6 +783,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_ConcreteBarrier_512",
     "size": {
       "width": 0.5,
       "length": 4,
@@ -772,6 +806,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_ConstructorMk1_512",
     "size": {
       "width": 8,
       "length": 10,
@@ -802,6 +837,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_Converter_512",
     "size": {
       "width": 16,
       "length": 16,
@@ -836,6 +872,7 @@
       "category": "Transport",
       "subCategory": "ConveyorAttachments"
     },
+    "iconTexture": "IconDesc_ConveyorMerger_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -858,6 +895,7 @@
       "category": "Transport",
       "subCategory": "ConveyorAttachments"
     },
+    "iconTexture": "IconDesc_PriorityMerger_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -880,6 +918,7 @@
       "category": "Transport",
       "subCategory": "ConveyorAttachments"
     },
+    "iconTexture": "IconDesc_ConveyorSplitter_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -902,6 +941,7 @@
       "category": "Transport",
       "subCategory": "ConveyorAttachments"
     },
+    "iconTexture": "IconDesc_ProgrammableSplitter_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -924,6 +964,7 @@
       "category": "Transport",
       "subCategory": "ConveyorAttachments"
     },
+    "iconTexture": "IconDesc_SmartSplitter_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -946,6 +987,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk1_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -964,6 +1006,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -982,6 +1025,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk3_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1000,6 +1044,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk4_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1018,6 +1063,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk5_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1036,6 +1082,7 @@
       "category": "Transport",
       "subCategory": "ConveyorBelts"
     },
+    "iconTexture": "ConveyorMk6_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1054,6 +1101,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "IconDesc_ConvCeilingAttachment_512",
     "size": {
       "width": 0.2,
       "length": 2,
@@ -1076,6 +1124,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK1_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1094,6 +1143,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1112,6 +1162,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK3_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1130,6 +1181,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK4_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1148,6 +1200,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK5_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1166,6 +1219,7 @@
       "category": "Transport",
       "subCategory": "ConveyLift"
     },
+    "iconTexture": "ConveyorLiftMK6_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1184,6 +1238,7 @@
       "category": "Transport",
       "subCategory": "Monitoring"
     },
+    "iconTexture": "IconDesc_ConveyorThroughputMonitor_512",
     "size": {
       "width": 2,
       "length": 2.2,
@@ -1206,6 +1261,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "IconDesc_ConveyorPole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1224,6 +1280,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "ConveyorPoleMulti_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1242,6 +1299,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "IconDesc_ConvWallAttachment_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1260,6 +1318,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "IconDesc_ConveyorWallHole_512",
     "size": {
       "width": 0.5,
       "length": 2,
@@ -1282,6 +1341,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Down_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1304,6 +1364,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Down_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1326,6 +1387,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_Down_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1348,6 +1410,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_Down_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1370,6 +1433,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_DownInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1392,6 +1456,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_DownInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1414,6 +1479,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_DownInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1436,6 +1502,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_DownInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1458,6 +1525,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_DownOutCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1480,6 +1548,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_DownOutCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1502,6 +1571,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_DownOutCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1524,6 +1594,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_DownOutCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1546,6 +1617,7 @@
       "category": "Transport",
       "subCategory": "Vehicles"
     },
+    "iconTexture": "IconDesc_DronePort_512",
     "size": {
       "width": 17,
       "length": 24,
@@ -1575,6 +1647,7 @@
       "category": "Transport",
       "subCategory": "Elevators"
     },
+    "iconTexture": "IconDesc_PersonnelElevator_512",
     "size": null,
     "powerConsumptionMW": 20,
     "powerConsumptionExponent": 1.6,
@@ -1600,6 +1673,7 @@
       "category": "Transport",
       "subCategory": "Elevators"
     },
+    "iconTexture": "IconDesc_PelevatorFloorstop_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -1618,6 +1692,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_Fences_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -1640,6 +1715,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "IconDesc_FlatFrame_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1662,6 +1738,7 @@
       "category": "Organisation",
       "subCategory": "Lights"
     },
+    "iconTexture": "IconDesc_FloodLight_512",
     "size": {
       "width": 3,
       "length": 3,
@@ -1684,6 +1761,7 @@
       "category": "Organisation",
       "subCategory": "Lights"
     },
+    "iconTexture": "IconDesc_FloodlightWall_512",
     "size": null,
     "powerConsumptionMW": 6,
     "powerConsumptionExponent": 0,
@@ -1702,6 +1780,7 @@
       "category": "Transport",
       "subCategory": "Vehicles"
     },
+    "iconTexture": "IconDesc_TruckStation_Fluid_512",
     "size": {
       "width": 17,
       "length": 9,
@@ -1731,6 +1810,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_FicsitFoundation1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1753,6 +1833,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_FicsitFoundation2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1775,6 +1856,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_FicsitFoundation4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1797,6 +1879,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_AsphaltFoundation8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1819,6 +1902,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_AsphaltFoundation8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1841,6 +1925,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_AsphaltFoundation8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1863,6 +1948,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_ConcFoundation1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1885,6 +1971,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_ConcFoundation2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1907,6 +1994,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_ConcFoundation4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1929,6 +2017,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_PolishFoundation1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1951,6 +2040,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "IconDesc_FoundationFrame_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1973,6 +2063,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_SteelFoundation1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -1995,6 +2086,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_SteelFoundation2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2017,6 +2109,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_SteelFoundation4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2039,6 +2132,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "Foundation_Glass_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2061,6 +2155,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HypertubeFloorHole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -2079,6 +2174,7 @@
       "category": "Transport",
       "subCategory": "ConverPole"
     },
+    "iconTexture": "IconDesc_ConveyorFloorHole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -2097,6 +2193,7 @@
       "category": "Transport",
       "subCategory": "PipeSupport"
     },
+    "iconTexture": "IconDesc_PipeFloorHole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -2115,6 +2212,7 @@
       "category": "Production",
       "subCategory": "Smelters"
     },
+    "iconTexture": "IconDesc_Foundry_512",
     "size": {
       "width": 10,
       "length": 10,
@@ -2145,6 +2243,7 @@
       "category": "Production",
       "subCategory": "OilProduction"
     },
+    "iconTexture": "IconDesc_Extractor_512",
     "size": {
       "width": 5,
       "length": 5,
@@ -2187,6 +2286,7 @@
       "category": "Production",
       "subCategory": "OilProduction"
     },
+    "iconTexture": "IconDesc_Smasher_512",
     "size": {
       "width": 15,
       "length": 15,
@@ -2216,6 +2316,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_AutomatedGate_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -2238,6 +2339,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "BiomassGenerator_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2310,6 +2412,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "IconDesc_CoalGenerator_512",
     "size": {
       "width": 10,
       "length": 26,
@@ -2364,6 +2467,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "FuelGenerator_512",
     "size": {
       "width": 22,
       "length": 4,
@@ -2430,6 +2534,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "GeoThermalPowerGenerator_512",
     "size": {
       "width": 20,
       "length": 19,
@@ -2469,6 +2574,7 @@
       "category": "Power",
       "subCategory": "Generators"
     },
+    "iconTexture": "NuclearPowerplant_512",
     "size": {
       "width": 12,
       "length": 42,
@@ -2523,6 +2629,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_HadronCollider_512",
     "size": {
       "width": 10,
       "length": 10,
@@ -2557,6 +2664,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HyperTubeStackable_512",
     "size": {
       "width": 1,
       "length": 2.4,
@@ -2579,6 +2687,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HypertubeJunction_512",
     "size": {
       "width": 2,
       "length": 3.5,
@@ -2608,6 +2717,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HypertubeBranch_512",
     "size": {
       "width": 5,
       "length": 2,
@@ -2637,6 +2747,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HyperTube_WallHole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -2655,6 +2766,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "IconDesc_HyperTube_WallSupport_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -2673,6 +2785,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "FluidStorageIndustrial_512",
     "size": {
       "width": 14,
       "length": 14,
@@ -2702,6 +2815,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertR8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2724,6 +2838,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertR8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2746,6 +2861,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertR8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2768,6 +2884,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvertRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2790,6 +2907,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvertRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2812,6 +2930,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvertRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2834,6 +2953,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertD8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2856,6 +2976,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertD8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2878,6 +2999,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AspahltInvertD8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2900,6 +3022,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvDRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2922,6 +3045,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvDRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2944,6 +3068,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvDRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2966,6 +3091,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvDRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -2988,6 +3114,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvDRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3010,6 +3137,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvDRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3032,6 +3160,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvDRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3054,6 +3183,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvDRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3076,6 +3206,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvDRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3098,6 +3229,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvertRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3120,6 +3252,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvertRamp1m_512_",
     "size": {
       "width": 8,
       "length": 8,
@@ -3142,6 +3275,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvertRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3164,6 +3298,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvertRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3186,6 +3321,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvertRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3208,6 +3344,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvertRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3230,6 +3367,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertU8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3252,6 +3390,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertU8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3274,6 +3413,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_AsphaltInvertU8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3296,6 +3436,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvURamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3318,6 +3459,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvURamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3340,6 +3482,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_ConcInvURamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3362,6 +3505,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvURamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3384,6 +3528,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvUramp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3406,6 +3551,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_SteelInvURamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3428,6 +3574,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvURamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3450,6 +3597,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvURamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3472,6 +3620,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_PolishInvURamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3494,6 +3643,7 @@
       "category": "Production",
       "subCategory": "JumpPads"
     },
+    "iconTexture": "IconDesc_JumpPad_512",
     "size": {
       "width": 6,
       "length": 6,
@@ -3523,6 +3673,7 @@
       "category": "Production",
       "subCategory": "JumpPads"
     },
+    "iconTexture": "IconDesc_JumpPad_512",
     "size": {
       "width": 6,
       "length": 6,
@@ -3552,6 +3703,7 @@
       "category": "Production",
       "subCategory": "JumpPads"
     },
+    "iconTexture": "IconDesc_JumpPad_512",
     "size": {
       "width": 6,
       "length": 6,
@@ -3581,6 +3733,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_Ladder_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -3599,6 +3752,7 @@
       "category": "Production",
       "subCategory": "JumpPads"
     },
+    "iconTexture": "LandingPad_512",
     "size": {
       "width": 10,
       "length": 10,
@@ -3628,6 +3782,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_Fan_512",
     "size": {
       "width": 2,
       "length": 4,
@@ -3650,6 +3805,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_Vent_512",
     "size": {
       "width": 2,
       "length": 4,
@@ -3672,6 +3828,7 @@
       "category": "Organisation",
       "subCategory": "Lights"
     },
+    "iconTexture": "IconDesc_LightsControlPanel_512",
     "size": {
       "width": 2,
       "length": 1,
@@ -3694,6 +3851,7 @@
       "category": "Organisation",
       "subCategory": "Towers"
     },
+    "iconTexture": "LookOutTower_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3716,6 +3874,7 @@
       "category": "Special",
       "subCategory": "Progression"
     },
+    "iconTexture": "MAM_512",
     "size": {
       "width": 6,
       "length": 9,
@@ -3738,6 +3897,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_Manufacturer_512",
     "size": {
       "width": 18,
       "length": 12,
@@ -3768,6 +3928,7 @@
       "category": "Production",
       "subCategory": "Miners"
     },
+    "iconTexture": "IconDesc_MinerMk1_512",
     "size": {
       "width": 6,
       "length": 14,
@@ -3805,6 +3966,7 @@
       "category": "Production",
       "subCategory": "Miners"
     },
+    "iconTexture": "IconDesc_MinerMk2_512",
     "size": {
       "width": 6,
       "length": 14,
@@ -3842,6 +4004,7 @@
       "category": "Production",
       "subCategory": "Miners"
     },
+    "iconTexture": "IconDesc_MinerMk3_512",
     "size": {
       "width": 6,
       "length": 14,
@@ -3879,6 +4042,7 @@
       "category": "Production",
       "subCategory": "OilProduction"
     },
+    "iconTexture": "OilPump_512",
     "size": {
       "width": 8,
       "length": 13,
@@ -3918,6 +4082,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_OilRefinery_512",
     "size": {
       "width": 10,
       "length": 22,
@@ -3948,6 +4113,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_Packager_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -3978,6 +4144,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarConcSmall_512",
     "size": {
       "width": 2,
       "length": 2,
@@ -4000,6 +4167,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarFrameSmall_512",
     "size": {
       "width": 2,
       "length": 2,
@@ -4022,6 +4190,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarMetalSmall_512",
     "size": {
       "width": 2,
       "length": 2,
@@ -4044,6 +4213,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "Pillar_Bottom_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -4066,6 +4236,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarBaseSmall_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -4088,6 +4259,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "Pillar_Middle_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -4110,6 +4282,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarConcBig_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -4132,6 +4305,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": "IconDesc_PillarFrameBig_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -4154,6 +4328,7 @@
       "category": "Organisation",
       "subCategory": "Pillars"
     },
+    "iconTexture": null,
     "size": {
       "width": 8,
       "length": 8,
@@ -4176,6 +4351,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "HyperTube_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4194,6 +4370,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "HyperTubeStart_512",
     "size": null,
     "powerConsumptionMW": 10,
     "powerConsumptionExponent": 1.6,
@@ -4219,6 +4396,7 @@
       "category": "Transport",
       "subCategory": "HyperTubes"
     },
+    "iconTexture": "HyperTubePole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4237,6 +4415,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_PipeMK1Indicator_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4255,6 +4434,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_Pipes_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4273,6 +4453,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "PipelineJunction_512",
     "size": {
       "width": 2.4,
       "length": 2.4,
@@ -4302,6 +4483,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_PipelineTJunction_512",
     "size": {
       "width": 2.4,
       "length": 2.4,
@@ -4331,6 +4513,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_PipeMK2Indicator_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4349,6 +4532,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_PipeMK2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4367,6 +4551,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "PipePump_512",
     "size": {
       "width": 3.8,
       "length": 1.2,
@@ -4396,6 +4581,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_PipePumpMK2_512",
     "size": {
       "width": 5,
       "length": 1.2,
@@ -4425,6 +4611,7 @@
       "category": "Transport",
       "subCategory": "PipeSupport"
     },
+    "iconTexture": "PipePole_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4443,6 +4630,7 @@
       "category": "Transport",
       "subCategory": "PipeSupport"
     },
+    "iconTexture": "PipeSupportWall_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4461,6 +4649,7 @@
       "category": "Transport",
       "subCategory": "PipeSupport"
     },
+    "iconTexture": "PipeSupportWallHole_512",
     "size": {
       "width": 0.935162,
       "length": 1.999858,
@@ -4483,6 +4672,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_FluidStorage_512",
     "size": {
       "width": 6,
       "length": 6,
@@ -4512,6 +4702,7 @@
       "category": "Transport",
       "subCategory": "PipeSupport"
     },
+    "iconTexture": "PipePole_Stackable_512",
     "size": {
       "width": 1,
       "length": 2.4,
@@ -4534,6 +4725,7 @@
       "category": "Transport",
       "subCategory": "Portal"
     },
+    "iconTexture": "IconDesc_Portal_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -4563,6 +4755,7 @@
       "category": "Organisation",
       "subCategory": "Utility"
     },
+    "iconTexture": "IconDesc_PortableToilet_512",
     "size": {
       "width": 2,
       "length": 2,
@@ -4585,6 +4778,7 @@
       "category": "Transport",
       "subCategory": "Portal"
     },
+    "iconTexture": "IconDesc_PortalSatellite_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -4614,6 +4808,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "Powerline_256",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4632,6 +4827,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "PowerPoleMk1_512",
     "size": {
       "width": 0.8,
       "length": 0.8,
@@ -4654,6 +4850,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "PowerPoleMk2_512",
     "size": {
       "width": 0.8,
       "length": 0.8,
@@ -4676,6 +4873,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "PowerPoleMk3_512",
     "size": {
       "width": 0.8,
       "length": 0.8,
@@ -4698,6 +4896,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWall_MK1_512",
     "size": {
       "width": 0.896401,
       "length": 0.565515,
@@ -4720,6 +4919,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWallDouble_MK1_512",
     "size": {
       "width": 2.003136,
       "length": 0.565515,
@@ -4742,6 +4942,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWallDouble_MK2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4760,6 +4961,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWallDouble_MK3_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4778,6 +4980,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWall_MK2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4796,6 +4999,7 @@
       "category": "Power",
       "subCategory": "WallPoles"
     },
+    "iconTexture": "PowerPoleWall_MK3_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -4814,6 +5018,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "IconDesc_PowerStorage_512",
     "size": {
       "width": 6,
       "length": 6,
@@ -4843,6 +5048,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "IconDesc_PowerSwitch_512",
     "size": {
       "width": 2,
       "length": 1,
@@ -4865,6 +5071,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "IconDesc_PowerTower_512",
     "size": {
       "width": 12,
       "length": 12,
@@ -4887,6 +5094,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "IconDesc_PowerTowerPlatform_512",
     "size": {
       "width": 12,
       "length": 12,
@@ -4909,6 +5117,7 @@
       "category": "Power",
       "subCategory": "PowerPoles"
     },
+    "iconTexture": "IconDesc_SmartSwitch_512",
     "size": {
       "width": 2,
       "length": 1,
@@ -4931,6 +5140,7 @@
       "category": "Production",
       "subCategory": "Manufacturers"
     },
+    "iconTexture": "IconDesc_QuantumEncoder_512",
     "size": {
       "width": 16,
       "length": 11,
@@ -4965,6 +5175,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "QuarterPipe_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -4987,6 +5198,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5009,6 +5221,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "QuarterPipe_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5031,6 +5244,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5053,6 +5267,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5075,6 +5290,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5097,6 +5313,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "QuarterPipe_Corner_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5119,6 +5336,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "QuarterPipe_Corner_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5141,6 +5359,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_Cnr_QuarterPipe_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5163,6 +5382,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_DownOutCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5185,6 +5405,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5207,6 +5428,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5229,6 +5451,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5251,6 +5474,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5273,6 +5497,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_8x1_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5295,6 +5520,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_8x2_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5317,6 +5543,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_8x4_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5339,6 +5566,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_8x1_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5361,6 +5589,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_8x2_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5383,6 +5612,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_8x4_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5405,6 +5635,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_Mid_8x1_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -5423,6 +5654,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_Mid_8x2_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -5441,6 +5673,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_Mid_8x4_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -5459,6 +5692,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Grip_Mid_8x1_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5481,6 +5715,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Grip_Mid_8x2_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5503,6 +5738,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_Grip_Mid_8x4_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5525,6 +5761,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_Mid_8x1_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5547,6 +5784,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_Mid_8x2_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5569,6 +5807,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_Mid_8x4_512",
     "size": {
       "width": 4,
       "length": 8,
@@ -5591,6 +5830,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_InCorner_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5613,6 +5853,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_InCorner_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5635,6 +5876,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5657,6 +5899,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_InCorner_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5679,6 +5922,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_InCorner_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5701,6 +5945,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_InCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5723,6 +5968,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidInCorner_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5745,6 +5991,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidInCorner_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5767,6 +6014,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5789,6 +6037,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidInCorner_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5811,6 +6060,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidInCorner_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5833,6 +6083,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5855,6 +6106,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidInCorner_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5877,6 +6129,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidInCorner_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5899,6 +6152,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidInCorner_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -5921,6 +6175,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_OutCorner_8x1_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -5943,6 +6198,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_OutCorner_8x2_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -5965,6 +6221,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Mid_OutCorner_8x4_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -5987,6 +6244,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_OutCorner_8x1_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6009,6 +6267,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_OutCorner_8x2_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6031,6 +6290,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Mid_OutCorner_8x4_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6053,6 +6313,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidOutCorner_8x1_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6075,6 +6336,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidOutCorner_8x2_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6097,6 +6359,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Ficsit_MidOutCorner_8x4_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6119,6 +6382,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidOutCorner_8x1_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6141,6 +6405,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidOutCorner_8x2_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6163,6 +6428,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_MidOutCorner_8x4_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6185,6 +6451,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidOutCorner_8x1_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6207,6 +6474,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidOutCorner_8x2_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6229,6 +6497,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_MidOutCorner_8x4_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -6251,6 +6520,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Asphalt_Out_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6273,6 +6543,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Concrete_Out_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6295,6 +6566,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_PConcrete_Out_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6317,6 +6589,7 @@
       "category": "Organisation",
       "subCategory": "QuatPipes"
     },
+    "iconTexture": "IconDesc_QP_Grip_Out_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6339,6 +6612,7 @@
       "category": "Organisation",
       "subCategory": "Towers"
     },
+    "iconTexture": "RadarTower_512",
     "size": {
       "width": 10,
       "length": 10,
@@ -6368,6 +6642,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_Railing_512",
     "size": {
       "width": 0.5,
       "length": 4,
@@ -6390,6 +6665,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_BlockSignal_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -6408,6 +6684,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_BufferStop_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -6426,6 +6703,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_PathSignal_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -6444,6 +6722,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "Track_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -6462,6 +6741,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6484,6 +6764,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6506,6 +6787,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6528,6 +6810,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvertRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6550,6 +6833,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitDoubleRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6572,6 +6856,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltRamp8x2_256",
     "size": {
       "width": 8,
       "length": 8,
@@ -6594,6 +6879,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltRamp8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6616,6 +6902,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltRamp8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6638,6 +6925,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6660,6 +6948,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6682,6 +6971,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6704,6 +6994,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampDown1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6726,6 +7017,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampUp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6748,6 +7040,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampDown2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6770,6 +7063,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampUp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6792,6 +7086,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampDown4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6814,6 +7109,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitRampUp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6836,6 +7132,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_Aspha_tRamp8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6858,6 +7155,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltRampD8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6880,6 +7178,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltRampD8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6902,6 +7201,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampDown1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6924,6 +7224,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampDown2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6946,6 +7247,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampDown4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6968,6 +7270,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampDown1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -6990,6 +7293,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampDown2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7012,6 +7316,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampDown4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7034,6 +7339,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampDown1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7056,6 +7362,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampDown2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7078,6 +7385,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampDown4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7100,6 +7408,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "IconDesc_RampFrame_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7122,6 +7431,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "IconDesc_RampFrameInverted_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7144,6 +7454,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7166,6 +7477,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7188,6 +7500,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7210,6 +7523,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7232,6 +7546,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7254,6 +7569,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7276,6 +7592,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltCornerU8x2_256",
     "size": {
       "width": 8,
       "length": 8,
@@ -7298,6 +7615,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltCornerU8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7320,6 +7638,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltCornerU8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7342,6 +7661,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampUp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7364,6 +7684,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampUp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7386,6 +7707,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcRampUp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7408,6 +7730,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampUp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7430,6 +7753,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampUp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7452,6 +7776,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_SteelRampUp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7474,6 +7799,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampUp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7496,6 +7822,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampUp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7518,6 +7845,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishRampUp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7540,6 +7868,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitDoubleRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7562,6 +7891,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltDouble8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7584,6 +7914,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltDouble8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7606,6 +7937,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltDouble8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7628,6 +7960,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitDoubleRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7650,6 +7983,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcDoubleRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7672,6 +8006,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcDoubleRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7694,6 +8029,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcDoubleRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7716,6 +8052,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_MetalDoubleRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7738,6 +8075,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_MetalDoubleRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7760,6 +8098,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_MetalDoubleRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7782,6 +8121,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishDoubleRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7804,6 +8144,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishDoubleRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7826,6 +8167,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PolishDoubleRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7848,6 +8190,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvertRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7870,6 +8213,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvURamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7892,6 +8236,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvDRamp1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7914,6 +8259,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvertRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7936,6 +8282,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvURamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7958,6 +8305,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvDRamp2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -7980,6 +8328,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvURamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8002,6 +8351,7 @@
       "category": "Organisation",
       "subCategory": "Inverted"
     },
+    "iconTexture": "IconDesc_FicsitInvDRamp4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8024,6 +8374,7 @@
       "category": "Special",
       "subCategory": "AWESOME"
     },
+    "iconTexture": "ResourceSink_512",
     "size": {
       "width": 16,
       "length": 14,
@@ -8053,6 +8404,7 @@
       "category": "Special",
       "subCategory": "AWESOME"
     },
+    "iconTexture": "ResourceSinkShop_512",
     "size": {
       "width": 4,
       "length": 6,
@@ -8082,6 +8434,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_SteelRoofFlat_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8104,6 +8457,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_SteelRoof1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8126,6 +8480,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_SteelRoof2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8148,6 +8503,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_SteelRoof4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8170,6 +8526,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalIn_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8192,6 +8549,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalIn_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8214,6 +8572,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalIn_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8236,6 +8595,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalOut_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8258,6 +8618,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalOut_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8280,6 +8641,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofMetalOut_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8302,6 +8664,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoofFlat_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8324,6 +8687,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoof1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8346,6 +8710,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoof2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8368,6 +8733,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoof4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8390,6 +8756,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofFicsitIn_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8412,6 +8779,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofFicsitIn_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8434,6 +8802,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofFicsitIn_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8456,6 +8825,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoofOut_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8478,6 +8848,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoofOut_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8500,6 +8871,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_FicsitRoofOut_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8522,6 +8894,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_TarRoofFlat_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8544,6 +8917,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_TarRoof1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8566,6 +8940,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_TarRoof2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8588,6 +8963,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_TarRoof4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8610,6 +8986,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarInCorner_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8632,6 +9009,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarInCorner_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8654,6 +9032,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarInCorner_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8676,6 +9055,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarOutCorner_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8698,6 +9078,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarOutCorner_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8720,6 +9101,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofTarOutCorner_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8742,6 +9124,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_GlassRoofFlat_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8764,6 +9147,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_GlassRoof1m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8786,6 +9170,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_GlassRoof2m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8808,6 +9193,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_GlassRoof4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8830,6 +9216,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowIn_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8852,6 +9239,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowIn_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8874,6 +9262,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowIn_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8896,6 +9285,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowOut_01_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8918,6 +9308,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowOut_02_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8940,6 +9331,7 @@
       "category": "Organisation",
       "subCategory": "Roofs"
     },
+    "iconTexture": "IconDesc_RoofWindowOut_03_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -8962,6 +9354,7 @@
       "category": "Production",
       "subCategory": "Smelters"
     },
+    "iconTexture": "IconDesc_SmelterMk1_512",
     "size": {
       "width": 5,
       "length": 10,
@@ -8992,6 +9385,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_SnowCannon_512",
     "size": {
       "width": 2,
       "length": 2,
@@ -9014,6 +9408,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_SnowDispenser_512",
     "size": {
       "width": 1,
       "length": 4,
@@ -9036,6 +9431,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_Snowman_512",
     "size": {
       "width": 4,
       "length": 2,
@@ -9058,6 +9454,7 @@
       "category": "Special",
       "subCategory": "Progression"
     },
+    "iconTexture": "SpaceElevator_512",
     "size": {
       "width": 15,
       "length": 43,
@@ -9087,6 +9484,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_StackableShelf_512",
     "size": {
       "width": 4,
       "length": 2,
@@ -9109,6 +9507,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltStair_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9131,6 +9530,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltStair_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9153,6 +9553,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_AsphaltStair_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9175,6 +9576,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcreteStair_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9197,6 +9599,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcreteStair_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9219,6 +9622,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_ConcreteStair_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9241,6 +9645,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitStair_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9263,6 +9668,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitStair_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9285,6 +9691,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_FicsitStair_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9307,6 +9714,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_GripMetalStair_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9329,6 +9737,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_GripMetalStair_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9351,6 +9760,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_GripMetalStair_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9373,6 +9783,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PConcreteStair_8x1_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9395,6 +9806,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PConcreteStair_8x2_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9417,6 +9829,7 @@
       "category": "Organisation",
       "subCategory": "Ramps"
     },
+    "iconTexture": "IconDesc_PConcreteStair_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9439,6 +9852,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "StairLeft_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9461,6 +9875,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "StairRight_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -9483,6 +9898,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignHuge_512",
     "size": {
       "width": 16,
       "length": 0.4,
@@ -9505,6 +9921,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignLarge_512",
     "size": {
       "width": 8,
       "length": 0.2,
@@ -9527,6 +9944,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignMedium_512",
     "size": {
       "width": 2,
       "length": 0.18,
@@ -9549,6 +9967,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignPortrait_512",
     "size": {
       "width": 2,
       "length": 0.18,
@@ -9571,6 +9990,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSmall_512",
     "size": {
       "width": 2,
       "length": 0.18,
@@ -9593,6 +10013,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSmallVeryWide_512",
     "size": {
       "width": 4,
       "length": 0.18,
@@ -9615,6 +10036,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSmallWide_512",
     "size": {
       "width": 3,
       "length": 0.18,
@@ -9637,6 +10059,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSquare_512",
     "size": {
       "width": 2,
       "length": 0.18,
@@ -9659,6 +10082,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSquareSmall_512",
     "size": {
       "width": 1,
       "length": 0.16,
@@ -9681,6 +10105,7 @@
       "category": "Organisation",
       "subCategory": "Signs"
     },
+    "iconTexture": "IconDesc_SignSquareTiny_512",
     "size": {
       "width": 0.5,
       "length": 0.16,
@@ -9703,6 +10128,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_SteelWall8x1_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9725,6 +10151,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_SteelWall8x4_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9747,6 +10174,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_SteelGate_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9769,6 +10197,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_SteelWallWindow01_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9791,6 +10220,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_SteelWindow02_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9813,6 +10243,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_SteelWIndow03_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9835,6 +10266,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_SteelWindow04_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9857,6 +10289,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelDownDiag1m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9879,6 +10312,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelDownDiag2m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9901,6 +10335,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelDownDiag4m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9923,6 +10358,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelDownDiag8m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9945,6 +10381,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelUpDiag1m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9967,6 +10404,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelUpDiag2m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -9989,6 +10427,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelUpDiag4m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10011,6 +10450,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_SteelUpDiag8m_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10033,6 +10473,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_StorageContainer_512",
     "size": {
       "width": 5,
       "length": 11,
@@ -10062,6 +10503,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_StorageContainerMk2_512",
     "size": {
       "width": 5,
       "length": 11,
@@ -10091,6 +10533,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_StorageHazard_512",
     "size": {
       "width": 1,
       "length": 1.6,
@@ -10120,6 +10563,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "IconDesc_StorageMedkit_512",
     "size": {
       "width": 1,
       "length": 1.6,
@@ -10149,6 +10593,7 @@
       "category": "Organisation",
       "subCategory": "Storage"
     },
+    "iconTexture": "PlayerStorage_512",
     "size": {
       "width": 1,
       "length": 1.6,
@@ -10178,6 +10623,7 @@
       "category": "Organisation",
       "subCategory": "Lights"
     },
+    "iconTexture": "IconDesc_StreetLight_512",
     "size": {
       "width": 0.5,
       "length": 0.5,
@@ -10200,6 +10646,7 @@
       "category": "Organisation",
       "subCategory": "Attach"
     },
+    "iconTexture": "IconDesc_TarpFence_512",
     "size": {
       "width": 0.5,
       "length": 4,
@@ -10222,6 +10669,7 @@
       "category": "Special",
       "subCategory": "Progression"
     },
+    "iconTexture": "Hub_512",
     "size": {
       "width": 14,
       "length": 26,
@@ -10251,6 +10699,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_DockingStation_512",
     "size": {
       "width": 16,
       "length": 34,
@@ -10280,6 +10729,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_TrainDockingFluid_512",
     "size": {
       "width": 16,
       "length": 34,
@@ -10309,6 +10759,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_PlatformCatwalk_512",
     "size": {
       "width": 16,
       "length": 34,
@@ -10338,6 +10789,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_EmptyPlatform_512",
     "size": {
       "width": 16,
       "length": 34,
@@ -10367,6 +10819,7 @@
       "category": "Transport",
       "subCategory": "Trains"
     },
+    "iconTexture": "IconDesc_TrainStation_512",
     "size": {
       "width": 16,
       "length": 34,
@@ -10396,6 +10849,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_ChristmasTree_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -10425,6 +10879,7 @@
       "category": "Transport",
       "subCategory": "Vehicles"
     },
+    "iconTexture": "IconDesc_TruckStation_512",
     "size": {
       "width": 17,
       "length": 9,
@@ -10454,6 +10909,7 @@
       "category": "Transport",
       "subCategory": "Pipes"
     },
+    "iconTexture": "IconDesc_Valve_512",
     "size": {
       "width": 2,
       "length": 1.2,
@@ -10483,6 +10939,7 @@
       "category": "Transport",
       "subCategory": "VehiclePaths"
     },
+    "iconTexture": "IconDesc_ExplorerPath_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10501,6 +10958,7 @@
       "category": "Transport",
       "subCategory": "VehiclePaths"
     },
+    "iconTexture": "IconDesc_CartPath_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10519,6 +10977,7 @@
       "category": "Transport",
       "subCategory": "VehiclePaths"
     },
+    "iconTexture": "IconDesc_TractorPath_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10537,6 +10996,7 @@
       "category": "Transport",
       "subCategory": "VehiclePaths"
     },
+    "iconTexture": "IconDesc_TruckPath_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10555,6 +11015,7 @@
       "category": "Transport",
       "subCategory": "VehiclePaths"
     },
+    "iconTexture": "IconDesc_AllPath_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10573,6 +11034,7 @@
       "category": "Organisation",
       "subCategory": "Walkways"
     },
+    "iconTexture": "IconDesc_WalkwayCross_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -10595,6 +11057,7 @@
       "category": "Organisation",
       "subCategory": "Walkways"
     },
+    "iconTexture": "IconDesc_WalkwayRamp_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -10617,6 +11080,7 @@
       "category": "Organisation",
       "subCategory": "Walkways"
     },
+    "iconTexture": "IconDesc_WalkwayStraight_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -10639,6 +11103,7 @@
       "category": "Organisation",
       "subCategory": "Walkways"
     },
+    "iconTexture": "IconDesc_WalkwayT_512",
     "size": {
       "width": 4,
       "length": 4,
@@ -10661,6 +11126,7 @@
       "category": "Organisation",
       "subCategory": "Walkways"
     },
+    "iconTexture": "IconDesc_WalkwayTurn_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10679,6 +11145,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_FicsitWall8x4_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10701,6 +11168,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_SteelWall8x4_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10723,6 +11191,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_ConcWall8x1_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10745,6 +11214,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcDownDiag1m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10763,6 +11233,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcUpDiag1m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10781,6 +11252,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcDownDiag2m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10799,6 +11271,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcUpDiag2m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10817,6 +11290,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_ConcWall8x4_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10839,6 +11313,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "IconDesc_WallConcCovHole1_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10861,6 +11336,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "IconDesc_WallConcCovHole2_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10883,6 +11359,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "IconDesc_WallConcCovHole3_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -10905,6 +11382,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcTriangleWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -10927,6 +11405,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcWallInwards_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -10949,6 +11428,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcDownDiag4m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10967,6 +11447,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcUpDiag4m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -10985,6 +11466,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_ConcWallWindow01_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11007,6 +11489,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_ConcWallWindow02_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11029,6 +11512,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_ConcWallWindow03_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11051,6 +11535,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "IconDesc_ConcWallWindow04_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11073,6 +11558,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcTriangleWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11095,6 +11581,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcWallInwards_8x8_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11117,6 +11604,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcDownDiag8m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11135,6 +11623,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_ConcUpDiag8m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11153,6 +11642,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcAngWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11175,6 +11665,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_ConcAngWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11197,6 +11688,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_ConcreteCenterDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11219,6 +11711,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_ConcreteGate_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11241,6 +11734,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_ConcreteSideDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11263,6 +11757,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x3_Orange_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11285,6 +11780,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x3_Grey_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11307,6 +11803,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x2_Orange_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11329,6 +11826,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x2_Grey_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11351,6 +11849,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x1_Orange_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11373,6 +11872,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "Wall_Conveyor_x1_Grey_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11395,6 +11895,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": "01_White",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11417,6 +11918,7 @@
       "category": "Walls",
       "subCategory": "ConveyorConnections"
     },
+    "iconTexture": null,
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11439,6 +11941,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_FicsitCenterDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11461,6 +11964,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_SteelCenterDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11483,6 +11987,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_FicsitSideDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11505,6 +12010,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_SteelSideDoor_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11527,6 +12033,7 @@
       "category": "Organisation",
       "subCategory": "Frames"
     },
+    "iconTexture": "IconDesc_WallFrame_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11549,6 +12056,7 @@
       "category": "Walls",
       "subCategory": "Doors"
     },
+    "iconTexture": "IconDesc_FicsitGate_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11571,6 +12079,7 @@
       "category": "Walls",
       "subCategory": "Walls"
     },
+    "iconTexture": "IconDesc_FicsitWall8x1_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11593,6 +12102,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitDownDiag1m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11611,6 +12121,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitUpDiag1m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11629,6 +12140,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitDownDiag2m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11647,6 +12159,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitUpDiag2m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11665,6 +12178,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FicsitTriangleWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11687,6 +12201,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FICSITWallInwards_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11709,6 +12224,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitDownDiag4m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11727,6 +12243,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitUpDiag4m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11745,6 +12262,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FicsitTriangleWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11767,6 +12285,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FICSITWallInwards_8x8_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11789,6 +12308,7 @@
       "category": "Walls",
       "subCategory": "UpperDiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitDownDiag8m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11807,6 +12327,7 @@
       "category": "Walls",
       "subCategory": "DiagonalWalls"
     },
+    "iconTexture": "IconDesc_FicsitUpDiag8m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -11825,6 +12346,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FicsitAngWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11847,6 +12369,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_FicsitAngWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11869,6 +12392,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelTriangleWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11891,6 +12415,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelWallInwards_8x4_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11913,6 +12438,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelTriangleWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11935,6 +12461,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelWallInwards_8x8_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -11957,6 +12484,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "Wall_Window_8x4_01_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -11979,6 +12507,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "Wall_Window_8x4_02_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12001,6 +12530,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "Wall_Window_8x4_03_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12023,6 +12553,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": null,
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -12041,6 +12572,7 @@
       "category": "Walls",
       "subCategory": "Windows"
     },
+    "iconTexture": "Wall_Window_8x4_04_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12063,6 +12595,7 @@
       "category": "Walls",
       "subCategory": "WindowFrames"
     },
+    "iconTexture": "IconDesc_AWindow_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12085,6 +12618,7 @@
       "category": "Walls",
       "subCategory": "WindowFrames"
     },
+    "iconTexture": "IconDesc_HexWindow_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12107,6 +12641,7 @@
       "category": "Walls",
       "subCategory": "WindowFrames"
     },
+    "iconTexture": "IconDesc_ThreeWindow_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12129,6 +12664,7 @@
       "category": "Walls",
       "subCategory": "WindowFrames"
     },
+    "iconTexture": "IconDesc_FullWindow_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12151,6 +12687,7 @@
       "category": "Walls",
       "subCategory": "WindowFrames"
     },
+    "iconTexture": "IconDesc_HexagonWindow_512",
     "size": {
       "width": 0.5,
       "length": 8,
@@ -12173,6 +12710,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelAngWall4m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -12195,6 +12733,7 @@
       "category": "Walls",
       "subCategory": "AngularWalls"
     },
+    "iconTexture": "IconDesc_SteelAngWall8m_512",
     "size": {
       "width": 8,
       "length": 8,
@@ -12217,6 +12756,7 @@
       "category": "Production",
       "subCategory": "OilProduction"
     },
+    "iconTexture": "Waterpump_512",
     "size": {
       "width": 20,
       "length": 18,
@@ -12256,6 +12796,7 @@
       "category": "Production",
       "subCategory": "Workstations"
     },
+    "iconTexture": "Workbench_512",
     "size": {
       "width": 4,
       "length": 6,
@@ -12278,6 +12819,7 @@
       "category": "Production",
       "subCategory": "Workstations"
     },
+    "iconTexture": "Workshop_512",
     "size": {
       "width": 6,
       "length": 10,
@@ -12300,6 +12842,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_Wreath_256",
     "size": {
       "width": 1,
       "length": 2,
@@ -12322,6 +12865,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_XmasLights_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -12340,6 +12884,7 @@
       "category": "Special",
       "subCategory": "Event"
     },
+    "iconTexture": "IconDesc_ChristmasTreeBare_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -12358,6 +12903,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_PolishFoundation2m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
@@ -12376,6 +12922,7 @@
       "category": "Organisation",
       "subCategory": "Floors"
     },
+    "iconTexture": "IconDesc_PolishFoundation4m_512",
     "size": null,
     "powerConsumptionMW": 0,
     "powerConsumptionExponent": 0,
