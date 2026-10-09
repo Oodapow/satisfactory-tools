@@ -1,0 +1,30 @@
+name: PR issue link
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  issue-link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the PR body references an issue
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          DEFAULT: ${{ github.event.repository.default_branch }}
+        run: |
+          if printf '%s' "$BODY" | grep -Eiq '\b(close[sd]?|fix(e[sd])?|resolve[sd]?|refs?|part of)[: ]+#[0-9]+'; then
+            echo "Issue reference found."
+          elif printf '%s' "$BODY" | grep -Eiq '^no issue:'; then
+            echo "Marked as needing no issue."
+          else
+            echo "::error::Add 'Closes #N' (or 'Refs #N') to the PR description, or 'No issue: <reason>' for trivial changes."
+            exit 1
+          fi
+          if [ "$BASE" != "$DEFAULT" ] && printf '%s' "$BODY" | grep -Eiq '\b(close[sd]?|fix(e[sd])?|resolve[sd]?)[: ]+#[0-9]+'; then
+            echo "::warning::This PR targets '$BASE', not '$DEFAULT'. Closing keywords only take effect when a PR merges into '$DEFAULT', so the issue will stay open until this work reaches it."
+          fi
