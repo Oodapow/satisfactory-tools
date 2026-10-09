@@ -10,6 +10,8 @@ npm run build  # production build into dist/
 
 Live: https://oodapow.github.io/satisfactory-tools/
 
+Project overview (vision, user flow, architecture, data pipeline, deploys): [docs/README.md](docs/README.md). Work is tracked in [issues](https://github.com/Oodapow/satisfactory-tools/issues).
+
 CI runs lint + build on every pull request; pushes to `main` deploy automatically.
 
 ## Game data
