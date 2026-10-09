@@ -124,3 +124,31 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-markers { position: absolute; width: 0; height: 0; overflow: hidden; }
 .ne-arrow-belt { fill: #e8891c; }
 .ne-arrow-pipe { fill: #2b8fd6; }
+
+/* Power widgets on the factory map's side panel (#66). */
+.pw-card { border: 1px solid var(--border); border-radius: 10px; background: var(--bg); padding: 10px 12px; margin: 12px 0; display: grid; gap: 8px; }
+.pw-head { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .9rem; }
+.pw-pill { font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.pw-pill.good { background: color-mix(in srgb, #3a9d5d 18%, transparent); color: #3a9d5d; }
+.pw-pill.bad { background: color-mix(in srgb, var(--danger) 18%, transparent); color: var(--danger); }
+.pw-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; }
+.pw-tile { display: grid; gap: 2px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; background: var(--surface); line-height: 1.2; }
+.pw-tile b { font-size: .95rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pw-tile small { font-size: .7rem; font-weight: 600; color: var(--muted); }
+.pw-tile span { font-size: .72rem; color: var(--muted); }
+.pw-tile.good b { color: #3a9d5d; }
+.pw-tile.bad b { color: var(--danger); }
+.pw-meter { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, #d4b000 16%, var(--surface)); border: 1px solid var(--border); }
+.pw-fill { display: block; height: 100%; background: #d4b000; }
+.pw-fill.pw-over { background: var(--danger); }
+.pw-sub { margin: 4px 0 0; font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.pw-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .82rem; }
+.pw-rows li { display: flex; align-items: center; gap: 8px; min-height: 26px; }
+.pw-fuel { display: flex; align-items: center; gap: 4px; color: var(--muted); font-size: .72rem; }
+.pw-mw { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pw-rows .pw-row-btn { border: 0; border-radius: 6px; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; color: var(--text); font-weight: 400; padding: 4px 6px; }
+.pw-name { display: grid; gap: 3px; }
+.pw-share { display: block; height: 4px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.pw-share span { display: block; height: 100%; background: #d4b000; }
+.pw-dir { width: 22px; text-align: center; color: #d4b000; font-weight: 700; }
+.pw-rows .pw-row-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }

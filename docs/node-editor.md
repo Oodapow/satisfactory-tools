@@ -17,6 +17,8 @@ Each block shows the outpost's goal, what it extracts, what it imports, what it 
 
 Links are coloured by how they travel: belt, pipe, truck, train, drone, or power line. When two outposts have several links, they are drawn side by side.
 
+With nothing selected, the right-hand panel shows the **power grid** as a widget (#66): what the generators make, what the outposts use, and what is spare or short, as tiles and a bar that turns red past what is made. Below it are the generators (count, type and fuel) and every outpost's draw, with a bar for its share; click one to select it. All outposts share one grid for now; separate grids are #61.
+
 ## How lines and ports are drawn
 
 Both levels draw lines like a circuit schematic: horizontal and vertical runs with 90° corners, a small hop where one line crosses another (so a crossing never looks like a join), and every connection point a small circle, hollow while free and filled once connected. On the floor plan each point is coloured by what it carries (see [Connection points](#connection-points)).
@@ -29,6 +31,7 @@ What you can do:
 
 - **Add an outpost**: drag "Outpost" from the left onto the map, or click it. This creates an empty plan.
 - **Import between outposts**: drag from one outpost's right edge to another's left edge. The new link imports whatever the first outpost has spare (its first open offer). If it only has power spare, you get a power line instead. Select the link to change the item, rate or transport.
+- **See an outpost's power**: select it. A power widget shows what it uses and makes, what it takes from or gives to the grid, how much of its output is spoken for, and its power lines to other outposts.
 - **See what you could import**: select an outpost. The panel lists its imports and exports, and everything the other outposts still have spare, each with an Import button. Power from power outposts has a Connect button.
 - **Open the floor plan**: double-click an outpost, or use "Open floor plan" in its panel.
 - **Delete**: select a block or link and press Delete or Backspace, or use the button in the panel. Deleting an outpost deletes its plan and any imports that came from it.
@@ -132,6 +135,7 @@ All of it is in `src/editor/`:
 | `router.ts` | Factory-map routing and the hops drawn at crossings on both levels. |
 | `Symbols.tsx` | Splitter, merger, pipeline junction, power pole and conveyor lift symbols. |
 | `Inspector.tsx` | The right-hand panel for whatever is selected. |
+| `PowerWidgets.tsx`, `power.ts` | The power grid and outpost power widgets in that panel. |
 | `store.ts` | The editor's own stored state, the example outposts, palette lists. |
 | `unlocked.ts` | `useUnlocked()`: palette and picker lists cut down to what the game state has unlocked (machines, generators, recipes, fuels, items, link types, best belt and pipe). |
 | `icons.ts`, `GameIcon.tsx` | Icon lookup with the lettered fallback. |
