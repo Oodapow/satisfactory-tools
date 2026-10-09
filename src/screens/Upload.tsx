@@ -162,8 +162,8 @@ function UploadResult({
         </p>
       )}
       <div className="row">
-        <button type="button" onClick={() => onUse(parsed, '/plan')}>
-          Looks right, start planning
+        <button type="button" onClick={() => onUse(parsed, '/map')}>
+          Looks right, open the factory map
         </button>
         <button type="button" className="secondary" onClick={() => onUse(parsed, '/setup')}>
           Adjust by hand

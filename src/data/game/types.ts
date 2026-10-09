@@ -190,8 +190,13 @@ export interface Schematic {
     /** Paint, patterns, tapes, emotes and other cosmetic class ids. */
     cosmetics: string[]
   }
-  /** MAM research tree, from the game's folder name (e.g. "Caterium", "AlienTech"). */
+  /** MAM research tree (e.g. "Caterium", "AlienTech"), from data/supplements/mam-trees.json, else the game's folder. */
   mamTree?: string
+  /**
+   * MAM research: the nodes drawn directly above this one. Any one of them being researched
+   * opens it; empty means it opens with the tree. Absent for research that is in no tree.
+   */
+  mamParents?: SchematicId[]
   /** AWESOME Shop category. */
   shopCategory?: string
   events?: string[]

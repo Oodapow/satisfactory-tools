@@ -1,122 +1,52 @@
-// Placeholder floor-plan proposal for one outpost. It takes the plan's solution
-// (machines, generators, extraction from src/plan/solve.ts) and lays it out: one
-// floor per recipe, raw processing at the bottom and the goal at the top, machines
-// fed by a splitter manifold and collected by a merger manifold, belts sized to the
-// best allowed tier, and a port for every import, export, power line and resource
-// node. Belts between floors run up shared lanes beside the building, with a
-// conveyor lift where they change floor. The real layout optimiser is tracked separately (#13); this exists so the
-// editor has something plausible to render and edit.
-import { buildingsById, itemName, itemsById, recipesById } from '../data'
-import type { Solved } from '../plan/network'
-import { perMin } from '../plan/solve'
-import { beltTierFor, type BeltEdge, type ItemRate, type MicroGraph, type MicroNode, type PortData, type Transport } from './model'
+// Floor-plan proposal for one outpost: takes the layout decided by layout.ts (floors, lines,
+// ports and belts) and places it on the grid as editor blocks.
+//
+// Floors are stacked bottom to top (the first floor lowest on screen), each line a row of
+// machines with a splitter manifold per ingredient above it and a merger manifold per product
+// below it. Lines start at the left edge of their floor, so every belt enters and leaves on
+// the left, through a gutter where belts climb between floors. Ports sit in a column left of
+// the gutter. Where a source feeds several consumers it gets splitters right after it; where a
+// consumer takes from several sources it gets mergers right before it. All belts are routed
+// later, on the grid (gridRouter.ts).
+import { itemsById } from '../data'
+import { G, inHandle, outHandle, SIZE, sideDir, SPREAD, type Cell, type Side } from './grid'
+import { fmt, planLayout, type End, type LayoutInput, type Line } from './layout'
+import { beltTierFor, type BeltEdge, type MicroGraph, type MicroNode } from './model'
 
-const EPS = 1e-6
+export { fmt }
+export type { PortLink } from './layout'
+export type ProposalInput = LayoutInput
 
-export const fmt = (n: number) => (Math.abs(n - Math.round(n)) < 0.01 ? String(Math.round(n)) : n.toFixed(1))
-
-/** A link touching this outpost on the factory map, as the floor plan needs it. */
-export type PortLink = {
-  linkId: string
-  /** The outpost at the other end. */
-  other: string
-  transport: Transport
-  item?: string
-  perMin: number
-  powerMW?: number
-}
-
-export type ProposalInput = {
-  solved: Solved
-  /** Imports into this outpost and power lines arriving. */
-  incoming: PortLink[]
-  /** Other outposts' imports from this one and power lines leaving. */
-  outgoing: PortLink[]
-  maxBeltTier: number
-}
-
-type Floor = {
-  label: string
-  building: string
-  recipe: string
-  fuel?: string
-  machines: number
-  ingredients: ItemRate[]
-  products: ItemRate[]
-  level: number
-}
-type Endpoint = { node: string; handle: string }
+const MACHINE_PITCH = SIZE.machine.w + 2
+/** Grid cells between manifold rows, and between joints in a chain. */
+const ROW = 4
+const FLOOR_GAP = 6
+const PORT_GAP = 6
 
 const isFluid = (item: string) => itemsById.get(item)?.form !== 'solid'
 
-// Layout constants (px).
-const MACHINE_DX = 200
-const ROW = 56
-const FLOOR_GAP = 60
-const PORT_X = -700
-/** Vertical lanes left of the floors, one per item, where belts climb between floors. */
-const LANE_X = -70
-const LANE_DX = 18
+/** A belt end: the block and handle, its grid spot and side, and where joints for it go (left of a line's first machine). */
+type Endpoint = { node: string; handle: string; at: Cell; side: Side; floor: number; joint?: Cell }
 
-export function proposeLayout({ solved, incoming, outgoing, maxBeltTier }: ProposalInput): MicroGraph {
-  const { plan, solution } = solved
-  const notes: string[] = []
+export function proposeLayout(input: ProposalInput): MicroGraph {
+  const { maxBeltTier, maxPipeTier = 2 } = input
+  const plan = planLayout(input)
   const nodes: MicroNode[] = []
   const edges: BeltEdge[] = []
+  const floorOf = new Map<string, number>()
   let seq = 0
   const id = (p: string) => `${p}${++seq}`
+  const px = (c: Cell) => ({ x: c.x * G, y: c.y * G })
 
-  // 1. Floors from the solution: production steps and generators.
-  const floors: Floor[] = solution.steps.map((s) => {
-    const r = recipesById.get(s.recipe)!
-    return {
-      label: r.name,
-      building: s.building,
-      recipe: s.recipe,
-      machines: s.machines,
-      ingredients: r.ingredients.map((i) => ({ item: i.item, perMin: perMin(i.amount, r) * s.machines })),
-      products: r.products.map((p) => ({ item: p.item, perMin: perMin(p.amount, r) * s.machines })),
-      level: 0,
-    }
-  })
-  for (const g of solution.generators) {
-    const b = buildingsById.get(g.generator)
-    const fuel = itemsById.get(g.fuel)
-    const ingredients: ItemRate[] = []
-    if (fuel?.energyMJ) ingredients.push({ item: g.fuel, perMin: (g.mw * 60) / fuel.energyMJ })
-    const spec = b?.generator?.fuels.find((f) => f.fuel === g.fuel)
-    if (spec?.supplemental && b?.generator?.supplementalPerMJ)
-      ingredients.push({ item: spec.supplemental, perMin: g.mw * 60 * b.generator.supplementalPerMJ })
-    floors.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, building: g.generator, recipe: '', fuel: g.fuel, machines: g.machines, ingredients, products: [], level: 0 })
+  const block = (type: 'machine' | 'splitter' | 'merger' | 'port', at: Cell, data: MicroNode['data'], floor: number) => {
+    const nid = id(type[0])
+    nodes.push({ id: nid, type, position: px(at), data })
+    floorOf.set(nid, floor)
+    return nid
   }
-
-  // Raw processing at the bottom: a floor sits one above the highest floor feeding it.
-  const producer = new Map<string, Floor>()
-  for (const f of floors) for (const p of f.products) if (!producer.has(p.item)) producer.set(p.item, f)
-  const levels = new Map<Floor, number>()
-  const levelOf = (f: Floor, stack = new Set<Floor>()): number => {
-    if (levels.has(f)) return levels.get(f)!
-    if (stack.has(f)) return 0
-    stack.add(f)
-    const below = f.ingredients.map((i) => producer.get(i.item)).filter((p): p is Floor => !!p && p !== f)
-    const level = below.length ? 1 + Math.max(...below.map((p) => levelOf(p, stack))) : 0
-    levels.set(f, level)
-    return level
-  }
-  floors.forEach((f) => (f.level = levelOf(f)))
-  floors.sort((a, b) => a.level - b.level || a.label.localeCompare(b.label))
-
-  // Sources and consumers per item, wired together at the end.
-  const sources = new Map<string, { at: Endpoint; perMin: number }[]>()
-  const consumers = new Map<string, { at: Endpoint; perMin: number; y: number }[]>()
-  const push = <T>(m: Map<string, T[]>, k: string, v: T) => (m.get(k) ?? m.set(k, []).get(k)!).push(v)
-  // Floor of every node, to know where a belt needs a conveyor lift. Ports and hubs are on the ground.
-  const floorOf = new Map<string, number>()
-  const lanes = new Map<string, number>()
-  const laneFor = (item: string) => lanes.get(item) ?? lanes.set(item, LANE_X - lanes.size * LANE_DX).get(item)!
-  const edge = (from: Endpoint, to: Endpoint, item: string, rate: number, viaLane = false) => {
+  const edge = (from: { node: string; handle: string }, to: { node: string; handle: string }, item: string, rate: number) => {
     const fluid = isFluid(item)
-    const { tier, over } = beltTierFor(rate, fluid ? 2 : maxBeltTier, fluid)
+    const { tier, over } = beltTierFor(rate, fluid ? maxPipeTier : maxBeltTier, fluid)
     const lift = (floorOf.get(to.node) ?? 0) - (floorOf.get(from.node) ?? 0)
     edges.push({
       id: id('e'),
@@ -125,195 +55,177 @@ export function proposeLayout({ solved, incoming, outgoing, maxBeltTier }: Propo
       sourceHandle: from.handle,
       target: to.node,
       targetHandle: to.handle,
-      data: { item, perMin: rate, tier, overCapacity: over, lift: lift || undefined, laneX: viaLane ? laneFor(item) : undefined },
+      data: { item, perMin: rate, tier, overCapacity: over, lift: lift || undefined },
     })
   }
 
-  // 2. Floors, stacked bottom to top. Each floor: a splitter row per ingredient feeding the
-  // machines from the left, the machines, and a merger row per product collecting to the left.
-  const layouts = floors.map((f) => {
-    const n = Math.max(1, Math.ceil(f.machines - EPS))
-    const blocks = n > 12 ? 1 : n
-    const height = 40 + f.ingredients.length * ROW + 90 + Math.max(1, f.products.length) * ROW + 20
-    return { f, n, blocks, height, width: 120 + blocks * MACHINE_DX }
-  })
-  const width = Math.max(700, ...layouts.map((l) => l.width))
-  const groundY = layouts.reduce((h, l) => h + l.height + FLOOR_GAP, 0)
-  let top = groundY
-  layouts.forEach(({ f, n, blocks, height }, index) => {
-    top -= height + FLOOR_GAP
-    const machineName = buildingsById.get(f.building)?.name ?? f.building
+  // How many belts meet at each end, to leave room for the splitters and mergers there.
+  const key = (e: End) => ('port' in e ? `p:${e.port}` : `l:${e.line}:${e.slot}`)
+  const fan = new Map<string, number>()
+  for (const f of plan.flows) {
+    fan.set(`o${key(f.from)}`, (fan.get(`o${key(f.from)}`) ?? 0) + 1)
+    fan.set(`i${key(f.to)}`, (fan.get(`i${key(f.to)}`) ?? 0) + 1)
+  }
+  const jointsFor = (belts: number) => (belts <= 1 ? 0 : Math.ceil((belts - 1) / 2))
+  const lineJoints = (l: Line) =>
+    Math.max(
+      0,
+      ...l.ingredients.map((_, s) => jointsFor(fan.get(`il:${l.id}:${s}`) ?? 0)),
+      ...l.products.map((_, s) => jointsFor(fan.get(`ol:${l.id}:${s}`) ?? 0)),
+    )
+
+  // 1. Floors, top floor first so y grows downwards.
+  const items = new Set(plan.flows.map((f) => f.item))
+  const maxLineJoints = Math.max(0, ...plan.floors.flatMap((f) => f.lines.map(lineJoints)))
+  // Joints for manifold ends sit in the gutter's right edge, in line with their row; belts climb left of them.
+  const gutter = 6 + ROW * maxLineJoints + Math.min(80, plan.flows.length + items.size)
+  const ends = new Map<string, Endpoint>()
+  let y = 0
+  const lineHeight = (l: Line) => 2 + ROW * l.ingredients.length + SIZE.machine.h + (l.products.length ? ROW * l.products.length + 2 : 2) + 1
+  for (const floor of [...plan.floors].reverse()) {
+    const margin = 4
+    const top = y
+    let lineTop = top + 1
+    let width = 0
+    for (const l of floor.lines) {
+      placeLine(l, margin, lineTop, floor.index)
+      width = Math.max(width, margin + l.machines * MACHINE_PITCH)
+      lineTop += lineHeight(l)
+    }
+    const ft = floor.footprint
     nodes.push({
-      id: `floor${index}`,
+      id: `floor${floor.index}`,
       type: 'floor',
-      position: { x: -40, y: top },
+      position: px({ x: -1, y: top }),
       draggable: false,
       selectable: false,
       zIndex: -1,
       data: {
         kind: 'floor',
-        floor: index,
-        width: width + 40,
-        height,
-        label: `Floor ${index + 1} · ${f.label} · ${n} ${machineName}${n === 1 ? '' : 's'}`,
+        floor: floor.index,
+        width: (width + 1) * G,
+        height: (lineTop - top) * G,
+        label: `${floor.label} · about ${floor.foundations.x} × ${floor.foundations.y} foundations, ${Math.ceil(ft.height)} m high`,
       },
     })
-    const machineY = top + 40 + f.ingredients.length * ROW + 10
-    const clock = f.machines / n
-    const machines: string[] = []
-    // Joints sit centred over or under the machine they serve (machine blocks are 180 wide).
-    const jointX = (i: number, row: number) => 40 + i * MACHINE_DX + 90 - 20 + row * 44
-    for (let i = 0; i < blocks; i++) {
-      const mid = id('m')
-      machines.push(mid)
-      floorOf.set(mid, index)
-      nodes.push({
-        id: mid,
-        type: 'machine',
-        position: { x: 40 + i * MACHINE_DX, y: machineY },
-        data: { kind: 'machine', building: f.building, recipe: f.recipe, fuel: f.fuel, clock, count: blocks === 1 ? n : 1, floor: index },
-      })
-    }
+    y = lineTop + FLOOR_GAP
+  }
 
-    // Input manifolds, one row per ingredient, flowing right.
-    f.ingredients.forEach((ing, j) => {
-      const y = top + 40 + j * ROW
-      if (blocks === 1) {
-        push(consumers, ing.item, { at: { node: machines[0], handle: 'in' }, perMin: ing.perMin, y })
+  function placeLine(l: Line, margin: number, top: number, floor: number) {
+    const a = l.ingredients.length
+    const b = l.products.length
+    const mt = top + 2 + ROW * a
+    const mb = mt + SIZE.machine.h
+    const inX = SPREAD[a] ?? []
+    const outX = SPREAD[b] ?? []
+    const machines = Array.from({ length: l.machines }, (_, i) =>
+      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor }, floor),
+    )
+    const mx = (i: number) => margin + i * MACHINE_PITCH
+    const n = l.machines
+
+    // Input manifolds: a splitter above each machine but the last, flowing right.
+    l.ingredients.forEach((ing, j) => {
+      const row = top + 2 + ROW * j
+      const per = ing.perMin / n
+      if (n === 1) {
+        ends.set(`il:${l.id}:${j}`, { node: machines[0], handle: inHandle(j), at: { x: mx(0) + inX[j], y: mt }, side: 't', floor, joint: { x: -3, y: row } })
         return
       }
-      const splitters = machines.slice(0, -1).map((_, i) => {
-        const sid = id('s')
-        floorOf.set(sid, index)
-        nodes.push({ id: sid, type: 'splitter', position: { x: jointX(i, j), y }, data: { kind: 'splitter', floor: index, facing: 'right' } })
-        return sid
+      const splitters = machines.slice(0, -1).map((_, i) => block('splitter', { x: mx(i) + inX[j] - 1, y: row - 1 }, { kind: 'splitter', floor }, floor))
+      splitters.forEach((s, i) => {
+        edge({ node: s, handle: 'down' }, { node: machines[i], handle: inHandle(j) }, ing.item, per)
+        const next = splitters[i + 1] ? { node: splitters[i + 1], handle: 'in' } : { node: machines[i + 1], handle: inHandle(j) }
+        edge({ node: s, handle: 'out' }, next, ing.item, per * (n - 1 - i))
       })
-      push(consumers, ing.item, { at: { node: splitters[0], handle: 'in' }, perMin: ing.perMin, y })
-      splitters.forEach((sid, i) => {
-        edge({ node: sid, handle: 'down' }, { node: machines[i], handle: 'in' }, ing.item, ing.perMin / blocks)
-        const left = (ing.perMin * (blocks - 1 - i)) / blocks
-        const next = splitters[i + 1] ? { node: splitters[i + 1], handle: 'in' } : { node: machines[i + 1], handle: 'in' }
-        edge({ node: sid, handle: 'out' }, next, ing.item, left)
-      })
+      ends.set(`il:${l.id}:${j}`, { node: splitters[0], handle: 'in', at: { x: mx(0) + inX[j] - 1, y: row }, side: 'l', floor, joint: { x: -3, y: row } })
     })
 
-    // Output manifolds, one row per product, flowing left towards the lanes.
-    f.products.forEach((prod, p) => {
-      const y = machineY + 100 + p * ROW
-      if (blocks === 1) {
-        push(sources, prod.item, { at: { node: machines[0], handle: 'out' }, perMin: prod.perMin })
+    // Output manifolds: a merger below each machine but the last, flowing left.
+    l.products.forEach((prod, p) => {
+      const row = mb + ROW + ROW * p
+      const per = prod.perMin / n
+      if (n === 1) {
+        ends.set(`ol:${l.id}:${p}`, { node: machines[0], handle: outHandle(p), at: { x: mx(0) + outX[p], y: mb }, side: 'b', floor, joint: { x: -3, y: row } })
         return
       }
-      const mergers = machines.slice(0, -1).map((_, i) => {
-        const gid = id('g')
-        floorOf.set(gid, index)
-        nodes.push({ id: gid, type: 'merger', position: { x: jointX(i, p), y }, data: { kind: 'merger', floor: index, facing: 'left' } })
-        return gid
+      const mergers = machines.slice(0, -1).map((_, i) => block('merger', { x: mx(i) + outX[p] - 1, y: row - 1 }, { kind: 'merger', floor }, floor))
+      edge({ node: machines[n - 1], handle: outHandle(p) }, { node: mergers[n - 2], handle: 'in' }, prod.item, per)
+      mergers.forEach((m, i) => {
+        edge({ node: machines[i], handle: outHandle(p) }, { node: m, handle: 'up' }, prod.item, per)
+        if (i > 0) edge({ node: m, handle: 'out' }, { node: mergers[i - 1], handle: 'in' }, prod.item, per * (n - i))
       })
-      // The last machine joins the chain from the right; every other drops into the merger below it.
-      edge({ node: machines[blocks - 1], handle: 'out' }, { node: mergers[blocks - 2], handle: 'in' }, prod.item, prod.perMin / blocks)
-      mergers.forEach((gid, i) => {
-        edge({ node: machines[i], handle: 'out' }, { node: gid, handle: 'up' }, prod.item, prod.perMin / blocks)
-        if (i > 0) edge({ node: gid, handle: 'out' }, { node: mergers[i - 1], handle: 'in' }, prod.item, (prod.perMin * (blocks - i)) / blocks)
-      })
-      push(sources, prod.item, { at: { node: mergers[0], handle: 'out' }, perMin: prod.perMin })
+      ends.set(`ol:${l.id}:${p}`, { node: mergers[0], handle: 'out', at: { x: mx(0) + outX[p] - 1, y: row }, side: 'l', floor, joint: { x: -3, y: row } })
     })
-  })
-
-  // 3. Ports on the ground, below the floors: resource nodes and imports on the left,
-  // exports and power on the right.
-  let inY = groundY + 20
-  let outY = groundY + 20
-  const OUT_X = width + 160
-  const port = (data: Omit<PortData, 'kind'>) => {
-    const pid = id('p')
-    const isIn = data.direction === 'in'
-    floorOf.set(pid, 0)
-    nodes.push({ id: pid, type: 'port', position: { x: isIn ? PORT_X : OUT_X, y: isIn ? inY : outY }, data: { kind: 'port', ...data } })
-    if (isIn) inY += 90
-    else outY += 90
-    return pid
   }
 
-  for (const x of solution.extraction) {
-    const node = plan.nodes.find((n) => n.id === x.node)
-    const what = node
-      ? `${node.purity[0].toUpperCase()}${node.purity.slice(1)} node`
-      : `${fmt(x.machines)} × ${buildingsById.get(x.extractor)?.name ?? 'extractor'}`
-    const pid = port({ direction: 'in', transport: 'resource', item: x.resource, perMin: x.perMin, label: what, extractor: x.extractor })
-    push(sources, x.resource, { at: { node: pid, handle: 'out' }, perMin: x.perMin })
-  }
-  for (const l of incoming) {
-    const pid = port({ direction: 'in', transport: l.transport, item: l.item, perMin: l.perMin, powerMW: l.powerMW, label: l.other, linkId: l.linkId })
-    if (l.item) push(sources, l.item, { at: { node: pid, handle: 'out' }, perMin: l.perMin })
+  // 2. Ports in a column left of the gutter, below the first floor's level: inputs, then outputs.
+  const portJoints = Math.max(0, ...plan.ports.map((p) => jointsFor(fan.get(`${p.direction === 'in' ? 'o' : 'i'}p:${p.id}`) ?? 0)))
+  const portX = -gutter - PORT_GAP - ROW * portJoints - SIZE.port.w
+  let portY = y
+  for (const p of [...plan.ports].sort((a, b) => Number(a.direction === 'out') - Number(b.direction === 'out'))) {
+    const { id: pid, ...data } = p
+    const at = { x: portX, y: portY }
+    const nid = block('port', at, { kind: 'port', ...data }, 0)
+    const handle = p.direction === 'in' ? 'out' : 'in'
+    ends.set(`${p.direction === 'in' ? 'o' : 'i'}p:${pid}`, { node: nid, handle, at: { x: portX + SIZE.port.w, y: portY + SIZE.port.h / 2 }, side: 'r', floor: 0 })
+    portY += SIZE.port.h + 2 + ROW * jointsFor(fan.get(`${p.direction === 'in' ? 'o' : 'i'}p:${pid}`) ?? 0)
   }
 
-  // Exports: what other outposts take, then the rest as the goal or surplus.
-  const goals = new Set(plan.goals.flatMap((g) => (g.kind === 'item' ? [g.item] : [])))
-  for (const f of solution.flows.values()) {
-    if (f.exported <= EPS) continue
-    let left = f.exported
-    for (const l of outgoing.filter((o) => o.item === f.item)) {
-      const take = Math.min(left, l.perMin)
-      if (l.perMin > left + EPS)
-        notes.push(`${l.other} imports ${fmt(l.perMin)} ${itemName(f.item)}/min, but this outpost only has ${fmt(left)}/min to spare.`)
-      left -= take
-      const y = outY
-      const pid = port({ direction: 'out', transport: l.transport, item: f.item, perMin: take, label: l.other, linkId: l.linkId })
-      if (take > EPS) push(consumers, f.item, { at: { node: pid, handle: 'in' }, perMin: take, y })
-    }
-    if (left > EPS) {
-      const y = outY
-      const pid = port({
-        direction: 'out',
-        transport: isFluid(f.item) ? 'pipe' : 'belt',
-        item: f.item,
-        perMin: left,
-        label: goals.has(f.item) ? 'Goal' : 'Surplus',
-      })
-      push(consumers, f.item, { at: { node: pid, handle: 'in' }, perMin: left, y })
-    }
+  // 3. Belts between ends, with splitters after a source that feeds several consumers and
+  // mergers before a consumer fed by several sources.
+  const outs = new Map<string, { node: string; handle: string }[]>()
+  const ins = new Map<string, { node: string; handle: string }[]>()
+  // Joints go just outside the end, in a row along its side (top-left corner of a 2x2 block).
+  // Manifold ends put them in the gutter, in line with their row, so belts reach them from its lanes.
+  const near = (e: Endpoint, i: number): Cell => {
+    if (e.joint) return { x: e.joint.x - ROW * i - 1, y: e.joint.y - 1 }
+    const d = sideDir[e.side]
+    return { x: e.at.x + d.x * ROW * (i + 1) - 1, y: e.at.y + d.y * ROW * (i + 1) - 1 }
   }
-  for (const l of outgoing.filter((o) => o.transport === 'power'))
-    port({ direction: 'out', transport: 'power', perMin: 0, powerMW: l.powerMW, label: l.other, linkId: l.linkId })
-  if (solution.power.exportedMW > EPS && !outgoing.some((o) => o.transport === 'power'))
-    port({ direction: 'out', transport: 'power', perMin: 0, powerMW: solution.power.exportedMW, label: 'Grid' })
-
-  for (const f of solution.flows.values())
-    if (f.shortfall > EPS) notes.push(`Short ${fmt(f.shortfall)} ${itemName(f.item)}/min: add a resource node, an import or an unlocked recipe.`)
-
-  // 4. Wire each item's sources to its consumers along the item's lane, through a merger
-  // and/or splitter on the ground when several meet.
-  for (const [item, cons] of consumers) {
-    const srcs = sources.get(item) ?? []
-    if (!srcs.length) continue
-    const total = cons.reduce((t, c) => t + c.perMin, 0)
-    const laneX = laneFor(item)
-    let from: Endpoint
-    let hubY = groundY + 20 + 90 * Math.max(0, [...lanes.keys()].indexOf(item))
-    if (srcs.length === 1) from = srcs[0].at
-    else {
-      const gid = id('g')
-      floorOf.set(gid, 0)
-      nodes.push({ id: gid, type: 'merger', position: { x: laneX - 20, y: hubY }, data: { kind: 'merger', floor: -1, facing: 'right' } })
-      for (const s of srcs) edge(s.at, { node: gid, handle: 'down' }, item, s.perMin, true)
-      from = { node: gid, handle: 'out' }
-      hubY += 50
-    }
-    if (cons.length === 1) {
-      edge(from, cons[0].at, item, total, true)
+  for (const [k, belts] of fan) {
+    const e = ends.get(k)
+    if (!e) continue
+    const flows = plan.flows.filter((f) => (k[0] === 'o' ? `o${key(f.from)}` : `i${key(f.to)}`) === k)
+    const total = flows.reduce((t, f) => t + f.perMin, 0)
+    const item = flows[0]?.item ?? ''
+    if (belts <= 1) {
+      ;(k[0] === 'o' ? outs : ins).set(k, [{ node: e.node, handle: e.handle }])
       continue
     }
-    const sid = id('s')
-    floorOf.set(sid, 0)
-    nodes.push({ id: sid, type: 'splitter', position: { x: laneX - 20 + 60, y: hubY }, data: { kind: 'splitter', floor: -1, facing: 'right' } })
-    edge(from, { node: sid, handle: 'in' }, item, total)
-    for (const c of cons) edge({ node: sid, handle: 'up' }, c.at, item, c.perMin, true)
+    const kind = k[0] === 'o' ? 'splitter' : 'merger'
+    const joints = Array.from({ length: jointsFor(belts) }, (_, i) => block(kind, near(e, i), { kind, floor: e.floor }, e.floor))
+    const handles: { node: string; handle: string }[] = []
+    joints.forEach((j, i) => {
+      const last = i === joints.length - 1
+      for (const h of last ? (kind === 'splitter' ? ['out', 'up', 'down'] : ['in', 'up', 'down']) : ['up', 'down']) handles.push({ node: j, handle: h })
+    })
+    // Rates along the chain: what still has to pass each joint.
+    let left = total
+    joints.forEach((j, i) => {
+      const prev = i === 0 ? { node: e.node, handle: e.handle } : { node: joints[i - 1], handle: kind === 'splitter' ? 'out' : 'in' }
+      if (kind === 'splitter') edge(prev, { node: j, handle: 'in' }, item, left)
+      else edge({ node: j, handle: 'out' }, prev, item, left)
+      left -= flows.slice(i * 2, i * 2 + 2).reduce((t, f) => t + f.perMin, 0)
+    })
+    ;(k[0] === 'o' ? outs : ins).set(k, handles.slice(0, belts))
   }
-  for (const item of sources.keys())
-    if (!consumers.has(item) && incoming.some((l) => l.item === item)) notes.push(`${itemName(item)} comes in but nothing here uses it.`)
+  // Each flow takes the next free handle at both of its ends.
+  const used = new Map<string, number>()
+  const next = (m: Map<string, { node: string; handle: string }[]>, k: string) => {
+    const i = used.get(k) ?? 0
+    used.set(k, i + 1)
+    return m.get(k)?.[i]
+  }
+  for (const f of plan.flows) {
+    const a = next(outs, `o${key(f.from)}`)
+    const b = next(ins, `i${key(f.to)}`)
+    if (a && b) edge(a, b, f.item, f.perMin)
+  }
 
-  if (!floors.length && !solution.extraction.length) notes.push('Nothing to build yet: give this outpost a goal in its plan.')
-
-  return { nodes, edges, maxBeltTier, generatedAt: new Date().toISOString(), notes }
+  const notes = [...plan.notes]
+  const lines = plan.floors.reduce((n, f) => n + f.lines.length, 0)
+  const steps = new Set(plan.floors.flatMap((f) => f.lines.map((l) => l.recipe + l.fuel))).size
+  if (lines > steps) notes.push(`Some steps are split into parallel lines because one belt can't carry them (best belt Mk.${maxBeltTier}).`)
+  return { nodes, edges, maxBeltTier, maxPipeTier, generatedAt: new Date().toISOString(), notes }
 }
