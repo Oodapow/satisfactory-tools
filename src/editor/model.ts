@@ -135,7 +135,7 @@ export const pipeRates = [300, 600]
 /** Power lines a pole takes, by Mk. */
 export const poleConnections = [4, 7, 10]
 /** Bumped when proposals change shape, so untouched old proposals are redone. */
-export const LAYOUT_VERSION = 2
+export const LAYOUT_VERSION = 3
 
 /** Lowest tier that carries `perMin`, capped at `maxTier`. */
 export function beltTierFor(perMin: number, maxTier: number, fluid = false) {
