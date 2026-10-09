@@ -57,6 +57,7 @@ To update after a game patch, run the generator with `--from` pointing at your i
 - **Every pull request** (`.github/workflows/ci.yml`): `npm ci`, lint (oxlint), `data:check`, then build (`tsc -b && vite build`). A red check means don't merge.
 - **Every push to `main`** (`.github/workflows/deploy.yml`, also runnable by hand): lint and build, then publish `dist/` to GitHub Pages. Only the latest push deploys.
 - Vite uses `base: './'` so the site works under the `/satisfactory-tools/` sub-path.
+- **Every PR links an issue.** The PR template starts with `Closes #N`, and the `PR issue link` check fails a PR whose description has no `Closes`/`Fixes`/`Resolves`/`Refs #N` (or `No issue: <reason>` for trivial changes). Closing keywords only work on PRs merged into `main`; a stacked PR merged into another branch closes nothing, so keep the `Closes` line on the PR that lands on `main`.
 
 Local development:
 
@@ -78,8 +79,8 @@ npm run lint
 | [#8](https://github.com/Oodapow/satisfactory-tools/issues/8) | Game icons | done in [#17](https://github.com/Oodapow/satisfactory-tools/pull/17) |
 | [#9](https://github.com/Oodapow/satisfactory-tools/issues/9) | Read game state from a save file | planned |
 | [#10](https://github.com/Oodapow/satisfactory-tools/issues/10) | MAM research tree order | planned |
-| [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | first version in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) |
-| [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | in progress in [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
+| [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | done in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) and [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
+| [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | done in [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
 | [#13](https://github.com/Oodapow/satisfactory-tools/issues/13) | Layout algorithm: manifolds, belts, floors | planned |
 | [#14](https://github.com/Oodapow/satisfactory-tools/issues/14) | Production math: overclocking, purity, byproducts | planned |
 
@@ -89,6 +90,6 @@ The [issue list](https://github.com/Oodapow/satisfactory-tools/issues) is the so
 
 - [Game data](../data/README.md): sources, units, regeneration, licensing.
 - [User journey and outpost planning](user-journey.md): the flow, the plan model, how a plan is solved, icons. Screenshots in `ui-journey/`.
-- [Node editor](node-editor.md): factory map and floor plans (lands with [#18](https://github.com/Oodapow/satisfactory-tools/pull/18)).
+- [Node editor](node-editor.md): factory map and floor plans.
 
 New feature docs go in `docs/` as their own file and get a line here.
