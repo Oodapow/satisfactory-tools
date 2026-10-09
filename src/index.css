@@ -171,11 +171,21 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .cat-link:hover { background: var(--surface-2); }
 .cat-link.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); font-weight: 600; }
 .cat-count { color: var(--muted); font-size: .78rem; font-weight: 500; font-variant-numeric: tabular-nums; }
-.catalog-groups { display: grid; gap: 24px; min-width: 0; }
-.catalog-category { display: grid; gap: 14px; }
+.catalog-groups { display: grid; gap: 20px; min-width: 0; }
+.catalog-category { display: grid; gap: 8px; }
+.catalog-category > .category-title { margin-bottom: 4px; }
 .category-title { margin: 0; font-size: 1.15rem; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-.catalog-group { display: grid; gap: 8px; }
-.group-title { margin: 0; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); display: flex; align-items: baseline; gap: 6px; }
+.catalog-group { border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.catalog-group > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; cursor: pointer; list-style: none; }
+.catalog-group > summary::-webkit-details-marker { display: none; }
+.catalog-group > summary::before { content: '▸'; color: var(--muted); transition: transform .15s; }
+.catalog-group[open] > summary::before { transform: rotate(90deg); }
+.catalog-group > summary:hover .group-title { color: var(--accent-ink); }
+.catalog-group > .cards { padding: 4px 12px 12px; }
+.group-title { font-weight: 600; font-size: .95rem; }
+.group-preview { display: flex; align-items: center; gap: 4px; margin-left: auto; min-width: 0; overflow: hidden; }
+.group-actions { display: flex; justify-content: flex-end; gap: 16px; font-size: .85rem; margin-bottom: -12px; }
+.category-title .cat-count { margin-left: 4px; }
 @media (max-width: 760px) {
   .catalog-body { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .catalog-nav { position: static; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }

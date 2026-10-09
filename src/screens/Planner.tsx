@@ -38,6 +38,7 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
   const [tab, setTab] = useState<Tab>(() => startTab(kind, query, cat.recipes.map((r) => r.name)))
   const [q, setQ] = useState(query)
   const [category, setCategory] = useState<string | null>(null)
+  const [open, setOpen] = useState<Set<string>>(() => new Set())
   const { save } = useOutposts()
   const blur = state.spoilers === 'blur'
 
@@ -63,9 +64,20 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
   const shown = shownCategory ? tree.filter((c) => c.id === shownCategory) : tree
   const total = tree.reduce((n, c) => n + count(c), 0)
 
+  // Groups start collapsed so the page stays short; a search opens every group that matches.
+  const searching = lc !== ''
+  const allGroupKeys = shown.flatMap((c) => c.groups.map((g) => `${c.id}/${g.id}`))
+  const toggle = (key: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev)
+      if (!next.delete(key)) next.add(key)
+      return next
+    })
+
   const pickTab = (t: Tab) => {
     setTab(t)
     setCategory(null)
+    setOpen(new Set())
   }
 
   const recipeCard = (r: Recipe) => (
@@ -191,19 +203,44 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
 
           <div className="catalog-groups">
             {tree.length === 0 && <p className="muted">Nothing matches “{q.trim()}”.</p>}
+            {tree.length > 0 && (
+              <div className="group-actions">
+                <button type="button" className="link" onClick={() => setOpen(new Set(allGroupKeys))}>Expand all</button>
+                <button type="button" className="link" onClick={() => setOpen(new Set())}>Collapse all</button>
+              </div>
+            )}
             {shown.map((c) => (
               <section key={c.id} className="catalog-category" aria-labelledby={`cat-${c.id}`}>
-                <h3 id={`cat-${c.id}`} className="category-title">{c.name}</h3>
-                {c.groups.map((g) => (
-                  <section key={g.id} className="catalog-group" aria-label={`${c.name}: ${g.name}`}>
-                    {(c.groups.length > 1 || g.name !== c.name) && (
-                      <h4 className="group-title">
-                        {g.name} <span className="cat-count">{g.members.length}</span>
-                      </h4>
-                    )}
-                    <div className={tab === 'recipes' ? 'cards' : 'cards compact'}>{(g.members as (Recipe | Item | Building)[]).map(card)}</div>
-                  </section>
-                ))}
+                <h3 id={`cat-${c.id}`} className="category-title">
+                  {c.name} <span className="cat-count">{count(c)}</span>
+                </h3>
+                {c.groups.map((g) => {
+                  const key = `${c.id}/${g.id}`
+                  const members = g.members as (Recipe | Item | Building)[]
+                  const isOpen = searching || open.has(key)
+                  return (
+                    <details key={g.id} className="catalog-group" open={isOpen}>
+                      <summary
+                        onClick={(e) => {
+                          e.preventDefault()
+                          if (!searching) toggle(key)
+                        }}
+                      >
+                        <span className="group-title">{g.name}</span>
+                        <span className="cat-count">{g.members.length}</span>
+                        {!isOpen && (
+                          <span className="group-preview" aria-hidden="true">
+                            {members.slice(0, 12).map((m) => (
+                              <GameIcon key={m.id} id={'products' in m ? m.products[0].item : m.id} size={22} link={false} />
+                            ))}
+                            {members.length > 12 && <span className="cat-count">+{members.length - 12}</span>}
+                          </span>
+                        )}
+                      </summary>
+                      {isOpen && <div className={tab === 'recipes' ? 'cards' : 'cards compact'}>{members.map(card)}</div>}
+                    </details>
+                  )
+                })}
               </section>
             ))}
             {!q && shownCategory === null && (
