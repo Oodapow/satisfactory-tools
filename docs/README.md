@@ -81,8 +81,8 @@ npm run lint
 | [#10](https://github.com/Oodapow/satisfactory-tools/issues/10) | MAM research tree order | planned |
 | [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | done in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) and [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
 | [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | done in [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
-| [#13](https://github.com/Oodapow/satisfactory-tools/issues/13) | Layout algorithm: manifolds, belts, floors | in review |
-| [#14](https://github.com/Oodapow/satisfactory-tools/issues/14) | Production math: overclocking, purity, byproducts | in review |
+| [#13](https://github.com/Oodapow/satisfactory-tools/issues/13) | Layout algorithm: manifolds, belts, floors | done in [#35](https://github.com/Oodapow/satisfactory-tools/pull/35) |
+| [#14](https://github.com/Oodapow/satisfactory-tools/issues/14) | Production math: overclocking, purity, byproducts | done in [#35](https://github.com/Oodapow/satisfactory-tools/pull/35) |
 
 The [issue list](https://github.com/Oodapow/satisfactory-tools/issues) is the source of truth; this table is a snapshot.
 
