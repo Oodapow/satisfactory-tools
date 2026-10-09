@@ -66,6 +66,11 @@ window.addEventListener('storage', (e) => {
   else if (e.key.startsWith(PREFIX)) notify(e.key.slice(PREFIX.length))
 })
 
+/** Read a stored value outside React. */
+export const readStored = <T>(key: string, fallback: T) => read(key, fallback)
+/** Write a stored value outside React; hooks reading it update. */
+export const writeStored = <T>(key: string, data: T) => write(key, data)
+
 /** Like useState, but the value survives reloads and is shared across tabs. */
 export function usePersistentState<T>(key: string, initial: T) {
   const value = useSyncExternalStore(

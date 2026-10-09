@@ -7,6 +7,7 @@ import { Setup } from './screens/Setup'
 import { SampleSave, Upload } from './screens/Upload'
 import { Welcome } from './screens/Welcome'
 import { currentTier, useGameState } from './state/gameState'
+import { SyncChip } from './save/SyncChip'
 import { ErrorBoundary } from './ui/ErrorBoundary'
 import { TooltipLayer } from './ui/TooltipLayer'
 
@@ -76,6 +77,7 @@ export default function App() {
             ))}
           </nav>
         )}
+        <SyncChip />
         {state && (
           <a className="chip" href="#/setup" title="Your game state">
             Tier {Math.max(currentTier(state), 0)} · {state.source === 'save' ? 'from save' : 'manual'}
