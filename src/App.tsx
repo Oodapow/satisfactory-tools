@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { gameMeta } from './data'
 import { go, useRoute } from './router'
 import { OutpostEditor, OutpostList } from './screens/Outposts'
@@ -7,10 +8,14 @@ import { SampleSave, Upload } from './screens/Upload'
 import { Welcome } from './screens/Welcome'
 import { currentTier, useGameState } from './state/gameState'
 
+// The node editor pulls in React Flow, so it loads on first visit.
+const EditorScreen = lazy(() => import('./editor/EditorScreen'))
+
 const steps = [
   { path: 'setup', label: 'Game state' },
   { path: 'plan', label: 'Planning' },
   { path: 'outposts', label: 'Outposts' },
+  { path: 'map', label: 'Factory map' },
 ] as const
 
 export default function App() {
@@ -18,7 +23,7 @@ export default function App() {
   const [state] = useGameState()
 
   // Planning needs a game state; without one, start at the welcome screen.
-  const needsState = page === 'plan' || page === 'outposts'
+  const needsState = page === 'plan' || page === 'outposts' || page === 'map'
   const screen =
     !page || (needsState && !state) ? (
       <Welcome />
@@ -32,6 +37,10 @@ export default function App() {
       <Planner state={state} />
     ) : page === 'outposts' && state && param ? (
       <OutpostEditor id={param} step={sub} state={state} />
+    ) : page === 'map' && state ? (
+      <Suspense fallback={<p className="muted">Loading the editor…</p>}>
+        <EditorScreen state={state} outpostId={param} />
+      </Suspense>
     ) : page === 'outposts' && state ? (
       <OutpostList state={state} />
     ) : (
@@ -60,8 +69,8 @@ export default function App() {
           </span>
         )}
       </header>
-      <main className="page">{screen}</main>
-      <footer className="foot page">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>
+      <main className={page === 'map' ? 'page-wide' : 'page'}>{screen}</main>
+      {page !== 'map' && <footer className="foot page">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>}
     </div>
   )
 }

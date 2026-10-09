@@ -14,6 +14,7 @@
     "icons:check": "node scripts/fetch-icons.mjs --check"
   },
   "dependencies": {
+    "@xyflow/react": "^12.12.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
