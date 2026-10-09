@@ -93,9 +93,10 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: .8rem; margin: 0; }
 .lede { color: var(--muted); font-size: 1.1rem; margin: 0; }
 .choices { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 16px; }
-.choice { display: grid; gap: 8px; text-align: left; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 14px; padding: 22px; font-weight: 400; }
+.choice { display: grid; gap: 8px; align-content: start; text-align: left; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 14px; padding: 22px; font-weight: 400; }
 .choice:hover { border-color: var(--accent); }
-.choice-icon { font-size: 1.6rem; color: var(--accent); }
+/* Glyphs differ in height; a fixed box keeps the titles under them level. */
+.choice-icon { font-size: 1.6rem; color: var(--accent); line-height: 1; height: 1.6rem; display: flex; align-items: center; }
 .choice-title { font-weight: 700; font-size: 1.15rem; }
 .choice-body { color: var(--muted); }
 .choice-continue { width: 100%; margin-bottom: 16px; border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
@@ -122,7 +123,8 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .next-body { display: grid; gap: 6px; min-width: 0; }
 .next-body .muted { margin: 0; }
 .labelled { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
-.label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); min-width: 58px; }
+/* Wide enough for the longest label, so the chips after each one start at the same point. */
+.label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); min-width: 6.2em; }
 .icon-row { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .group { border: 1px solid var(--border); border-radius: 10px; margin: 0 0 10px; }
 .group > summary { display: flex; justify-content: space-between; gap: 8px; padding: 10px 14px; cursor: pointer; font-weight: 700; font-size: .95rem; list-style: none; }
@@ -205,7 +207,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 }
 .ellipsis { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card header .with-icon { min-width: 0; }
-.card header { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+.card header { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
 .card .muted { margin: 0; }
 .flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .rates { display: inline-flex; flex-wrap: wrap; gap: 4px; }
@@ -234,7 +236,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .table-wrap { overflow-x: auto; }
 .step-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
 .step-table th, .step-table td { text-align: left; padding: 8px; border-top: 1px solid var(--border); vertical-align: middle; }
-.step-table th { color: var(--muted); font-weight: 600; font-size: .8rem; border-top: 0; }
+.step-table th { color: var(--muted); font-weight: 600; font-size: .8rem; border-top: 0; white-space: nowrap; }
 .step-table .num { text-align: right; white-space: nowrap; }
 .step-table td .rates { vertical-align: middle; }
 @media (max-width: 560px) { .summary { gap: 8px; } .stat { padding: 10px; } .stat-value { font-size: 1.1rem; } }
@@ -274,7 +276,8 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .icon-select-group { padding: 8px 8px 2px; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .icon-select-empty { padding: 8px; color: var(--muted); font-size: .85rem; }
 .icon-select-extra { display: inline-flex; gap: 2px; flex: none; margin-left: auto; }
-.rate { display: inline-flex; align-items: center; gap: 2px; }
+/* Chips share one height and sit on the text's middle, so a chip and the words beside it line up. */
+.rate { display: inline-flex; align-items: center; gap: 2px; min-height: 24px; vertical-align: middle; }
 .with-icon { display: flex; align-items: center; gap: 8px; }
 .power { background: color-mix(in srgb, #f2c230 22%, var(--surface)); border-color: color-mix(in srgb, #f2c230 50%, transparent); }
 .power-icon { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; background: color-mix(in srgb, #f2c230 30%, var(--surface)); }
@@ -296,7 +299,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .outpost-card { width: 100%; text-align: left; color: var(--text); font-weight: 400; gap: 10px; }
 .outpost-card:hover { border-color: var(--accent); }
 .io { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; }
-.io-label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; padding-top: 4px; }
+.io-label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; line-height: 24px; }
 
 /* Outpost editor */
 .editor-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
@@ -312,6 +315,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .balance { margin: 0; }
 .balance h3 { margin-bottom: 0; }
 .balance .rate { white-space: normal; }
+/* One grid per list: chips in the first column, their notes all starting in the second. */
+.balance .plain.tight { grid-template-columns: auto 1fr; align-items: center; gap: 4px 6px; }
+.balance .plain.tight li { display: contents; }
+.balance .plain.tight li.muted { display: block; grid-column: 1 / -1; }
 .goal-row, .node-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .goal-row input[type=number], .node-row input[type=number] { width: 90px; }
 .goal-row select, .goal-row .icon-select { flex: 1 1 200px; min-width: 0; }
@@ -328,6 +335,12 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .row .muted, .plain .muted { margin: 0; }
 .step-table .rate { white-space: normal; }
 .step-table td:first-child { min-width: 180px; }
+.step-table td.arrow { padding: 8px 0; }
+/* Desktop plan table: in and out are columns, so chips keep to icon + amount to fit them side by side. */
+@media (min-width: 641px) { .step-table .rate-item { display: none; } .step-table .rate { white-space: nowrap; } }
+.rate-item { margin-left: 2px; }
+.node-pick { flex: 0 1 170px; }
+.node-what { flex: 1 1 160px; min-width: 0; }
 /* Phones: tables become stacked rows, one card-like block per row, so nothing scrolls sideways. */
 @media (max-width: 640px) {
   .table-wrap { overflow-x: visible; }

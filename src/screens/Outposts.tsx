@@ -94,7 +94,7 @@ export function OutpostList({ state }: { state: GameState }) {
                       {exports.map((e) => (
                         <Amount key={e.item} item={e.item} perMin={e.perMin} />
                       ))}
-                      {solution.power.exportedMW > 0 && <span className="rate power"><PowerIcon size={20} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
+                      {solution.power.exportedMW > 0 && <span className="rate power"><PowerIcon size={18} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
                       {exports.length === 0 && solution.power.exportedMW <= 0 && <span className="muted small">no goal yet</span>}
                     </span>
                   </div>
@@ -350,6 +350,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
               <li key={n.id} className="node-row">
                 <GameIcon id={n.resource} size={32} />
                 <IconSelect
+                  className="node-pick"
                   value={n.resource}
                   onChange={(resource) => set({ resource, extractor: undefined })}
                   aria-label="Resource"
@@ -423,7 +424,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                     onChange={(e) => set({ perMin: Math.max(0, Number(e.target.value)) })}
                     aria-label="Per minute"
                   />
-                  <span>
+                  <span className="node-what">
                     /min {itemName(imp.item)} <span className="muted small">from {all.find((s) => s.plan.id === imp.from)?.plan.name}</span>
                   </span>
                   <IconSelect
@@ -572,7 +573,9 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                 <tr>
                   <th>Recipe</th>
                   <th>Machines</th>
-                  <th>In → out (per min)</th>
+                  <th>In (per min)</th>
+                  <th aria-hidden />
+                  <th>Out</th>
                   <th className="num">Power</th>
                 </tr>
               </thead>
@@ -632,7 +635,9 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                     </td>
                     <td>
                       <Rates list={recipe.ingredients} recipe={recipe} scale={s.machines} />
-                      <span className="arrow"> → </span>
+                    </td>
+                    <td className="arrow">→</td>
+                    <td>
                       <Rates list={recipe.products} recipe={recipe} scale={s.machines * s.boost} />
                     </td>
                     <td className="num">{fmt(s.powerMW, 1)} MW</td>
@@ -650,9 +655,11 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                   <td>
                     <strong>{ceil(g.machines)}</strong> on {itemName(g.fuel)}
                   </td>
+                  <td />
+                  <td className="arrow">→</td>
                   <td>
                     <span className="rate power">
-                      <PowerIcon size={20} /> <b>{fmt(g.mw, 1)}</b> MW
+                      <PowerIcon size={18} /> <b>{fmt(g.mw, 1)}</b> MW
                     </span>
                   </td>
                   <td className="num">+{fmt(g.mw, 1)} MW</td>
@@ -741,7 +748,7 @@ function Balance({ solved, nameOf }: { solved: Solved; nameOf: (id: string) => s
         {solution.power.exportedMW > 1e-6 && (
           <li>
             <span className="rate power">
-              <PowerIcon size={20} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
+              <PowerIcon size={18} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
             </span>{' '}
             <span className="muted small">to grid</span>
           </li>
