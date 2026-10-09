@@ -43,6 +43,8 @@ export interface Item {
   energyMJ: number
   radioactiveDecay: number
   isAlienItem: boolean
+  /** The game's texture asset for the icon (for extracting icons from the game files). */
+  iconTexture: string | null
   fluidColor?: { r: number; g: number; b: number; a: number } | null
   /** Present when the item comes from data/supplements/items.json rather than the game file. */
   fromSupplement?: true
@@ -108,6 +110,8 @@ export interface Building {
   kind: BuildingKind
   nativeClass: string | null
   buildMenu: { category: string; subCategory: string } | null
+  /** The game's texture asset for the icon. */
+  iconTexture: string | null
   /** Footprint in metres. */
   size: { width: number; length: number; height: number } | null
   powerConsumptionMW: number
@@ -169,6 +173,8 @@ export interface Schematic {
     gamePhase: string | null
   } | null
   hiddenUntilDependenciesMet: boolean
+  /** The game's texture asset for the icon. */
+  iconTexture: string | null
   /** Old research kept for save compatibility; cannot be bought. */
   discontinued: boolean
   unlocks: {

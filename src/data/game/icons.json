@@ -1,0 +1,706 @@
+{
+  "BP_ItemDescriptorPortableMiner_C": {
+    "file": "BP_ItemDescriptorPortableMiner_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AlienDNACapsule_C": {
+    "file": "Desc_AlienDNACapsule_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AlienPowerFuel_C": {
+    "file": "Desc_AlienPowerFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AlienProtein_C": {
+    "file": "Desc_AlienProtein_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminaSolution_C": {
+    "file": "Desc_AluminaSolution_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminumCasing_C": {
+    "file": "Desc_AluminumCasing_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminumIngot_C": {
+    "file": "Desc_AluminumIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminumPlate_C": {
+    "file": "Desc_AluminumPlate_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminumPlateReinforced_C": {
+    "file": "Desc_AluminumPlateReinforced_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AluminumScrap_C": {
+    "file": "Desc_AluminumScrap_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_AssemblerMk1_C": {
+    "file": "Desc_AssemblerMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Battery_C": {
+    "file": "Desc_Battery_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Biofuel_C": {
+    "file": "Desc_Biofuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Blender_C": {
+    "file": "Desc_Blender_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Cable_C": {
+    "file": "Desc_Cable_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CandyCane_C": {
+    "file": "Desc_CandyCane_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CartridgeChaos_C": {
+    "file": "Desc_CartridgeChaos_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CartridgeSmartProjectile_C": {
+    "file": "Desc_CartridgeSmartProjectile_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CartridgeStandard_C": {
+    "file": "Desc_CartridgeStandard_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Cement_C": {
+    "file": "Desc_Cement_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CircuitBoard_C": {
+    "file": "Desc_CircuitBoard_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CircuitBoardHighSpeed_C": {
+    "file": "Desc_CircuitBoardHighSpeed_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Coal_C": {
+    "file": "Desc_Coal_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CompactedCoal_C": {
+    "file": "Desc_CompactedCoal_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Computer_C": {
+    "file": "Desc_Computer_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ComputerSuper_C": {
+    "file": "Desc_ComputerSuper_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ConstructorMk1_C": {
+    "file": "Desc_ConstructorMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Converter_C": {
+    "file": "Desc_Converter_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CoolingSystem_C": {
+    "file": "Desc_CoolingSystem_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CopperDust_C": {
+    "file": "Desc_CopperDust_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CopperIngot_C": {
+    "file": "Desc_CopperIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CopperSheet_C": {
+    "file": "Desc_CopperSheet_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Crystal_C": {
+    "file": "Desc_Crystal_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Crystal_mk2_C": {
+    "file": "Desc_Crystal_mk2_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Crystal_mk3_C": {
+    "file": "Desc_Crystal_mk3_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CrystalOscillator_C": {
+    "file": "Desc_CrystalOscillator_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_CrystalShard_C": {
+    "file": "Desc_CrystalShard_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_DarkEnergy_C": {
+    "file": "Desc_DarkEnergy_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_DarkMatter_C": {
+    "file": "Desc_DarkMatter_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Diamond_C": {
+    "file": "Desc_Diamond_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_DissolvedSilica_C": {
+    "file": "Desc_DissolvedSilica_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ElectromagneticControlRod_C": {
+    "file": "Desc_ElectromagneticControlRod_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Fabric_C": {
+    "file": "Desc_Fabric_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FicsiteIngot_C": {
+    "file": "Desc_FicsiteIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FicsiteMesh_C": {
+    "file": "Desc_FicsiteMesh_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Ficsonium_C": {
+    "file": "Desc_Ficsonium_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FicsoniumFuelRod_C": {
+    "file": "Desc_FicsoniumFuelRod_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Filter_C": {
+    "file": "Desc_Filter_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Fireworks_Projectile_01_C": {
+    "file": "Desc_Fireworks_Projectile_01_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Fireworks_Projectile_02_C": {
+    "file": "Desc_Fireworks_Projectile_02_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Fireworks_Projectile_03_C": {
+    "file": "Desc_Fireworks_Projectile_03_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FluidCanister_C": {
+    "file": "Desc_FluidCanister_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FoundryMk1_C": {
+    "file": "Desc_FoundryMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_FrackingExtractor_C": {
+    "file": "Desc_FrackingExtractor_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Fuel_C": {
+    "file": "Desc_Fuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_GasTank_C": {
+    "file": "Desc_GasTank_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_GenericBiomass_C": {
+    "file": "Desc_GenericBiomass_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_GoldIngot_C": {
+    "file": "Desc_GoldIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Gunpowder_C": {
+    "file": "Desc_Gunpowder_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_GunpowderMK2_C": {
+    "file": "Desc_GunpowderMK2_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HadronCollider_C": {
+    "file": "Desc_HadronCollider_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HatcherParts_C": {
+    "file": "Desc_HatcherParts_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HazmatFilter_C": {
+    "file": "Desc_HazmatFilter_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HeavyOilResidue_C": {
+    "file": "Desc_HeavyOilResidue_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HighSpeedConnector_C": {
+    "file": "Desc_HighSpeedConnector_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HighSpeedWire_C": {
+    "file": "Desc_HighSpeedWire_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_HogParts_C": {
+    "file": "Desc_HogParts_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IonizedFuel_C": {
+    "file": "Desc_IonizedFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IronIngot_C": {
+    "file": "Desc_IronIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IronPlate_C": {
+    "file": "Desc_IronPlate_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IronPlateReinforced_C": {
+    "file": "Desc_IronPlateReinforced_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IronRod_C": {
+    "file": "Desc_IronRod_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_IronScrew_C": {
+    "file": "Desc_IronScrew_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Leaves_C": {
+    "file": "Desc_Leaves_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_LiquidBiofuel_C": {
+    "file": "Desc_LiquidBiofuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_LiquidFuel_C": {
+    "file": "Desc_LiquidFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_LiquidOil_C": {
+    "file": "Desc_LiquidOil_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_LiquidTurboFuel_C": {
+    "file": "Desc_LiquidTurboFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ManufacturerMk1_C": {
+    "file": "Desc_ManufacturerMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_MinerMk1_C": {
+    "file": "Desc_MinerMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_MinerMk2_C": {
+    "file": "Desc_MinerMk2_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_MinerMk3_C": {
+    "file": "Desc_MinerMk3_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ModularFrame_C": {
+    "file": "Desc_ModularFrame_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ModularFrameFused_C": {
+    "file": "Desc_ModularFrameFused_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ModularFrameHeavy_C": {
+    "file": "Desc_ModularFrameHeavy_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_ModularFrameLightweight_C": {
+    "file": "Desc_ModularFrameLightweight_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Motor_C": {
+    "file": "Desc_Motor_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_MotorLightweight_C": {
+    "file": "Desc_MotorLightweight_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Mycelia_C": {
+    "file": "Desc_Mycelia_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NitricAcid_C": {
+    "file": "Desc_NitricAcid_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NitrogenGas_C": {
+    "file": "Desc_NitrogenGas_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NobeliskCluster_C": {
+    "file": "Desc_NobeliskCluster_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NobeliskExplosive_C": {
+    "file": "Desc_NobeliskExplosive_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NobeliskGas_C": {
+    "file": "Desc_NobeliskGas_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NobeliskNuke_C": {
+    "file": "Desc_NobeliskNuke_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NobeliskShockwave_C": {
+    "file": "Desc_NobeliskShockwave_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NonFissibleUranium_C": {
+    "file": "Desc_NonFissibleUranium_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NuclearFuelRod_C": {
+    "file": "Desc_NuclearFuelRod_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_NuclearWaste_C": {
+    "file": "Desc_NuclearWaste_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OilPump_C": {
+    "file": "Desc_OilPump_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OilRefinery_C": {
+    "file": "Desc_OilRefinery_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OreBauxite_C": {
+    "file": "Desc_OreBauxite_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OreCopper_C": {
+    "file": "Desc_OreCopper_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OreGold_C": {
+    "file": "Desc_OreGold_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OreIron_C": {
+    "file": "Desc_OreIron_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_OreUranium_C": {
+    "file": "Desc_OreUranium_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedAlumina_C": {
+    "file": "Desc_PackagedAlumina_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedBiofuel_C": {
+    "file": "Desc_PackagedBiofuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedIonizedFuel_C": {
+    "file": "Desc_PackagedIonizedFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedNitricAcid_C": {
+    "file": "Desc_PackagedNitricAcid_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedNitrogenGas_C": {
+    "file": "Desc_PackagedNitrogenGas_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedOil_C": {
+    "file": "Desc_PackagedOil_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedOilResidue_C": {
+    "file": "Desc_PackagedOilResidue_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedRocketFuel_C": {
+    "file": "Desc_PackagedRocketFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedSulfuricAcid_C": {
+    "file": "Desc_PackagedSulfuricAcid_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PackagedWater_C": {
+    "file": "Desc_PackagedWater_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Packager_C": {
+    "file": "Desc_Packager_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PetroleumCoke_C": {
+    "file": "Desc_PetroleumCoke_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Plastic_C": {
+    "file": "Desc_Plastic_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PlutoniumCell_C": {
+    "file": "Desc_PlutoniumCell_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PlutoniumFuelRod_C": {
+    "file": "Desc_PlutoniumFuelRod_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PlutoniumPellet_C": {
+    "file": "Desc_PlutoniumPellet_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PlutoniumWaste_C": {
+    "file": "Desc_PlutoniumWaste_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PolymerResin_C": {
+    "file": "Desc_PolymerResin_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_PressureConversionCube_C": {
+    "file": "Desc_PressureConversionCube_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_QuantumEncoder_C": {
+    "file": "Desc_QuantumEncoder_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_QuantumEnergy_C": {
+    "file": "Desc_QuantumEnergy_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_QuantumOscillator_C": {
+    "file": "Desc_QuantumOscillator_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_QuartzCrystal_C": {
+    "file": "Desc_QuartzCrystal_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_RawQuartz_C": {
+    "file": "Desc_RawQuartz_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Rebar_Explosive_C": {
+    "file": "Desc_Rebar_Explosive_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Rebar_Spreadshot_C": {
+    "file": "Desc_Rebar_Spreadshot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Rebar_Stunshot_C": {
+    "file": "Desc_Rebar_Stunshot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_RocketFuel_C": {
+    "file": "Desc_RocketFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Rotor_C": {
+    "file": "Desc_Rotor_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Rubber_C": {
+    "file": "Desc_Rubber_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SAM_C": {
+    "file": "Desc_SAM_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SAMFluctuator_C": {
+    "file": "Desc_SAMFluctuator_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SAMIngot_C": {
+    "file": "Desc_SAMIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Silica_C": {
+    "file": "Desc_Silica_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SingularityCell_C": {
+    "file": "Desc_SingularityCell_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SmelterMk1_C": {
+    "file": "Desc_SmelterMk1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Snow_C": {
+    "file": "Desc_Snow_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_1_C": {
+    "file": "Desc_SpaceElevatorPart_1_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_10_C": {
+    "file": "Desc_SpaceElevatorPart_10_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_11_C": {
+    "file": "Desc_SpaceElevatorPart_11_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_12_C": {
+    "file": "Desc_SpaceElevatorPart_12_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_2_C": {
+    "file": "Desc_SpaceElevatorPart_2_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_3_C": {
+    "file": "Desc_SpaceElevatorPart_3_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_4_C": {
+    "file": "Desc_SpaceElevatorPart_4_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_5_C": {
+    "file": "Desc_SpaceElevatorPart_5_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_6_C": {
+    "file": "Desc_SpaceElevatorPart_6_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_7_C": {
+    "file": "Desc_SpaceElevatorPart_7_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_8_C": {
+    "file": "Desc_SpaceElevatorPart_8_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpaceElevatorPart_9_C": {
+    "file": "Desc_SpaceElevatorPart_9_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpikedRebar_C": {
+    "file": "Desc_SpikedRebar_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SpitterParts_C": {
+    "file": "Desc_SpitterParts_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Stator_C": {
+    "file": "Desc_Stator_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SteelIngot_C": {
+    "file": "Desc_SteelIngot_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SteelPipe_C": {
+    "file": "Desc_SteelPipe_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SteelPlate_C": {
+    "file": "Desc_SteelPlate_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SteelPlateReinforced_C": {
+    "file": "Desc_SteelPlateReinforced_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_StingerParts_C": {
+    "file": "Desc_StingerParts_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Stone_C": {
+    "file": "Desc_Stone_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Sulfur_C": {
+    "file": "Desc_Sulfur_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_SulfuricAcid_C": {
+    "file": "Desc_SulfuricAcid_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_TemporalProcessor_C": {
+    "file": "Desc_TemporalProcessor_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_TimeCrystal_C": {
+    "file": "Desc_TimeCrystal_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_TurboFuel_C": {
+    "file": "Desc_TurboFuel_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_UraniumCell_C": {
+    "file": "Desc_UraniumCell_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Water_C": {
+    "file": "Desc_Water_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_WaterPump_C": {
+    "file": "Desc_WaterPump_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Wire_C": {
+    "file": "Desc_Wire_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_Wood_C": {
+    "file": "Desc_Wood_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_XmasBow_C": {
+    "file": "Desc_XmasBow_C.webp",
+    "source": "wiki-mirror"
+  },
+  "Desc_XmasBranch_C": {
+    "file": "Desc_XmasBranch_C.webp",
+    "source": "wiki-mirror"
+  }
+}
