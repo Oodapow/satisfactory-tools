@@ -298,7 +298,6 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .title-input { background: transparent; }
 .recipe-cell { flex-wrap: nowrap; }
 .row .muted, .plain .muted { margin: 0; }
-.tree-picks { margin-top: 8px; }
 .step-table .rate { white-space: normal; }
 .step-table td:first-child { min-width: 180px; }
 /* Phones: tables become stacked rows, one card-like block per row, so nothing scrolls sideways. */
@@ -312,3 +311,32 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
   .step-table .num { margin-left: auto; }
   .recipe-cell select, .recipe-cell .icon-select { flex: 1; min-width: 0; max-width: none; }
 }
+
+/* Subtabs inside a panel (milestone tiers, MAM trees) */
+.subtabs { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.subtabs .tab { display: inline-flex; align-items: center; gap: 6px; line-height: 1.2; }
+.tab-count { font-size: .75rem; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tab.active .tab-count { color: inherit; opacity: .8; }
+
+/* MAM research tree: cards on a grid, elbow lines from each node to the ones it opens */
+.mam-scroll { overflow-x: auto; padding: 4px 2px 8px; }
+.mam-tree { position: relative; margin: 0 auto; }
+.mam-lines { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+.mam-lines path { fill: none; stroke: var(--border); stroke-width: 2; }
+.mam-lines path.done { stroke: color-mix(in srgb, var(--accent) 70%, var(--border)); }
+.mam-node { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; padding: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); text-align: center; overflow: hidden; }
+.mam-node input { position: absolute; opacity: 0; pointer-events: none; }
+label.mam-node.open, label.mam-node.done { cursor: pointer; }
+label.mam-node.open:hover, label.mam-node.done:hover { border-color: var(--accent); }
+.mam-node:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mam-node.done { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+.mam-node.done .tile-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+.mam-node.open > .mam-node-head .icon-wrap, .mam-node.locked > .mam-node-head .icon-wrap { filter: grayscale(.7); opacity: .7; }
+.mam-node.locked { background: var(--surface-2); border-style: dashed; color: var(--muted); }
+.mam-node.unknown { justify-content: center; background: var(--surface-2); border-style: dashed; color: var(--muted); font-size: 1.8rem; font-weight: 800; }
+.mam-node-head { position: relative; display: flex; justify-content: center; width: 100%; }
+.mam-node-head .tile-check { position: absolute; right: 0; top: 0; width: 18px; height: 18px; font-size: .7rem; }
+.mam-node > * { flex-shrink: 0; }
+.mam-node-name { font-weight: 600; font-size: .82rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mam-node .rates { justify-content: center; gap: 4px; }
+.mam-node .rate { font-size: .75rem; padding: 1px 4px; }

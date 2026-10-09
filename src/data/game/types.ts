@@ -214,6 +214,8 @@ export interface Progression {
   spaceElevatorPhases: { phase: number; name: string; cost: ItemAmount[]; unlocksTiers: number[] }[]
   /** What the player needs before a schematic type can be bought at all. */
   access: Record<string, { building?: BuildingId; schematic?: SchematicId; note?: string }>
+  /** MAM research trees in the supplement's order; `nodes` run top to bottom as the wiki diagrams list them. */
+  mamTrees: { id: string; name: string; nodes: SchematicId[] }[]
   purityMultipliers: { impure: number; normal: number; pure: number }
   geysers: { impure: number; normal: number; pure: number }
 }
