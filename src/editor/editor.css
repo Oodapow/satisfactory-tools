@@ -24,6 +24,7 @@
 .ne-canvas { position: relative; min-width: 0; min-height: 0; }
 .ne-field { display: flex; flex-direction: column; gap: 4px; font-size: .8rem; color: var(--muted); margin: 8px 0; }
 .ne-field input, .ne-field select { color: var(--text); }
+.ne-field .icon-select { width: 100%; }
 select { font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; min-width: 0; }
 .ne-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
 .ne-grid2 input { width: 100%; }
@@ -31,8 +32,6 @@ select { font: inherit; color: inherit; background: var(--surface); border: 1px 
 .ne-rate { display: flex; align-items: center; gap: 6px; }
 .ne-rate input { width: 72px; padding: 6px; }
 .ne-unit { color: var(--muted); font-size: .8rem; }
-.ne-item-select { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
-.ne-item-select select { flex: 1; width: 100%; }
 button.ghost, a.button { background: transparent; color: var(--accent); border: 1px solid var(--border); padding: 4px 10px; }
 a.button { display: inline-block; border-radius: 8px; text-decoration: none; font-weight: 600; background: var(--accent); color: #fff; padding: 8px 14px; border: 0; }
 .ne-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
@@ -42,8 +41,6 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-offer-row { display: flex; gap: 6px; align-items: center; margin-top: 6px; font-size: .85rem; }
 
 
-.game-icon { display: inline-block; flex: none; object-fit: contain; vertical-align: middle; }
-.game-icon.fallback { display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; color: #fff; font-weight: 700; line-height: 1; }
 
 /* Macro blocks */
 .ne-outpost { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 10px 12px; width: 260px; font-size: .8rem; box-shadow: 0 2px 8px #0002; }

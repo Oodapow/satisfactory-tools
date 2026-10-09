@@ -7,6 +7,7 @@ import { Setup } from './screens/Setup'
 import { SampleSave, Upload } from './screens/Upload'
 import { Welcome } from './screens/Welcome'
 import { currentTier, useGameState } from './state/gameState'
+import { TooltipLayer } from './ui/TooltipLayer'
 
 // The node editor pulls in React Flow, so it loads on first visit.
 const EditorScreen = lazy(() => import('./editor/EditorScreen'))
@@ -38,7 +39,7 @@ export default function App() {
     ) : page === 'setup' ? (
       <Setup />
     ) : page === 'catalog' && state ? (
-      <Planner state={state} />
+      <Planner key={`${param}/${sub}`} state={state} kind={param} query={sub && decodeURIComponent(sub)} />
     ) : page === 'outposts' && state && param ? (
       <OutpostEditor id={param} step={sub} state={state} />
     ) : page === 'map' && state ? (
@@ -75,6 +76,7 @@ export default function App() {
       <main className="app-main">
         <div className={page === 'map' ? 'page-wide' : 'page'}>{screen}</div>
       </main>
+      <TooltipLayer />
       <footer className="foot">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>
     </div>
   )

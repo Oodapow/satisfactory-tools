@@ -15,3 +15,8 @@ export function useRoute() {
 export function go(path: string) {
   window.location.hash = path
 }
+
+/** Where an icon click goes: the catalog, searched for that item or building. */
+export function catalogHref(kind: 'items' | 'buildings', name: string) {
+  return `#/catalog/${kind}/${encodeURIComponent(name)}`
+}
