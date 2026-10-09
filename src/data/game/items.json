@@ -9,7 +9,8 @@
     "sinkPoints": 5284,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Zipline_256"
   },
   {
     "id": "BP_EquipmentDescriptorCandyCane_C",
@@ -21,7 +22,8 @@
     "sinkPoints": 7850,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CaneEquipment_256"
   },
   {
     "id": "BP_EquipmentDescriptorGasmask_C",
@@ -33,7 +35,8 @@
     "sinkPoints": 14960,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "GasMask_256"
   },
   {
     "id": "BP_EquipmentDescriptorHazmatSuit_C",
@@ -45,7 +48,8 @@
     "sinkPoints": 54100,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HazmatSuit_256"
   },
   {
     "id": "BP_EquipmentDescriptorHoverPack_C",
@@ -57,7 +61,8 @@
     "sinkPoints": 265632,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Hoverpack_256"
   },
   {
     "id": "BP_EquipmentDescriptorJetPack_C",
@@ -69,7 +74,8 @@
     "sinkPoints": 16580,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Jetpack_256"
   },
   {
     "id": "BP_EquipmentDescriptorJumpingStilts_C",
@@ -81,7 +87,8 @@
     "sinkPoints": 4088,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SprintingStilts_256"
   },
   {
     "id": "BP_EquipmentDescriptorNobeliskDetonator_C",
@@ -93,7 +100,8 @@
     "sinkPoints": 6480,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Detonator_256"
   },
   {
     "id": "BP_EquipmentDescriptorObjectScanner_C",
@@ -105,7 +113,8 @@
     "sinkPoints": 1400,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "ObjectScanner_256"
   },
   {
     "id": "BP_EquipmentDescriptorRifle_C",
@@ -117,7 +126,8 @@
     "sinkPoints": 9480,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "RifleMk1_256"
   },
   {
     "id": "BP_EquipmentDescriptorShockShank_C",
@@ -129,7 +139,8 @@
     "sinkPoints": 1880,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XenoZapper_256"
   },
   {
     "id": "BP_EquipmentDescriptorStunSpear_C",
@@ -141,7 +152,8 @@
     "sinkPoints": 17800,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XenoBasher_256"
   },
   {
     "id": "BP_ItemDescriptorPortableMiner_C",
@@ -153,7 +165,8 @@
     "sinkPoints": 56,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PortableMiner_256"
   },
   {
     "id": "Desc_AlienDNACapsule_C",
@@ -165,7 +178,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AlienDNA_256"
   },
   {
     "id": "Desc_AlienPowerFuel_C",
@@ -177,7 +191,8 @@
     "sinkPoints": 210,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "IconDesc_AlienPowerMatrix_256"
   },
   {
     "id": "Desc_AlienProtein_C",
@@ -189,7 +204,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AlienProtein_256"
   },
   {
     "id": "Desc_AluminaSolution_C",
@@ -202,6 +218,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "LiquidAlumina_Pipe_256",
     "fluidColor": {
       "r": 193,
       "g": 193,
@@ -219,7 +236,8 @@
     "sinkPoints": 393,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AluminiumCasing_256"
   },
   {
     "id": "Desc_AluminumIngot_C",
@@ -231,7 +249,8 @@
     "sinkPoints": 131,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AluminiumIngot_256"
   },
   {
     "id": "Desc_AluminumPlate_C",
@@ -243,7 +262,8 @@
     "sinkPoints": 266,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AluminiumSheet_256"
   },
   {
     "id": "Desc_AluminumPlateReinforced_C",
@@ -255,7 +275,8 @@
     "sinkPoints": 2804,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Heatsink_256"
   },
   {
     "id": "Desc_AluminumScrap_C",
@@ -267,7 +288,8 @@
     "sinkPoints": 27,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AluminiumScrap_256"
   },
   {
     "id": "Desc_Battery_C",
@@ -279,7 +301,8 @@
     "sinkPoints": 465,
     "energyMJ": 6000,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Battery_256"
   },
   {
     "id": "Desc_Berry_C",
@@ -291,7 +314,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Berry_256"
   },
   {
     "id": "Desc_Biofuel_C",
@@ -303,7 +327,8 @@
     "sinkPoints": 48,
     "energyMJ": 450,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SolidBiofuel_256"
   },
   {
     "id": "Desc_Cable_C",
@@ -315,7 +340,8 @@
     "sinkPoints": 24,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Cables_256"
   },
   {
     "id": "Desc_CandyCane_C",
@@ -327,7 +353,8 @@
     "sinkPoints": 6,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CanePart_256"
   },
   {
     "id": "Desc_CartridgeChaos_C",
@@ -339,7 +366,8 @@
     "sinkPoints": 120,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_TurboRifle_256"
   },
   {
     "id": "Desc_CartridgeSmartProjectile_C",
@@ -351,7 +379,8 @@
     "sinkPoints": 855,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HomingRifle_256"
   },
   {
     "id": "Desc_CartridgeStandard_C",
@@ -363,7 +392,8 @@
     "sinkPoints": 25,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Rifle_256"
   },
   {
     "id": "Desc_Cement_C",
@@ -375,7 +405,8 @@
     "sinkPoints": 12,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Concrete_256"
   },
   {
     "id": "Desc_Chainsaw_C",
@@ -387,7 +418,8 @@
     "sinkPoints": 2760,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Chainsaw_256"
   },
   {
     "id": "Desc_CircuitBoard_C",
@@ -399,7 +431,8 @@
     "sinkPoints": 696,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CircuitBoard_256"
   },
   {
     "id": "Desc_CircuitBoardHighSpeed_C",
@@ -411,7 +444,8 @@
     "sinkPoints": 920,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AILimiter_256"
   },
   {
     "id": "Desc_Coal_C",
@@ -423,7 +457,8 @@
     "sinkPoints": 3,
     "energyMJ": 300,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CoalOre_256"
   },
   {
     "id": "Desc_CompactedCoal_C",
@@ -435,7 +470,8 @@
     "sinkPoints": 28,
     "energyMJ": 630,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CompactedCoal_256"
   },
   {
     "id": "Desc_Computer_C",
@@ -447,7 +483,8 @@
     "sinkPoints": 8352,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Computer_256"
   },
   {
     "id": "Desc_ComputerSuper_C",
@@ -459,7 +496,8 @@
     "sinkPoints": 97352,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_QuantumComputer_256"
   },
   {
     "id": "Desc_CoolingSystem_C",
@@ -471,7 +509,8 @@
     "sinkPoints": 12006,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CoolingSystem_256"
   },
   {
     "id": "Desc_CopperDust_C",
@@ -483,7 +522,8 @@
     "sinkPoints": 72,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CopperDust_256"
   },
   {
     "id": "Desc_CopperIngot_C",
@@ -495,7 +535,8 @@
     "sinkPoints": 6,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CopperIngot_256"
   },
   {
     "id": "Desc_CopperSheet_C",
@@ -507,7 +548,8 @@
     "sinkPoints": 24,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CopperSheet_256"
   },
   {
     "id": "Desc_Crystal_C",
@@ -519,7 +561,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "PowerSlugGreen_256"
   },
   {
     "id": "Desc_Crystal_mk2_C",
@@ -531,7 +574,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "PowerSlugYellow_256"
   },
   {
     "id": "Desc_Crystal_mk3_C",
@@ -543,7 +587,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "PowerSlugPurple_256"
   },
   {
     "id": "Desc_CrystalOscillator_C",
@@ -555,7 +600,8 @@
     "sinkPoints": 3072,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CrystalOscillator_256"
   },
   {
     "id": "Desc_CrystalShard_C",
@@ -567,7 +613,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "PowerShard_256"
   },
   {
     "id": "Desc_CyberWagon_C",
@@ -579,7 +626,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Cyberwagon_512"
   },
   {
     "id": "Desc_DarkEnergy_C",
@@ -592,6 +640,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_DarkEnergy_256",
     "fluidColor": {
       "r": 253,
       "g": 175,
@@ -609,7 +658,8 @@
     "sinkPoints": 1780,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_TimeCrystal_256"
   },
   {
     "id": "Desc_Diamond_C",
@@ -621,7 +671,8 @@
     "sinkPoints": 240,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Diamonds_256"
   },
   {
     "id": "Desc_DissolvedSilica_C",
@@ -634,6 +685,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_DissolvedSilica_256",
     "fluidColor": {
       "r": 226,
       "g": 190,
@@ -651,7 +703,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Drone_512"
   },
   {
     "id": "Desc_ElectromagneticControlRod_C",
@@ -663,7 +716,8 @@
     "sinkPoints": 2560,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ElectromagneticControlRod_256"
   },
   {
     "id": "Desc_Explorer_C",
@@ -675,7 +729,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Explorer_512"
   },
   {
     "id": "Desc_Fabric_C",
@@ -687,7 +742,8 @@
     "sinkPoints": 140,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Fabric_256"
   },
   {
     "id": "Desc_FicsiteIngot_C",
@@ -699,7 +755,8 @@
     "sinkPoints": 1936,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FicsiteIngot_256"
   },
   {
     "id": "Desc_FicsiteMesh_C",
@@ -711,7 +768,8 @@
     "sinkPoints": 1291,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FicsiteMesh_256"
   },
   {
     "id": "Desc_Ficsonium_C",
@@ -723,7 +781,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 250,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FicsoniumCell_256"
   },
   {
     "id": "Desc_FicsoniumFuelRod_C",
@@ -735,7 +794,8 @@
     "sinkPoints": 0,
     "energyMJ": 150000,
     "radioactiveDecay": 1000,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FicsoniumFuelRod_256"
   },
   {
     "id": "Desc_Filter_C",
@@ -747,7 +807,8 @@
     "sinkPoints": 608,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_GasMaskFilter_256"
   },
   {
     "id": "Desc_Fireworks_Projectile_01_C",
@@ -759,7 +820,8 @@
     "sinkPoints": 60,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Fireworks_01_512"
   },
   {
     "id": "Desc_Fireworks_Projectile_02_C",
@@ -771,7 +833,8 @@
     "sinkPoints": 40,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Fireworks_02_512"
   },
   {
     "id": "Desc_Fireworks_Projectile_03_C",
@@ -783,7 +846,8 @@
     "sinkPoints": 32,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Fireworks_03_512"
   },
   {
     "id": "Desc_FluidCanister_C",
@@ -795,7 +859,8 @@
     "sinkPoints": 60,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_EmptyCannister_256"
   },
   {
     "id": "Desc_FluidTruck_C",
@@ -807,7 +872,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FluidTruck_512"
   },
   {
     "id": "Desc_FreightWagon_C",
@@ -819,7 +885,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "FreightCar_512"
   },
   {
     "id": "Desc_Fuel_C",
@@ -831,7 +898,8 @@
     "sinkPoints": 270,
     "energyMJ": 750,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Fuel_256"
   },
   {
     "id": "Desc_GasTank_C",
@@ -843,7 +911,8 @@
     "sinkPoints": 170,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PressureTank_256"
   },
   {
     "id": "Desc_GenericBiomass_C",
@@ -855,9 +924,11 @@
     "sinkPoints": 12,
     "energyMJ": 180,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Biomass_Final_256"
   },
   {
+    "iconTexture": null,
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
@@ -880,7 +951,8 @@
     "sinkPoints": 1,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Gift_256"
   },
   {
     "id": "Desc_GoldIngot_C",
@@ -892,7 +964,8 @@
     "sinkPoints": 42,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CateriumIngot_256"
   },
   {
     "id": "Desc_GolfCart_C",
@@ -904,7 +977,8 @@
     "sinkPoints": 1552,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_GolfCart_256"
   },
   {
     "id": "Desc_GolfCartGold_C",
@@ -916,7 +990,8 @@
     "sinkPoints": 1852,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_GolfCartGold_256"
   },
   {
     "id": "Desc_Gunpowder_C",
@@ -928,7 +1003,8 @@
     "sinkPoints": 14,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Gunpowder_256"
   },
   {
     "id": "Desc_GunpowderMK2_C",
@@ -940,9 +1016,11 @@
     "sinkPoints": 58,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_GunpowderMk2_256"
   },
   {
+    "iconTexture": null,
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
@@ -965,7 +1043,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HatcherPart_256"
   },
   {
     "id": "Desc_HazmatFilter_C",
@@ -977,7 +1056,8 @@
     "sinkPoints": 2274,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HazmatFilter_256"
   },
   {
     "id": "Desc_HeavyOilResidue_C",
@@ -990,6 +1070,7 @@
     "energyMJ": 400,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidHeavyOilResidue_Pipe_256",
     "fluidColor": {
       "r": 109,
       "g": 45,
@@ -1007,7 +1088,8 @@
     "sinkPoints": 3776,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HighSpeedConnector_256"
   },
   {
     "id": "Desc_HighSpeedWire_C",
@@ -1019,7 +1101,8 @@
     "sinkPoints": 17,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Quickwire_256"
   },
   {
     "id": "Desc_HogParts_C",
@@ -1031,7 +1114,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_HogPart_256"
   },
   {
     "id": "Desc_IonizedFuel_C",
@@ -1044,6 +1128,7 @@
     "energyMJ": 5000,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_IonizedFuel_256",
     "fluidColor": {
       "r": 213,
       "g": 95,
@@ -1061,7 +1146,8 @@
     "sinkPoints": 2,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_IronIngot_256"
   },
   {
     "id": "Desc_IronPlate_C",
@@ -1073,7 +1159,8 @@
     "sinkPoints": 6,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_IronPlates_256"
   },
   {
     "id": "Desc_IronPlateReinforced_C",
@@ -1085,7 +1172,8 @@
     "sinkPoints": 120,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ReinforcedIronPlates_256"
   },
   {
     "id": "Desc_IronRod_C",
@@ -1097,7 +1185,8 @@
     "sinkPoints": 4,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_IronRods_256"
   },
   {
     "id": "Desc_IronScrew_C",
@@ -1109,7 +1198,8 @@
     "sinkPoints": 2,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_IronScrews_256"
   },
   {
     "id": "Desc_Leaves_C",
@@ -1121,7 +1211,8 @@
     "sinkPoints": 3,
     "energyMJ": 15,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Leaves_256"
   },
   {
     "id": "Desc_LiquidBiofuel_C",
@@ -1134,6 +1225,7 @@
     "energyMJ": 750,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidBiofuel_Pipe_256",
     "fluidColor": {
       "r": 59,
       "g": 83,
@@ -1152,6 +1244,7 @@
     "energyMJ": 750,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidFuel_Pipe_256",
     "fluidColor": {
       "r": 235,
       "g": 125,
@@ -1170,6 +1263,7 @@
     "energyMJ": 320,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "LiquidOil_Pipe_512",
     "fluidColor": {
       "r": 25,
       "g": 0,
@@ -1188,6 +1282,7 @@
     "energyMJ": 2000,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidTurboFuel_Pipe_256",
     "fluidColor": {
       "r": 212,
       "g": 41,
@@ -1205,7 +1300,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Locomotive_512"
   },
   {
     "id": "Desc_Medkit_C",
@@ -1217,7 +1313,8 @@
     "sinkPoints": 125,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Inhaler_256"
   },
   {
     "id": "Desc_ModularFrame_C",
@@ -1229,7 +1326,8 @@
     "sinkPoints": 408,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ModularFrame_256"
   },
   {
     "id": "Desc_ModularFrameFused_C",
@@ -1241,7 +1339,8 @@
     "sinkPoints": 62840,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FusedModularFrame_256"
   },
   {
     "id": "Desc_ModularFrameHeavy_C",
@@ -1253,7 +1352,8 @@
     "sinkPoints": 10800,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ModularFrameHeavy_256"
   },
   {
     "id": "Desc_ModularFrameLightweight_C",
@@ -1265,7 +1365,8 @@
     "sinkPoints": 32352,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_RadioControlUnit_256"
   },
   {
     "id": "Desc_Motor_C",
@@ -1277,7 +1378,8 @@
     "sinkPoints": 1520,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Engine_256"
   },
   {
     "id": "Desc_MotorLightweight_C",
@@ -1289,7 +1391,8 @@
     "sinkPoints": 240496,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_TurboMotor_256"
   },
   {
     "id": "Desc_Mycelia_C",
@@ -1301,7 +1404,8 @@
     "sinkPoints": 10,
     "energyMJ": 20,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Mycelia_256"
   },
   {
     "id": "Desc_NitricAcid_C",
@@ -1314,6 +1418,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_NitricAcid_256",
     "fluidColor": {
       "r": 217,
       "g": 217,
@@ -1332,6 +1437,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_NitrogenGas_256",
     "fluidColor": {
       "r": 89,
       "g": 89,
@@ -1349,7 +1455,8 @@
     "sinkPoints": 1376,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Cluster_256"
   },
   {
     "id": "Desc_NobeliskExplosive_C",
@@ -1361,7 +1468,8 @@
     "sinkPoints": 152,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Explosive_256"
   },
   {
     "id": "Desc_NobeliskGas_C",
@@ -1373,7 +1481,8 @@
     "sinkPoints": 544,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Gas_256"
   },
   {
     "id": "Desc_NobeliskNuke_C",
@@ -1385,7 +1494,8 @@
     "sinkPoints": 19600,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Nuke_256"
   },
   {
     "id": "Desc_NobeliskShockwave_C",
@@ -1397,7 +1507,8 @@
     "sinkPoints": 1533,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Shock_256"
   },
   {
     "id": "Desc_NonFissibleUranium_C",
@@ -1409,7 +1520,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0.75,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_NonFissileUranium_256"
   },
   {
     "id": "Desc_NuclearFuelRod_C",
@@ -1421,7 +1533,8 @@
     "sinkPoints": 43468,
     "energyMJ": 750000,
     "radioactiveDecay": 50,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_NuclearFuelRod_256"
   },
   {
     "id": "Desc_NuclearWaste_C",
@@ -1433,7 +1546,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 10,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_NuclearWaste_256"
   },
   {
     "id": "Desc_Nut_C",
@@ -1445,7 +1559,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Nut_256_New"
   },
   {
     "id": "Desc_OreBauxite_C",
@@ -1457,7 +1572,8 @@
     "sinkPoints": 8,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Bauxite_256"
   },
   {
     "id": "Desc_OreCopper_C",
@@ -1469,7 +1585,8 @@
     "sinkPoints": 3,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_copper_new_256"
   },
   {
     "id": "Desc_OreGold_C",
@@ -1481,7 +1598,8 @@
     "sinkPoints": 7,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_CateriumOre_256"
   },
   {
     "id": "Desc_OreIron_C",
@@ -1493,7 +1611,8 @@
     "sinkPoints": 1,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_iron_new_256"
   },
   {
     "id": "Desc_OreUranium_C",
@@ -1505,7 +1624,8 @@
     "sinkPoints": 35,
     "energyMJ": 0,
     "radioactiveDecay": 15,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_UraniumOre_256"
   },
   {
     "id": "Desc_PackagedAlumina_C",
@@ -1517,7 +1637,8 @@
     "sinkPoints": 160,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PackagedAluminaSolution_256"
   },
   {
     "id": "Desc_PackagedBiofuel_C",
@@ -1529,7 +1650,8 @@
     "sinkPoints": 370,
     "energyMJ": 750,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidBiofuel_256"
   },
   {
     "id": "Desc_PackagedIonizedFuel_C",
@@ -1541,7 +1663,8 @@
     "sinkPoints": 5246,
     "energyMJ": 10000,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_IonizedRocketFuel_256"
   },
   {
     "id": "Desc_PackagedNitricAcid_C",
@@ -1553,7 +1676,8 @@
     "sinkPoints": 412,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PackagedNitricAcid_256"
   },
   {
     "id": "Desc_PackagedNitrogenGas_C",
@@ -1565,7 +1689,8 @@
     "sinkPoints": 312,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PackagedNitrogen_256"
   },
   {
     "id": "Desc_PackagedOil_C",
@@ -1577,7 +1702,8 @@
     "sinkPoints": 180,
     "energyMJ": 320,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Oil_256"
   },
   {
     "id": "Desc_PackagedOilResidue_C",
@@ -1589,7 +1715,8 @@
     "sinkPoints": 180,
     "energyMJ": 400,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "OilResidue_256"
   },
   {
     "id": "Desc_PackagedRocketFuel_C",
@@ -1601,7 +1728,8 @@
     "sinkPoints": 1028,
     "energyMJ": 7200,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PackagedRocketFuel_256"
   },
   {
     "id": "Desc_PackagedSulfuricAcid_C",
@@ -1613,7 +1741,8 @@
     "sinkPoints": 152,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PckagedSulphuricAcid_256"
   },
   {
     "id": "Desc_PackagedWater_C",
@@ -1625,7 +1754,8 @@
     "sinkPoints": 130,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PackagedWater_256"
   },
   {
     "id": "Desc_Parachute_C",
@@ -1637,7 +1767,8 @@
     "sinkPoints": 6080,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Parachute_256"
   },
   {
     "id": "Desc_PetroleumCoke_C",
@@ -1649,7 +1780,8 @@
     "sinkPoints": 20,
     "energyMJ": 180,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PetroleumCoke_256"
   },
   {
     "id": "Desc_Plastic_C",
@@ -1661,7 +1793,8 @@
     "sinkPoints": 75,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Plastic_256"
   },
   {
     "id": "Desc_PlutoniumCell_C",
@@ -1673,7 +1806,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 120,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_EncasedPlutoniumCell_256"
   },
   {
     "id": "Desc_PlutoniumFuelRod_C",
@@ -1685,7 +1819,8 @@
     "sinkPoints": 153184,
     "energyMJ": 1500000,
     "radioactiveDecay": 250,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PlutoniumFuelRod_256"
   },
   {
     "id": "Desc_PlutoniumPellet_C",
@@ -1697,7 +1832,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 20,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PlutoniumPellet_256"
   },
   {
     "id": "Desc_PlutoniumWaste_C",
@@ -1709,7 +1845,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 200,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PlutoniumWaste_256"
   },
   {
     "id": "Desc_PolymerResin_C",
@@ -1721,7 +1858,8 @@
     "sinkPoints": 12,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_PolymerResin_256"
   },
   {
     "id": "Desc_PressureConversionCube_C",
@@ -1733,7 +1871,8 @@
     "sinkPoints": 255088,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ConversionCube_256"
   },
   {
     "id": "Desc_QuantumEnergy_C",
@@ -1746,6 +1885,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_QuantumEnergy_256",
     "fluidColor": {
       "r": 118,
       "g": 245,
@@ -1763,7 +1903,8 @@
     "sinkPoints": 37292,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SuperPositionOscillator_256"
   },
   {
     "id": "Desc_QuartzCrystal_C",
@@ -1775,7 +1916,8 @@
     "sinkPoints": 50,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_QuartzResource_256"
   },
   {
     "id": "Desc_RawQuartz_C",
@@ -1787,7 +1929,8 @@
     "sinkPoints": 15,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_QuartzCrystal_256"
   },
   {
     "id": "Desc_Rebar_Explosive_C",
@@ -1799,7 +1942,8 @@
     "sinkPoints": 360,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ExpRebar_256"
   },
   {
     "id": "Desc_Rebar_Spreadshot_C",
@@ -1811,7 +1955,8 @@
     "sinkPoints": 332,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ScatterRebar_256"
   },
   {
     "id": "Desc_Rebar_Stunshot_C",
@@ -1823,7 +1968,8 @@
     "sinkPoints": 186,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_StunRebar_256"
   },
   {
     "id": "Desc_RebarGunProjectile_C",
@@ -1835,9 +1981,11 @@
     "sinkPoints": 1968,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_RebarGun_256"
   },
   {
+    "iconTexture": null,
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
@@ -1861,6 +2009,7 @@
     "energyMJ": 3600,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_RocketFuelPipe_256",
     "fluidColor": {
       "r": 189,
       "g": 37,
@@ -1878,7 +2027,8 @@
     "sinkPoints": 140,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Rotor_256"
   },
   {
     "id": "Desc_Rubber_C",
@@ -1890,7 +2040,8 @@
     "sinkPoints": 60,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Rubber_256"
   },
   {
     "id": "Desc_SAM_C",
@@ -1902,7 +2053,8 @@
     "sinkPoints": 20,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "IconDesc_SameOre_256"
   },
   {
     "id": "Desc_SAMFluctuator_C",
@@ -1914,7 +2066,8 @@
     "sinkPoints": 1968,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "IconDesc_SamFluctuator_256"
   },
   {
     "id": "Desc_SAMIngot_C",
@@ -1926,7 +2079,8 @@
     "sinkPoints": 160,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "IconDesc_ReanimatedSam_256"
   },
   {
     "id": "Desc_Shroom_C",
@@ -1938,7 +2092,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Mushroom_256"
   },
   {
     "id": "Desc_Silica_C",
@@ -1950,7 +2105,8 @@
     "sinkPoints": 20,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Silica_256"
   },
   {
     "id": "Desc_SingularityCell_C",
@@ -1962,7 +2118,8 @@
     "sinkPoints": 114675,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SingularityCell_256"
   },
   {
     "id": "Desc_Snow_C",
@@ -1974,7 +2131,8 @@
     "sinkPoints": 5,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Snow_256"
   },
   {
     "id": "Desc_SnowballProjectile_C",
@@ -1986,7 +2144,8 @@
     "sinkPoints": 30,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SnowballProjectile_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_1_C",
@@ -1998,7 +2157,8 @@
     "sinkPoints": 520,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SpelevatorPart_1_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_10_C",
@@ -2010,7 +2170,8 @@
     "sinkPoints": 301778,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_BiochemicalSculptor_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_11_C",
@@ -2022,7 +2183,8 @@
     "sinkPoints": 2895334,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_BallisticWarpDrive_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_12_C",
@@ -2034,7 +2196,8 @@
     "sinkPoints": 597652,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AIExpension_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_2_C",
@@ -2046,7 +2209,8 @@
     "sinkPoints": 1176,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SpelevatorPart_2_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_3_C",
@@ -2058,7 +2222,8 @@
     "sinkPoints": 1440,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "SpelevatorPart_3_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_4_C",
@@ -2070,7 +2235,8 @@
     "sinkPoints": 9960,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SpelevatorPart_4_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_5_C",
@@ -2082,7 +2248,8 @@
     "sinkPoints": 76368,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SpelevatorPart_5_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_6_C",
@@ -2094,7 +2261,8 @@
     "sinkPoints": 11000,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_MagneticFieldGenerator_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_7_C",
@@ -2106,7 +2274,8 @@
     "sinkPoints": 500176,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_AssemblyDirectorSystem_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_8_C",
@@ -2118,7 +2287,8 @@
     "sinkPoints": 728508,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ThermalPropulsionRocket_256"
   },
   {
     "id": "Desc_SpaceElevatorPart_9_C",
@@ -2130,7 +2300,8 @@
     "sinkPoints": 538976,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_NuclearPasta_256"
   },
   {
     "id": "Desc_SpikedRebar_C",
@@ -2142,7 +2313,8 @@
     "sinkPoints": 8,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Rebar_256"
   },
   {
     "id": "Desc_SpitterParts_C",
@@ -2154,7 +2326,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SpitterPart_256"
   },
   {
     "id": "Desc_Stator_C",
@@ -2166,7 +2339,8 @@
     "sinkPoints": 240,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Stator_256"
   },
   {
     "id": "Desc_SteelIngot_C",
@@ -2178,7 +2352,8 @@
     "sinkPoints": 8,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SteelIngot_256"
   },
   {
     "id": "Desc_SteelPipe_C",
@@ -2190,7 +2365,8 @@
     "sinkPoints": 24,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SteelPipe_256"
   },
   {
     "id": "Desc_SteelPlate_C",
@@ -2202,7 +2378,8 @@
     "sinkPoints": 64,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_SteelBeam_256"
   },
   {
     "id": "Desc_SteelPlateReinforced_C",
@@ -2214,7 +2391,8 @@
     "sinkPoints": 528,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_EncasedSteelBeam_256"
   },
   {
     "id": "Desc_StingerParts_C",
@@ -2226,7 +2404,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_StingerPart_256"
   },
   {
     "id": "Desc_Stone_C",
@@ -2238,7 +2417,8 @@
     "sinkPoints": 2,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Stone_256"
   },
   {
     "id": "Desc_Sulfur_C",
@@ -2250,7 +2430,8 @@
     "sinkPoints": 11,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "Sulfur_256"
   },
   {
     "id": "Desc_SulfuricAcid_C",
@@ -2263,6 +2444,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "IconDesc_LiquidSulfuricAcid_Pipe_256",
     "fluidColor": {
       "r": 255,
       "g": 255,
@@ -2280,7 +2462,8 @@
     "sinkPoints": 248034,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_TemporalProcessor_256"
   },
   {
     "id": "Desc_TimeCrystal_C",
@@ -2292,7 +2475,8 @@
     "sinkPoints": 960,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_ExoticMatter_256"
   },
   {
     "id": "Desc_Tractor_C",
@@ -2304,7 +2488,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Tractor_512"
   },
   {
     "id": "Desc_Truck_C",
@@ -2316,7 +2501,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Truck_512"
   },
   {
     "id": "Desc_TurboFuel_C",
@@ -2328,7 +2514,8 @@
     "sinkPoints": 570,
     "energyMJ": 2000,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_TurboFuel_256"
   },
   {
     "id": "Desc_UraniumCell_C",
@@ -2340,7 +2527,8 @@
     "sinkPoints": 147,
     "energyMJ": 0,
     "radioactiveDecay": 0.5,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_NuclearCell_256"
   },
   {
     "id": "Desc_WAT1_C",
@@ -2352,7 +2540,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "Wat_1_256"
   },
   {
     "id": "Desc_WAT2_C",
@@ -2364,7 +2553,8 @@
     "sinkPoints": 0,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": true
+    "isAlienItem": true,
+    "iconTexture": "Wat_2_256"
   },
   {
     "id": "Desc_Water_C",
@@ -2377,6 +2567,7 @@
     "energyMJ": 0,
     "radioactiveDecay": 0,
     "isAlienItem": false,
+    "iconTexture": "LiquidWater_Pipe_256",
     "fluidColor": {
       "r": 122,
       "g": 176,
@@ -2394,7 +2585,8 @@
     "sinkPoints": 6,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Wire_256"
   },
   {
     "id": "Desc_Wood_C",
@@ -2406,7 +2598,8 @@
     "sinkPoints": 30,
     "energyMJ": 100,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Wood_256"
   },
   {
     "id": "Desc_XmasBall1_C",
@@ -2418,7 +2611,8 @@
     "sinkPoints": 2,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XmasBall_Red_256"
   },
   {
     "id": "Desc_XmasBall2_C",
@@ -2430,7 +2624,8 @@
     "sinkPoints": 1,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XmasBall_Blue_256"
   },
   {
     "id": "Desc_XmasBall3_C",
@@ -2442,7 +2637,8 @@
     "sinkPoints": 32,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XmasBall_Yellow_256"
   },
   {
     "id": "Desc_XmasBall4_C",
@@ -2454,7 +2650,8 @@
     "sinkPoints": 18,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_XmasBall_Silver_256"
   },
   {
     "id": "Desc_XmasBallCluster_C",
@@ -2466,7 +2663,8 @@
     "sinkPoints": 100,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Balls_256"
   },
   {
     "id": "Desc_XmasBow_C",
@@ -2478,7 +2676,8 @@
     "sinkPoints": 4,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Bow_256"
   },
   {
     "id": "Desc_XmasBranch_C",
@@ -2490,7 +2689,8 @@
     "sinkPoints": 2,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Branch_256"
   },
   {
     "id": "Desc_XmasDataCartridge1_C",
@@ -2502,7 +2702,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FICSMAS_Cartridge_256"
   },
   {
     "id": "Desc_XmasDataCartridge2_C",
@@ -2514,7 +2715,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FICSMAS_Cartridge_256"
   },
   {
     "id": "Desc_XmasDataCartridge3_C",
@@ -2526,7 +2728,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FICSMAS_Cartridge_256"
   },
   {
     "id": "Desc_XmasDataCartridge4_C",
@@ -2538,7 +2741,8 @@
     "sinkPoints": null,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_FICSMAS_Cartridge_256"
   },
   {
     "id": "Desc_XmasStar_C",
@@ -2550,7 +2754,8 @@
     "sinkPoints": 6540,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_Star_256"
   },
   {
     "id": "Desc_XmasWreath_C",
@@ -2562,6 +2767,7 @@
     "sinkPoints": 630,
     "energyMJ": 0,
     "radioactiveDecay": 0,
-    "isAlienItem": false
+    "isAlienItem": false,
+    "iconTexture": "IconDesc_WreathNoBow_256"
   }
 ]

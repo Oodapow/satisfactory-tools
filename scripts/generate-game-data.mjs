@@ -73,6 +73,8 @@ const num = (value) => {
 const bool = (value) => value === 'True'
 const round = (n) => Math.round(n * 1e6) / 1e6
 const text = (value) => (value ?? '').replace(/\r\n/g, '\n').trim()
+/** Texture asset name from "Texture2D /Game/.../IconDesc_Fuel_256.IconDesc_Fuel_256" or a brush struct. */
+const texture = (value) => String(value ?? '').match(/\/Game\/[^'"\s]*\.([\w-]+)/)?.[1] ?? null
 
 // ---------------------------------------------------------------------------
 // Index the raw classes by their native (C++) class
@@ -124,6 +126,7 @@ for (const [native, category] of Object.entries(ITEM_CATEGORY)) {
       energyMJ: form === 'solid' ? num(c.mEnergyValue) : round(num(c.mEnergyValue) * 1000),
       radioactiveDecay: num(c.mRadioactiveDecay),
       isAlienItem: bool(c.mIsAlienItem),
+      iconTexture: texture(c.mPersistentBigIcon) ?? texture(c.mSmallIcon),
     }
     if (form !== 'solid') item.fluidColor = rgba(c.mFluidColor)
     items.set(item.id, item)
@@ -133,6 +136,7 @@ for (const [native, category] of Object.entries(ITEM_CATEGORY)) {
 for (const extra of extraItems.items) {
   if (items.has(extra.id)) throw new Error(`supplements/items.json: ${extra.id} is now in the game data, remove it`)
   items.set(extra.id, {
+    iconTexture: null,
     sinkPoints: null,
     energyMJ: 0,
     radioactiveDecay: 0,
@@ -198,6 +202,7 @@ for (const d of classesOf('FGBuildingDescriptor')) {
     kind: KIND_BY_NATIVE[native] ?? 'other',
     nativeClass: native,
     buildMenu: buildMenu(d.mSubCategories),
+    iconTexture: texture(d.mPersistentBigIcon) ?? texture(d.mSmallIcon),
     size: footprint(b.mClearanceData),
     powerConsumptionMW: num(b.mPowerConsumption),
     powerConsumptionExponent: num(b.mPowerConsumptionExponent),
@@ -442,6 +447,7 @@ for (const c of classesOf('FGSchematic')) {
     timeSeconds: num(c.mTimeToComplete),
     dependencies: deps.schematics.length || deps.gamePhase ? deps : null,
     hiddenUntilDependenciesMet: bool(c.mHiddenUntilDependenciesMet),
+    iconTexture: texture(c.mSchematicIcon),
     // Old research kept so existing saves load; it cannot be bought any more.
     discontinued: /^Discontinued\b/.test(c.mDisplayName),
     unlocks,

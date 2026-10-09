@@ -9,6 +9,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -33,6 +34,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -65,6 +67,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -98,6 +101,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -132,6 +136,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -166,6 +171,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -198,6 +204,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -230,6 +237,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -266,6 +274,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -300,6 +309,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -336,6 +346,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -372,6 +383,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -408,6 +420,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -437,6 +450,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -466,6 +480,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -495,6 +510,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -524,6 +540,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -560,6 +577,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -593,6 +611,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -626,6 +645,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -659,6 +679,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -685,6 +706,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PatternRemover_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -716,6 +738,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -752,6 +775,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -788,6 +812,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -824,6 +849,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -860,6 +886,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -896,6 +923,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -932,6 +960,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -968,6 +997,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1004,6 +1034,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1037,6 +1068,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1070,6 +1102,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1103,6 +1136,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1136,6 +1170,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1172,6 +1207,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1208,6 +1244,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1244,6 +1281,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1280,6 +1318,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1313,6 +1352,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1346,6 +1386,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1379,6 +1420,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1412,6 +1454,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1446,6 +1489,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1480,6 +1524,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1514,6 +1559,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1550,6 +1596,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1586,6 +1633,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1622,6 +1670,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1655,6 +1704,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1688,6 +1738,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1721,6 +1772,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1747,6 +1799,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1779,6 +1832,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1812,6 +1866,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1846,6 +1901,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1880,6 +1936,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1912,6 +1969,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1944,6 +2002,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -1980,6 +2039,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2007,6 +2067,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2061,6 +2122,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2085,6 +2147,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2112,6 +2175,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Fireworks_03_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2141,6 +2205,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsMasBasic_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2169,6 +2234,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsMasPremium_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2202,6 +2268,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HogPart_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2234,6 +2301,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Biomass_Final_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [],
@@ -2266,6 +2334,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SpikedRebar_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [
@@ -2304,6 +2373,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_RebarGun_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2339,6 +2409,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_HandUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2367,6 +2438,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ReanimatedSam_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2397,6 +2469,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Lock_Icon",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2433,6 +2506,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AlienPowerMatrix_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2471,6 +2545,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_UploadUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2505,6 +2580,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Inventory",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2539,6 +2615,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Inventory",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2573,6 +2650,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Inventory",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2607,6 +2685,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Inventory",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2641,6 +2720,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CentralStorage_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2675,6 +2755,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Speed",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2709,6 +2790,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Speed",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2743,6 +2825,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Speed",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2777,6 +2860,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_C_Storage_Speed",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2807,6 +2891,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Wat_2_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2846,6 +2931,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_PortalPotty_MAM_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2884,6 +2970,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AlienPowerAugmenter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -2922,6 +3009,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_AlienOverclock_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2952,6 +3040,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SameOre_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -2990,6 +3079,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SamFluctuator_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3020,6 +3110,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Wat_1_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3051,6 +3142,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AlienDNA_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3082,6 +3174,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HatcherPart_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3118,6 +3211,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mam_Key_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3146,6 +3240,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StingerPart_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3186,6 +3281,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mam_Key_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [],
@@ -3222,6 +3318,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Monsters_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3252,6 +3349,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SpitterPart_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3284,6 +3382,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Biomass_Final_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [],
@@ -3320,6 +3419,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Inhaler_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3354,6 +3454,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_InventoryUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3382,6 +3483,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CateriumOre_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3413,6 +3515,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CateriumIngot_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3447,6 +3550,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Zipline_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3477,6 +3581,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Quickwire_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3507,6 +3612,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_InventoryUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3539,6 +3645,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StunRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3569,6 +3676,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Lock_Icon",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3601,6 +3709,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SmartSplitter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3635,6 +3744,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PowerSwitch_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3669,6 +3779,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AILimiter_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3699,6 +3810,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerPoleMk2_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3733,6 +3845,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SprintingStilts_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3767,6 +3880,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SmartSwitch_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3805,6 +3919,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_DaisyChain_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -3839,6 +3954,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HighSpeedConnector_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3873,6 +3989,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerPoleMk3_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3907,6 +4024,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HomingRifle_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3945,6 +4063,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ProgrammableSplitter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -3983,6 +4102,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "GeoThermalPowerGenerator_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4016,6 +4136,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "HardDrive_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4044,6 +4165,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Mycelia_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4080,6 +4202,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Fabric_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4114,6 +4237,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Fabric_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4148,6 +4272,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Parachute_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4182,6 +4307,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mam_Key_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4214,6 +4340,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Inhaler_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4252,6 +4379,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Inhaler_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4286,6 +4414,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_HandUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4322,6 +4451,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Gas_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4360,6 +4490,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "GasMask_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4391,6 +4522,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Berry_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4422,6 +4554,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Nut_64_new",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4453,6 +4586,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mushroom_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4492,6 +4626,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Lock_Icon",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4528,6 +4663,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Inhaler_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4558,6 +4694,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerSlugGreen_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4598,6 +4735,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Overclock_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4636,6 +4774,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerSlugGreen_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4674,6 +4813,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerSlugYellow_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4714,6 +4854,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerSlugPurple_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4754,6 +4895,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerShard_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4784,6 +4926,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_QuartzCrystal_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -4815,6 +4958,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_QuartzResource_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4845,6 +4989,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Silica_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4879,6 +5024,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ScatterRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4913,6 +5059,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CrystalOscillator_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4947,6 +5094,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Explorer_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -4982,6 +5130,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_RadioControlUnit_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [
@@ -5016,6 +5165,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Shock_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5050,6 +5200,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mam_Key_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5086,6 +5237,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "CrashSite_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5125,6 +5277,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "RadarTower_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5159,6 +5312,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PriorityMerger_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5189,6 +5343,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Sulfur_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5224,6 +5379,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Gunpowder_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5254,6 +5410,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Mam_Key_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5290,6 +5447,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Detonator_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5325,6 +5483,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Explosive_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [
@@ -5359,6 +5518,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Explosive_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5391,6 +5551,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_GunpowderMk2_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5429,6 +5590,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "RifleMK1_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5468,6 +5630,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Rifle_Magazine_64",
     "discontinued": true,
     "unlocks": {
       "recipes": [
@@ -5506,6 +5669,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ExpRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5540,6 +5704,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Cluster_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5578,6 +5743,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Nuke_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5616,6 +5782,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TurboRifle_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5643,6 +5810,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TurboRifle_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5677,6 +5845,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_HandUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5709,6 +5878,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_InventoryUpgrade_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5745,6 +5915,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CompactedCoal_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5785,6 +5956,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Lock_Icon",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -5821,6 +5993,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_IonizedRocketFuel_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5861,6 +6034,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_RocketFuel_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5901,6 +6075,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TurboFuel_64",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5934,6 +6109,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsmasUpgrade_00_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -5971,6 +6147,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CaneEquipment_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6005,6 +6182,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CandyCaneDecor_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6047,6 +6225,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsmasUpgrade_01_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6088,6 +6267,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Snowman_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6130,6 +6310,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ChristmasTree_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6175,6 +6356,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsmasUpgrade_02_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6224,6 +6406,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_XmasLights_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6270,6 +6453,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SnowDispenser_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6312,6 +6496,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsmasUpgrade_03_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6356,6 +6541,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Wreath_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6398,6 +6584,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SnowballMittens_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6431,6 +6618,7 @@
     "timeSeconds": 3,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsmasUpgrade_04_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6472,6 +6660,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Rifle_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6512,6 +6701,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_AILimiter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6551,6 +6741,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_AluminiumSheet_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6590,6 +6781,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_AluminiumCasing_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6629,6 +6821,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Rebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6662,6 +6855,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopPatternArrow_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6705,6 +6899,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Battery_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6744,6 +6939,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Beam_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6784,6 +6980,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CableBeam_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6824,6 +7021,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HBeam_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6864,6 +7062,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SignHuge_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -6901,6 +7100,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_SolidBiofuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6934,6 +7134,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Biomass_Final_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -6973,6 +7174,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Gunpowder_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7006,6 +7208,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Boombox_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7036,6 +7239,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Cables_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7075,6 +7279,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SteelFinish_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7111,6 +7316,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CateriumFinish_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7141,6 +7347,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CatwalkStraight_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7183,6 +7390,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CeilingLight_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7219,6 +7427,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "ShopCheckmark_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7249,6 +7458,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ChromeFinish_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7285,6 +7495,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CircuitBoard_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7318,6 +7529,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CoffeeCup_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7354,6 +7566,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CompactedCoal_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7393,6 +7606,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Computer_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7426,6 +7640,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Concrete_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7459,6 +7674,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PillarConcSmall_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7492,6 +7708,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Wall_Conveyor_x3_Orange_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7527,6 +7744,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConvCeilingAttachment_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7557,6 +7775,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConveyorFloorHole_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7593,6 +7812,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConveyorThroughputMonitor_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7623,6 +7843,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConveyorWallHole_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7653,6 +7874,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConvWallAttachment_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7689,6 +7911,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CoolingSystem_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7722,6 +7945,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_CopperFinish_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7758,6 +7982,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CopperDust_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7797,6 +8022,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CopperSheet_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7837,6 +8063,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CrystalOscillator_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7870,6 +8097,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "QuarterPipe_01_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -7916,6 +8144,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AsphaltFoundation8x4_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -7962,6 +8191,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConcFoundation4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8009,6 +8239,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConcWall8x4_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8056,6 +8287,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_GlassRoof4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8096,6 +8328,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SteelFoundation4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8143,6 +8376,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PolishFoundation4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8191,6 +8425,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SteelRoof4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8231,6 +8466,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SteelWall8x4_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8276,6 +8512,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TarRoof4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8315,6 +8552,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "Cyberwagon_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8340,6 +8578,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "Cyberwagon_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8367,6 +8606,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitDownDiag4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8403,6 +8643,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitUpDiag4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8439,6 +8680,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitRampDown4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8485,6 +8727,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SignSquare_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8518,6 +8761,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitCenterDoor_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8552,6 +8796,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopDotted_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8595,6 +8840,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ElectromagneticControlRod_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8634,6 +8880,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_EmptyCannister_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8673,6 +8920,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PressureTank_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8712,6 +8960,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_EncasedSteelBeam_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8751,6 +9000,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Explosive_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8790,6 +9040,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Fabric_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -8823,6 +9074,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ConcreteBarrier_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8854,6 +9106,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TallBarrier_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8885,6 +9138,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_GolfCart_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8916,6 +9170,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Railing_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8946,6 +9201,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Fences_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -8976,6 +9232,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_TarpFence_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9016,6 +9273,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_FicsiteMesh_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9049,6 +9307,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PillarMetalSmall_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9082,6 +9341,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitDoubleRamp4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9119,6 +9379,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitStair_8x4_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9162,6 +9423,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PillarFrameSmall_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9202,6 +9464,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_HexagonWindow_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9242,6 +9505,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FoundationFrame_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9277,6 +9541,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopLine_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9320,6 +9585,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_FusedModularFrame_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9353,6 +9619,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_GasMaskFilter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9386,6 +9653,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AutomatedGate_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9427,6 +9695,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_GolfCartGold_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9452,6 +9721,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9483,6 +9753,7 @@
       "gamePhase": "victory"
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_CupGold_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9513,6 +9784,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_QP_Ficsit_Mid_8x4_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9550,6 +9822,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StorageHazard_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9588,6 +9861,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "Inhaler_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9627,6 +9901,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Heatsink_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9666,6 +9941,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ModularFrameHeavy_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9706,6 +9982,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_HighSpeedConnector_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9745,6 +10022,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_HypertubeFloorHole_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9781,6 +10059,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_HyperTube_WallHole_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9812,6 +10091,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopStencil_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9850,6 +10130,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopCar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -9888,6 +10169,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SteelInvURamp4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9928,6 +10210,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitInvertRamp4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -9970,6 +10253,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_IonizedRocketFuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10009,6 +10293,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_SignSmall_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10042,6 +10327,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Ladder_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10078,6 +10364,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_LightsControlPanel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10115,6 +10402,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FloodlightWall_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10146,6 +10434,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StorageMedkit_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10182,6 +10471,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ModularFrame_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10221,6 +10511,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Engine_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10260,6 +10551,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_TemporalProcessor_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10299,6 +10591,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Cluster_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10338,6 +10631,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Gas_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10377,6 +10671,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Shock_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10416,6 +10711,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Pipes_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10452,6 +10748,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PipeMK2_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10482,6 +10779,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopNumber_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10528,6 +10826,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_LiquidBiofuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10567,6 +10866,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Fuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10606,6 +10906,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_TurboFuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10639,6 +10940,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopPath_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10683,6 +10985,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_PersonnelElevator_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10720,6 +11023,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PetroleumCoke_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10759,6 +11063,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PipeFloorHole_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10795,6 +11100,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "PipeSupportWallHole_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -10832,6 +11138,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Plastic_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10865,6 +11172,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_IronPlates_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10904,6 +11212,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PolymerResin_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10943,6 +11252,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ConversionCube_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -10982,6 +11292,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "HardDrive_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11015,6 +11326,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_QP_Ficsit_MidOutCorner_8x4_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -11062,6 +11374,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_QuartzResource_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11101,6 +11414,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Quickwire_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11140,6 +11454,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_HazmatFilter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11179,6 +11494,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_RadioControlUnit_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11218,6 +11534,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ExpRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11257,6 +11574,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ScatterRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11296,6 +11614,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_StunRebar_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11329,6 +11648,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ReinforcedIronPlates_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11368,6 +11688,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_HomingRifle_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11407,6 +11728,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_TurboRifle_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11446,6 +11768,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_PackagedRocketFuel_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11479,6 +11802,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_IronRods_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11512,6 +11836,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitRoof4m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -11545,6 +11870,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitRoofOut_03_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -11590,6 +11916,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Rotor_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11629,6 +11956,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Rubber_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11662,6 +11990,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_IronScrews_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11702,6 +12031,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Silica_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11741,6 +12071,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_GunpowderMk2_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11774,6 +12105,7 @@
     "timeSeconds": 1,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StackableShelf_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -11810,6 +12142,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Stator_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11843,6 +12176,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_Hog_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11873,6 +12207,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_CharBronze_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11903,6 +12238,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_Nut_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11933,6 +12269,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_CharGold_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11963,6 +12300,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_LizardDoggo_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -11993,6 +12331,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_AwardStatue_Char_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12023,6 +12362,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Award_SpaceGiraffe_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12059,6 +12399,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_SteelBeam_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12098,6 +12439,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_SteelPipe_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12137,6 +12479,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_StreetLight_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12173,6 +12516,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_QuantumComputer_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12212,6 +12556,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_SuperPositionOscillator_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12251,6 +12596,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "PowerShard_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12284,6 +12630,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_FicsitAngWall8m_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12328,6 +12675,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_ExoticMatter_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12367,6 +12715,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_TurboMotor_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12400,6 +12749,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_UnpaintedFinish_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12430,6 +12780,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_Fan_512",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12461,6 +12812,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_WalkwayStraight_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12495,6 +12847,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerPoleWall_MK1_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12532,6 +12885,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerPoleWall_MK2_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12569,6 +12923,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "PowerPoleWall_MK3_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12606,6 +12961,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "Wall_Window_8x4_03_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12642,6 +12998,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "IconDesc_Wire_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12675,6 +13032,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_ShopZone_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -12717,6 +13075,7 @@
     "timeSeconds": 120,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_BaseBuilding",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12762,6 +13121,7 @@
     "timeSeconds": 240,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12803,6 +13163,7 @@
     "timeSeconds": 180,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Exploration",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12850,6 +13211,7 @@
     "timeSeconds": 360,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12891,6 +13253,7 @@
     "timeSeconds": 180,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Chainsaw",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12929,6 +13292,7 @@
     "timeSeconds": 240,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_JumpPad",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -12971,6 +13335,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Coupon",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13014,6 +13379,7 @@
     "timeSeconds": 480,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionGenerator",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13066,6 +13432,7 @@
     "timeSeconds": 360,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13109,6 +13476,7 @@
     "timeSeconds": 240,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Vehicle",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13153,6 +13521,7 @@
     "timeSeconds": 480,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13198,6 +13567,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13239,6 +13609,7 @@
     "timeSeconds": 180,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_XenoBasher",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13280,6 +13651,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_PowerTower",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13319,6 +13691,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_HyperTubes",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13365,6 +13738,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Blueprints",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13409,6 +13783,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionFluid",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13444,6 +13819,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13487,6 +13863,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13528,6 +13905,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13568,6 +13946,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionPackager",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13601,6 +13980,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13646,6 +14026,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionGenerator",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13676,6 +14057,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionGenerator",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13714,6 +14096,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13756,6 +14139,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_TraversalEquipment",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13797,6 +14181,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Train",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13842,6 +14227,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Pipes",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13884,6 +14270,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Blueprints",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13921,6 +14308,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_TrainSignals",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13963,6 +14351,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -13999,6 +14388,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14039,6 +14429,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14077,6 +14468,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_HazmatSuit",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14119,6 +14511,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Drone",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14144,6 +14537,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14187,6 +14581,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14238,6 +14633,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionGenerator",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14287,6 +14683,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Production",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14323,6 +14720,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14364,6 +14762,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_TraversalEquipment",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14401,6 +14800,7 @@
     "timeSeconds": 300,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionMiner",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14444,6 +14844,7 @@
     "timeSeconds": 1200,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionQuantum",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14481,6 +14882,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Factory",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14518,6 +14920,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionAlien",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14553,6 +14956,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14612,6 +15016,7 @@
     "timeSeconds": 1200,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_ProductionQuantum",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14659,6 +15064,7 @@
     "timeSeconds": 900,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Blueprints",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14700,6 +15106,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Portal",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14744,6 +15151,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_SIcon_Logistics2",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14776,6 +15184,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_AbsFics",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -14807,6 +15216,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14838,6 +15248,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14868,6 +15279,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14898,6 +15310,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14928,6 +15341,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14958,6 +15372,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -14988,6 +15403,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15019,6 +15435,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15049,6 +15466,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15079,6 +15497,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15110,6 +15529,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15141,6 +15561,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15171,6 +15592,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15201,6 +15623,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15231,6 +15654,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15261,6 +15685,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15291,6 +15716,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15321,6 +15747,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15351,6 +15778,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15382,6 +15810,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15413,6 +15842,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15443,6 +15873,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15473,6 +15904,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15503,6 +15935,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15533,6 +15966,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15563,6 +15997,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15593,6 +16028,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15625,6 +16061,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15655,6 +16092,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15685,6 +16123,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15715,6 +16154,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15745,6 +16185,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15775,6 +16216,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15805,6 +16247,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15836,6 +16279,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15866,6 +16310,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15896,6 +16341,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15926,6 +16372,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15956,6 +16403,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -15986,6 +16434,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16017,6 +16466,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16048,6 +16498,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16080,6 +16531,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16110,6 +16562,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16140,6 +16593,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16170,6 +16624,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16200,6 +16655,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16230,6 +16686,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16260,6 +16717,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16290,6 +16748,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16320,6 +16779,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16352,6 +16812,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16383,6 +16844,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16413,6 +16875,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16443,6 +16906,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16474,6 +16938,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16504,6 +16969,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16535,6 +17001,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16559,6 +17026,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -16587,6 +17055,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -16616,6 +17085,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16646,6 +17116,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16676,6 +17147,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16706,6 +17178,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16737,6 +17210,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16768,6 +17242,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16799,6 +17274,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16829,6 +17305,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16859,6 +17336,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16889,6 +17367,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16919,6 +17398,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16949,6 +17429,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -16980,6 +17461,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17010,6 +17492,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17040,6 +17523,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17071,6 +17555,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17102,6 +17587,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17132,6 +17618,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17164,6 +17651,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17194,6 +17682,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17225,6 +17714,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17255,6 +17745,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17285,6 +17776,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17315,6 +17807,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17345,6 +17838,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17375,6 +17869,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17405,6 +17900,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17435,6 +17931,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17459,6 +17956,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17489,6 +17987,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17519,6 +18018,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17543,6 +18043,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17573,6 +18074,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17604,6 +18106,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17634,6 +18137,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17664,6 +18168,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17694,6 +18199,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17724,6 +18230,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17754,6 +18261,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17784,6 +18292,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17814,6 +18323,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17844,6 +18354,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17875,6 +18386,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17905,6 +18417,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17938,6 +18451,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -17971,6 +18485,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18004,6 +18519,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18034,6 +18550,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18067,6 +18584,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18097,6 +18615,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18121,6 +18640,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18151,6 +18671,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_MAM",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18175,6 +18696,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_DRG",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18205,6 +18727,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_HappyFicsday",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18230,6 +18753,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_ChildPlayingPiano",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18255,6 +18779,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_Goat",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18280,6 +18805,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": true,
+    "iconTexture": "TXUI_MIcon_Pioneer",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18304,6 +18830,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18328,6 +18855,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18352,6 +18880,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18376,6 +18905,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18400,6 +18930,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18424,6 +18955,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18448,6 +18980,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18472,6 +19005,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18496,6 +19030,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18520,6 +19055,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18544,6 +19080,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18568,6 +19105,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18592,6 +19130,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_Huntdown",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18622,6 +19161,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_Joel",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18652,6 +19192,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_LeMichael",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18682,6 +19223,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_Sanctum",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18712,6 +19254,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_Sanctum2",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18737,6 +19280,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -18775,6 +19319,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18799,6 +19344,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18823,6 +19369,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18847,6 +19394,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18871,6 +19419,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18895,6 +19444,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18919,6 +19469,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18943,6 +19494,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "TXUI_Tape_SoQ",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -18968,6 +19520,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19013,6 +19566,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19037,6 +19591,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19061,6 +19616,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19085,6 +19641,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19109,6 +19666,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19133,6 +19691,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "IconDesc_XmasBall_Red_256",
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19157,6 +19716,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19181,6 +19741,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19205,6 +19766,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19229,6 +19791,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19268,6 +19831,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_1",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19304,6 +19868,7 @@
     "timeSeconds": 0,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_1",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19348,6 +19913,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_2",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19398,6 +19964,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_3",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19442,6 +20009,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_4",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19490,6 +20058,7 @@
       "gamePhase": null
     },
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": "SchematicIcon_Hub_5",
     "discontinued": false,
     "unlocks": {
       "recipes": [
@@ -19520,6 +20089,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19542,6 +20112,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19564,6 +20135,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19586,6 +20158,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
@@ -19608,6 +20181,7 @@
     "timeSeconds": 600,
     "dependencies": null,
     "hiddenUntilDependenciesMet": false,
+    "iconTexture": null,
     "discontinued": false,
     "unlocks": {
       "recipes": [],
