@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { buildingsById, itemName } from '../data'
 import { go } from '../router'
 import { catalog, purchasable, type GameState } from '../state/gameState'
-import { useOutposts } from '../state/outposts'
+import { blankPlan, useOutposts } from '../plan/store'
+import { Icon } from './Icon'
 import { Rates } from './Rates'
 
 type Tab = 'recipes' | 'items' | 'buildings'
@@ -27,14 +28,15 @@ function Locked({ count, noun, blur }: { count: number; noun: string; blur: bool
 export function Planner({ state }: { state: GameState }) {
   const [tab, setTab] = useState<Tab>('recipes')
   const [q, setQ] = useState('')
-  const { add } = useOutposts()
+  const { save } = useOutposts()
   const cat = catalog(state)
   const blur = state.spoilers === 'blur'
   const match = (name: string) => name.toLowerCase().includes(q.trim().toLowerCase())
 
   const planFor = (item: string) => {
-    const id = add(`${itemName(item)} outpost`, { target: { item, perMin: 10 } })
-    go(`/outposts/${id}`)
+    const plan = blankPlan(`${itemName(item)} outpost`, { goals: [{ kind: 'item', item, perMin: 10 }] })
+    save(plan)
+    go(`/outposts/${plan.id}/resources`)
   }
   const makeable = new Set(cat.recipes.flatMap((r) => r.products.map((p) => p.item)))
   const next = purchasable(state).filter((s) => s.type === 'milestone' || s.type === 'tutorial')
@@ -88,7 +90,10 @@ export function Planner({ state }: { state: GameState }) {
               .map((r) => (
                 <article key={r.id} className="card recipe">
                   <header>
-                    <h4>{r.name.replace('Alternate: ', '')}</h4>
+                    <h4 className="with-icon">
+                      <Icon id={r.products[0].item} size={24} />
+                      {r.name.replace('Alternate: ', '')}
+                    </h4>
                     {r.alternate && <span className="badge">Alternate</span>}
                   </header>
                   <p className="muted small">{r.producedIn.map((b) => buildingsById.get(b)?.name).join(', ')}</p>
@@ -107,7 +112,10 @@ export function Planner({ state }: { state: GameState }) {
               .filter((i) => match(i.name))
               .map((i) => (
                 <article key={i.id} className="card item">
-                  <h4>{i.name}</h4>
+                  <h4 className="with-icon">
+                    <Icon id={i.id} size={24} />
+                    {i.name}
+                  </h4>
                   {i.category === 'resource' ? (
                     <span className="badge muted-badge">Resource</span>
                   ) : makeable.has(i.id) ? (
@@ -126,7 +134,10 @@ export function Planner({ state }: { state: GameState }) {
               .filter((b) => match(b.name))
               .map((b) => (
                 <article key={b.id} className="card">
-                  <h4>{b.name}</h4>
+                  <h4 className="with-icon">
+                    <Icon id={b.id} size={24} />
+                    {b.name}
+                  </h4>
                   <p className="muted small">
                     {b.generator
                       ? `Makes ${b.generator.powerProductionMW} MW`

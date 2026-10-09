@@ -36,12 +36,21 @@ export function Setup() {
   const hiddenTiers = allTiers.length - visibleTiers.length
   const phases = progression.spaceElevatorPhases.filter((p) => revealAll || p.phase <= state.spaceElevatorPhase + 1)
 
-  const research = [...knownSchematics(state, 'hard-drive'), ...knownSchematics(state, 'mam')]
-  const trees = [...new Set(research.map((r) => r.mamTree ?? 'Other'))].sort()
+  const owned = (id: string) => state.purchased.includes(id)
+  const [openTrees, setOpenTrees] = useState<string[]>([])
+  const research = [...knownSchematics(state, 'hard-drive'), ...knownSchematics(state, 'mam')].filter(
+    (r) => !r.events?.length && r.name,
+  )
+  const allTrees = [...new Set(research.map((r) => r.mamTree ?? 'Other'))].sort()
+  // The game data doesn't say which node in a tree comes first, so a tree's nodes
+  // stay folded until the player has researched something in it or opens it.
+  const started = (tree: string) =>
+    openTrees.includes(tree) || research.some((r) => (r.mamTree ?? 'Other') === tree && owned(r.id))
+  const trees = allTrees.filter(started)
+  const unstarted = allTrees.filter((t) => !started(t))
   const alternates = knownSchematics(state, 'alternate').filter((s) => s.unlocks.recipes.length > 0)
   const altShown = alternates.filter((s) => s.name.toLowerCase().includes(altQuery.trim().toLowerCase()))
   const cat = catalog(state)
-  const owned = (id: string) => state.purchased.includes(id)
 
   return (
     <div className="setup">
@@ -137,7 +146,16 @@ export function Setup() {
             </div>
           </fieldset>
         ))}
-        {research.length > 0 && <p className="muted small">Only research you've done or can start now is listed.</p>}
+        {unstarted.length > 0 && (
+          <div className="row tree-picks">
+            <span className="muted small">Started another tree?</span>
+            {unstarted.map((t) => (
+              <button key={t} type="button" className="secondary small" onClick={() => setOpenTrees([...openTrees, t])}>
+                {t === 'HardDrive' ? 'Hard Drives' : t}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="panel">

@@ -1,4 +1,4 @@
-import { availability, purchasable, type GameState as Unlocks } from '../data/availability'
+import { availability, purchasable, type GameState as Unlocks } from '../data/game/availability'
 import { buildings, items, progression, recipes, schematicsById, type Recipe, type Schematic } from '../data'
 import { usePersistentState } from '../storage/persisted'
 

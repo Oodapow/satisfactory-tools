@@ -1,3 +1,4 @@
+import { gameMeta } from './data'
 import { go, useRoute } from './router'
 import { OutpostEditor, OutpostList } from './screens/Outposts'
 import { Planner } from './screens/Planner'
@@ -13,7 +14,7 @@ const steps = [
 ] as const
 
 export default function App() {
-  const [page, param] = useRoute()
+  const [page, param, sub] = useRoute()
   const [state] = useGameState()
 
   // Planning needs a game state; without one, start at the welcome screen.
@@ -30,7 +31,7 @@ export default function App() {
     ) : page === 'plan' && state ? (
       <Planner state={state} />
     ) : page === 'outposts' && state && param ? (
-      <OutpostEditor id={param} state={state} />
+      <OutpostEditor id={param} step={sub} state={state} />
     ) : page === 'outposts' && state ? (
       <OutpostList state={state} />
     ) : (
@@ -60,7 +61,7 @@ export default function App() {
         )}
       </header>
       <main className="page">{screen}</main>
-      <footer className="foot page">*not actually approved · Mock data: real game data coming soon</footer>
+      <footer className="foot page">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>
     </div>
   )
 }
