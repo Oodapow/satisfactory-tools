@@ -7,6 +7,7 @@ import { Setup } from './screens/Setup'
 import { SampleSave, Upload } from './screens/Upload'
 import { Welcome } from './screens/Welcome'
 import { currentTier, useGameState } from './state/gameState'
+import { ErrorBoundary } from './ui/ErrorBoundary'
 import { TooltipLayer } from './ui/TooltipLayer'
 
 // The node editor pulls in React Flow, so it loads on first visit.
@@ -78,7 +79,10 @@ export default function App() {
         )}
       </header>
       <main className="app-main" ref={mainRef}>
-        <div className={page === 'map' ? 'page-wide' : 'page'}>{screen}</div>
+        <div className={page === 'map' ? 'page-wide' : 'page'}>
+          {/* Keyed by route, so moving to another screen clears a crash. */}
+          <ErrorBoundary key={screenKey}>{screen}</ErrorBoundary>
+        </div>
       </main>
       <TooltipLayer />
       <footer className="foot">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>

@@ -8,6 +8,17 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // If the app's own files fail to load (often a cached page right after a redeploy),
+      // say so instead of leaving an empty page.
+      addEventListener('error', function (e) {
+        var t = e.target, root = document.getElementById('root')
+        if (!t || (t.tagName !== 'SCRIPT' && t.tagName !== 'LINK') || !root || root.childElementCount) return
+        root.innerHTML = '<p style="font: 16px system-ui, sans-serif; padding: 24px; max-width: 40em">' +
+          'Satisfactory Tools could not load. The site may have just been updated: ' +
+          '<a href="" onclick="location.reload(); return false">reload the page</a>.</p>'
+      }, true)
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
