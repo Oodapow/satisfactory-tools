@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { resourcesById } from '../data'
+import { taxonomy, taxonomyOf } from '../data'
 import { displayName, iconUrl } from '../data/icons'
 import type { Purity, WorldNode } from '../data/game/types'
 import { worldMap, worldMapOverview, worldMapTiles } from '../data/game/worldMap'
@@ -37,16 +37,15 @@ type Filters = {
 const defaultFilters: Filters = { hidden: [], hiddenPurities: [], crashSites: true, outposts: true, showAll: false }
 const UNKNOWN = 'unknown'
 
-// Legend groups, in the order the game's resource list uses.
-const GROUPS = [
-  { key: 'solid', label: 'Ores' },
-  { key: 'liquid', label: 'Fluids' },
-  { key: 'gas', label: 'Gases' },
+// Legend groups: the in-game taxonomy's resource groups (ores, fluid resources), in its order,
+// then geysers, which aren't items, and resources the player hasn't unlocked yet.
+const GROUPS: { key: string; label: string; members?: string[] }[] = [
+  ...taxonomy.items.find((c) => c.id === 'resources')!.groups.map((g) => ({ key: g.id, label: g.name, members: g.members })),
   { key: 'geyser', label: 'Geysers' },
   { key: UNKNOWN, label: 'Not unlocked yet' },
-] as const
+]
 const groupOf = (resource: string | null) =>
-  resource === null ? UNKNOWN : resource === 'Desc_Geyser_C' ? 'geyser' : (resourcesById.get(resource)?.form ?? 'solid')
+  resource === null ? UNKNOWN : resource === 'Desc_Geyser_C' ? 'geyser' : (taxonomyOf.get(resource)?.group.id ?? 'ores')
 
 export default function WorldScreen({ state, outpostId }: { state: GameState; outpostId?: string }) {
   const [filters, setFilters] = usePersistentState<Filters>('worldMapFilters', defaultFilters)
@@ -172,7 +171,8 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
         {GROUPS.map((g) => {
           const ids = [...byResource.keys()].filter((id) => groupOf(id === UNKNOWN ? null : id) === g.key)
           if (ids.length === 0) return null
-          ids.sort((a, b) => displayName(a).localeCompare(displayName(b)))
+          const order = (id: string) => g.members?.indexOf(id) ?? -1
+          ids.sort((a, b) => order(a) - order(b) || displayName(a).localeCompare(displayName(b)))
           return (
             <section key={g.key} className="wm-section">
               <h4>{g.label}</h4>
