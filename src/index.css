@@ -76,6 +76,8 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .notice { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); border-radius: 8px; padding: 8px 12px; margin: 0 0 16px; font-size: .9rem; }
 .notice.error { background: color-mix(in srgb, var(--danger) 10%, var(--surface)); border-color: color-mix(in srgb, var(--danger) 45%, transparent); }
 .save-progress { width: 100%; height: 10px; accent-color: var(--accent); margin: 8px 0 12px; }
+.crash h2 { margin-top: 0; }
+.crash-detail { white-space: pre-wrap; word-break: break-word; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .85rem; margin: 0 0 16px; }
 .spoiler-note { grid-column: 1 / -1; color: var(--muted); font-size: .9rem; margin: 8px 0 0; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 8px; }
 
 /* Welcome */

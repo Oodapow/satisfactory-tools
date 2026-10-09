@@ -89,9 +89,38 @@ export function exportAll(): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i)
-    if (k?.startsWith(PREFIX)) out[k.slice(PREFIX.length)] = JSON.parse(localStorage.getItem(k)!)
+    if (!k?.startsWith(PREFIX)) continue
+    const raw = localStorage.getItem(k)!
+    try {
+      out[k.slice(PREFIX.length)] = JSON.parse(raw)
+    } catch {
+      // Keep a corrupt entry as text so a backup never fails and nothing is lost.
+      out[k.slice(PREFIX.length)] = raw
+    }
   }
   return { app: 'satisfactory-tools', exportedAt: new Date().toISOString(), entries: out }
+}
+
+/** Save exportAll() as a JSON file. */
+export function downloadBackup() {
+  const blob = new Blob([JSON.stringify(exportAll(), null, 2)], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `satisfactory-tools-${new Date().toISOString().slice(0, 10)}.json`
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+/** Delete every stored entry. */
+export function resetAll() {
+  const keys: string[] = []
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i)
+    if (k?.startsWith(PREFIX)) keys.push(k)
+  }
+  for (const k of keys) localStorage.removeItem(k)
+  cache.clear()
+  listeners.forEach((_, k) => notify(k))
 }
 
 /**
