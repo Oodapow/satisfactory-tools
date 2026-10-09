@@ -237,5 +237,5 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
   .step-table th, .step-table td { display: block; border: 0; padding: 0; }
   .step-table td:first-child { flex: 1 1 100%; min-width: 0; }
   .step-table .num { margin-left: auto; }
-  .recipe-cell select { flex: 1; min-width: 0; max-width: none; }
+  .recipe-cell select, .recipe-cell .icon-select { flex: 1; min-width: 0; max-width: none; }
 }
