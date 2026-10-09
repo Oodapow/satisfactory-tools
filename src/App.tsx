@@ -61,7 +61,7 @@ export default function App() {
       </Suspense>
     ) : page === 'world' && state ? (
       <Suspense fallback={<p className="muted">Loading the map…</p>}>
-        <WorldScreen state={state} />
+        <WorldScreen state={state} outpostId={param} />
       </Suspense>
     ) : page === 'outposts' && state ? (
       <OutpostList state={state} />

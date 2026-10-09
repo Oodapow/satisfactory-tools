@@ -259,6 +259,172 @@
       "note": "Alternates come from Hard Drives researched in the MAM."
     }
   },
+  "mamTrees": [
+    {
+      "id": "AlienOrganisms",
+      "name": "Alien Megafauna",
+      "nodes": [
+        "Research_ACarapace_0_C",
+        "Research_AO_Hatcher_C",
+        "Research_AO_Stinger_C",
+        "Research_AOrgans_0_C",
+        "Research_AO_DNACapsule_C",
+        "Research_AOrgans_2_C",
+        "Research_AO_Pre_Rebar_C",
+        "Research_ACarapace_2_C",
+        "Research_AOrgans_3_C",
+        "Research_ACarapace_3_C",
+        "Research_AOrganisms_2_C"
+      ]
+    },
+    {
+      "id": "AlienTech",
+      "name": "Alien Technology",
+      "nodes": [
+        "Research_Alien_SAM_C",
+        "Research_Alien_ActiveSAM_C",
+        "Research_Alien_SAMFluctuator_C",
+        "Research_Alien_MercerSphere_C",
+        "Research_Alien_Somersloop_C",
+        "Research_Alien_CentralStorage_C",
+        "Research_Alien_PortalPotty_C",
+        "Research_Alien_BoosterBlocker_C",
+        "Research_Alien_CentralStackExpansion_01_C",
+        "Research_Alien_CentralUploadBoost_01_C",
+        "Research_Alien_PowerBooster_C",
+        "Research_Alien_ProductionBooster_C",
+        "Research_Alien_CentralInventory_C",
+        "Research_Alien_CentralStackExpansion_02_C",
+        "Research_Alien_CentralUploadBoost_02_C",
+        "Research_Alien_BoosterFuel_C",
+        "Research_Alien_CentralStackExpansion_03_C",
+        "Research_Alien_CentralUploadBoost_03_C",
+        "Research_Alien_CentralStackExpansion_04_C",
+        "Research_Alien_CentralUploadBoost_04_C"
+      ]
+    },
+    {
+      "id": "Caterium",
+      "name": "Caterium",
+      "nodes": [
+        "Research_Caterium_0_C",
+        "Research_Caterium_1_C",
+        "Research_Caterium_2_C",
+        "Research_Caterium_2_1_C",
+        "Research_Caterium_3_C",
+        "Research_Caterium_3_2_C",
+        "Research_Caterium_4_1_C",
+        "Research_Caterium_4_2_C",
+        "Research_Caterium_5_C",
+        "Research_Caterium_6_2_C",
+        "Research_Caterium_5_2_C",
+        "Research_Caterium_4_1_1_C",
+        "Research_Caterium_4_1_2_C",
+        "Research_Caterium_5_1_C",
+        "Research_Caterium_6_3_C",
+        "Research_Caterium_7_1_C",
+        "Research_Caterium_7_2_C"
+      ]
+    },
+    {
+      "id": "Mycelia",
+      "name": "Mycelia",
+      "nodes": [
+        "Research_Mycelia_1_C",
+        "Research_Mycelia_2_C",
+        "Research_Mycelia_8_C",
+        "Research_Mycelia_4_C",
+        "Research_Mycelia_3_C",
+        "Research_Mycelia_7_C",
+        "Research_Mycelia_2_1_C",
+        "Research_Mycelia_GasMask_C",
+        "Research_Mycelia_5_C",
+        "Research_Mycelia_6_C"
+      ]
+    },
+    {
+      "id": "Nutrients",
+      "name": "Nutrients",
+      "nodes": [
+        "Research_Nutrients_1_C",
+        "Research_Nutrients_0_C",
+        "Research_Nutrients_2_C",
+        "Research_Nutrients_3_C",
+        "Research_Nutrients_4_C"
+      ]
+    },
+    {
+      "id": "PowerSlugs",
+      "name": "Power Slugs",
+      "nodes": [
+        "Research_PowerSlugs_1_C",
+        "Research_PowerSlugs_3_C",
+        "Research_PowerSlugs_4_C",
+        "Research_PowerSlugs_2_C",
+        "Research_PowerSlugs_5_C",
+        "Research_PowerSlugs_6_C"
+      ]
+    },
+    {
+      "id": "Quartz",
+      "name": "Quartz",
+      "nodes": [
+        "Research_Quartz_0_C",
+        "Research_Quartz_1_1_C",
+        "Research_Quartz_1_2_C",
+        "Research_Quartz_2_1_C",
+        "Research_Quartz_2_C",
+        "Research_Caterium_4_3_C",
+        "Research_Caterium_3_1_C",
+        "Research_Quartz_3_1_C",
+        "Research_Quartz_3_4_C",
+        "Research_Quartz_4_1_C",
+        "Research_Quartz_4_C",
+        "Research_Quartz_PriorityMerger_C"
+      ]
+    },
+    {
+      "id": "Sulfur",
+      "name": "Sulfur",
+      "nodes": [
+        "Research_Sulfur_0_C",
+        "Research_Sulfur_1_C",
+        "Research_Sulfur_ExperimentalPower_C",
+        "Research_Sulfur_CompactedCoal_C",
+        "Research_Sulfur_TurboFuel_C",
+        "Research_Sulfur_5_C",
+        "Research_Sulfur_3_1_C",
+        "Research_Sulfur_3_C",
+        "Research_Sulfur_RocketFuel_C",
+        "Research_Sulfur_IonizedFuel_C",
+        "Research_Sulfur_4_C",
+        "Research_Sulfur_4_2_C",
+        "Research_Sulfur_4_1_C",
+        "Research_Sulfur_5_1_C",
+        "Research_Sulfur_5_2_C",
+        "Research_Sulfur_6_C"
+      ]
+    },
+    {
+      "id": "XMas",
+      "name": "FICSMAS Holiday Event",
+      "nodes": [
+        "Research_XMas_1_C",
+        "Research_XMas_1-1_C",
+        "Research_XMas_1-2_C",
+        "Research_XMas_2_C",
+        "Research_XMas_2-1_C",
+        "Research_XMas_2-2_C",
+        "Research_XMas_3_C",
+        "Research_XMas_3-1_C",
+        "Research_XMas_3-2_C",
+        "Research_XMas_4_C",
+        "Research_XMas_4-1_C",
+        "Research_XMas_4-2_C",
+        "Research_XMas_5_C"
+      ]
+    }
+  ],
   "purityMultipliers": {
     "impure": 0.5,
     "normal": 1,

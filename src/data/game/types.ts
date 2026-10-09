@@ -214,6 +214,8 @@ export interface Progression {
   spaceElevatorPhases: { phase: number; name: string; cost: ItemAmount[]; unlocksTiers: number[] }[]
   /** What the player needs before a schematic type can be bought at all. */
   access: Record<string, { building?: BuildingId; schematic?: SchematicId; note?: string }>
+  /** MAM research trees in the supplement's order; `nodes` run top to bottom as the wiki diagrams list them. */
+  mamTrees: { id: string; name: string; nodes: SchematicId[] }[]
   purityMultipliers: { impure: number; normal: number; pure: number }
   geysers: { impure: number; normal: number; pure: number }
 }
@@ -246,4 +248,24 @@ export interface WorldMap {
   /** World area covered by the map image (and the save's fog of war), in cm. */
   bounds: { west: number; east: number; north: number; south: number }
   nodes: WorldNode[]
+}
+
+/** One level of the catalog's grouping: a subcategory and its members in display order. */
+export interface TaxonomyGroup {
+  id: string
+  name: string
+  /** Item or building ids. */
+  members: string[]
+}
+
+export interface TaxonomyCategory {
+  id: string
+  name: string
+  groups: TaxonomyGroup[]
+}
+
+/** How items and buildings are grouped for browsing (taxonomy.json). Buildings follow the in-game build menu. */
+export interface Taxonomy {
+  items: TaxonomyCategory[]
+  buildings: TaxonomyCategory[]
 }

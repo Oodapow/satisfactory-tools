@@ -1,0 +1,181 @@
+{
+  "_source": "How the catalog groups things. Buildings: the game's own build menu (category and subcategory come from each building's mSubCategories in the game file; this only gives them display names and an order). Items: the game file has no item categories, so this follows the in-game AWESOME Shop part categories (Standard Parts, Industrial Parts, Electronics, Communications, Minerals, Oil Products, Biomass, Containers, Ammunition, Consumables) and fills in the rest (ores, ingots, fluids, nuclear, Space Elevator parts, equipment, vehicles). Every item must be listed exactly once; the generator fails otherwise.",
+  "buildings": [
+    {
+      "id": "Production",
+      "name": "Production",
+      "groups": {
+        "Manufacturers": "Manufacturers",
+        "Smelters": "Smelters",
+        "Miners": "Miners",
+        "OilProduction": "Oil Production",
+        "Workstations": "Workstations",
+        "JumpPads": "Jump Pads"
+      }
+    },
+    {
+      "id": "Power",
+      "name": "Power",
+      "groups": {
+        "Generators": "Generators",
+        "PowerPoles": "Power Poles",
+        "WallPoles": "Wall Outlets"
+      }
+    },
+    {
+      "id": "Transport",
+      "name": "Logistics",
+      "groups": {
+        "ConveyorBelts": "Conveyor Belts",
+        "ConveyLift": "Conveyor Lifts",
+        "ConverPole": "Conveyor Poles",
+        "ConveyorAttachments": "Conveyor Attachments",
+        "Monitoring": "Monitoring",
+        "Pipes": "Pipelines",
+        "PipeSupport": "Pipeline Supports",
+        "Trains": "Trains",
+        "Vehicles": "Vehicles",
+        "VehiclePaths": "Vehicle Paths",
+        "HyperTubes": "Hypertubes",
+        "Elevators": "Elevators",
+        "Portal": "Portals"
+      }
+    },
+    {
+      "id": "Organisation",
+      "name": "Organization",
+      "groups": {
+        "Storage": "Storage",
+        "Floors": "Foundations",
+        "Ramps": "Ramps",
+        "Inverted": "Inverted Ramps",
+        "QuatPipes": "Quarter Pipes",
+        "Roofs": "Roofs",
+        "Pillars": "Pillars",
+        "Beams": "Beams",
+        "Frames": "Frames",
+        "Walkways": "Walkways",
+        "Catwalks": "Catwalks",
+        "Towers": "Towers",
+        "Attach": "Attachments",
+        "Lights": "Lights",
+        "Signs": "Signs",
+        "Utility": "Utility"
+      }
+    },
+    {
+      "id": "Walls",
+      "name": "Walls",
+      "groups": {
+        "Walls": "Walls",
+        "Doors": "Doors",
+        "Windows": "Windows",
+        "WindowFrames": "Window Frames",
+        "AngularWalls": "Angular Walls",
+        "DiagonalWalls": "Diagonal Walls",
+        "UpperDiagonalWalls": "Upper Diagonal Walls",
+        "ConveyorConnections": "Conveyor Walls"
+      }
+    },
+    {
+      "id": "Special",
+      "name": "Special",
+      "groups": {
+        "Progression": "Progression",
+        "AWESOME": "AWESOME Sink & Shop",
+        "BlueprintDesigners": "Blueprint Designers",
+        "Event": "Events"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "resources",
+      "name": "Resources",
+      "groups": [
+        { "id": "ores", "name": "Ores", "items": ["Desc_OreIron_C", "Desc_OreCopper_C", "Desc_Stone_C", "Desc_Coal_C", "Desc_OreGold_C", "Desc_RawQuartz_C", "Desc_Sulfur_C", "Desc_OreBauxite_C", "Desc_OreUranium_C", "Desc_SAM_C"] },
+        { "id": "fluid-resources", "name": "Fluid Resources", "items": ["Desc_Water_C", "Desc_LiquidOil_C", "Desc_NitrogenGas_C"] }
+      ]
+    },
+    {
+      "id": "parts",
+      "name": "Parts",
+      "groups": [
+        { "id": "ingots", "name": "Ingots", "items": ["Desc_IronIngot_C", "Desc_CopperIngot_C", "Desc_SteelIngot_C", "Desc_GoldIngot_C", "Desc_AluminumIngot_C", "Desc_FicsiteIngot_C"] },
+        { "id": "minerals", "name": "Minerals", "items": ["Desc_Cement_C", "Desc_QuartzCrystal_C", "Desc_Silica_C", "Desc_CopperDust_C", "Desc_CompactedCoal_C", "Desc_AluminumScrap_C", "Desc_Gunpowder_C", "Desc_GunpowderMK2_C"] },
+        { "id": "standard-parts", "name": "Standard Parts", "items": ["Desc_IronPlate_C", "Desc_IronRod_C", "Desc_IronScrew_C", "Desc_IronPlateReinforced_C", "Desc_ModularFrame_C", "Desc_CopperSheet_C", "Desc_SteelPlate_C", "Desc_SteelPipe_C", "Desc_SteelPlateReinforced_C", "Desc_ModularFrameHeavy_C", "Desc_AluminumPlate_C", "Desc_AluminumCasing_C", "Desc_FicsiteMesh_C"] },
+        { "id": "industrial-parts", "name": "Industrial Parts", "items": ["Desc_Rotor_C", "Desc_Stator_C", "Desc_Motor_C", "Desc_AluminumPlateReinforced_C", "Desc_CoolingSystem_C", "Desc_ModularFrameFused_C", "Desc_MotorLightweight_C"] },
+        { "id": "electronics", "name": "Electronics", "items": ["Desc_Wire_C", "Desc_Cable_C", "Desc_HighSpeedWire_C", "Desc_CircuitBoard_C", "Desc_CircuitBoardHighSpeed_C", "Desc_HighSpeedConnector_C", "Desc_Battery_C", "Desc_ElectromagneticControlRod_C", "Desc_CrystalShard_C", "Desc_TimeCrystal_C"] },
+        { "id": "communications", "name": "Communications", "items": ["Desc_Computer_C", "Desc_CrystalOscillator_C", "Desc_ModularFrameLightweight_C", "Desc_ComputerSuper_C", "Desc_QuantumOscillator_C", "Desc_TemporalProcessor_C"] },
+        { "id": "oil-products", "name": "Oil Products", "items": ["Desc_Plastic_C", "Desc_Rubber_C", "Desc_PolymerResin_C", "Desc_PetroleumCoke_C"] },
+        { "id": "fluids", "name": "Fluids", "items": ["Desc_HeavyOilResidue_C", "Desc_LiquidFuel_C", "Desc_LiquidTurboFuel_C", "Desc_LiquidBiofuel_C", "Desc_AluminaSolution_C", "Desc_SulfuricAcid_C", "Desc_NitricAcid_C", "Desc_DissolvedSilica_C", "Desc_RocketFuel_C", "Desc_IonizedFuel_C", "Desc_QuantumEnergy_C", "Desc_DarkEnergy_C"] },
+        { "id": "containers", "name": "Containers", "items": ["Desc_FluidCanister_C", "Desc_GasTank_C", "Desc_PressureConversionCube_C", "Desc_PackagedWater_C", "Desc_PackagedOil_C", "Desc_PackagedOilResidue_C", "Desc_Fuel_C", "Desc_TurboFuel_C", "Desc_PackagedBiofuel_C", "Desc_PackagedAlumina_C", "Desc_PackagedSulfuricAcid_C", "Desc_PackagedNitricAcid_C", "Desc_PackagedNitrogenGas_C", "Desc_PackagedRocketFuel_C", "Desc_PackagedIonizedFuel_C"] },
+        { "id": "nuclear", "name": "Nuclear", "items": ["Desc_UraniumCell_C", "Desc_NuclearFuelRod_C", "Desc_NuclearWaste_C", "Desc_NonFissibleUranium_C", "Desc_PlutoniumPellet_C", "Desc_PlutoniumCell_C", "Desc_PlutoniumFuelRod_C", "Desc_PlutoniumWaste_C", "Desc_Ficsonium_C", "Desc_FicsoniumFuelRod_C"] },
+        { "id": "alien-technology", "name": "Alien Technology", "items": ["Desc_SAMIngot_C", "Desc_SAMFluctuator_C", "Desc_Diamond_C", "Desc_DarkMatter_C", "Desc_SingularityCell_C", "Desc_AlienPowerFuel_C"] },
+        { "id": "space-elevator", "name": "Space Elevator", "items": ["Desc_SpaceElevatorPart_1_C", "Desc_SpaceElevatorPart_2_C", "Desc_SpaceElevatorPart_3_C", "Desc_SpaceElevatorPart_4_C", "Desc_SpaceElevatorPart_5_C", "Desc_SpaceElevatorPart_6_C", "Desc_SpaceElevatorPart_7_C", "Desc_SpaceElevatorPart_8_C", "Desc_SpaceElevatorPart_9_C", "Desc_SpaceElevatorPart_10_C", "Desc_SpaceElevatorPart_11_C", "Desc_SpaceElevatorPart_12_C"] }
+      ]
+    },
+    {
+      "id": "biomass",
+      "name": "Biomass",
+      "groups": [
+        { "id": "biomass", "name": "Biomass", "items": ["Desc_Leaves_C", "Desc_Wood_C", "Desc_Mycelia_C", "Desc_GenericBiomass_C", "Desc_Biofuel_C", "Desc_Fabric_C"] },
+        { "id": "alien-remains", "name": "Alien Remains", "items": ["Desc_HogParts_C", "Desc_SpitterParts_C", "Desc_StingerParts_C", "Desc_HatcherParts_C", "Desc_AlienProtein_C", "Desc_AlienDNACapsule_C"] }
+      ]
+    },
+    {
+      "id": "equipment",
+      "name": "Equipment",
+      "groups": [
+        { "id": "weapons", "name": "Weapons", "items": ["BP_EquipmentDescriptorShockShank_C", "BP_EquipmentDescriptorStunSpear_C", "Desc_RebarGunProjectile_C", "BP_EquipmentDescriptorRifle_C", "BP_EquipmentDescriptorNobeliskDetonator_C", "BP_EquipmentDescriptorCandyCane_C"] },
+        { "id": "tools", "name": "Tools", "items": ["Desc_Chainsaw_C", "BP_EquipmentDescriptorObjectScanner_C", "BP_ItemDescriptorPortableMiner_C", "BP_EqDescZipLine_C"] },
+        { "id": "body", "name": "Body", "items": ["BP_EquipmentDescriptorGasmask_C", "BP_EquipmentDescriptorHazmatSuit_C", "BP_EquipmentDescriptorJumpingStilts_C", "BP_EquipmentDescriptorJetPack_C", "BP_EquipmentDescriptorHoverPack_C"] }
+      ]
+    },
+    {
+      "id": "ammunition",
+      "name": "Ammunition",
+      "groups": [
+        { "id": "rebar", "name": "Rebar", "items": ["Desc_SpikedRebar_C", "Desc_Rebar_Stunshot_C", "Desc_Rebar_Spreadshot_C", "Desc_Rebar_Explosive_C"] },
+        { "id": "rifle-ammo", "name": "Rifle Ammo", "items": ["Desc_CartridgeStandard_C", "Desc_CartridgeSmartProjectile_C", "Desc_CartridgeChaos_C"] },
+        { "id": "nobelisks", "name": "Nobelisks", "items": ["Desc_NobeliskExplosive_C", "Desc_NobeliskGas_C", "Desc_NobeliskShockwave_C", "Desc_NobeliskCluster_C", "Desc_NobeliskNuke_C"] }
+      ]
+    },
+    {
+      "id": "consumables",
+      "name": "Consumables",
+      "groups": [
+        { "id": "health", "name": "Health", "items": ["Desc_Berry_C", "Desc_Nut_C", "Desc_Shroom_C", "Desc_Medkit_C"] },
+        { "id": "filters", "name": "Filters", "items": ["Desc_Filter_C", "Desc_HazmatFilter_C"] },
+        { "id": "traversal", "name": "Traversal", "items": ["Desc_Parachute_C"] }
+      ]
+    },
+    {
+      "id": "vehicles",
+      "name": "Vehicles",
+      "groups": [
+        { "id": "vehicles", "name": "Vehicles", "items": ["Desc_GolfCart_C", "Desc_GolfCartGold_C", "Desc_Explorer_C", "Desc_Tractor_C", "Desc_Truck_C", "Desc_FluidTruck_C", "Desc_CyberWagon_C"] },
+        { "id": "trains", "name": "Trains", "items": ["Desc_Locomotive_C", "Desc_FreightWagon_C"] },
+        { "id": "drones", "name": "Drones", "items": ["Desc_DroneTransport_C"] }
+      ]
+    },
+    {
+      "id": "collectibles",
+      "name": "Collectibles",
+      "groups": [
+        { "id": "power-slugs", "name": "Power Slugs", "items": ["Desc_Crystal_C", "Desc_Crystal_mk2_C", "Desc_Crystal_mk3_C"] },
+        { "id": "artifacts", "name": "Alien Artifacts", "items": ["Desc_WAT1_C", "Desc_WAT2_C"] },
+        { "id": "crash-sites", "name": "Crash Sites", "items": ["Desc_HardDrive_C"] }
+      ]
+    },
+    {
+      "id": "special",
+      "name": "Special",
+      "groups": [
+        { "id": "currency", "name": "Currency", "items": ["Desc_ResourceSinkCoupon_C"] },
+        { "id": "ficsmas", "name": "FICSMAS", "items": ["Desc_Gift_C", "Desc_CandyCane_C", "Desc_Snow_C", "Desc_SnowballProjectile_C", "Desc_XmasBall1_C", "Desc_XmasBall2_C", "Desc_XmasBall3_C", "Desc_XmasBall4_C", "Desc_XmasBallCluster_C", "Desc_XmasBow_C", "Desc_XmasBranch_C", "Desc_XmasStar_C", "Desc_XmasWreath_C", "Desc_XmasDataCartridge1_C", "Desc_XmasDataCartridge2_C", "Desc_XmasDataCartridge3_C", "Desc_XmasDataCartridge4_C", "Desc_Fireworks_Projectile_01_C", "Desc_Fireworks_Projectile_02_C", "Desc_Fireworks_Projectile_03_C"] },
+        { "id": "scanner", "name": "Scanner Targets", "items": ["Desc_Geyser_C"] }
+      ]
+    }
+  ]
+}

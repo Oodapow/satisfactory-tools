@@ -18,6 +18,12 @@ export function toUnit(map: WorldMap, [x, y]: Point): Point {
   return [(x - b.west) / (b.east - b.west), (y - b.north) / (b.south - b.north)]
 }
 
+/** World position (cm) of a fraction across the map; the inverse of toUnit. */
+export function toWorld(map: WorldMap, [u, v]: Point): Point {
+  const b = map.bounds
+  return [b.west + u * (b.east - b.west), b.north + v * (b.south - b.north)]
+}
+
 export function decodeFog(fog: string): Uint8Array {
   const binary = atob(fog)
   const out = new Uint8Array(binary.length)
@@ -78,3 +84,16 @@ export function exploredBox(fog: Uint8Array): { left: number; top: number; right
   if (right < 0) return null
   return { left: left / FOG_SIZE, top: top / FOG_SIZE, right: (right + 1) / FOG_SIZE, bottom: (bottom + 1) / FOG_SIZE }
 }
+
+/** Nodes within this distance of a newly placed outpost are given to it: 100 m, in cm. */
+export const AUTO_RADIUS = 10_000
+
+/** Only plain nodes of known resources can be given to an outpost: wells and geysers need buildings the planner doesn't place. */
+export const pickable = (m: Marker) => m.node.kind === 'node' && m.resource !== null
+
+/** Pickable markers within `radius` of a world position, nearest first. */
+export function nearby(list: Marker[], [x, y]: Point, radius = AUTO_RADIUS): Marker[] {
+  const dist = (m: Marker) => Math.hypot(m.node.x - x, m.node.y - y)
+  return list.filter((m) => pickable(m) && dist(m) <= radius).sort((a, b) => dist(a) - dist(b))
+}
+

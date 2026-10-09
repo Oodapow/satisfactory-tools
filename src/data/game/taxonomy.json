@@ -1,0 +1,1353 @@
+{
+  "items": [
+    {
+      "id": "resources",
+      "name": "Resources",
+      "groups": [
+        {
+          "id": "ores",
+          "name": "Ores",
+          "members": [
+            "Desc_OreIron_C",
+            "Desc_OreCopper_C",
+            "Desc_Stone_C",
+            "Desc_Coal_C",
+            "Desc_OreGold_C",
+            "Desc_RawQuartz_C",
+            "Desc_Sulfur_C",
+            "Desc_OreBauxite_C",
+            "Desc_OreUranium_C",
+            "Desc_SAM_C"
+          ]
+        },
+        {
+          "id": "fluid-resources",
+          "name": "Fluid Resources",
+          "members": [
+            "Desc_Water_C",
+            "Desc_LiquidOil_C",
+            "Desc_NitrogenGas_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "parts",
+      "name": "Parts",
+      "groups": [
+        {
+          "id": "ingots",
+          "name": "Ingots",
+          "members": [
+            "Desc_IronIngot_C",
+            "Desc_CopperIngot_C",
+            "Desc_SteelIngot_C",
+            "Desc_GoldIngot_C",
+            "Desc_AluminumIngot_C",
+            "Desc_FicsiteIngot_C"
+          ]
+        },
+        {
+          "id": "minerals",
+          "name": "Minerals",
+          "members": [
+            "Desc_Cement_C",
+            "Desc_QuartzCrystal_C",
+            "Desc_Silica_C",
+            "Desc_CopperDust_C",
+            "Desc_CompactedCoal_C",
+            "Desc_AluminumScrap_C",
+            "Desc_Gunpowder_C",
+            "Desc_GunpowderMK2_C"
+          ]
+        },
+        {
+          "id": "standard-parts",
+          "name": "Standard Parts",
+          "members": [
+            "Desc_IronPlate_C",
+            "Desc_IronRod_C",
+            "Desc_IronScrew_C",
+            "Desc_IronPlateReinforced_C",
+            "Desc_ModularFrame_C",
+            "Desc_CopperSheet_C",
+            "Desc_SteelPlate_C",
+            "Desc_SteelPipe_C",
+            "Desc_SteelPlateReinforced_C",
+            "Desc_ModularFrameHeavy_C",
+            "Desc_AluminumPlate_C",
+            "Desc_AluminumCasing_C",
+            "Desc_FicsiteMesh_C"
+          ]
+        },
+        {
+          "id": "industrial-parts",
+          "name": "Industrial Parts",
+          "members": [
+            "Desc_Rotor_C",
+            "Desc_Stator_C",
+            "Desc_Motor_C",
+            "Desc_AluminumPlateReinforced_C",
+            "Desc_CoolingSystem_C",
+            "Desc_ModularFrameFused_C",
+            "Desc_MotorLightweight_C"
+          ]
+        },
+        {
+          "id": "electronics",
+          "name": "Electronics",
+          "members": [
+            "Desc_Wire_C",
+            "Desc_Cable_C",
+            "Desc_HighSpeedWire_C",
+            "Desc_CircuitBoard_C",
+            "Desc_CircuitBoardHighSpeed_C",
+            "Desc_HighSpeedConnector_C",
+            "Desc_Battery_C",
+            "Desc_ElectromagneticControlRod_C",
+            "Desc_CrystalShard_C",
+            "Desc_TimeCrystal_C"
+          ]
+        },
+        {
+          "id": "communications",
+          "name": "Communications",
+          "members": [
+            "Desc_Computer_C",
+            "Desc_CrystalOscillator_C",
+            "Desc_ModularFrameLightweight_C",
+            "Desc_ComputerSuper_C",
+            "Desc_QuantumOscillator_C",
+            "Desc_TemporalProcessor_C"
+          ]
+        },
+        {
+          "id": "oil-products",
+          "name": "Oil Products",
+          "members": [
+            "Desc_Plastic_C",
+            "Desc_Rubber_C",
+            "Desc_PolymerResin_C",
+            "Desc_PetroleumCoke_C"
+          ]
+        },
+        {
+          "id": "fluids",
+          "name": "Fluids",
+          "members": [
+            "Desc_HeavyOilResidue_C",
+            "Desc_LiquidFuel_C",
+            "Desc_LiquidTurboFuel_C",
+            "Desc_LiquidBiofuel_C",
+            "Desc_AluminaSolution_C",
+            "Desc_SulfuricAcid_C",
+            "Desc_NitricAcid_C",
+            "Desc_DissolvedSilica_C",
+            "Desc_RocketFuel_C",
+            "Desc_IonizedFuel_C",
+            "Desc_QuantumEnergy_C",
+            "Desc_DarkEnergy_C"
+          ]
+        },
+        {
+          "id": "containers",
+          "name": "Containers",
+          "members": [
+            "Desc_FluidCanister_C",
+            "Desc_GasTank_C",
+            "Desc_PressureConversionCube_C",
+            "Desc_PackagedWater_C",
+            "Desc_PackagedOil_C",
+            "Desc_PackagedOilResidue_C",
+            "Desc_Fuel_C",
+            "Desc_TurboFuel_C",
+            "Desc_PackagedBiofuel_C",
+            "Desc_PackagedAlumina_C",
+            "Desc_PackagedSulfuricAcid_C",
+            "Desc_PackagedNitricAcid_C",
+            "Desc_PackagedNitrogenGas_C",
+            "Desc_PackagedRocketFuel_C",
+            "Desc_PackagedIonizedFuel_C"
+          ]
+        },
+        {
+          "id": "nuclear",
+          "name": "Nuclear",
+          "members": [
+            "Desc_UraniumCell_C",
+            "Desc_NuclearFuelRod_C",
+            "Desc_NuclearWaste_C",
+            "Desc_NonFissibleUranium_C",
+            "Desc_PlutoniumPellet_C",
+            "Desc_PlutoniumCell_C",
+            "Desc_PlutoniumFuelRod_C",
+            "Desc_PlutoniumWaste_C",
+            "Desc_Ficsonium_C",
+            "Desc_FicsoniumFuelRod_C"
+          ]
+        },
+        {
+          "id": "alien-technology",
+          "name": "Alien Technology",
+          "members": [
+            "Desc_SAMIngot_C",
+            "Desc_SAMFluctuator_C",
+            "Desc_Diamond_C",
+            "Desc_DarkMatter_C",
+            "Desc_SingularityCell_C",
+            "Desc_AlienPowerFuel_C"
+          ]
+        },
+        {
+          "id": "space-elevator",
+          "name": "Space Elevator",
+          "members": [
+            "Desc_SpaceElevatorPart_1_C",
+            "Desc_SpaceElevatorPart_2_C",
+            "Desc_SpaceElevatorPart_3_C",
+            "Desc_SpaceElevatorPart_4_C",
+            "Desc_SpaceElevatorPart_5_C",
+            "Desc_SpaceElevatorPart_6_C",
+            "Desc_SpaceElevatorPart_7_C",
+            "Desc_SpaceElevatorPart_8_C",
+            "Desc_SpaceElevatorPart_9_C",
+            "Desc_SpaceElevatorPart_10_C",
+            "Desc_SpaceElevatorPart_11_C",
+            "Desc_SpaceElevatorPart_12_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "biomass",
+      "name": "Biomass",
+      "groups": [
+        {
+          "id": "biomass",
+          "name": "Biomass",
+          "members": [
+            "Desc_Leaves_C",
+            "Desc_Wood_C",
+            "Desc_Mycelia_C",
+            "Desc_GenericBiomass_C",
+            "Desc_Biofuel_C",
+            "Desc_Fabric_C"
+          ]
+        },
+        {
+          "id": "alien-remains",
+          "name": "Alien Remains",
+          "members": [
+            "Desc_HogParts_C",
+            "Desc_SpitterParts_C",
+            "Desc_StingerParts_C",
+            "Desc_HatcherParts_C",
+            "Desc_AlienProtein_C",
+            "Desc_AlienDNACapsule_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "equipment",
+      "name": "Equipment",
+      "groups": [
+        {
+          "id": "weapons",
+          "name": "Weapons",
+          "members": [
+            "BP_EquipmentDescriptorShockShank_C",
+            "BP_EquipmentDescriptorStunSpear_C",
+            "Desc_RebarGunProjectile_C",
+            "BP_EquipmentDescriptorRifle_C",
+            "BP_EquipmentDescriptorNobeliskDetonator_C",
+            "BP_EquipmentDescriptorCandyCane_C"
+          ]
+        },
+        {
+          "id": "tools",
+          "name": "Tools",
+          "members": [
+            "Desc_Chainsaw_C",
+            "BP_EquipmentDescriptorObjectScanner_C",
+            "BP_ItemDescriptorPortableMiner_C",
+            "BP_EqDescZipLine_C"
+          ]
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "members": [
+            "BP_EquipmentDescriptorGasmask_C",
+            "BP_EquipmentDescriptorHazmatSuit_C",
+            "BP_EquipmentDescriptorJumpingStilts_C",
+            "BP_EquipmentDescriptorJetPack_C",
+            "BP_EquipmentDescriptorHoverPack_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ammunition",
+      "name": "Ammunition",
+      "groups": [
+        {
+          "id": "rebar",
+          "name": "Rebar",
+          "members": [
+            "Desc_SpikedRebar_C",
+            "Desc_Rebar_Stunshot_C",
+            "Desc_Rebar_Spreadshot_C",
+            "Desc_Rebar_Explosive_C"
+          ]
+        },
+        {
+          "id": "rifle-ammo",
+          "name": "Rifle Ammo",
+          "members": [
+            "Desc_CartridgeStandard_C",
+            "Desc_CartridgeSmartProjectile_C",
+            "Desc_CartridgeChaos_C"
+          ]
+        },
+        {
+          "id": "nobelisks",
+          "name": "Nobelisks",
+          "members": [
+            "Desc_NobeliskExplosive_C",
+            "Desc_NobeliskGas_C",
+            "Desc_NobeliskShockwave_C",
+            "Desc_NobeliskCluster_C",
+            "Desc_NobeliskNuke_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "consumables",
+      "name": "Consumables",
+      "groups": [
+        {
+          "id": "health",
+          "name": "Health",
+          "members": [
+            "Desc_Berry_C",
+            "Desc_Nut_C",
+            "Desc_Shroom_C",
+            "Desc_Medkit_C"
+          ]
+        },
+        {
+          "id": "filters",
+          "name": "Filters",
+          "members": [
+            "Desc_Filter_C",
+            "Desc_HazmatFilter_C"
+          ]
+        },
+        {
+          "id": "traversal",
+          "name": "Traversal",
+          "members": [
+            "Desc_Parachute_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vehicles",
+      "name": "Vehicles",
+      "groups": [
+        {
+          "id": "vehicles",
+          "name": "Vehicles",
+          "members": [
+            "Desc_GolfCart_C",
+            "Desc_GolfCartGold_C",
+            "Desc_Explorer_C",
+            "Desc_Tractor_C",
+            "Desc_Truck_C",
+            "Desc_FluidTruck_C",
+            "Desc_CyberWagon_C"
+          ]
+        },
+        {
+          "id": "trains",
+          "name": "Trains",
+          "members": [
+            "Desc_Locomotive_C",
+            "Desc_FreightWagon_C"
+          ]
+        },
+        {
+          "id": "drones",
+          "name": "Drones",
+          "members": [
+            "Desc_DroneTransport_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "collectibles",
+      "name": "Collectibles",
+      "groups": [
+        {
+          "id": "power-slugs",
+          "name": "Power Slugs",
+          "members": [
+            "Desc_Crystal_C",
+            "Desc_Crystal_mk2_C",
+            "Desc_Crystal_mk3_C"
+          ]
+        },
+        {
+          "id": "artifacts",
+          "name": "Alien Artifacts",
+          "members": [
+            "Desc_WAT1_C",
+            "Desc_WAT2_C"
+          ]
+        },
+        {
+          "id": "crash-sites",
+          "name": "Crash Sites",
+          "members": [
+            "Desc_HardDrive_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "special",
+      "name": "Special",
+      "groups": [
+        {
+          "id": "currency",
+          "name": "Currency",
+          "members": [
+            "Desc_ResourceSinkCoupon_C"
+          ]
+        },
+        {
+          "id": "ficsmas",
+          "name": "FICSMAS",
+          "members": [
+            "Desc_Gift_C",
+            "Desc_CandyCane_C",
+            "Desc_Snow_C",
+            "Desc_SnowballProjectile_C",
+            "Desc_XmasBall1_C",
+            "Desc_XmasBall2_C",
+            "Desc_XmasBall3_C",
+            "Desc_XmasBall4_C",
+            "Desc_XmasBallCluster_C",
+            "Desc_XmasBow_C",
+            "Desc_XmasBranch_C",
+            "Desc_XmasStar_C",
+            "Desc_XmasWreath_C",
+            "Desc_XmasDataCartridge1_C",
+            "Desc_XmasDataCartridge2_C",
+            "Desc_XmasDataCartridge3_C",
+            "Desc_XmasDataCartridge4_C",
+            "Desc_Fireworks_Projectile_01_C",
+            "Desc_Fireworks_Projectile_02_C",
+            "Desc_Fireworks_Projectile_03_C"
+          ]
+        },
+        {
+          "id": "scanner",
+          "name": "Scanner Targets",
+          "members": [
+            "Desc_Geyser_C"
+          ]
+        }
+      ]
+    }
+  ],
+  "buildings": [
+    {
+      "id": "Production",
+      "name": "Production",
+      "groups": [
+        {
+          "id": "Manufacturers",
+          "name": "Manufacturers",
+          "members": [
+            "Desc_ConstructorMk1_C",
+            "Desc_AssemblerMk1_C",
+            "Desc_ManufacturerMk1_C",
+            "Desc_Packager_C",
+            "Desc_OilRefinery_C",
+            "Desc_Blender_C",
+            "Desc_HadronCollider_C",
+            "Desc_Converter_C",
+            "Desc_QuantumEncoder_C"
+          ]
+        },
+        {
+          "id": "Smelters",
+          "name": "Smelters",
+          "members": [
+            "Desc_SmelterMk1_C",
+            "Desc_FoundryMk1_C"
+          ]
+        },
+        {
+          "id": "Miners",
+          "name": "Miners",
+          "members": [
+            "Desc_MinerMk1_C",
+            "Desc_MinerMk2_C",
+            "Desc_MinerMk3_C"
+          ]
+        },
+        {
+          "id": "OilProduction",
+          "name": "Oil Production",
+          "members": [
+            "Desc_WaterPump_C",
+            "Desc_OilPump_C",
+            "Desc_FrackingSmasher_C",
+            "Desc_FrackingExtractor_C"
+          ]
+        },
+        {
+          "id": "Workstations",
+          "name": "Workstations",
+          "members": [
+            "Desc_WorkBench_C",
+            "Desc_Workshop_C"
+          ]
+        },
+        {
+          "id": "JumpPads",
+          "name": "Jump Pads",
+          "members": [
+            "Desc_JumpPad_C",
+            "Desc_JumpPadAdjustable_C",
+            "Desc_JumpPadTilted_C",
+            "Desc_LandingPad_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Power",
+      "name": "Power",
+      "groups": [
+        {
+          "id": "Generators",
+          "name": "Generators",
+          "members": [
+            "Desc_GeneratorBiomass_Automated_C",
+            "Desc_GeneratorCoal_C",
+            "Desc_GeneratorFuel_C",
+            "Desc_GeneratorGeoThermal_C",
+            "Desc_GeneratorNuclear_C",
+            "Desc_AlienPowerBuilding_C"
+          ]
+        },
+        {
+          "id": "PowerPoles",
+          "name": "Power Poles",
+          "members": [
+            "Desc_PowerLine_C",
+            "Desc_PowerPoleMk1_C",
+            "Desc_PowerPoleMk2_C",
+            "Desc_PowerPoleMk3_C",
+            "Desc_PowerTower_C",
+            "Desc_PowerTowerPlatform_C",
+            "Desc_PowerSwitch_C",
+            "Desc_PriorityPowerSwitch_C",
+            "Desc_PowerStorageMk1_C"
+          ]
+        },
+        {
+          "id": "WallPoles",
+          "name": "Wall Outlets",
+          "members": [
+            "Desc_PowerPoleWall_C",
+            "Desc_PowerPoleWallMk2_C",
+            "Desc_PowerPoleWallMk3_C",
+            "Desc_PowerPoleWallDouble_C",
+            "Desc_PowerPoleWallDoubleMk2_C",
+            "Desc_PowerPoleWallDoubleMk3_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Transport",
+      "name": "Logistics",
+      "groups": [
+        {
+          "id": "ConveyorBelts",
+          "name": "Conveyor Belts",
+          "members": [
+            "Desc_ConveyorBeltMk1_C",
+            "Desc_ConveyorBeltMk2_C",
+            "Desc_ConveyorBeltMk3_C",
+            "Desc_ConveyorBeltMk4_C",
+            "Desc_ConveyorBeltMk5_C",
+            "Desc_ConveyorBeltMk6_C"
+          ]
+        },
+        {
+          "id": "ConveyLift",
+          "name": "Conveyor Lifts",
+          "members": [
+            "Desc_ConveyorLiftMk1_C",
+            "Desc_ConveyorLiftMk2_C",
+            "Desc_ConveyorLiftMk3_C",
+            "Desc_ConveyorLiftMk4_C",
+            "Desc_ConveyorLiftMk5_C",
+            "Desc_ConveyorLiftMk6_C"
+          ]
+        },
+        {
+          "id": "ConverPole",
+          "name": "Conveyor Poles",
+          "members": [
+            "Desc_ConveyorPole_C",
+            "Desc_ConveyorPoleStackable_C",
+            "Desc_ConveyorPoleWall_C",
+            "Desc_ConveyorCeilingAttachment_C",
+            "Desc_ConveyorWallHole_C",
+            "Desc_FoundationPassthrough_Lift_C"
+          ]
+        },
+        {
+          "id": "ConveyorAttachments",
+          "name": "Conveyor Attachments",
+          "members": [
+            "Desc_ConveyorAttachmentMerger_C",
+            "Desc_ConveyorAttachmentMergerPriority_C",
+            "Desc_ConveyorAttachmentSplitter_C",
+            "Desc_ConveyorAttachmentSplitterSmart_C",
+            "Desc_ConveyorAttachmentSplitterProgrammable_C"
+          ]
+        },
+        {
+          "id": "Monitoring",
+          "name": "Monitoring",
+          "members": [
+            "Desc_ConveyorMonitor_C"
+          ]
+        },
+        {
+          "id": "Pipes",
+          "name": "Pipelines",
+          "members": [
+            "Desc_Pipeline_NoIndicator_C",
+            "Desc_Pipeline_C",
+            "Desc_PipelineMK2_NoIndicator_C",
+            "Desc_PipelineMK2_C",
+            "Desc_PipelineJunction_Cross_C",
+            "Desc_PipelinePump_C",
+            "Desc_PipelineJunction_T_C",
+            "Desc_PipelinePumpMk2_C",
+            "Desc_Valve_C"
+          ]
+        },
+        {
+          "id": "PipeSupport",
+          "name": "Pipeline Supports",
+          "members": [
+            "Desc_PipelineSupport_C",
+            "Desc_PipeSupportStackable_C",
+            "Desc_PipelineSupportWall_C",
+            "Desc_PipelineSupportWallHole_C",
+            "Desc_FoundationPassthrough_Pipe_C"
+          ]
+        },
+        {
+          "id": "Trains",
+          "name": "Trains",
+          "members": [
+            "Desc_TrainStation_C",
+            "Desc_TrainPlatformEmpty_C",
+            "Desc_TrainPlatformEmpty_02_C",
+            "Desc_TrainDockingStationLiquid_C",
+            "Desc_TrainDockingStation_C",
+            "Desc_RailroadTrack_C",
+            "Desc_RailroadEndStop_C",
+            "Desc_RailroadBlockSignal_C",
+            "Desc_RailroadPathSignal_C"
+          ]
+        },
+        {
+          "id": "Vehicles",
+          "name": "Vehicles",
+          "members": [
+            "Desc_TruckStation_C",
+            "Desc_FluidTruckStation_C",
+            "Desc_DroneStation_C"
+          ]
+        },
+        {
+          "id": "VehiclePaths",
+          "name": "Vehicle Paths",
+          "members": [
+            "Desc_VehiclePath_Universal_C",
+            "Desc_VehiclePath_Tractor_C",
+            "Desc_VehiclePath_Truck_C",
+            "Desc_VehiclePath_Explorer_C",
+            "Desc_VehiclePath_FactoryCart_C"
+          ]
+        },
+        {
+          "id": "HyperTubes",
+          "name": "Hypertubes",
+          "members": [
+            "Desc_PipeHyper_C",
+            "Desc_PipeHyperStart_C",
+            "Desc_PipeHyperSupport_C",
+            "Desc_HyperTubeWallSupport_C",
+            "Desc_HyperTubeWallHole_C",
+            "Desc_FoundationPassthrough_Hypertube_C",
+            "Desc_HyperTubeJunction_C",
+            "Desc_HypertubeTJunction_C",
+            "Desc_HyperPoleStackable_C"
+          ]
+        },
+        {
+          "id": "Elevators",
+          "name": "Elevators",
+          "members": [
+            "Desc_Elevator_C",
+            "Desc_ElevatorFloorStop_C"
+          ]
+        },
+        {
+          "id": "Portal",
+          "name": "Portals",
+          "members": [
+            "Desc_Portal_C",
+            "Desc_PortalSatellite_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Organisation",
+      "name": "Organization",
+      "groups": [
+        {
+          "id": "Storage",
+          "name": "Storage",
+          "members": [
+            "Desc_StorageContainerMk1_C",
+            "Desc_StorageContainerMk2_C",
+            "Desc_CentralStorage_C",
+            "Desc_StoragePlayer_C",
+            "Desc_StorageMedkit_C",
+            "Desc_StorageHazard_C",
+            "Desc_StackableShelf_C",
+            "Desc_PipeStorageTank_C",
+            "Desc_IndustrialTank_C"
+          ]
+        },
+        {
+          "id": "Floors",
+          "name": "Foundations",
+          "members": [
+            "Desc_Foundation_8x1_01_C",
+            "Desc_Foundation_8x2_01_C",
+            "Desc_Foundation_8x4_01_C",
+            "Desc_QuarterPipeMiddle_Ficsit_4x1_C",
+            "Desc_QuarterPipeMiddle_Ficsit_4x2_C",
+            "Desc_QuarterPipeMiddle_Ficsit_4x4_C",
+            "Desc_Foundation_Concrete_8x1_C",
+            "Desc_Foundation_Concrete_8x2_C",
+            "Desc_Foundation_Concrete_8x4_C",
+            "Desc_QuarterPipeMiddle_Concrete_8x1_C",
+            "Desc_QuarterPipeMiddle_Concrete_8x2_C",
+            "Desc_QuarterPipeMiddle_Concrete_8x4_C",
+            "Desc_Foundation_Metal_8x1_C",
+            "Desc_Foundation_Metal_8x2_C",
+            "Desc_Foundation_Metal_8x4_C",
+            "Desc_QuarterPipeMiddle_Grip_8x1_C",
+            "Desc_QuarterPipeMiddle_Grip_8x2_C",
+            "Desc_QuarterPipeMiddle_Grip_8x4_C",
+            "Desc_Foundation_ConcretePolished_8x1_C",
+            "Foundation_ConcretePolished_8x2_C",
+            "Foundation_ConcretePolished_8x4_C",
+            "Desc_QuarterPipeMiddle_PolishedConcrete_8x1_C",
+            "Desc_QuarterPipeMiddle_PolishedConcrete_8x2_C",
+            "Desc_QuarterPipeMiddle_PolishedConcrete_8x4_C",
+            "Desc_Foundation_Asphalt_8x1_C",
+            "Desc_Foundation_Asphalt_8x2_C",
+            "Desc_Foundation_Asphalt_8x4_C",
+            "Desc_QuarterPipeMiddle_Asphalt_8x1_C",
+            "Desc_QuarterPipeMiddle_Asphalt_8x2_C",
+            "Desc_QuarterPipeMiddle_Asphalt_8x4_C"
+          ]
+        },
+        {
+          "id": "Ramps",
+          "name": "Ramps",
+          "members": [
+            "Desc_Ramp_8x1_01_C",
+            "Desc_Ramp_8x2_01_C",
+            "Desc_Ramp_8x4_01_C",
+            "Desc_Ramp_Diagonal_8x1_02_C",
+            "Desc_Ramp_Diagonal_8x2_02_C",
+            "Desc_Ramp_Diagonal_8x4_02_C",
+            "Desc_Ramp_Diagonal_8x1_01_C",
+            "Desc_Ramp_Diagonal_8x2_01_C",
+            "Desc_Ramp_Diagonal_8x4_01_C",
+            "Desc_RampDouble_8x1_C",
+            "Desc_RampDouble_C",
+            "Desc_Ramp_8x8x8_C",
+            "Desc_Stair_FicsitSet_8x1_01_C",
+            "Desc_Stair_FicsitSet_8x2_01_C",
+            "Desc_Stair_FicsitSet_8x4_01_C",
+            "Desc_Ramp_Concrete_8x1_C",
+            "Desc_Ramp_Concrete_8x2_C",
+            "Desc_Ramp_Concrete_8x4_C",
+            "Desc_Ramp_UpCorner_Concrete_8x1_C",
+            "Desc_Ramp_UpCorner_Concrete_8x2_C",
+            "Desc_Ramp_UpCorner_Concrete_8x4_C",
+            "Desc_Ramp_DownCorner_Concrete_8x1_C",
+            "Desc_Ramp_DownCorner_Concrete_8x2_C",
+            "Desc_Ramp_DownCorner_Concrete_8x4_C",
+            "Desc_RampDouble_Concrete_8x1_C",
+            "Desc_RampDouble_Concrete_8x2_C",
+            "Desc_RampDouble_Concrete_8x4_C",
+            "Desc_Stair_Concrete_8x1_C",
+            "Desc_Stair_Concrete_8x2_C",
+            "Desc_Stair_Concrete_8x4_C",
+            "Desc_Ramp_Metal_8x1_C",
+            "Desc_Ramp_Metal_8x2_C",
+            "Desc_Ramp_Metal_8x4_C",
+            "Desc_Ramp_UpCorner_Metal_8x1_C",
+            "Desc_Ramp_UpCorner_Metal_8x2_C",
+            "Desc_Ramp_UpCorner_Metal_8x4_C",
+            "Desc_Ramp_DownCorner_Metal_8x1_C",
+            "Desc_Ramp_DownCorner_Metal_8x2_C",
+            "Desc_Ramp_DownCorner_Metal_8x4_C",
+            "Desc_RampDouble_Metal_8x1_C",
+            "Desc_RampDouble_Metal_8x2_C",
+            "Desc_RampDouble_Metal_8x4_C",
+            "Desc_Stair_GripMetal_8x1_C",
+            "Desc_Stair_GripMetal_8x2_C",
+            "Desc_Stair_GripMetal_8x4_C",
+            "Desc_Ramp_Polished_8x1_C",
+            "Desc_Ramp_Polished_8x2_C",
+            "Desc_Ramp_Polished_8x4_C",
+            "Desc_Ramp_UpCorner_Polished_8x1_C",
+            "Desc_Ramp_UpCorner_Polished_8x2_C",
+            "Desc_Ramp_UpCorner_Polished_8x4_C",
+            "Desc_Ramp_DownCorner_Polished_8x1_C",
+            "Desc_Ramp_DownCorner_Polished_8x2_C",
+            "Desc_Ramp_DownCorner_Polished_8x4_C",
+            "Desc_RampDouble_Polished_8x1_C",
+            "Desc_RampDouble_Polished_8x2_C",
+            "Desc_RampDouble_Polished_8x4_C",
+            "Desc_Stair_PolishedConcrete_8x1_C",
+            "Desc_Stair_PolishedConcrete_8x2_C",
+            "Desc_Stair_PolishedConcrete_8x4_C",
+            "Desc_Ramp_Asphalt_8x1_C",
+            "Desc_Ramp_Asphalt_8x2_C",
+            "Desc_Ramp_Asphalt_8x4_C",
+            "Desc_Ramp_UpCorner_Asphalt_8x1_C",
+            "Desc_Ramp_UpCorner_Asphalt_8x2_C",
+            "Desc_Ramp_UpCorner_Asphalt_8x4_C",
+            "Desc_Ramp_DownCorner_Asphalt_8x1_C",
+            "Desc_Ramp_DownCorner_Asphalt_8x2_C",
+            "Desc_Ramp_DownCorner_Asphalt_8x4_C",
+            "Desc_RampDouble_Asphalt_8x1_C",
+            "Desc_RampDouble_Asphalt_8x2_C",
+            "Desc_RampDouble_Asphalt_8x4_C",
+            "Desc_Stair_Asphalt_8x1_C",
+            "Desc_Stair_Asphalt_8x2_C",
+            "Desc_Stair_Asphalt_8x4_C"
+          ]
+        },
+        {
+          "id": "Inverted",
+          "name": "Inverted Ramps",
+          "members": [
+            "Desc_RampInverted_8x1_C",
+            "Desc_RampInverted_8x2_01_C",
+            "Desc_Ramp_8x4_Inverted_01_C",
+            "Desc_RampInverted_8x1_Corner_01_C",
+            "Desc_RampInverted_8x2_Corner_01_C",
+            "Desc_RampInverted_8x4_Corner_01_C",
+            "Desc_RampInverted_8x1_Corner_02_C",
+            "Desc_RampInverted_8x2_Corner_02_C",
+            "Desc_RampInverted_8x4_Corner_02_C",
+            "Desc_InvertedRamp_Concrete_8x1_C",
+            "Desc_InvertedRamp_Concrete_8x2_C",
+            "Desc_InvertedRamp_Concrete_8x4_C",
+            "Desc_InvertedRamp_UCorner_Concrete_8x1_C",
+            "Desc_InvertedRamp_UCorner_Concrete_8x2_C",
+            "Desc_InvertedRamp_UCorner_Concrete_8x4_C",
+            "Desc_InvertedRamp_DCorner_Concrete_8x1_C",
+            "Desc_InvertedRamp_DCorner_Concrete_8x2_C",
+            "Desc_InvertedRamp_DCorner_Concrete_8x4_C",
+            "Desc_InvertedRamp_Metal_8x1_C",
+            "Desc_InvertedRamp_Metal_8x2_C",
+            "Desc_InvertedRamp_Metal_8x4_C",
+            "Desc_InvertedRamp_UCorner_Metal_8x1_C",
+            "Desc_InvertedRamp_UCorner_Metal_8x2_C",
+            "Desc_InvertedRamp_UCorner_Metal_8x4_C",
+            "Desc_InvertedRamp_DCorner_Metal_8x1_C",
+            "Desc_InvertedRamp_DCorner_Metal_8x2_C",
+            "Desc_InvertedRamp_DCorner_Metal_8x4_C",
+            "Desc_InvertedRamp_Polished_8x1_C",
+            "Desc_InvertedRamp_Polished_8x2_C",
+            "Desc_InvertedRamp_Polished_8x4_C",
+            "Desc_InvertedRamp_UCorner_Polished_8x1_C",
+            "Desc_InvertedRamp_UCorner_Polished_8x2_C",
+            "Desc_InvertedRamp_UCorner_Polished_8x4_C",
+            "Desc_InvertedRamp_DCorner_Polished_8x1_C",
+            "Desc_InvertedRamp_DCorner_Polished_8x2_C",
+            "Desc_InvertedRamp_DCorner_Polished_8x4_C",
+            "Desc_InvertedRamp_Asphalt_8x1_C",
+            "Desc_InvertedRamp_Asphalt_8x2_C",
+            "Desc_InvertedRamp_Asphalt_8x4_C",
+            "Desc_InvertedRamp_UCorner_Asphalt_8x1_C",
+            "Desc_InvertedRamp_UCorner_Asphalt_8x2_C",
+            "Desc_InvertedRamp_UCorner_Asphalt_8x4_C",
+            "Desc_InvertedRamp_DCorner_Asphalt_8x1_C",
+            "Desc_InvertedRamp_DCorner_Asphalt_8x2_C",
+            "Desc_InvertedRamp_DCorner_Asphalt_8x4_C"
+          ]
+        },
+        {
+          "id": "QuatPipes",
+          "name": "Quarter Pipes",
+          "members": [
+            "Desc_QuarterPipe_C",
+            "Desc_QuarterPipe_02_C",
+            "Desc_QuarterPipeCorner_01_C",
+            "Desc_QuarterPipeCorner_02_C",
+            "Desc_QuarterPipeCorner_03_C",
+            "Desc_QuarterPipeCorner_04_C",
+            "Desc_QuarterPipeMiddleInCorner_Ficsit_8x1_C",
+            "Desc_QuarterPipeMiddleInCorner_Ficsit_8x2_C",
+            "Desc_QuarterPipeMiddleInCorner_Ficsit_8x4_C",
+            "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x1_C",
+            "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x2_C",
+            "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x4_C",
+            "Desc_QuarterPipe_Concrete_8x4_C",
+            "Desc_DownQuarterPipe_Concrete_8x4_C",
+            "Desc_QuarterPipeInCorner_Concrete_8x4_C",
+            "Desc_DownQuarterPipeInCorner_Concrete_8x4_C",
+            "Desc_QuarterPipeOutCorner_Concrete_8x4_C",
+            "Desc_DownQuarterPipeOutCorner_Concrete_8x4_C",
+            "Desc_QuarterPipeMiddleInCorner_Concrete_8x1_C",
+            "Desc_QuarterPipeMiddleInCorner_Concrete_8x2_C",
+            "Desc_QuarterPipeMiddleInCorner_Concrete_8x4_C",
+            "Desc_QuarterPipeMiddleOutCorner_Concrete_4x1_C",
+            "Desc_QuarterPipeMiddleOutCorner_Concrete_4x2_C",
+            "Desc_QuarterPipeMiddleOutCorner_Concrete_4x4_C",
+            "Desc_QuarterPipe_Grip_8x4_C",
+            "Desc_DownQuarterPipe_Grip_8x4_C",
+            "Desc_QuarterPipeInCorner_Grip_8x4_C",
+            "Desc_DownQuarterPipeInCorner_Grip_8x4_C",
+            "Desc_QuarterPipeOutCorner_Grip_8x4_C",
+            "Desc_DownQuarterPipeOutCorner_Grip_8x4_C",
+            "Desc_QuarterPipeMiddleInCorner_Grip_8x1_C",
+            "Desc_QuarterPipeMiddleInCorner_Grip_8x2_C",
+            "Desc_QuarterPipeMiddleInCorner_Grip_8x4_C",
+            "Desc_QuarterPipeMiddleOutCorner_Grip_4x1_C",
+            "Desc_QuarterPipeMiddleOutCorner_Grip_4x2_C",
+            "Desc_QuarterPipeMiddleOutCorner_Grip_4x4_C",
+            "Desc_QuarterPipe_ConcretePolished_8x4_C",
+            "Desc_DownQuarterPipe_ConcretePolished_8x4_C",
+            "Desc_QuarterPipeInCorner_ConcretePolished_8x4_C",
+            "Desc_DownQuarterPipeInCorner_ConcretePolished_8x4_C",
+            "Desc_QuarterPipeOutCorner_ConcretePolished_8x4_C",
+            "Desc_DownQuarterPipeOutCorner_ConcretePolished_8x4_C",
+            "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x1_C",
+            "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x2_C",
+            "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x4_C",
+            "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x1_C",
+            "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x2_C",
+            "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x4_C",
+            "Desc_QuarterPipe_Asphalt_8x4_C",
+            "Desc_DownQuarterPipe_Asphalt_8x4_C",
+            "Desc_QuarterPipeInCorner_Asphalt_8x4_C",
+            "Desc_DownQuarterPipeInCorner_Asphalt_8x4_C",
+            "Desc_QuarterPipeOutCorner_Asphalt_8x4_C",
+            "Desc_DownQuarterPipeOutCorner_Asphalt_8x4_C",
+            "Desc_QuarterPipeMiddleInCorner_Asphalt_8x1_C",
+            "Desc_QuarterPipeMiddleInCorner_Asphalt_8x2_C",
+            "Desc_QuarterPipeMiddleInCorner_Asphalt_8x4_C",
+            "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x1_C",
+            "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x2_C",
+            "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x4_C"
+          ]
+        },
+        {
+          "id": "Roofs",
+          "name": "Roofs",
+          "members": [
+            "Desc_Roof_Orange_04_C",
+            "Desc_Roof_Orange_03_C",
+            "Desc_Roof_Orange_02_C",
+            "Desc_Roof_Orange_01_C",
+            "Desc_Roof_Orange_OutCorner_03_C",
+            "Desc_Roof_Orange_OutCorner_02_C",
+            "Desc_Roof_Orange_OutCorner_01_C",
+            "Desc_Roof_Orange_InCorner_03_C",
+            "Desc_Roof_Orange_InCorner_02_C",
+            "Desc_Roof_Orange_InCorner_01_C",
+            "Desc_Roof_Tar_04_C",
+            "Desc_Roof_Tar_03_C",
+            "Desc_Roof_Tar_02_C",
+            "Desc_Roof_Tar_01_C",
+            "Desc_Roof_Tar_OutCorner_03_C",
+            "Desc_Roof_Tar_OutCorner_02_C",
+            "Desc_Roof_Tar_OutCorner_01_C",
+            "Desc_Roof_Tar_InCorner_03_C",
+            "Desc_Roof_Tar_InCorner_02_C",
+            "Desc_Roof_Tar_InCorner_01_C",
+            "Desc_Roof_A_04_C",
+            "Desc_Roof_A_03_C",
+            "Desc_Roof_A_02_C",
+            "Desc_Roof_A_01_C",
+            "Desc_Roof_Metal_OutCorner_03_C",
+            "Desc_Roof_Metal_OutCorner_02_C",
+            "Desc_Roof_Metal_OutCorner_01_C",
+            "Desc_Roof_Metal_InCorner_03_C",
+            "Desc_Roof_Metal_InCorner_02_C",
+            "Desc_Roof_Metal_InCorner_01_C",
+            "Desc_Roof_Window_04_C",
+            "Desc_Roof_Window_03_C",
+            "Desc_Roof_Window_02_C",
+            "Desc_Roof_Window_01_C",
+            "Desc_Roof_Window_OutCorner_03_C",
+            "Desc_Roof_Window_OutCorner_02_C",
+            "Desc_Roof_Window_OutCorner_01_C",
+            "Desc_Roof_Window_InCorner_03_C",
+            "Desc_Roof_Window_InCorner_02_C",
+            "Desc_Roof_Window_InCorner_01_C"
+          ]
+        },
+        {
+          "id": "Pillars",
+          "name": "Pillars",
+          "members": [
+            "Desc_PillarBase_C",
+            "Desc_PillarTop_C",
+            "Desc_PillarMiddle_C",
+            "Desc_PillarMiddle_Concrete_C",
+            "Desc_PillarMiddle_Frame_C",
+            "Desc_PillarBase_Small_C",
+            "Desc_Pillar_Small_Metal_C",
+            "Desc_Pillar_Small_Concrete_C",
+            "Desc_Pillar_Small_Frame_C"
+          ]
+        },
+        {
+          "id": "Beams",
+          "name": "Beams",
+          "members": [
+            "Desc_Beam_C",
+            "Desc_Beam_Painted_C",
+            "Desc_Beam_H_C",
+            "Desc_Beam_Shelf_C",
+            "Desc_Beam_Cross_C",
+            "Desc_Beam_Concrete_C",
+            "Desc_Beam_Cable_C",
+            "Desc_Beam_Cable_Cluster_C",
+            "Desc_Beam_Connector_C",
+            "Desc_Beam_Connector_Double_C",
+            "Desc_Beam_Support_C"
+          ]
+        },
+        {
+          "id": "Frames",
+          "name": "Frames",
+          "members": [
+            "Desc_Flat_Frame_01_C",
+            "Desc_FoundationGlass_01_C",
+            "Desc_Foundation_Frame_01_C",
+            "Desc_Ramp_Frame_01_C",
+            "Desc_Ramp_Frame_Inverted_01_C",
+            "Desc_Wall_Frame_01_C"
+          ]
+        },
+        {
+          "id": "Walkways",
+          "name": "Walkways",
+          "members": [
+            "Desc_WalkwayStraight_C",
+            "Desc_WalkwayTurn_C",
+            "Desc_WalkwayT_C",
+            "Desc_WalkwayCross_C",
+            "Desc_WalkwayRamp_C"
+          ]
+        },
+        {
+          "id": "Catwalks",
+          "name": "Catwalks",
+          "members": [
+            "Desc_CatwalkStraight_C",
+            "Desc_CatwalkTurn_C",
+            "Desc_CatwalkT_C",
+            "Desc_CatwalkCross_C",
+            "Desc_CatwalkRamp_C",
+            "Desc_CatwalkStairs_C"
+          ]
+        },
+        {
+          "id": "Towers",
+          "name": "Towers",
+          "members": [
+            "Desc_LookoutTower_C",
+            "Desc_RadarTower_C"
+          ]
+        },
+        {
+          "id": "Attach",
+          "name": "Attachments",
+          "members": [
+            "Desc_Ladder_C",
+            "Desc_Railing_01_C",
+            "Desc_Fence_01_C",
+            "Desc_ChainLinkFence_C",
+            "Desc_TarpFence_C",
+            "Desc_Barrier_Corner_C",
+            "Desc_Concrete_Barrier_01_C",
+            "Desc_Stairs_Left_01_C",
+            "Desc_Barrier_Low_01_C",
+            "Desc_Stairs_Right_01_C",
+            "Desc_Barrier_Tall_01_C",
+            "Desc_LargeFan_C",
+            "Desc_LargeVent_C"
+          ]
+        },
+        {
+          "id": "Lights",
+          "name": "Lights",
+          "members": [
+            "Desc_StreetLight_C",
+            "Desc_CeilingLight_C",
+            "Desc_FloodlightPole_C",
+            "Desc_FloodlightWall_C",
+            "Desc_LightsControlPanel_C"
+          ]
+        },
+        {
+          "id": "Signs",
+          "name": "Signs",
+          "members": [
+            "Desc_StandaloneWidgetSign_Small_C",
+            "Desc_StandaloneWidgetSign_SmallWide_C",
+            "Desc_StandaloneWidgetSign_SmallVeryWide_C",
+            "Desc_StandaloneWidgetSign_Square_Tiny_C",
+            "Desc_StandaloneWidgetSign_Square_Small_C",
+            "Desc_StandaloneWidgetSign_Square_C",
+            "Desc_StandaloneWidgetSign_Medium_C",
+            "Desc_StandaloneWidgetSign_Portrait_C",
+            "Desc_StandaloneWidgetSign_Large_C",
+            "Desc_StandaloneWidgetSign_Huge_C"
+          ]
+        },
+        {
+          "id": "Utility",
+          "name": "Utility",
+          "members": [
+            "Desc_PortalPotty_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Walls",
+      "name": "Walls",
+      "groups": [
+        {
+          "id": "Walls",
+          "name": "Walls",
+          "members": [
+            "Desc_Wall_Orange_8x1_C",
+            "Desc_Wall_8x4_01_C",
+            "Desc_SteelWall_8x4_C",
+            "Desc_Wall_Concrete_8x1_C",
+            "Desc_Wall_Concrete_8x4_C",
+            "Desc_SteelWall_8x1_C",
+            "Desc_Wall_8x4_02_C"
+          ]
+        },
+        {
+          "id": "Doors",
+          "name": "Doors",
+          "members": [
+            "Desc_Wall_Door_8x4_01_C",
+            "Desc_Wall_Door_8x4_03_C",
+            "Desc_Wall_Gate_8x4_01_C",
+            "Desc_BigGarageDoor_16x8_C",
+            "Desc_Wall_Concrete_CDoor_8x4_C",
+            "Desc_Wall_Concrete_SDoor_8x4_C",
+            "Desc_Wall_Concrete_Gate_8x4_C",
+            "Desc_BigGarageDoor_16x8_Concrete_C",
+            "Desc_Wall_Door_8x4_01_Steel_C",
+            "Desc_Wall_Door_8x4_03_Steel_C",
+            "Desc_SteelWall_8x4_Gate_01_C",
+            "Desc_BigGarageDoor_16x8_Steel_C",
+            "Desc_Gate_Automated_8x4_C"
+          ]
+        },
+        {
+          "id": "Windows",
+          "name": "Windows",
+          "members": [
+            "Desc_Wall_Window_8x4_01_C",
+            "Desc_Wall_Window_8x4_02_C",
+            "Desc_Wall_Window_8x4_03_C",
+            "Desc_Wall_Window_8x4_04_C",
+            "Desc_Wall_Concrete_8x4_Window_01_C",
+            "Desc_Wall_Concrete_8x4_Window_02_C",
+            "Desc_Wall_Concrete_8x4_Window_03_C",
+            "Desc_Wall_Concrete_8x4_Window_04_C",
+            "Desc_SteelWall_8x4_Window_01_C",
+            "Desc_SteelWall_8x4_Window_03_C",
+            "Desc_SteelWall_8x4_Window_04_C",
+            "Desc_SteelWall_8x4_Window_02_C",
+            "Desc_Wall_Window_8x4_03_Steel_C"
+          ]
+        },
+        {
+          "id": "WindowFrames",
+          "name": "Window Frames",
+          "members": [
+            "Desc_Wall_Window_Thin_8x4_01_C",
+            "Desc_Wall_Window_Thin_8x4_02_C",
+            "Desc_Wall_Window_8x4_05_C",
+            "Desc_Wall_Window_8x4_06_C",
+            "Desc_Wall_Window_8x4_07_C"
+          ]
+        },
+        {
+          "id": "AngularWalls",
+          "name": "Angular Walls",
+          "members": [
+            "Desc_Wall_Orange_Angular_8x4_C",
+            "Desc_Wall_Orange_Angular_8x8_C",
+            "Desc_Wall_Orange_8x4_Corner_01_C",
+            "Desc_Wall_Orange_8x8_Corner_01_C",
+            "Desc_Wall_Orange_8x4_Corner_02_C",
+            "Desc_Wall_Orange_8x8_Corner_02_C",
+            "Desc_Wall_Concrete_Angular_8x4_C",
+            "Desc_Wall_Concrete_Angular_8x8_C",
+            "Desc_Wall_Concrete_8x4_Corner_01_C",
+            "Desc_Wall_Concrete_8x8_Corner_01_C",
+            "Desc_Wall_Concrete_8x4_Corner_2_C",
+            "Desc_Wall_Concrete_8x8_Corner_2_C",
+            "Desc_WallSet_Steel_Angular_8x4_C",
+            "Desc_WallSet_Steel_Angular_8x8_C",
+            "Desc_Wall_Steel_8x4_Corner_01_C",
+            "Desc_Wall_Steel_8x8_Corner_01_C",
+            "Desc_Wall_Steel_8x4_Corner_2_C",
+            "Desc_Wall_Steel_8x8_Corner_2_C"
+          ]
+        },
+        {
+          "id": "DiagonalWalls",
+          "name": "Diagonal Walls",
+          "members": [
+            "Desc_Wall_Orange_8x1_Tris_C",
+            "Desc_Wall_Orange_8x2_Tris_C",
+            "Desc_Wall_Orange_8x4_Tris_C",
+            "Desc_Wall_Orange_8x8_Tris_C",
+            "Desc_Wall_Concrete_8x1_Tris_C",
+            "Desc_Wall_Concrete_8x2_Tris_C",
+            "Desc_Wall_Concrete_8x4_Tris_C",
+            "Desc_Wall_Concrete_8x8_Tris_C",
+            "Desc_SteelWall_Tris_8x1_C",
+            "Desc_SteelWall_Tris_8x2_C",
+            "Desc_SteelWall_Tris_8x4_C",
+            "Desc_SteelWall_Tris_8x8_C"
+          ]
+        },
+        {
+          "id": "UpperDiagonalWalls",
+          "name": "Upper Diagonal Walls",
+          "members": [
+            "Desc_Wall_Orange_8x1_FlipTris_C",
+            "Desc_Wall_Orange_8x2_FlipTris_C",
+            "Desc_Wall_Orange_8x4_FlipTris_C",
+            "Desc_Wall_Orange_8x8_FlipTris_C",
+            "Desc_Wall_Concrete_8x1_FlipTris_C",
+            "Desc_Wall_Concrete_8x2_FlipTris_C",
+            "Desc_Wall_Concrete_8x4_FlipTris_C",
+            "Desc_Wall_Concrete_8x8_FlipTris_C",
+            "Desc_SteelWall_FlipTris_8x1_C",
+            "Desc_SteelWall_FlipTris_8x2_C",
+            "Desc_SteelWall_FlipTris_8x4_C",
+            "Desc_SteelWall_FlipTris_8x8_C"
+          ]
+        },
+        {
+          "id": "ConveyorConnections",
+          "name": "Conveyor Walls",
+          "members": [
+            "Desc_Wall_Conveyor_8x4_03_C",
+            "Desc_Wall_Conveyor_8x4_02_C",
+            "Desc_Wall_Conveyor_8x4_01_C",
+            "Desc_Wall_Concrete_8x4_ConveyorHole_01_C",
+            "Desc_Wall_Concrete_8x4_ConveyorHole_02_C",
+            "Desc_Wall_Concrete_8x4_ConveyorHole_03_C",
+            "Desc_Wall_Conveyor_8x4_03_Steel_C",
+            "Desc_Wall_Conveyor_8x4_02_Steel_C",
+            "Desc_Wall_Conveyor_8x4_01_Steel_C",
+            "Desc_Wall_Conveyor_8x4_04_C",
+            "Desc_Wall_Conveyor_8x4_04_Steel_C"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Special",
+      "name": "Special",
+      "groups": [
+        {
+          "id": "Progression",
+          "name": "Progression",
+          "members": [
+            "Desc_TradingPost_C",
+            "Desc_SpaceElevator_C",
+            "Desc_Mam_C"
+          ]
+        },
+        {
+          "id": "AWESOME",
+          "name": "AWESOME Sink & Shop",
+          "members": [
+            "Desc_ResourceSinkShop_C",
+            "Desc_ResourceSink_C"
+          ]
+        },
+        {
+          "id": "BlueprintDesigners",
+          "name": "Blueprint Designers",
+          "members": [
+            "Desc_BlueprintDesigner_C",
+            "Desc_BlueprintDesigner_MK2_C",
+            "Desc_BlueprintDesigner_MK3_C"
+          ]
+        },
+        {
+          "id": "Event",
+          "name": "Events",
+          "members": [
+            "Desc_XMassTree_C",
+            "Desc_CandyCaneDecor_C",
+            "Desc_TreeGiftProducer_C",
+            "Desc_Snowman_C",
+            "Desc_xmassLights_C",
+            "Desc_SnowDispenser_C",
+            "Desc_WreathDecor_C",
+            "Desc_SnowCannon_C"
+          ]
+        }
+      ]
+    }
+  ]
+}
