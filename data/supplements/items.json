@@ -1,0 +1,29 @@
+{
+  "_source": "Items the game references (milestone costs, research costs, scanner targets) but does not describe in its Docs file. Names as shown in game.",
+  "items": [
+    {
+      "id": "Desc_ResourceSinkCoupon_C",
+      "name": "FICSIT Coupon",
+      "description": "Currency for the AWESOME Shop, earned by sinking items in the AWESOME Sink.",
+      "category": "special",
+      "form": "solid",
+      "stackSize": 500
+    },
+    {
+      "id": "Desc_HardDrive_C",
+      "name": "Hard Drive",
+      "description": "Found in crash sites. Analyzed in the MAM to unlock Alternate Recipes.",
+      "category": "special",
+      "form": "solid",
+      "stackSize": 100
+    },
+    {
+      "id": "Desc_Geyser_C",
+      "name": "Geyser",
+      "description": "Not an item: the scanner target for geothermal geysers.",
+      "category": "scanner-target",
+      "form": "solid",
+      "stackSize": null
+    }
+  ]
+}

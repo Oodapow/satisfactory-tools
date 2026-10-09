@@ -1,0 +1,2 @@
+data/raw/** linguist-generated=true
+src/data/game/*.json linguist-generated=true

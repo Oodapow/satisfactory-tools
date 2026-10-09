@@ -1,0 +1,19 @@
+{
+  "gameVersion": "1.2.4.0",
+  "gameVersionNote": "The Docs file has no version field. Copied on 2026-10-09 from a Steam install updated 2026-10-05; production recipes, times and machine power match an independent 1.2.4.0 (CL 502094) extraction exactly.",
+  "source": "CommunityResources/Docs/en-US.json shipped with the game, plus data/supplements/*.json",
+  "units": {
+    "fluids": "m³ (recipe amounts, costs); per-minute rates are m³/min",
+    "energyMJ": "MJ per item, or MJ per m³ for fluids",
+    "power": "MW",
+    "size": "metres (first clearance box of the placed building)"
+  },
+  "counts": {
+    "items": 206,
+    "resources": 13,
+    "recipes": 872,
+    "buildings": 547,
+    "schematics": 574
+  },
+  "copyright": "Game data © Coffee Stain Studios. Supplements adapted from the Official Satisfactory Wiki (CC BY-NC-SA 4.0)."
+}
