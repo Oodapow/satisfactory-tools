@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import { gameMeta } from './data'
 import { go, useRoute } from './router'
 import { OutpostEditor, OutpostList } from './screens/Outposts'
@@ -11,19 +11,27 @@ import { currentTier, useGameState } from './state/gameState'
 // The node editor pulls in React Flow, so it loads on first visit.
 const EditorScreen = lazy(() => import('./editor/EditorScreen'))
 
-const steps = [
+// Sections, not steps: the main flow is game state, then the factory map. The catalog is for
+// looking things up, and the outposts list is where one outpost gets defined.
+const tabs = [
   { path: 'setup', label: 'Game state' },
-  { path: 'plan', label: 'Planning' },
-  { path: 'outposts', label: 'Outposts' },
   { path: 'map', label: 'Factory map' },
+  { path: 'outposts', label: 'Outposts' },
+  { path: 'catalog', label: 'Catalog' },
 ] as const
 
 export default function App() {
-  const [page, param, sub] = useRoute()
+  const [route, param, sub] = useRoute()
   const [state] = useGameState()
+  // "#/plan" was the catalog's old address; keep old links working.
+  const page = route === 'plan' ? 'catalog' : route
 
-  // Planning needs a game state; without one, start at the welcome screen.
-  const needsState = page === 'plan' || page === 'outposts' || page === 'map'
+  // These need a game state; without one, start at the welcome screen.
+  const needsState = page === 'catalog' || page === 'outposts' || page === 'map'
+  // The page scrolls inside <main>, so start each screen at the top like a page load would.
+  const mainRef = useRef<HTMLElement>(null)
+  const screenKey = [page, param, sub].join('/')
+  useLayoutEffect(() => mainRef.current?.scrollTo(0, 0), [screenKey])
   const screen =
     !page || (needsState && !state) ? (
       <Welcome />
@@ -33,7 +41,7 @@ export default function App() {
       <SampleSave />
     ) : page === 'setup' ? (
       <Setup />
-    ) : page === 'plan' && state ? (
+    ) : page === 'catalog' && state ? (
       <Planner state={state} />
     ) : page === 'outposts' && state && param ? (
       <OutpostEditor id={param} step={sub} state={state} />
@@ -54,23 +62,24 @@ export default function App() {
           Satisfactory Tools
         </button>
         {state && (
-          <nav className="steps" aria-label="Steps">
-            {steps.map((s, i) => (
-              <a key={s.path} href={`#/${s.path}`} className={page === s.path ? 'step active' : 'step'}>
-                <span className="step-num">{i + 1}</span>
-                {s.label}
+          <nav className="nav-tabs" aria-label="Sections">
+            {tabs.map((t) => (
+              <a key={t.path} href={`#/${t.path}`} className={page === t.path ? 'nav-tab active' : 'nav-tab'} aria-current={page === t.path ? 'page' : undefined}>
+                {t.label}
               </a>
             ))}
           </nav>
         )}
         {state && (
-          <span className="chip" title="Your game state">
+          <a className="chip" href="#/setup" title="Your game state">
             Tier {Math.max(currentTier(state), 0)} · {state.source === 'save' ? 'from save' : 'manual'}
-          </span>
+          </a>
         )}
       </header>
-      <main className={page === 'map' ? 'page-wide' : 'page'}>{screen}</main>
-      {page !== 'map' && <footer className="foot page">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>}
+      <main className="app-main" ref={mainRef}>
+        <div className={page === 'map' ? 'page-wide' : 'page'}>{screen}</div>
+      </main>
+      <footer className="foot">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>
     </div>
   )
 }

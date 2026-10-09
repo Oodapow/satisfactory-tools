@@ -15,8 +15,8 @@ export function Welcome() {
       </header>
 
       {state && (
-        <button type="button" className="choice choice-continue" onClick={() => go('/plan')}>
-          <span className="choice-title">Continue planning</span>
+        <button type="button" className="choice choice-continue" onClick={() => go('/map')}>
+          <span className="choice-title">Open your factory map</span>
           <span className="choice-body">
             Tier {Math.max(currentTier(state), 0)} · Space Elevator phase {state.spaceElevatorPhase}
             {state.source === 'save' && state.saveName ? ` · from ${state.saveName}` : ''}

@@ -1,6 +1,6 @@
 /* Node editor. Uses the app's colour variables so it follows light and dark mode. */
-.page-wide { padding: 0; }
-.ne-screen { display: flex; flex-direction: column; height: calc(100dvh - 58px); background: var(--bg); }
+.page-wide { padding: 0; height: 100%; }
+.ne-screen { display: flex; flex-direction: column; height: 100%; background: var(--bg); }
 .ne-pad { padding: 16px; }
 .ne-textlink { color: var(--accent); font-weight: 600; font-size: .85rem; text-decoration: none; }
 .ne-grow { flex: 1; min-width: 0; }

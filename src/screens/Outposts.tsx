@@ -6,6 +6,7 @@ import { extractorPerMin, extractorsFor, generatorsFor, recipesFor, unusedImport
 import { blankPlan, newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { useNetwork } from '../plan/useNetwork'
+import { editorPath } from '../editor/route'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
 import { Amount, Icon, PowerIcon } from './Icon'
@@ -14,12 +15,13 @@ import { Rates } from './Rates'
 const ceil = (n: number) => Math.ceil(n - 1e-9)
 const PURITIES: Purity[] = ['impure', 'normal', 'pure']
 const TRANSPORTS: Transport[] = ['belt', 'pipe', 'truck', 'train', 'drone']
-const STEPS = [
+// Views of one outpost, as tabs: any can be opened in any order.
+const TABS = [
   { key: 'goal', label: 'Goal' },
   { key: 'resources', label: 'Resources' },
   { key: 'plan', label: 'Plan' },
 ] as const
-type StepKey = (typeof STEPS)[number]['key']
+type TabKey = (typeof TABS)[number]['key']
 
 // ---------- List: the outpost network ----------
 
@@ -44,7 +46,7 @@ export function OutpostList({ state }: { state: GameState }) {
         </button>
       </header>
       {net.solved.length === 0 && (
-        <p className="panel muted">No outposts yet. Start one here, or from an item in the planning catalog.</p>
+        <p className="panel muted">No outposts yet. Start one here, or from an item in the catalog.</p>
       )}
       <ul className="outpost-grid">
         {net.solved.map(({ plan, solution }) => {
@@ -106,22 +108,25 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
     return (
       <section className="panel">
         <p className="muted">That outpost doesn't exist anymore.</p>
-        <button type="button" onClick={() => go('/outposts')}>
-          Back to outposts
+        <button type="button" onClick={() => go('/map')}>
+          Back to the factory map
         </button>
       </section>
     )
   }
-  const current = (STEPS.find((s) => s.key === step)?.key ?? 'goal') as StepKey
+  const current = (TABS.find((t) => t.key === step)?.key ?? 'goal') as TabKey
   const { plan } = solved
   const update = (patch: PlanPatch) => net.update(plan.id, patch)
-  const idx = STEPS.findIndex((s) => s.key === current)
 
   return (
     <div className="editor">
-      <button type="button" className="link" onClick={() => go('/outposts')}>
-        ← All outposts
-      </button>
+      <nav className="crumbs" aria-label="Breadcrumb">
+        <a href="#/map">← Factory map</a>
+        <span className="muted">›</span>
+        <a href="#/outposts">Outposts</a>
+        <span className="muted">›</span>
+        <span>{plan.name}</span>
+      </nav>
       <header className="editor-head">
         <input
           className="title-input big"
@@ -129,11 +134,27 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           onChange={(e) => update({ name: e.target.value })}
           aria-label="Outpost name"
         />
-        <nav className="wizard" aria-label="Outpost steps">
-          {STEPS.map((s, i) => (
-            <a key={s.key} href={`#/outposts/${plan.id}/${s.key}`} className={s.key === current ? 'step active' : 'step'}>
-              <span className="step-num">{i + 1}</span>
-              {s.label}
+        <div className="row">
+          <a className="button secondary" href={editorPath(plan.id)}>
+            Floor plan
+          </a>
+          <button
+            type="button"
+            className="danger"
+            onClick={() => {
+              if (confirm(`Delete "${plan.name}"? Outposts importing from it lose those imports.`)) {
+                net.remove(plan.id)
+                go('/map')
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+        <nav className="nav-tabs subtabs" aria-label="Outpost views">
+          {TABS.map((t) => (
+            <a key={t.key} href={`#/outposts/${plan.id}/${t.key}`} className={t.key === current ? 'nav-tab active' : 'nav-tab'} aria-current={t.key === current ? 'page' : undefined}>
+              {t.label}
             </a>
           ))}
         </nav>
@@ -145,33 +166,6 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           {current === 'resources' && <ResourcesStep solved={solved} all={net.solved} update={update} available={net.available} />}
           {current === 'plan' && <PlanStep solved={solved} update={update} available={net.available} />}
 
-          <div className="row between step-nav">
-            {idx > 0 ? (
-              <button type="button" className="secondary" onClick={() => go(`/outposts/${plan.id}/${STEPS[idx - 1].key}`)}>
-                ← {STEPS[idx - 1].label}
-              </button>
-            ) : (
-              <span />
-            )}
-            {idx < STEPS.length - 1 ? (
-              <button type="button" onClick={() => go(`/outposts/${plan.id}/${STEPS[idx + 1].key}`)}>
-                {STEPS[idx + 1].label} →
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="danger"
-                onClick={() => {
-                  if (confirm(`Delete "${plan.name}"? Outposts importing from it lose those imports.`)) {
-                    net.remove(plan.id)
-                    go('/outposts')
-                  }
-                }}
-              >
-                Delete outpost
-              </button>
-            )}
-          </div>
         </div>
         <Balance solved={solved} nameOf={(i) => net.outposts.find((o) => o.id === i)?.name ?? '?'} />
       </div>
@@ -181,7 +175,7 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
 
 type StepProps = { update: (p: PlanPatch) => void; available: ReturnType<typeof useNetwork>['available'] }
 
-// Step 1: what the outpost must deliver.
+// Goal tab: what the outpost must deliver.
 function GoalStep({ plan, state, update, available }: StepProps & { plan: OutpostPlan; state: GameState }) {
   const cat = catalog(state)
   const products = cat.items.filter((i) => recipesFor(i.id, available.recipes).length > 0 || resourcesById.has(i.id))
@@ -295,7 +289,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
   )
 }
 
-// Step 2: what the outpost has to work with.
+// Resources tab: what the outpost has to work with.
 function ResourcesStep({ solved, all, update, available }: StepProps & { solved: Solved; all: Solved[] }) {
   const { plan, solution } = solved
   const [qty, setQty] = useState<Record<string, number>>({})
@@ -489,7 +483,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
 
 const isFluidItem = (id: string) => itemsById.get(id)?.form !== 'solid'
 
-// Step 3: the proposed plan, editable.
+// Plan tab: the proposed plan, editable.
 function PlanStep({ solved, update, available }: StepProps & { solved: Solved }) {
   const { plan, solution, suggested } = solved
   const overrides = Object.keys(plan.recipeChoices).length
