@@ -49,7 +49,9 @@ function Port({ type, position, id, style }: { type: HandleType; position: Posit
 function useOrient(id: string) {
   const o = useContext(FloorPlanContext)?.orients.get(id) ?? UPRIGHT
   const updateInternals = useUpdateNodeInternals()
-  useEffect(() => updateInternals(id), [id, o.rot, o.mirror, updateInternals])
+  useEffect(() => {
+    updateInternals(id)
+  }, [id, o.rot, o.mirror, updateInternals])
   return o
 }
 
