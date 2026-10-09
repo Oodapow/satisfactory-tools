@@ -7,7 +7,7 @@ What the site does today, how the pieces fit, and where to extend them. Screensh
 The top bar has four tabs, not steps: **Game state**, **Factory map**, **Outposts** and **Catalog**. The main flow is game state, then the factory map; the catalog is for looking things up, and the outposts screens are where one outpost is defined. A footer with the game data version and the "not actually approved" notice is always visible, with the page scrolling between the top bar and the footer.
 
 1. **Welcome** (`#/`): upload a save or set up by hand. Returning players get "Open your factory map".
-2. **Upload** (`#/upload`): drop a `.sav` file. Parsing isn't built yet, so the result screen shows a sample game state and says so (`src/screens/Upload.tsx`, `mockParse`).
+2. **Upload** (`#/upload`): drop a `.sav` file. It is parsed in the browser (`src/save/`) and the result screen shows what was read: tier, Space Elevator phase, milestones, MAM research, alternates and AWESOME Shop unlocks, plus how many unknown (usually modded) unlocks were skipped. "Try a sample" shows a made-up mid-game state instead.
 3. **Game state** (`#/setup`), which ends with "Open the factory map": pick a tier to tick every milestone up to it, set the Space Elevator phase, then fine-tune milestones, MAM research and alternates. Spoiler rules:
    - only tiers the HUB would show are listed (tutorial done, Space Elevator phase reached);
    - MAM research is offered in tree order: a node shows once a node above it is researched. Trees stay folded until the player has researched something in them or opens them; seasonal research is hidden;
@@ -57,4 +57,3 @@ Simplifications: generators run at 100% (fractional counts), and outposts are so
 
 - Layout proposal per outpost: floors by production type, manifolds, best unlocked belts, generated from `OutpostSolution` (tracked as an issue).
 - Node editor: macro view of outposts and their transport links, micro view of machines, built on the plan model.
-- Real save parsing to fill the game state.

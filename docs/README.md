@@ -23,7 +23,7 @@ Icons for items, buildings, resources and power appear throughout. ([#8](https:/
 
 ## Architecture
 
-- **Static web app, no backend.** Everything runs in the browser, which keeps hosting free and the app usable on mobile. Save parsing will also run client-side.
+- **Static web app, no backend.** Everything runs in the browser, which keeps hosting free and the app usable on mobile. Saves are parsed client-side too, in a Web Worker.
 - **Vite + React + TypeScript.** Plain CSS with color variables, light and dark mode following the device, mobile-first.
 - **Routing:** hash routes (`#/setup`, `#/map`, `#/outposts/:id`, `#/catalog`), because GitHub Pages can't serve fallback routes for a single-page app.
 - **State:** kept in `localStorage` through `usePersistentState` (`src/storage/persisted.ts`), with export and import to a JSON backup file. ([#5](https://github.com/Oodapow/satisfactory-tools/issues/5))
@@ -33,6 +33,7 @@ Icons for items, buildings, resources and power appear throughout. ([#8](https:/
 | --- | --- |
 | `src/data/game/` | Generated game data and typed helpers (see below). |
 | `src/storage/` | Browser persistence. |
+| `src/save/` | Reads a `.sav` in a Web Worker with [@etothepii/satisfactory-file-parser](https://github.com/etothepii4/satisfactory-file-parser) (MIT). |
 | `scripts/generate-game-data.mjs` | Builds `src/data/game/` from `data/`. |
 | `data/` | Raw game file and hand-written supplements. |
 | `.github/workflows/` | CI and deploy. |
@@ -77,7 +78,7 @@ npm run lint
 | [#6](https://github.com/Oodapow/satisfactory-tools/issues/6) | Game data for 1.2 | done in #2 |
 | [#7](https://github.com/Oodapow/satisfactory-tools/issues/7) | User journey: game state, spoiler-free planning, outposts | done in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) |
 | [#8](https://github.com/Oodapow/satisfactory-tools/issues/8) | Game icons | done in [#17](https://github.com/Oodapow/satisfactory-tools/pull/17) |
-| [#9](https://github.com/Oodapow/satisfactory-tools/issues/9) | Read game state from a save file | planned |
+| [#9](https://github.com/Oodapow/satisfactory-tools/issues/9) | Read game state from a save file | in review |
 | [#10](https://github.com/Oodapow/satisfactory-tools/issues/10) | MAM research tree order | planned |
 | [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | done in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) and [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
 | [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | done in [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
