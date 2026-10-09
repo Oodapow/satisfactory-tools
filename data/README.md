@@ -58,14 +58,14 @@ Icons are keyed by the same ids as the data (`Desc_IronPlate_C`, `Desc_Construct
 `npm run icons:fetch` fills in missing icons, trying in order:
 
 1. `--dir <folder>`: PNGs extracted from the game files, named by id or by texture (for example the output of [satisfactory-icon-extractor](https://github.com/relyen-dev/satisfactory-icon-extractor)).
-2. The [Official Satisfactory Wiki](https://satisfactory.wiki.gg/), by display name.
+2. The [Official Satisfactory Wiki](https://satisfactory.wiki.gg/). The wiki names architecture icons by shape, size and material (`Inv._Ramp_2m_(Coated).png`), so the script reads the wiki's `Template:DocsBuildings.json` and `Template:DocsItems.json` (class name to wiki name) and its file list to pick the right file for each variant, then falls back to the display name.
 3. A mirror of the wiki's icons named by game id ([Satisfunction](https://github.com/jdcravenBD/Satisfunction) `public/icons`).
 
 Each entry in `icons.json` records which source it came from. Behind a proxy, run it with `NODE_USE_ENV_PROXY=1`. CI runs `npm run icons:check` to make sure `icons.json` and `public/icons/` agree.
 
 The electricity icon (`public/icons/power.svg`) is our own drawing; power is not an item in the game.
 
-**Coverage right now:** 176 of 753: 159 items (every part, raw resource and fluid except Somersloop, Mercer Sphere and FICSMAS items) and the 17 production machines and extractors. Missing: equipment, vehicles, generators, and the other buildables (logistics, power poles, storage, walls, foundations). They were not reachable from where the data was generated; running `npm run icons:fetch` with access to the wiki, or with `--dir` pointed at icons extracted from the game, fills them in.
+**Coverage right now:** 734 of 753. The wiki has no icon for the other 19: Foundation Stairs (1 m) and (2 m) in all five materials (the wiki only has 4 m), Inverted Outer Corner Quarter Pipe (Polished), Old Jump Pad, Old Tilted Jump Pad, Perpendicular Wall Conveyor (both materials), and four unnamed leftovers in the game file (`Desc_QuarterPipeMiddle_Ficsit_4x1_C`, `_4x2_C`, `_4x4_C`, `Desc_Wall_Window_8x4_03_Steel_C`). Running `npm run icons:fetch -- --dir` with icons extracted from the game fills these in.
 
 ## Known gaps
 

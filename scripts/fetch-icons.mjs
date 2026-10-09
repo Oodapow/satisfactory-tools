@@ -7,7 +7,7 @@
 //   node scripts/fetch-icons.mjs --force         re-fetch icons that already exist
 //   node scripts/fetch-icons.mjs --check         verify icons.json and public/icons agree (no network)
 //
-// Sources, in order: --dir (the game's own textures), the Official Satisfactory Wiki,
+// Sources, in order: --dir (the game's own textures), the Official Satisfactory Wiki (matched by wiki name),
 // then a mirror of the wiki's icons that names files by game id.
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
@@ -73,13 +73,116 @@ const sources = [
   },
   {
     name: 'wiki',
-    get: (t) => download(`https://satisfactory.wiki.gg/images/${encodeURIComponent(t.name.replace(/ /g, '_'))}.png`),
+    get: async (t) => {
+      for (const file of await wikiFiles(t)) {
+        const png = await download(`${WIKI}/images/${encodeURIComponent(file)}`)
+        if (png) return png
+      }
+      return null
+    },
   },
   {
     name: 'wiki-mirror',
     get: (t) => t.mirrorId && download(`https://raw.githubusercontent.com/jdcravenBD/Satisfunction/main/public/icons/${t.mirrorId}.png`),
   },
 ]
+
+// The wiki names architecture icons by shape, size and material ("Inv._Ramp_2m_(Coated).png") rather
+// than by the in-game name, which repeats across materials. Its Template:Docs*.json pages give each
+// class name its wiki name ("Inverted Ramp (2 m) (Polished)"); with the list of uploaded files that
+// is enough to find the icon for each variant.
+const WIKI = 'https://satisfactory.wiki.gg'
+const MATERIALS = {
+  asphalt: ['Asphalt'],
+  concrete: ['Concrete'],
+  polished: ['Coated'],
+  concretepolished: ['Coated'],
+  polishedconcrete: ['Coated'],
+  grip: ['Grip Metal'],
+  gripmetal: ['Grip Metal'],
+  metal: ['Grip Metal', 'Steel', 'Metal'],
+  steel: ['Steel'],
+  tar: ['Tar'],
+  window: ['Glass', 'FICSIT'],
+  ficsit: ['FICSIT'],
+  ficsitset: ['FICSIT'],
+  orange: ['FICSIT'],
+}
+const SHAPES = {
+  'Foundation Stairs': ['Foundation Stair'],
+  'Straight Walkway': ['Walkway Straight'],
+  'Walkway Intersection': ['Walkway Crossing'],
+  'Walkway T-Junction': ['Walkway T-Crossing'],
+  'Walkway Corner': ['Walkway Turn'],
+  'FICSMAS Candy Cane': ['Candy Cane'],
+  'FICSMAS Snowman': ['Snowman'],
+}
+
+let wikiIndex
+async function loadWikiIndex() {
+  const api = async (params) => {
+    const res = await download(`${WIKI}/api.php?${new URLSearchParams({ format: 'json', ...params })}`)
+    return res && JSON.parse(res.toString())
+  }
+  const files = new Map()
+  let more = {}
+  do {
+    const page = await api({ action: 'query', list: 'allimages', ailimit: '500', ...more })
+    if (!page?.query) return { files, names: new Map() }
+    for (const image of page.query.allimages) files.set(image.name.toLowerCase(), image.name)
+    more = page.continue ?? null
+  } while (more)
+  const names = new Map()
+  for (const template of ['DocsBuildings.json', 'DocsItems.json']) {
+    const raw = await download(`${WIKI}/index.php?${new URLSearchParams({ title: `Template:${template}`, action: 'raw' })}`)
+    if (!raw) continue
+    for (const [id, versions] of Object.entries(JSON.parse(raw.toString()))) names.set(id, versions.at(-1).name)
+  }
+  return { files, names }
+}
+
+async function wikiFiles(t) {
+  wikiIndex ??= await loadWikiIndex()
+  const { files, names } = wikiIndex
+  const candidates = []
+  for (const name of [names.get(t.id), t.name]) {
+    if (name) candidates.push(...wikiCandidates(t.id, name))
+  }
+  const known = candidates.map((c) => files.get(`${c.replace(/ /g, '_')}.png`.toLowerCase())).filter(Boolean)
+  // Without the file list (API unreachable), fall back to guessing the file from the display name.
+  return [...new Set(files.size ? known : [`${t.name.replace(/ /g, '_')}.png`])]
+}
+
+function wikiCandidates(id, fullName) {
+  let name = fullName.replace(/ (?=\d)/g, '').replace(/ /g, ' ').replace(/™/g, '')
+  let material
+  const mat = name.match(/ \(([A-Za-z ]+)\)$/)
+  if (mat) {
+    material = mat[1].toLowerCase().replace(/ /g, '')
+    name = name.slice(0, mat.index)
+  }
+  material ??= id.toLowerCase().split('_').find((part) => part in MATERIALS)
+  let size
+  const sized = name.match(/ \((\d+(?:\.\d+)?) ?m\)/)
+  if (sized) {
+    size = sized[1]
+    name = name.slice(0, sized.index) + name.slice(sized.index + sized[0].length)
+  }
+  name = name.replace(/ Day \d+$/, '').trim()
+  const shapes = [name, ...(SHAPES[name] ?? []), ...(name.startsWith('Inverted ') ? [`Inv. ${name.slice(9)}`] : [])]
+  const out = []
+  for (const shape of shapes) {
+    for (const m of MATERIALS[material] ?? ['FICSIT']) {
+      if (shape === 'Roof') out.push(`${m} Roof ${size}m`)
+      if (shape === 'Flat Roof') out.push(`${m} Roof Flat`)
+      if (size) out.push(`${shape} ${size}m (${m})`)
+      out.push(`${shape} (${m})`)
+    }
+    if (size) out.push(`${shape} ${size}m`)
+    out.push(shape)
+  }
+  return out
+}
 
 const unreachable = new Set()
 const reached = new Set()
@@ -89,7 +192,7 @@ async function download(url) {
   for (let attempt = 0; attempt < 4; attempt++) {
     let res
     try {
-      res = await fetch(url)
+      res = await fetch(url, { signal: AbortSignal.timeout(30_000) })
     } catch {
       if (reached.has(host)) continue
       // Blocked or offline: stop trying this host for the rest of the run.
