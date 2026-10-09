@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import { gameMeta } from './data'
 import { go, useRoute } from './router'
 import { OutpostEditor, OutpostList } from './screens/Outposts'
@@ -28,6 +28,10 @@ export default function App() {
 
   // These need a game state; without one, start at the welcome screen.
   const needsState = page === 'catalog' || page === 'outposts' || page === 'map'
+  // The page scrolls inside <main>, so start each screen at the top like a page load would.
+  const mainRef = useRef<HTMLElement>(null)
+  const screenKey = [page, param, sub].join('/')
+  useLayoutEffect(() => mainRef.current?.scrollTo(0, 0), [screenKey])
   const screen =
     !page || (needsState && !state) ? (
       <Welcome />
@@ -72,7 +76,7 @@ export default function App() {
           </a>
         )}
       </header>
-      <main className="app-main">
+      <main className="app-main" ref={mainRef}>
         <div className={page === 'map' ? 'page-wide' : 'page'}>{screen}</div>
       </main>
       <footer className="foot">*not actually approved · Game data: Satisfactory {gameMeta.gameVersion}</footer>

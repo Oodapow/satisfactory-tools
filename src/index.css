@@ -202,6 +202,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .editor-head .title-input { flex: 1 1 260px; }
 .crumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; font-size: .9rem; }
 .crumbs a { color: var(--accent-ink); text-decoration: none; font-weight: 600; }
+.crumbs .muted { margin: 0; }
 .subtabs { display: flex; gap: 4px; flex-basis: 100%; border-bottom: 1px solid var(--border); overflow-x: auto; }
 .subtabs .nav-tab { margin-bottom: -1px; }
 .editor-body { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
@@ -227,3 +228,14 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .tree-picks { margin-top: 8px; }
 .step-table .rate { white-space: normal; }
 .step-table td:first-child { min-width: 180px; }
+/* Phones: tables become stacked rows, one card-like block per row, so nothing scrolls sideways. */
+@media (max-width: 640px) {
+  .table-wrap { overflow-x: visible; }
+  .step-table, .step-table tbody { display: block; }
+  .step-table thead { display: none; }
+  .step-table tr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 0; border-top: 1px solid var(--border); }
+  .step-table th, .step-table td { display: block; border: 0; padding: 0; }
+  .step-table td:first-child { flex: 1 1 100%; min-width: 0; }
+  .step-table .num { margin-left: auto; }
+  .recipe-cell select { flex: 1; min-width: 0; max-width: none; }
+}
