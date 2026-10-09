@@ -4,32 +4,22 @@ import { offers, type Solved } from '../plan/network'
 import { newId, type PlanPatch } from '../plan/store'
 import type { Import, Transport as PlanTransport } from '../plan/types'
 import { fmt } from './generate'
-import { GameIcon } from './GameIcon'
-import { POWER } from './icons'
+import { GameIcon } from '../ui/GameIcon'
+import { IconSelect } from '../ui/IconSelect'
+import { POWER } from '../data/icons'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData, type PowerLine } from './model'
 import { editorPath } from './route'
 import { useUnlocked } from './unlocked'
 
 const num = (v: string, fallback = 0) => (v !== '' && Number.isFinite(Number(v)) ? Number(v) : fallback)
+
 function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string) => void }) {
   const unlocked = useUnlocked()
   // Keep an item picked earlier listed even if the game state no longer has it.
   const current = value && !unlocked.items.some((i) => i.id === value) ? itemsById.get(value) : undefined
   const pickable = current ? [current, ...unlocked.items] : unlocked.items
   return (
-    <span className="ne-item-select">
-      <GameIcon id={value} size={22} />
-      <select value={value ?? ''} onChange={(e) => onChange(e.target.value)}>
-        <option value="" disabled>
-          Pick an item
-        </option>
-        {pickable.map((i) => (
-          <option key={i.id} value={i.id}>
-            {i.name}
-          </option>
-        ))}
-      </select>
-    </span>
+    <IconSelect value={value} onChange={onChange} placeholder="Pick an item" options={pickable.map((i) => ({ value: i.id, label: i.name, icon: i.id }))} />
   )
 }
 
@@ -53,7 +43,7 @@ export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onS
           return (
             <li key={plan.id}>
               <button type="button" className="ghost ne-list-btn" onClick={() => onSelect(plan.id)}>
-                <GameIcon id={g?.kind === 'item' ? g.item : g ? POWER : 'Desc_TradingPost_C'} size={20} />
+                <GameIcon id={g?.kind === 'item' ? g.item : g ? POWER : 'Desc_TradingPost_C'} size={22} link={false} />
                 {plan.name}
               </button>
             </li>
@@ -113,7 +103,7 @@ export function OutpostInspector({
       <ul className="ne-list">
         {plan.goals.map((g, i) => (
           <li key={i}>
-            <GameIcon id={g.kind === 'item' ? g.item : POWER} size={18} />
+            <GameIcon id={g.kind === 'item' ? g.item : POWER} size={20} />
             {g.kind === 'item' ? `${fmt(g.perMin)} ${itemName(g.item)}/min` : `${fmt(g.mw)} MW from ${itemName(g.fuel)}`}
           </li>
         ))}
@@ -128,7 +118,7 @@ export function OutpostInspector({
         <ul className="ne-list">
           {plan.imports.map((i) => (
             <li key={i.id}>
-              <GameIcon id={i.item} size={16} />
+              <GameIcon id={i.item} size={18} />
               <span className="ne-grow">
                 {fmt(i.perMin)} {itemName(i.item)} from {nameOf(i.from)} by {i.via}
               </span>
@@ -149,7 +139,7 @@ export function OutpostInspector({
             const taken = importsFromOthers.filter((i) => i.item === f.item)
             return (
               <li key={f.item}>
-                <GameIcon id={f.item} size={16} />
+                <GameIcon id={f.item} size={18} />
                 {fmt(f.exported)} {itemName(f.item)}/min
                 {taken.length > 0 && <span className="ne-help"> · to {taken.map((t) => t.to).join(', ')}</span>}
               </li>
@@ -157,7 +147,7 @@ export function OutpostInspector({
           })}
           {solution.power.exportedMW > 1e-6 && (
             <li>
-              <GameIcon id={POWER} size={16} />
+              <GameIcon id={POWER} size={18} />
               {fmt(solution.power.exportedMW)} MW
             </li>
           )}
@@ -170,7 +160,7 @@ export function OutpostInspector({
       {available.length === 0 && powerOffers.length === 0 && <p className="ne-help">The other outposts have nothing spare.</p>}
       {available.map((o) => (
         <div key={`${o.from}-${o.item}`} className="ne-offer-row">
-          <GameIcon id={o.item} size={18} />
+          <GameIcon id={o.item} size={20} />
           <span className="ne-grow">
             {fmt(o.perMin)} {itemName(o.item)}/min · {o.fromName}
           </span>
@@ -181,7 +171,7 @@ export function OutpostInspector({
       ))}
       {powerOffers.map((o) => (
         <div key={o.from.id} className="ne-offer-row">
-          <GameIcon id={POWER} size={18} />
+          <GameIcon id={POWER} size={20} />
           <span className="ne-grow">
             {fmt(o.free)} MW · {o.from.name}
           </span>
@@ -231,13 +221,11 @@ export function LinkInspector({
         <>
           <label className="ne-field">
             Travels by
-            <select value={imp.via} onChange={(e) => onImport({ ...imp, via: e.target.value as PlanTransport })}>
-              {planTransports.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
+            <IconSelect
+              value={imp.via}
+              onChange={(via) => onImport({ ...imp, via: via as PlanTransport })}
+              options={planTransports.map((t) => ({ value: t.id, label: t.label, icon: t.icon }))}
+            />
           </label>
           <label className="ne-field">
             Item
@@ -286,60 +274,48 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
   return (
     <section>
       <h3>
-        <GameIcon id={data.building} size={24} /> {b?.name ?? 'Machine'}
+        <GameIcon id={data.building} size={26} /> {b?.name ?? 'Machine'}
       </h3>
       <label className="ne-field">
         Building
-        <select
+        <IconSelect
           value={data.building}
-          onChange={(e) => {
-            const nb = buildingsById.get(e.target.value)
+          onChange={(building) => {
+            const nb = buildingsById.get(building)
             onChange({
               ...data,
-              building: e.target.value,
-              recipe: nb?.generator ? '' : (unlocked.recipesIn(e.target.value)[0]?.id ?? ''),
+              building,
+              recipe: nb?.generator ? '' : (unlocked.recipesIn(building)[0]?.id ?? ''),
               fuel: unlocked.fuelsOf(nb)[0]?.fuel,
             })
           }}
-        >
-          <optgroup label="Production">
-            {machines.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.name}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup label="Power">
-            {generators.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.name}
-              </option>
-            ))}
-          </optgroup>
-        </select>
+          options={[
+            ...machines.map((m) => ({ value: m.id, label: m.name, icon: m.id, group: 'Production' })),
+            ...generators.map((m) => ({ value: m.id, label: m.name, icon: m.id, group: 'Power' })),
+          ]}
+        />
       </label>
       {isGenerator ? (
         <label className="ne-field">
           Fuel
-          <select value={data.fuel ?? ''} onChange={(e) => onChange({ ...data, fuel: e.target.value })}>
-            {fuelOptions.map((f) => (
-              <option key={f.fuel} value={f.fuel}>
-                {itemName(f.fuel)}
-              </option>
-            ))}
-          </select>
+          <IconSelect
+            value={data.fuel}
+            onChange={(fuel) => onChange({ ...data, fuel })}
+            options={fuelOptions.map((f) => ({ value: f.fuel, label: itemName(f.fuel), icon: f.fuel }))}
+          />
         </label>
       ) : (
         <label className="ne-field">
           Recipe
-          <select value={data.recipe} onChange={(e) => onChange({ ...data, recipe: e.target.value })}>
-            {recipeOptions.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-                {r.alternate ? ' (alt)' : ''}
-              </option>
-            ))}
-          </select>
+          <IconSelect
+            value={data.recipe}
+            onChange={(recipe) => onChange({ ...data, recipe })}
+            options={recipeOptions.map((r) => ({
+              value: r.id,
+              label: `${r.name}${r.alternate ? ' (alt)' : ''}`,
+              icon: r.products[0]?.item,
+            }))}
+          />
         </label>
       )}
       <div className="ne-grid2">
@@ -371,12 +347,12 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
           <ul className="ne-list">
             {recipe.ingredients.map((i) => (
               <li key={i.item}>
-                <GameIcon id={i.item} size={16} /> In: {fmt(rate(i.amount))} {itemName(i.item)}
+                <GameIcon id={i.item} size={18} /> In: {fmt(rate(i.amount))} {itemName(i.item)}
               </li>
             ))}
             {recipe.products.map((p) => (
               <li key={p.item}>
-                <GameIcon id={p.item} size={16} /> Out: {fmt(rate(p.amount))} {itemName(p.item)}
+                <GameIcon id={p.item} size={18} /> Out: {fmt(rate(p.amount))} {itemName(p.item)}
               </li>
             ))}
           </ul>
@@ -412,14 +388,14 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
         </label>
         <label className="ne-field">
           Via
-          <select value={data.transport} onChange={(e) => onChange({ ...data, transport: e.target.value as PortData['transport'] })}>
-            {portTransports.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.label}
-              </option>
-            ))}
-            <option value="resource">Resource node</option>
-          </select>
+          <IconSelect
+            value={data.transport}
+            onChange={(transport) => onChange({ ...data, transport: transport as PortData['transport'] })}
+            options={[
+              ...portTransports.map((t) => ({ value: t.id as string, label: t.label, icon: t.icon })),
+              { value: 'resource', label: 'Resource node', icon: 'Desc_MinerMk1_C' },
+            ]}
+          />
         </label>
       </div>
       <label className="ne-field">

@@ -3,7 +3,7 @@ import { buildingsById, itemName } from '../data'
 import { go } from '../router'
 import { catalog, purchasable, type GameState } from '../state/gameState'
 import { blankPlan, useOutposts } from '../plan/store'
-import { Icon } from './Icon'
+import { GameIcon } from '../ui/GameIcon'
 import { Rates } from './Rates'
 
 type Tab = 'recipes' | 'items' | 'buildings'
@@ -25,11 +25,19 @@ function Locked({ count, noun, blur }: { count: number; noun: string; blur: bool
   )
 }
 
-export function Planner({ state }: { state: GameState }) {
-  const [tab, setTab] = useState<Tab>('recipes')
-  const [q, setQ] = useState('')
-  const { save } = useOutposts()
+/** Catalog tab for a search opened from an icon: buildings for a building, else recipes when any match, else items. */
+function startTab(kind: string | undefined, query: string, recipeNames: string[]): Tab {
+  if (kind === 'buildings') return 'buildings'
+  const q = query.toLowerCase()
+  if (kind === 'items' && !recipeNames.some((n) => n.toLowerCase().includes(q))) return 'items'
+  return 'recipes'
+}
+
+export function Planner({ state, kind, query = '' }: { state: GameState; kind?: string; query?: string }) {
   const cat = catalog(state)
+  const [tab, setTab] = useState<Tab>(() => startTab(kind, query, cat.recipes.map((r) => r.name)))
+  const [q, setQ] = useState(query)
+  const { save } = useOutposts()
   const blur = state.spoilers === 'blur'
   const match = (name: string) => name.toLowerCase().includes(q.trim().toLowerCase())
 
@@ -91,7 +99,7 @@ export function Planner({ state }: { state: GameState }) {
                 <article key={r.id} className="card recipe">
                   <header>
                     <h4 className="with-icon">
-                      <Icon id={r.products[0].item} size={24} />
+                      <GameIcon id={r.products[0].item} size={28} />
                       {r.name.replace('Alternate: ', '')}
                     </h4>
                     {r.alternate && <span className="badge">Alternate</span>}
@@ -113,7 +121,7 @@ export function Planner({ state }: { state: GameState }) {
               .map((i) => (
                 <article key={i.id} className="card item">
                   <h4 className="with-icon">
-                    <Icon id={i.id} size={24} />
+                    <GameIcon id={i.id} size={28} />
                     {i.name}
                   </h4>
                   {i.category === 'resource' ? (
@@ -135,7 +143,7 @@ export function Planner({ state }: { state: GameState }) {
               .map((b) => (
                 <article key={b.id} className="card">
                   <h4 className="with-icon">
-                    <Icon id={b.id} size={24} />
+                    <GameIcon id={b.id} size={28} />
                     {b.name}
                   </h4>
                   <p className="muted small">

@@ -24,7 +24,7 @@ import { blankPlan } from '../plan/store'
 import { useNetwork } from '../plan/useNetwork'
 import type { GameState } from '../state/gameState'
 import { fmt, proposeLayout, type PortLink } from './generate'
-import { GameIcon } from './GameIcon'
+import { GameIcon, NoIconLinks } from '../ui/GameIcon'
 import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostInspector, PortInspector } from './Inspector'
 import {
   beltRates,
@@ -290,6 +290,8 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
 
   return (
     <div className="ne-body">
+      {/* Icons on the canvas and palette select or drag, so they are not catalog links. */}
+      <NoIconLinks>
       <aside className="ne-palette">
         <h3>Add</h3>
         <PaletteItem payload={{ kind: 'outpost' }} icon="Desc_TradingPost_C" onAdd={drop.addAtCenter}>
@@ -327,6 +329,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         </ReactFlow>
         </RouteContext.Provider>
       </div>
+      </NoIconLinks>
       <aside className="ne-inspector">
         {selNode ? (
           <OutpostInspector
@@ -481,6 +484,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
 
   return (
     <div className="ne-body">
+      {/* Icons on the canvas and palette select or drag, so they are not catalog links. */}
+      <NoIconLinks>
       <aside className="ne-palette">
         <h3>Machines</h3>
         {unlocked.machines.map((b) => (
@@ -571,6 +576,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
         </ReactFlow>
         </RouteContext.Provider>
       </div>
+      </NoIconLinks>
       <aside className="ne-inspector">
         {selNode?.data.kind === 'machine' ? (
           <MachineInspector data={selNode.data as MachineData} onChange={patchNode} onDelete={removeSelected} />

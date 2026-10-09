@@ -57,7 +57,7 @@ export function Setup() {
       <section className="panel">
         <h2>Your game state</h2>
         <p className="muted">
-          {state.source === 'save' ? `Loaded from ${state.saveName}. ` : ''}Planning only shows what's ticked here.
+          {state.source === 'save' ? `Loaded from ${state.saveName}. ` : ''}The rest of the app only shows what's ticked here.
         </p>
 
         <h3>How far are you?</h3>
@@ -215,8 +215,8 @@ export function Setup() {
         <span>
           <strong>{cat.recipes.length}</strong> recipes · <strong>{cat.buildings.length}</strong> {cat.buildings.length === 1 ? 'building' : 'buildings'} unlocked
         </span>
-        <button type="button" onClick={() => go('/plan')}>
-          Start planning →
+        <button type="button" onClick={() => go('/map')}>
+          Open the factory map →
         </button>
       </div>
 
