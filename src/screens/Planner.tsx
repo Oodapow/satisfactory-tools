@@ -3,6 +3,7 @@ import { buildingsById, groupByTaxonomy, itemName, taxonomy, type Building, type
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
 import { blankPlan, useOutposts } from '../plan/store'
+import { suggestGoalRate } from '../plan/suggest'
 import { GameIcon } from '../ui/GameIcon'
 import { Rates } from './Rates'
 
@@ -43,7 +44,7 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
   const blur = state.spoilers === 'blur'
 
   const planFor = (item: string) => {
-    const plan = blankPlan(`${itemName(item)} outpost`, { goals: [{ kind: 'item', item, perMin: 10 }] })
+    const plan = blankPlan(`${itemName(item)} outpost`, { goals: [{ kind: 'item', item, perMin: suggestGoalRate(item, cat.available) }] })
     save(plan)
     go(`/outposts/${plan.id}/resources`)
   }

@@ -4,7 +4,8 @@ import { fmt } from '../format'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
 import { blankPlan, newId, type PlanPatch } from '../plan/store'
-import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
+import { suggestGoalItem, suggestGoalRate } from '../plan/suggest'
+import type { Goal, ItemGoal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
 import { editorPath } from '../editor/route'
@@ -175,7 +176,7 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
 
       <div className="editor-body">
         <div className="editor-main">
-          {current === 'goal' && <GoalStep plan={plan} state={state} update={update} available={net.available} />}
+          {current === 'goal' && <GoalStep plan={plan} state={state} update={update} available={net.available} all={net.outposts} />}
           {current === 'resources' && <ResourcesStep solved={solved} all={net.solved} update={update} available={net.available} />}
           {current === 'plan' && <PlanStep solved={solved} update={update} available={net.available} />}
 
@@ -189,12 +190,21 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
 type StepProps = { update: (p: PlanPatch) => void; available: ReturnType<typeof useNetwork>['available'] }
 
 // Goal tab: what the outpost must deliver.
-function GoalStep({ plan, state, update, available }: StepProps & { plan: OutpostPlan; state: GameState }) {
+function GoalStep({ plan, state, update, available, all }: StepProps & { plan: OutpostPlan; state: GameState; all: OutpostPlan[] }) {
   const cat = catalog(state)
   const products = cat.items.filter((i) => recipesFor(i.id, available).length > 0 || resourcesById.has(i.id))
   const gens = generatorsFor(available.buildings)
   const setGoal = (i: number, g: Goal) => update({ goals: plan.goals.map((x, j) => (j === i ? g : x)) })
   const hasPower = plan.goals.some((g) => g.kind === 'power')
+  // New goals start on the newest item no outpost delivers yet, at a rate that keeps every machine at 100%.
+  const addProduct = () => {
+    const delivered = [...all.filter((o) => o.id !== plan.id), plan].flatMap((o) => o.goals.flatMap((g) => (g.kind === 'item' ? [g.item] : [])))
+    const item = suggestGoalItem(products.map((p) => p.id), available, delivered) ?? products[0].id
+    update({ goals: [...plan.goals, { kind: 'item', item, perMin: suggestGoalRate(item, available) }] })
+  }
+  // Switching the item moves a still-suggested rate along with it; a typed rate stays.
+  const setItem = (i: number, g: ItemGoal, item: string) =>
+    setGoal(i, { ...g, item, perMin: g.perMin === suggestGoalRate(g.item, available) ? suggestGoalRate(item, available) : g.perMin })
 
   return (
     <section className="panel">
@@ -218,7 +228,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
                 <span className="muted">/min</span>
                 <IconSelect
                   value={g.item}
-                  onChange={(item) => setGoal(i, { ...g, item })}
+                  onChange={(item) => setItem(i, g, item)}
                   aria-label="Product"
                   options={products.map((p) => ({ value: p.id, label: p.name, icon: p.id }))}
                 />
@@ -266,7 +276,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
           type="button"
           className="secondary"
           disabled={products.length === 0}
-          onClick={() => update({ goals: [...plan.goals, { kind: 'item', item: products[0].id, perMin: 10 }] })}
+          onClick={addProduct}
         >
           + Product
         </button>
