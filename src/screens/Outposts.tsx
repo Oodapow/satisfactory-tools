@@ -349,20 +349,29 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
             return (
               <li key={n.id} className="node-row">
                 <GameIcon id={n.resource} size={32} />
-                <IconSelect
-                  value={n.resource}
-                  onChange={(resource) => set({ resource, extractor: undefined })}
-                  aria-label="Resource"
-                  options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
-                />
-                <div className="segmented small" role="radiogroup" aria-label="Purity">
-                  {PURITIES.map((p) => (
-                    <label key={p}>
-                      <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
-                      <span>{p}</span>
-                    </label>
-                  ))}
-                </div>
+                {n.fromMap ? (
+                  // Picked on the world map: resource and purity are the node's real ones.
+                  <span className="node-fixed">
+                    {itemName(n.resource)} · {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
+                  </span>
+                ) : (
+                  <>
+                    <IconSelect
+                      value={n.resource}
+                      onChange={(resource) => set({ resource, extractor: undefined })}
+                      aria-label="Resource"
+                      options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
+                    />
+                    <div className="segmented small" role="radiogroup" aria-label="Purity">
+                      {PURITIES.map((p) => (
+                        <label key={p}>
+                          <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
+                          <span>{p}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {ex.length > 1 ? (
                   <IconSelect
                     value={b?.id}
@@ -400,9 +409,14 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
             )
           })}
         </ul>
-        <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
-          + Node
-        </button>
+        <div className="row">
+          <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
+            + Node
+          </button>
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            Pick nodes on the world map
+          </a>
+        </div>
       </section>
 
       <section className="panel">

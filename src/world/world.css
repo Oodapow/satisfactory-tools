@@ -1,13 +1,30 @@
-/* World map */
-.wm-screen { display: flex; flex-direction: column; height: 100%; background: var(--bg); }
-.wm-bar { display: grid; gap: 6px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
-.wm-chips { display: flex; gap: 6px; overflow-x: auto; align-items: center; scrollbar-width: thin; }
-.wm-chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px 3px 6px; font-weight: 500; font-size: .85rem; }
-.wm-chip.off { opacity: .45; }
-.wm-chip.off img, .wm-chip.off .wm-dot { filter: grayscale(1); }
-.wm-count { color: var(--muted); font-size: .8rem; }
-.wm-check { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: .85rem; color: var(--muted); margin-left: 4px; }
-.wm-notice { margin: 10px 16px 0; }
+/* World map: legend panel on the left, map on the right. On phones the panel covers the map. */
+.wm-screen { position: relative; display: flex; height: 100%; background: var(--bg); }
+.wm-main { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wm-panel { flex: none; width: 280px; overflow-y: auto; background: var(--surface); border-right: 1px solid var(--border); padding: 8px 12px 16px; display: grid; gap: 4px; align-content: start; }
+.wm-panel[hidden] { display: none; }
+.wm-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+.wm-section { display: grid; gap: 2px; padding: 8px 0; border-top: 1px solid var(--border); }
+.wm-section h4 { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 4px; }
+.wm-section select { width: 100%; margin-bottom: 6px; }
+.wm-section .row { margin-bottom: 4px; }
+.wm-row { display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 8px; width: 100%; text-align: left; background: none; color: var(--text); border: 0; border-radius: 6px; padding: 4px 6px; font-weight: 500; font-size: .9rem; }
+.wm-row:hover { background: var(--surface-2); }
+.wm-row.off { opacity: .45; }
+.wm-row.off img, .wm-row.off .wm-dot { filter: grayscale(1); }
+.wm-row-icon { display: flex; align-items: center; justify-content: center; }
+.wm-row-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wm-count { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.wm-check { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); padding: 6px; }
+.wm-notice { margin: 10px 16px; }
+.wm-outpost { display: grid; gap: 6px; }
+.wm-outpost p { margin: 0; }
+.wm-outpost-nodes li { display: grid; grid-template-columns: 20px 12px 1fr auto; align-items: center; gap: 6px; font-size: .85rem; }
+.wm-outpost .small-link { justify-self: start; padding: 4px 10px; font-size: .85rem; }
+.wm-menu { position: absolute; left: 12px; top: 12px; z-index: 3; background: var(--surface); }
+@media (max-width: 799px) {
+  .wm-panel { position: absolute; inset: 0 auto 0 0; z-index: 4; width: min(300px, 86vw); box-shadow: 4px 0 16px rgba(0, 0, 0, .35); }
+}
 
 /* Purity colors, like the in-game scanner ring */
 .wm-screen { --impure: #3fbf4f; --normal: #3b8cff; --pure: #a65cff; }
@@ -36,6 +53,19 @@
 .wm-landmark.hub { width: 34px; height: 34px; margin: -17px 0 0 -17px; background: rgba(20, 22, 28, .85); border: 2px solid var(--accent); }
 .wm-landmark.crash { background: rgba(20, 22, 28, .85); border: 2px solid #e0533f; border-radius: 6px; }
 .wm-landmark.player { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: #fff; border: 3px solid var(--accent); box-shadow: 0 0 0 3px rgba(232, 137, 28, .35); }
+
+.wm-viewport.placing { cursor: crosshair; }
+.wm-tile { position: absolute; pointer-events: none; }
+.wm-node.pickable { cursor: copy; padding: 0; }
+.wm-node.picked { box-shadow: 0 0 0 3px #fff, 0 0 10px 4px rgba(255, 255, 255, .7); }
+.wm-node.used { opacity: .55; }
+.wm-outpost-dot { width: 14px; height: 14px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--accent); border: 2px solid #fff; }
+/* The pin's tip sits on the outpost's spot: a zero-size anchor scaled from its corner. */
+.wm-outpost-marker { width: 0; height: 0; margin: 0; border-radius: 0; background: none; border: 0; padding: 0; transform-origin: 0 0; z-index: 2; }
+.wm-pin { position: absolute; left: -11px; top: -32px; width: 22px; height: 22px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--accent); border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, .5); }
+.wm-outpost-marker.active .wm-pin { background: #fff; border-color: var(--accent); }
+.wm-outpost-name { position: absolute; left: 14px; top: -34px; background: rgba(20, 22, 28, .85); color: #fff; font-size: .75rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+.wm-outpost-marker.active .wm-outpost-name { position: absolute; left: 14px; top: -34px; background: var(--accent); }
 
 .wm-controls { position: absolute; right: 12px; top: 12px; display: flex; flex-direction: column; gap: 6px; }
 .wm-controls button { background: var(--surface); min-width: 36px; }

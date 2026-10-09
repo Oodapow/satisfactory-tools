@@ -1,46 +1,99 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { resourcesById } from '../data'
 import { displayName, iconUrl } from '../data/icons'
-import type { Purity } from '../data/game/types'
-import { worldMap, worldMapImage } from '../data/game/worldMap'
+import type { Purity, WorldNode } from '../data/game/types'
+import { worldMap, worldMapOverview, worldMapTiles } from '../data/game/worldMap'
+import { blankPlan, useOutposts } from '../plan/store'
+import type { OutpostPlan } from '../plan/types'
+import { go } from '../router'
 import { FOG_SIZE, type Point } from '../save/readMap'
 import type { GameState } from '../state/gameState'
 import { usePersistentState } from '../storage/persisted'
 import { hide, useTip } from '../ui/tooltip'
-import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, PURITIES, toUnit, type Marker } from './model'
+import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, PURITIES, toUnit, toWorld, type Marker } from './model'
 import './world.css'
 
 // The map is laid out on a square "stage" of STAGE px and zoomed with a CSS transform;
 // markers scale back by 1/zoom so they stay the same size on screen.
 const STAGE = 1000
-const MAX_ZOOM_OVER_IMAGE = 3
+/** How far past the source picture's own pixels you can zoom. */
+const MAX_OVERZOOM = 2
 
 type View = { x: number; y: number; k: number }
+type Box = { left: number; top: number; right: number; bottom: number }
 
 type Filters = {
   /** Resources (or "unknown") the player switched off. */
   hidden: string[]
   hiddenPurities: Purity[]
   crashSites: boolean
+  outposts: boolean
   /** Spoilers: show nodes in unexplored areas too. */
   showAll: boolean
+  /** Side panel open; unset means "open on wide screens". */
+  panel?: boolean
 }
-const defaultFilters: Filters = { hidden: [], hiddenPurities: [], crashSites: true, showAll: false }
+const defaultFilters: Filters = { hidden: [], hiddenPurities: [], crashSites: true, outposts: true, showAll: false }
 const UNKNOWN = 'unknown'
 
-export default function WorldScreen({ state }: { state: GameState }) {
+// Legend groups, in the order the game's resource list uses.
+const GROUPS = [
+  { key: 'solid', label: 'Ores' },
+  { key: 'liquid', label: 'Fluids' },
+  { key: 'gas', label: 'Gases' },
+  { key: 'geyser', label: 'Geysers' },
+  { key: UNKNOWN, label: 'Not unlocked yet' },
+] as const
+const groupOf = (resource: string | null) =>
+  resource === null ? UNKNOWN : resource === 'Desc_Geyser_C' ? 'geyser' : (resourcesById.get(resource)?.form ?? 'solid')
+
+/** Only plain nodes can be given to an outpost: wells and geysers need buildings the planner doesn't place. */
+const pickable = (m: Marker) => m.node.kind === 'node' && m.resource !== null
+
+export default function WorldScreen({ state, outpostId }: { state: GameState; outpostId?: string }) {
   const [filters, setFilters] = usePersistentState<Filters>('worldMapFilters', defaultFilters)
   const f = { ...defaultFilters, ...filters }
+  const panelOpen = f.panel ?? window.innerWidth >= 800
+  const { outposts, save: saveOutpost, update: updateOutpost } = useOutposts()
+  const active = outposts.find((o) => o.id === outpostId)
+  // Placing: the next click on the map creates an outpost there ('new') or moves the selected one.
+  const [placing, setPlacing] = useState<'new' | 'move' | null>(null)
+
   const save = state.map
   const fog = useMemo(() => (save ? decodeFog(save.fog) : null), [save])
   const all = useMemo(() => markers(worldMap, state, f.showAll), [state, f.showAll])
-  const shown = all.filter(
-    (m) => !f.hidden.includes(m.resource ?? UNKNOWN) && !f.hiddenPurities.includes(m.node.purity) && m.node.kind !== 'wellCore',
-  )
+  const visible = (m: Marker) => !f.hidden.includes(m.resource ?? UNKNOWN) && !f.hiddenPurities.includes(m.node.purity)
   const cores = all.filter((m) => m.node.kind === 'wellCore' && !f.hidden.includes(m.resource ?? UNKNOWN))
+  const shown = all.filter((m) => m.node.kind !== 'wellCore' && visible(m))
   const revealed = (p: Point) => f.showAll || (fog !== null && fogAt(worldMap, fog, p) >= FOG_REVEALED)
   const crashSites = f.crashSites ? (save?.crashSites ?? []).filter(revealed) : []
 
-  // Counts for the filter chips, before filtering.
+  // Which outpost uses each node picked on the map.
+  const usedBy = new Map<string, OutpostPlan>()
+  for (const o of outposts) for (const n of o.nodes) if (n.fromMap) usedBy.set(n.id, o)
+
+  const toggleNode = (node: WorldNode) => {
+    if (!active) return
+    const has = active.nodes.some((n) => n.id === node.id)
+    updateOutpost(active.id, {
+      nodes: has
+        ? active.nodes.filter((n) => n.id !== node.id)
+        : [...active.nodes, { id: node.id, resource: node.resource, purity: node.purity, fromMap: true }],
+    })
+  }
+
+  const place = (p: Point) => {
+    const location = { x: Math.round(p[0]), y: Math.round(p[1]) }
+    if (placing === 'move' && active) updateOutpost(active.id, { location })
+    else {
+      const plan = blankPlan(`Outpost ${outposts.length + 1}`, { location })
+      saveOutpost(plan)
+      go(`/world/${plan.id}`)
+    }
+    setPlacing(null)
+  }
+
+  // Counts for the legend, before filtering.
   const byResource = new Map<string, number>()
   const byPurity = new Map<Purity, number>()
   for (const m of all) {
@@ -48,103 +101,262 @@ export default function WorldScreen({ state }: { state: GameState }) {
     byResource.set(m.resource ?? UNKNOWN, (byResource.get(m.resource ?? UNKNOWN) ?? 0) + 1)
     byPurity.set(m.node.purity, (byPurity.get(m.node.purity) ?? 0) + 1)
   }
-  const resourceIds = [...byResource.keys()].sort((a, b) =>
-    a === UNKNOWN ? 1 : b === UNKNOWN ? -1 : displayName(a).localeCompare(displayName(b)),
-  )
   const toggle = <T,>(list: T[], x: T) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x])
+  const setPanel = (panel: boolean) => setFilters({ ...f, panel })
+
+  const focus = active?.location ? toUnit(worldMap, [active.location.x, active.location.y]) : null
 
   return (
-    <div className="wm-screen">
-      <div className="wm-bar">
-        <div className="wm-chips" role="group" aria-label="Resources">
-          {resourceIds.map((id) => (
-            <button
-              key={id}
-              type="button"
-              className={`wm-chip${f.hidden.includes(id) ? ' off' : ''}`}
-              aria-pressed={!f.hidden.includes(id)}
-              onClick={() => setFilters({ ...f, hidden: toggle(f.hidden, id) })}
-            >
-              {id === UNKNOWN ? <span className="wm-unknown small">?</span> : <img src={iconUrl(id)} alt="" width={20} height={20} />}
-              {id === UNKNOWN ? 'Not unlocked yet' : displayName(id)}
-              <span className="wm-count">{byResource.get(id)}</span>
-            </button>
-          ))}
+    <div className={`wm-screen${panelOpen ? ' panel-open' : ''}`}>
+      <aside className="wm-panel" aria-label="Map legend and outposts" hidden={!panelOpen}>
+        <div className="wm-panel-head">
+          <strong>World map</strong>
+          <button type="button" className="icon-btn" aria-label="Close the legend" onClick={() => setPanel(false)}>
+            ×
+          </button>
         </div>
-        <div className="wm-chips" role="group" aria-label="Purity and landmarks">
+
+        <section className="wm-section">
+          <h4>Outposts</h4>
+          <select
+            value={active?.id ?? ''}
+            onChange={(e) => (setPlacing(null), go(e.target.value ? `/world/${e.target.value}` : '/world'))}
+            aria-label="Outpost to edit on the map"
+          >
+            <option value="">No outpost selected</option>
+            {outposts.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.name}
+                {o.location ? '' : ' (not on the map)'}
+              </option>
+            ))}
+          </select>
+          <div className="row">
+            <button type="button" className={`small${placing === 'new' ? '' : ' secondary'}`} onClick={() => setPlacing(placing === 'new' ? null : 'new')}>
+              New outpost on the map
+            </button>
+            {active && (
+              <button type="button" className={`small${placing === 'move' ? '' : ' secondary'}`} onClick={() => setPlacing(placing === 'move' ? null : 'move')}>
+                {active.location ? 'Move it' : 'Put it on the map'}
+              </button>
+            )}
+          </div>
+          {placing && <p className="notice small">Click the map where the outpost goes.</p>}
+          {active && <OutpostNodes plan={active} onRemove={(id) => updateOutpost(active.id, { nodes: active.nodes.filter((n) => n.id !== id) })} />}
+        </section>
+
+        {GROUPS.map((g) => {
+          const ids = [...byResource.keys()].filter((id) => groupOf(id === UNKNOWN ? null : id) === g.key)
+          if (ids.length === 0) return null
+          ids.sort((a, b) => displayName(a).localeCompare(displayName(b)))
+          return (
+            <section key={g.key} className="wm-section">
+              <h4>{g.label}</h4>
+              {ids.map((id) => (
+                <LegendRow
+                  key={id}
+                  on={!f.hidden.includes(id)}
+                  onToggle={() => setFilters({ ...f, hidden: toggle(f.hidden, id) })}
+                  icon={id === UNKNOWN ? <span className="wm-unknown small">?</span> : <img src={iconUrl(id)} alt="" width={22} height={22} />}
+                  label={id === UNKNOWN ? 'Unknown resource' : displayName(id)}
+                  count={byResource.get(id)}
+                />
+              ))}
+            </section>
+          )
+        })}
+
+        <section className="wm-section">
+          <h4>Purity</h4>
           {PURITIES.map((p) => (
-            <button
+            <LegendRow
               key={p}
-              type="button"
-              className={`wm-chip${f.hiddenPurities.includes(p) ? ' off' : ''}`}
-              aria-pressed={!f.hiddenPurities.includes(p)}
-              onClick={() => setFilters({ ...f, hiddenPurities: toggle(f.hiddenPurities, p) })}
-            >
-              <span className={`wm-dot ${p}`} />
-              {p[0].toUpperCase() + p.slice(1)}
-              <span className="wm-count">{byPurity.get(p) ?? 0}</span>
-            </button>
+              on={!f.hiddenPurities.includes(p)}
+              onToggle={() => setFilters({ ...f, hiddenPurities: toggle(f.hiddenPurities, p) })}
+              icon={<span className={`wm-dot ${p}`} />}
+              label={purityName(p)}
+              count={byPurity.get(p) ?? 0}
+            />
           ))}
+        </section>
+
+        <section className="wm-section">
+          <h4>On the map</h4>
+          <LegendRow
+            on={f.outposts}
+            onToggle={() => setFilters({ ...f, outposts: !f.outposts })}
+            icon={<span className="wm-outpost-dot" />}
+            label="Outposts"
+            count={outposts.filter((o) => o.location).length}
+          />
           {save && (
-            <button
-              type="button"
-              className={`wm-chip${f.crashSites ? '' : ' off'}`}
-              aria-pressed={f.crashSites}
-              onClick={() => setFilters({ ...f, crashSites: !f.crashSites })}
-            >
-              <img src={iconUrl('Desc_HardDrive_C')} alt="" width={20} height={20} />
-              Crash sites
-            </button>
+            <LegendRow
+              on={f.crashSites}
+              onToggle={() => setFilters({ ...f, crashSites: !f.crashSites })}
+              icon={<img src={iconUrl('Desc_HardDrive_C')} alt="" width={22} height={22} />}
+              label="Crash sites"
+              count={(save.crashSites ?? []).filter(revealed).length}
+            />
           )}
           <label className="wm-check" title="Shows nodes in places you haven't been yet">
             <input type="checkbox" checked={f.showAll} onChange={(e) => setFilters({ ...f, showAll: e.target.checked })} />
             Show unexplored (spoilers)
           </label>
-        </div>
+        </section>
+      </aside>
+
+      <div className="wm-main">
+        {!save && (
+          <p className="notice wm-notice">
+            The map shows what you've explored, which comes from your save. <a href="#/upload">Upload a save</a> to see it.
+          </p>
+        )}
+        <MapView
+          fog={f.showAll ? null : fog}
+          hasSave={Boolean(save)}
+          placing={placing !== null}
+          onPlace={place}
+          focus={focus}
+          menu={
+            !panelOpen && (
+              <button type="button" className="wm-menu secondary small" aria-label="Open the legend" onClick={() => setPanel(true)}>
+                ☰ Legend
+              </button>
+            )
+          }
+        >
+          {cores.map((m) => (
+            <NodeMarker key={m.node.id} marker={m} />
+          ))}
+          {shown.map((m) => {
+            const owner = usedBy.get(m.node.id)
+            return (
+              <NodeMarker
+                key={m.node.id}
+                marker={m}
+                picked={Boolean(active && owner?.id === active.id)}
+                usedBy={owner && owner.id !== active?.id ? owner.name : undefined}
+                onPick={active && pickable(m) && !placing ? () => toggleNode(m.node) : undefined}
+                hint={active && !pickable(m) && m.node.kind === 'node' ? 'unlock it to plan with it' : undefined}
+              />
+            )
+          })}
+          {crashSites.map((p) => (
+            <Landmark key={p.join()} at={p} label="Crash site" icon="Desc_HardDrive_C" className="crash" />
+          ))}
+          {save?.hub && <Landmark at={save.hub} label="The HUB" icon="Desc_TradingPost_C" className="hub" />}
+          {save?.players.map((p) => <Landmark key={p.join()} at={p} label="You (when the game was saved)" className="player" />)}
+          {f.outposts &&
+            outposts
+              .filter((o) => o.location)
+              .map((o) => (
+                <OutpostMarker key={o.id} plan={o} active={o.id === active?.id} onSelect={() => (setPlacing(null), go(`/world/${o.id}`))} />
+              ))}
+        </MapView>
       </div>
-      {!save && (
-        <p className="notice wm-notice">
-          The map shows what you've explored, which comes from your save. <a href="#/upload">Upload a save</a> to see it.
-        </p>
-      )}
-      <MapView fog={f.showAll ? null : fog} hasSave={Boolean(save)}>
-        {cores.map((m) => (
-          <NodeMarker key={m.node.id} marker={m} />
-        ))}
-        {shown.map((m) => (
-          <NodeMarker key={m.node.id} marker={m} />
-        ))}
-        {crashSites.map((p) => (
-          <Landmark key={p.join()} at={p} label="Crash site" icon="Desc_HardDrive_C" className="crash" />
-        ))}
-        {save?.hub && <Landmark at={save.hub} label="The HUB" icon="Desc_TradingPost_C" className="hub" />}
-        {save?.players.map((p) => <Landmark key={p.join()} at={p} label="You (when the game was saved)" className="player" />)}
-      </MapView>
     </div>
   )
 }
 
 const purityName = (p: Purity) => p[0].toUpperCase() + p.slice(1)
 
-function NodeMarker({ marker: { node, resource, inUse } }: { marker: Marker }) {
+function LegendRow({ on, onToggle, icon, label, count }: { on: boolean; onToggle: () => void; icon: ReactNode; label: string; count?: number }) {
+  return (
+    <button type="button" className={`wm-row${on ? '' : ' off'}`} aria-pressed={on} onClick={onToggle}>
+      <span className="wm-row-icon">{icon}</span>
+      <span className="wm-row-label">{label}</span>
+      {count !== undefined && <span className="wm-count">{count}</span>}
+    </button>
+  )
+}
+
+/** The selected outpost's nodes, with the ones picked on the map first. */
+function OutpostNodes({ plan, onRemove }: { plan: OutpostPlan; onRemove: (id: string) => void }) {
+  const fromMap = plan.nodes.filter((n) => n.fromMap)
+  const manual = plan.nodes.length - fromMap.length
+  return (
+    <div className="wm-outpost">
+      <p className="muted small">
+        Click a node on the map to add it to <strong>{plan.name}</strong>, or click it again to take it out.
+      </p>
+      {fromMap.length > 0 && (
+        <ul className="plain wm-outpost-nodes">
+          {fromMap.map((n) => (
+            <li key={n.id}>
+              <img src={iconUrl(n.resource)} alt="" width={20} height={20} />
+              <span className={`wm-dot ${n.purity}`} />
+              <span>
+                {purityName(n.purity)} {displayName(n.resource)}
+              </span>
+              <button type="button" className="icon-btn" aria-label={`Remove ${displayName(n.resource)} node`} onClick={() => onRemove(n.id)}>
+                ×
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {manual > 0 && (
+        <p className="muted small">
+          Plus {manual} node{manual === 1 ? '' : 's'} added by hand.
+        </p>
+      )}
+      <a className="button secondary small-link" href={`#/outposts/${plan.id}/resources`}>
+        Open {plan.name}
+      </a>
+    </div>
+  )
+}
+
+function NodeMarker({
+  marker: { node, resource, inUse },
+  picked = false,
+  usedBy,
+  onPick,
+  hint,
+}: {
+  marker: Marker
+  picked?: boolean
+  usedBy?: string
+  onPick?: () => void
+  hint?: string
+}) {
   const what = resource ? displayName(resource) : 'Unknown resource'
-  const label =
+  const label = [
     node.kind === 'wellCore'
       ? `Resource well: ${what}`
-      : `${purityName(node.purity)} ${what}${node.kind === 'wellSatellite' ? ' (resource well)' : node.kind === 'geyser' ? '' : ' node'}${inUse ? ' · in use' : ''}`
-  const tip = useTip(label, { tapShows: true })
+      : `${purityName(node.purity)} ${what}${node.kind === 'wellSatellite' ? ' (resource well)' : node.kind === 'geyser' ? '' : ' node'}`,
+    inUse && 'in use',
+    picked && 'in this outpost',
+    usedBy && `planned for ${usedBy}`,
+    hint,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+  const tip = useTip(label, { tapShows: !onPick })
   const [u, v] = toUnit(worldMap, [node.x, node.y])
   const kindClass = node.kind === 'wellCore' ? 'core' : node.kind === 'wellSatellite' ? 'satellite' : ''
+  const className = [
+    'wm-marker wm-node',
+    node.kind === 'wellCore' ? '' : node.purity,
+    kindClass,
+    inUse && 'in-use',
+    picked && 'picked',
+    usedBy && 'used',
+    onPick && 'pickable',
+  ]
+    .filter(Boolean)
+    .join(' ')
+  const style = { left: `${u * 100}%`, top: `${v * 100}%` }
+  const content = resource ? <img src={iconUrl(resource)} alt="" draggable={false} /> : <span className="wm-unknown">?</span>
+  if (onPick)
+    return (
+      <button type="button" className={className} style={style} aria-label={label} aria-pressed={picked} onClick={onPick} {...tip}>
+        {content}
+      </button>
+    )
   return (
-    <span
-      className={`wm-marker wm-node ${node.kind === 'wellCore' ? '' : node.purity} ${kindClass}${inUse ? ' in-use' : ''}`}
-      style={{ left: `${u * 100}%`, top: `${v * 100}%` }}
-      role="img"
-      aria-label={label}
-      tabIndex={0}
-      {...tip}
-    >
-      {resource ? <img src={iconUrl(resource)} alt="" draggable={false} /> : <span className="wm-unknown">?</span>}
+    <span className={className} style={style} role="img" aria-label={label} tabIndex={0} {...tip}>
+      {content}
     </span>
   )
 }
@@ -166,16 +378,64 @@ function Landmark({ at, label, icon, className }: { at: Point; label: string; ic
   )
 }
 
+function OutpostMarker({ plan, active, onSelect }: { plan: OutpostPlan; active: boolean; onSelect: () => void }) {
+  const [u, v] = toUnit(worldMap, [plan.location!.x, plan.location!.y])
+  return (
+    <button
+      type="button"
+      className={`wm-marker wm-outpost-marker${active ? ' active' : ''}`}
+      style={{ left: `${u * 100}%`, top: `${v * 100}%` }}
+      onClick={onSelect}
+      aria-label={`Outpost ${plan.name}${active ? ' (selected)' : ''}`}
+    >
+      <span className="wm-pin" />
+      <span className="wm-outpost-name">{plan.name}</span>
+    </button>
+  )
+}
+
+/** Detail tiles of the map picture currently on screen, as "row-col" keys. */
+function visibleTiles(view: View, w: number, h: number) {
+  const n = worldMapTiles.count
+  const tile = (STAGE * view.k) / n
+  const keys: string[] = []
+  for (let r = 0; r < n; r++)
+    for (let c = 0; c < n; c++) {
+      const left = view.x + c * tile, top = view.y + r * tile
+      if (left < w && top < h && left + tile > 0 && top + tile > 0) keys.push(`${r}-${c}`)
+    }
+  return keys
+}
+
 /** Pan and zoom (drag, wheel, pinch, buttons) over the map picture with the fog drawn on top. */
-function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: boolean; children: ReactNode }) {
+function MapView({
+  fog,
+  hasSave,
+  placing,
+  onPlace,
+  focus,
+  menu,
+  children,
+}: {
+  fog: Uint8Array | null
+  hasSave: boolean
+  placing: boolean
+  onPlace: (p: Point) => void
+  /** Unit point to center on at first, e.g. the selected outpost. */
+  focus: Point | null
+  menu: ReactNode
+  children: ReactNode
+}) {
   const viewport = useRef<HTMLDivElement>(null)
   const stage = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const view = useRef<View>({ x: 0, y: 0, k: 1 })
   const [size, setSize] = useState({ w: 0, h: 0 })
+  // Full-resolution tiles load once the overview would be stretched, and only those on screen.
+  const [tiles, setTiles] = useState<string[]>([])
 
   const fitZoom = () => Math.min(size.w, size.h) / STAGE
-  const maxZoom = () => (4096 / STAGE) * MAX_ZOOM_OVER_IMAGE
+  const maxZoom = () => (worldMapTiles.sourceSize / STAGE) * MAX_OVERZOOM
 
   const apply = () => {
     const { x, y, k } = view.current
@@ -184,6 +444,12 @@ function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: 
     stage.current.style.setProperty('--k', String(k))
     // Markers shrink when the whole map is in view, so crowded areas stay readable.
     stage.current.style.setProperty('--s', String(Math.min(1, Math.max(0.6, k / (fitZoom() * 3)))))
+    const wanted = STAGE * k * window.devicePixelRatio > worldMapOverview.size * 1.1 ? visibleTiles(view.current, size.w, size.h) : []
+    setTiles((prev) => {
+      // Keep tiles already loaded, so panning back doesn't flash the overview.
+      const next = [...new Set([...prev, ...wanted])]
+      return next.length === prev.length ? prev : next
+    })
   }
 
   // Keep at least part of the map on screen.
@@ -211,7 +477,7 @@ function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: 
   }
 
   /** Show the unit-coordinate box, centered. */
-  const fit = (box: { left: number; top: number; right: number; bottom: number }) => {
+  const fit = (box: Box) => {
     const pad = 0.15
     const w = (box.right - box.left) * (1 + pad * 2)
     const h = (box.bottom - box.top) * (1 + pad * 2)
@@ -237,13 +503,15 @@ function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: 
     return () => ro.disconnect()
   }, [])
 
-  // First layout: zoom to what's been explored.
+  // First layout: zoom to the selected outpost, or to what's been explored.
   const placed = useRef(false)
   useLayoutEffect(() => {
     if (!size.w || !size.h) return
     if (!placed.current) {
       placed.current = true
-      fitExplored()
+      const r = 0.05
+      if (focus) fit({ left: focus[0] - r, top: focus[1] - r, right: focus[0] + r, bottom: focus[1] + r })
+      else fitExplored()
     } else set(view.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size])
@@ -288,7 +556,7 @@ function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: 
   // still reaches the marker under it.
   const pointers = useRef(new Map<number, { x: number; y: number }>())
   const gesture = useRef<{ moved: boolean; dist: number }>({ moved: false, dist: 0 })
-  const local = (e: ReactPointerEvent) => {
+  const local = (e: { clientX: number; clientY: number }) => {
     const r = viewport.current!.getBoundingClientRect()
     return { x: e.clientX - r.left, y: e.clientY - r.top }
   }
@@ -327,23 +595,46 @@ function MapView({ fog, hasSave, children }: { fog: Uint8Array | null; hasSave: 
     pointers.current.delete(e.pointerId)
     gesture.current.dist = pinchDistance()
   }
+  // A click (not the end of a drag) on the map itself, while placing an outpost.
+  const onClick = (e: ReactMouseEvent) => {
+    if (!placing || gesture.current.moved || (e.target as Element).closest('.wm-marker, .wm-controls, .wm-menu')) return
+    const p = local(e)
+    const { x, y, k } = view.current
+    onPlace(toWorld(worldMap, [(p.x - x) / k / STAGE, (p.y - y) / k / STAGE]))
+  }
 
   const zoomButton = (factor: number) => zoomAt(factor, size.w / 2, size.h / 2)
+  const n = worldMapTiles.count
 
   return (
     <div
-      className="wm-viewport"
+      className={`wm-viewport${placing ? ' placing' : ''}`}
       ref={viewport}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
+      onClick={onClick}
     >
       <div className="wm-stage" ref={stage} style={{ width: STAGE, height: STAGE }}>
-        <img className="wm-image" src={worldMapImage} alt="Map of the world" draggable={false} />
+        <img className="wm-image" src={worldMapOverview.url} alt="Map of the world" draggable={false} />
+        {tiles.map((key) => {
+          const [r, c] = key.split('-').map(Number)
+          return (
+            <img
+              key={key}
+              className="wm-tile"
+              src={worldMapTiles.url(r, c)}
+              alt=""
+              draggable={false}
+              style={{ left: `${(c * 100) / n}%`, top: `${(r * 100) / n}%`, width: `${100 / n}%`, height: `${100 / n}%` }}
+            />
+          )
+        })}
         <canvas className="wm-fog" ref={canvas} width={FOG_SIZE} height={FOG_SIZE} />
         {children}
       </div>
+      {menu}
       <div className="wm-controls">
         <button type="button" className="secondary small" onClick={() => zoomButton(1.5)} aria-label="Zoom in">
           +

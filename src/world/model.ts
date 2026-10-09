@@ -18,6 +18,12 @@ export function toUnit(map: WorldMap, [x, y]: Point): Point {
   return [(x - b.west) / (b.east - b.west), (y - b.north) / (b.south - b.north)]
 }
 
+/** World position (cm) of a fraction across the map; the inverse of toUnit. */
+export function toWorld(map: WorldMap, [u, v]: Point): Point {
+  const b = map.bounds
+  return [b.west + u * (b.east - b.west), b.north + v * (b.south - b.north)]
+}
+
 export function decodeFog(fog: string): Uint8Array {
   const binary = atob(fog)
   const out = new Uint8Array(binary.length)
