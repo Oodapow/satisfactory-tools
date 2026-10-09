@@ -96,7 +96,7 @@ export function Planner({ state }: { state: GameState }) {
                     </h4>
                     {r.alternate && <span className="badge">Alternate</span>}
                   </header>
-                  <p className="muted small">{r.producedIn.map((b) => buildingsById.get(b)?.name).join(', ')}</p>
+                  <p className="muted small">{r.producedIn.filter((b) => cat.available.buildings.has(b)).map((b) => buildingsById.get(b)?.name).join(', ')}</p>
                   <div className="flow">
                     <Rates list={r.ingredients} recipe={r} />
                     <span className="arrow">→</span>

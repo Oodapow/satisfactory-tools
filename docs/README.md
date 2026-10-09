@@ -46,7 +46,7 @@ The app ships its own copy of everything a game state can contain. Full details 
 3. **Check:** `npm run data:check` fails if the generated files differ from what the script produces; CI runs it on every PR.
 4. **Use:** `src/data/game/index.ts` exports typed data and lookups; `availability.ts` answers "what is unlocked" and "what can be bought next" for a game state.
 
-Known gap: MAM research order ([#10](https://github.com/Oodapow/satisfactory-tools/issues/10)). Icons are fetched by `scripts/fetch-icons.mjs` into `public/icons/` and listed in `src/data/game/icons.json` ([#8](https://github.com/Oodapow/satisfactory-tools/issues/8)).
+MAM research order comes from a supplement transcribed from the wiki's tree diagrams ([#10](https://github.com/Oodapow/satisfactory-tools/issues/10)). Icons are fetched by `scripts/fetch-icons.mjs` into `public/icons/` and listed in `src/data/game/icons.json` ([#8](https://github.com/Oodapow/satisfactory-tools/issues/8)).
 
 To update after a game patch, run the generator with `--from` pointing at your install's `en-US.json` (command in [data/README.md](../data/README.md#regenerating)).
 

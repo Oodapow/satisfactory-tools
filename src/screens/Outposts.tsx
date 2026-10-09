@@ -5,6 +5,7 @@ import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, recipesFor, unusedImports } from '../plan/solve'
 import { blankPlan, newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
+import { transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
@@ -184,7 +185,7 @@ type StepProps = { update: (p: PlanPatch) => void; available: ReturnType<typeof 
 // Step 1: what the outpost must deliver.
 function GoalStep({ plan, state, update, available }: StepProps & { plan: OutpostPlan; state: GameState }) {
   const cat = catalog(state)
-  const products = cat.items.filter((i) => recipesFor(i.id, available.recipes).length > 0 || resourcesById.has(i.id))
+  const products = cat.items.filter((i) => recipesFor(i.id, available).length > 0 || resourcesById.has(i.id))
   const gens = generatorsFor(available.buildings)
   const setGoal = (i: number, g: Goal) => update({ goals: plan.goals.map((x, j) => (j === i ? g : x)) })
   const hasPower = plan.goals.some((g) => g.kind === 'power')
@@ -413,7 +414,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                     /min {itemName(imp.item)} <span className="muted small">from {all.find((s) => s.plan.id === imp.from)?.plan.name}</span>
                   </span>
                   <select value={imp.via} onChange={(e) => set({ via: e.target.value as Transport })} aria-label="Transport">
-                    {TRANSPORTS.map((t) => (
+                    {TRANSPORTS.filter((t) => t === imp.via || transportUnlocked(t, available)).map((t) => (
                       <option key={t} value={t}>
                         by {t}
                       </option>
@@ -543,7 +544,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
               {solution.steps.map((s) => {
                 const recipe = recipesById.get(s.recipe)!
                 const product = Object.keys(solution.recipes).find((i) => solution.recipes[i] === s.recipe) ?? recipe.products[0].item
-                const options = recipesFor(product, available.recipes)
+                const options = recipesFor(product, available)
                 const isSuggested = suggested[product] === s.recipe || (!suggested[product] && options[0]?.id === s.recipe)
                 return (
                   <tr key={s.recipe}>

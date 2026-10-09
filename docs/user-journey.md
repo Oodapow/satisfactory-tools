@@ -8,7 +8,7 @@ What the site does today, how the pieces fit, and where to extend them. Screensh
 2. **Upload** (`#/upload`): drop a `.sav` file. Parsing isn't built yet, so the result screen shows a sample game state and says so (`src/screens/Upload.tsx`, `mockParse`).
 3. **Game state** (`#/setup`): pick a tier to tick every milestone up to it, set the Space Elevator phase, then fine-tune milestones, MAM research and alternates. Spoiler rules:
    - only tiers the HUB would show are listed (tutorial done, Space Elevator phase reached);
-   - MAM trees stay folded until the player has researched something in them or opens them, since the game data doesn't order nodes within a tree; seasonal research is hidden;
+   - MAM research is offered in tree order: a node shows once a node above it is researched. Trees stay folded until the player has researched something in them or opens them; seasonal research is hidden;
    - alternates list only what a hard drive could give right now;
    - "Show anyway" reveals later tiers. The spoiler setting (hide or blur locked things) also lives here.
 4. **Planning** (`#/plan`): catalog of unlocked recipes (per-minute rates), items and buildings, plus the milestones you can buy next. Locked content is a count, or blurred cards with no names. "Plan an outpost" on an item starts an outpost with that goal.

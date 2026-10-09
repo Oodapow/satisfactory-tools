@@ -13,6 +13,7 @@ few hand-written supplements for things that file does not contain.
 | `data/raw/en-US.json` | Copy of the game's `CommunityResources/Docs/en-US.json`, re-encoded from UTF-16 to UTF-8 so git can diff it. Otherwise untouched. |
 | `data/supplements/progression.json` | Space Elevator phases and which tiers each phase opens. Not in the game file. |
 | `data/supplements/resource-nodes.json` | Resource node counts per purity on the map, and purity multipliers. Not in the game file. |
+| `data/supplements/mam-trees.json` | MAM research tree layout: which nodes sit in each tree and which node opens which. Not in the game file. |
 | `data/supplements/items.json` | Items the game file references but does not describe (FICSIT Coupon, Hard Drive). |
 | `scripts/generate-game-data.mjs` | Turns the above into the files below. |
 | `src/data/game/*.json` | Generated, normalized data the app imports. Do not edit by hand. |
@@ -69,13 +70,13 @@ The electricity icon (`public/icons/power.svg`) is our own drawing; power is not
 
 ## Known gaps
 
-- **MAM tree order.** The game file says which tree a research node belongs to (`mamTree`) but not which node must be researched before which. `purchasable()` therefore offers every node of the MAM once the MAM is built.
+- **MAM tree order** is transcribed from the wiki's tree diagrams (`data/supplements/mam-trees.json`): per tree, every node with the nodes drawn directly above it (`parents`). The generator copies them onto each research as `mamParents` and sets `mamTree` from the supplement (the game's folders put Blade Runners and one Inflated Pocket Dimension under Caterium; in the game they sit in the Quartz tree). A node opens once any one parent is researched, as Bio-Organic Properties does after any of the four remains. Research in the game file that no tree shows (Signal Systems, Volatile Applications, an unnamed Sulfur node) is listed under `notInTree` and never offered. `data:check` fails when a supplement id is unknown, its name doesn't match the game's, a parent is outside its tree, or a research node is in neither list, so a game update that adds research shows up.
 - **Space Elevator phases and tier gates** are hand-written from the wiki (`data/supplements/progression.json`), at the default 1× cost. Game-mode cost multipliers (1.2) are not applied.
 - **Map data** is limited to node counts per purity for solid resources, crude oil and geysers. Resource wells (water, nitrogen, oil) and node locations are not included.
 
 ## Sources and licensing
 
 - Game data: `CommunityResources/Docs/en-US.json` from Satisfactory 1.2.4.0, © Coffee Stain Studios. Coffee Stain ships this file for community tools; it is kept here so the app works without a game install. All rights remain with Coffee Stain Studios.
-- Supplements: adapted from the [Official Satisfactory Wiki](https://satisfactory.wiki.gg/) ([Space Elevator](https://satisfactory.wiki.gg/wiki/Space_Elevator), [Resource node](https://satisfactory.wiki.gg/wiki/Resource_node)), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+- Supplements: adapted from the [Official Satisfactory Wiki](https://satisfactory.wiki.gg/) ([Space Elevator](https://satisfactory.wiki.gg/wiki/Space_Elevator), [Resource node](https://satisfactory.wiki.gg/wiki/Resource_node), research tree diagrams on [MAM](https://satisfactory.wiki.gg/wiki/MAM) and [FICSMAS](https://satisfactory.wiki.gg/wiki/FICSMAS)), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 - Icons: © Coffee Stain Studios, as published on the Official Satisfactory Wiki. Used for a non-commercial fan tool; all rights remain with Coffee Stain Studios.
 - Cross-check: production recipes, cycle times and machine power were compared against the independent 1.2.4.0 extraction in [Satisfunction](https://github.com/jdcravenBD/Satisfunction) (`public/data.js`, CL 502094) and matched exactly.

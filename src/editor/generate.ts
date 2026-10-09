@@ -33,6 +33,8 @@ export type ProposalInput = {
   /** Other outposts' imports from this one and power lines leaving. */
   outgoing: PortLink[]
   maxBeltTier: number
+  /** Best pipeline Mk the player can build; defaults to 2. */
+  maxPipeTier?: number
 }
 
 type Floor = {
@@ -58,7 +60,7 @@ const PORT_X = -700
 const LANE_X = -70
 const LANE_DX = 18
 
-export function proposeLayout({ solved, incoming, outgoing, maxBeltTier }: ProposalInput): MicroGraph {
+export function proposeLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTier = 2 }: ProposalInput): MicroGraph {
   const { plan, solution } = solved
   const notes: string[] = []
   const nodes: MicroNode[] = []
@@ -116,7 +118,7 @@ export function proposeLayout({ solved, incoming, outgoing, maxBeltTier }: Propo
   const laneFor = (item: string) => lanes.get(item) ?? lanes.set(item, LANE_X - lanes.size * LANE_DX).get(item)!
   const edge = (from: Endpoint, to: Endpoint, item: string, rate: number, viaLane = false) => {
     const fluid = isFluid(item)
-    const { tier, over } = beltTierFor(rate, fluid ? 2 : maxBeltTier, fluid)
+    const { tier, over } = beltTierFor(rate, fluid ? maxPipeTier : maxBeltTier, fluid)
     const lift = (floorOf.get(to.node) ?? 0) - (floorOf.get(from.node) ?? 0)
     edges.push({
       id: id('e'),

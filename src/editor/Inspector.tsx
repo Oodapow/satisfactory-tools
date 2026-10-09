@@ -1,5 +1,5 @@
 // Side panel forms for whatever is selected in the editor.
-import { buildingsById, items, itemName, itemsById, recipes, recipesById, resources } from '../data'
+import { buildingsById, itemName, itemsById, recipesById } from '../data'
 import { offers, type Solved } from '../plan/network'
 import { newId, type PlanPatch } from '../plan/store'
 import type { Import, Transport as PlanTransport } from '../plan/types'
@@ -8,15 +8,14 @@ import { GameIcon } from './GameIcon'
 import { POWER } from './icons'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData, type PowerLine } from './model'
 import { editorPath } from './route'
-import { generatorBuildings, machineBuildings, recipesIn } from './store'
+import { useUnlocked } from './unlocked'
 
 const num = (v: string, fallback = 0) => (v !== '' && Number.isFinite(Number(v)) ? Number(v) : fallback)
-const byName = <T extends { name: string }>(a: T, b: T) => a.name.localeCompare(b.name)
-const inProduction = new Set(recipes.filter((r) => r.kind === 'production').flatMap((r) => [...r.products, ...r.ingredients].map((a) => a.item)))
-const pickableItems = items.filter((i) => inProduction.has(i.id) || resources.some((r) => r.id === i.id)).sort(byName)
-const planTransports = transports.filter((t) => t.id !== 'power')
-
 function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string) => void }) {
+  const unlocked = useUnlocked()
+  // Keep an item picked earlier listed even if the game state no longer has it.
+  const current = value && !unlocked.items.some((i) => i.id === value) ? itemsById.get(value) : undefined
+  const pickable = current ? [current, ...unlocked.items] : unlocked.items
   return (
     <span className="ne-item-select">
       <GameIcon id={value} size={22} />
@@ -24,7 +23,7 @@ function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string
         <option value="" disabled>
           Pick an item
         </option>
-        {pickableItems.map((i) => (
+        {pickable.map((i) => (
           <option key={i.id} value={i.id}>
             {i.name}
           </option>
@@ -37,6 +36,9 @@ function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string
 export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onSelect: (id: string) => void; onExample: () => void }) {
   const generated = all.reduce((t, s) => t + s.solution.power.generatedMW, 0)
   const used = all.reduce((t, s) => t + s.solution.power.consumedMW, 0)
+  // The example uses an Assembler and Coal Generators; don't show it before those are unlocked.
+  const unlocked = useUnlocked()
+  const exampleFits = ['Desc_AssemblerMk1_C', 'Desc_GeneratorCoal_C'].every((id) => [...unlocked.machines, ...unlocked.generators].some((b) => b.id === id))
   return (
     <section>
       <h3>Factory map</h3>
@@ -58,7 +60,7 @@ export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onS
           )
         })}
       </ul>
-      {all.length === 0 && (
+      {all.length === 0 && exampleFits && (
         <button type="button" onClick={onExample}>
           Load example outposts
         </button>
@@ -217,6 +219,8 @@ export function LinkInspector({
   const nameOf = (id: string) => all.find((s) => s.plan.id === id)?.plan.name ?? '?'
   const ref = edge.data?.ref
   const imp = ref?.kind === 'import' ? all.find((s) => s.plan.id === ref.planId)?.plan.imports.find((i) => i.id === ref.importId) : undefined
+  const unlocked = useUnlocked()
+  const planTransports = transports.filter((t) => t.id !== 'power' && (t.id === imp?.via || unlocked.transports.includes(t)))
   return (
     <section>
       <h3>{ref?.kind === 'power' ? 'Power line' : 'Import'}</h3>
@@ -269,6 +273,14 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
   const recipe = recipesById.get(data.recipe)
   const b = buildingsById.get(data.building)
   const isGenerator = !!b?.generator
+  const unlocked = useUnlocked()
+  // Keep what's placed listed even when the game state doesn't have it unlocked.
+  const machines = b && !isGenerator && !unlocked.machines.includes(b) ? [...unlocked.machines, b] : unlocked.machines
+  const generators = b && isGenerator && !unlocked.generators.includes(b) ? [...unlocked.generators, b] : unlocked.generators
+  const recipeOptions = unlocked.recipesIn(data.building)
+  if (recipe && !recipeOptions.includes(recipe)) recipeOptions.unshift(recipe)
+  const fuelOptions = unlocked.fuelsOf(b)
+  if (data.fuel && !fuelOptions.some((f) => f.fuel === data.fuel)) fuelOptions.unshift(...(b?.generator?.fuels.filter((f) => f.fuel === data.fuel) ?? []))
   const runs = data.clock * data.count
   const rate = (amount: number) => (recipe ? (amount * 60 * runs) / recipe.durationSeconds : 0)
   return (
@@ -285,20 +297,20 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
             onChange({
               ...data,
               building: e.target.value,
-              recipe: nb?.generator ? '' : (recipesIn(e.target.value)[0]?.id ?? ''),
-              fuel: nb?.generator?.fuels[0]?.fuel,
+              recipe: nb?.generator ? '' : (unlocked.recipesIn(e.target.value)[0]?.id ?? ''),
+              fuel: unlocked.fuelsOf(nb)[0]?.fuel,
             })
           }}
         >
           <optgroup label="Production">
-            {machineBuildings.map((m) => (
+            {machines.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name}
               </option>
             ))}
           </optgroup>
           <optgroup label="Power">
-            {generatorBuildings.map((m) => (
+            {generators.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.name}
               </option>
@@ -310,7 +322,7 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
         <label className="ne-field">
           Fuel
           <select value={data.fuel ?? ''} onChange={(e) => onChange({ ...data, fuel: e.target.value })}>
-            {b!.generator!.fuels.map((f) => (
+            {fuelOptions.map((f) => (
               <option key={f.fuel} value={f.fuel}>
                 {itemName(f.fuel)}
               </option>
@@ -321,7 +333,7 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
         <label className="ne-field">
           Recipe
           <select value={data.recipe} onChange={(e) => onChange({ ...data, recipe: e.target.value })}>
-            {recipesIn(data.building).map((r) => (
+            {recipeOptions.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.name}
                 {r.alternate ? ' (alt)' : ''}
@@ -380,6 +392,8 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
 }
 
 export function PortInspector({ data, onChange, onDelete }: { data: PortData; onChange: (d: PortData) => void; onDelete: () => void }) {
+  const unlocked = useUnlocked()
+  const portTransports = transports.filter((t) => t.id === data.transport || unlocked.transports.includes(t))
   return (
     <section>
       <h3>Port</h3>
@@ -399,7 +413,7 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
         <label className="ne-field">
           Via
           <select value={data.transport} onChange={(e) => onChange({ ...data, transport: e.target.value as PortData['transport'] })}>
-            {transports.map((t) => (
+            {portTransports.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.label}
               </option>

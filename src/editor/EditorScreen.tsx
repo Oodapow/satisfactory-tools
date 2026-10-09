@@ -29,7 +29,6 @@ import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostI
 import {
   beltRates,
   beltTierFor,
-  transports,
   type EditorLayout,
   type LinkEdge,
   type MachineData,
@@ -44,7 +43,8 @@ import { BeltLine, FloorBand, LinkLine, MachineBlock, MergerBlock, OutpostBlock,
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
 import { MergerSymbol, SplitterSymbol } from './Symbols'
-import { examplePlans, generatorBuildings, machineBuildings, recipesIn, useEditorLayout } from './store'
+import { examplePlans, useEditorLayout } from './store'
+import { UnlockedContext, useUnlocked } from './unlocked'
 
 type Net = ReturnType<typeof useNetwork>
 type UpdateLayout = (fn: (l: EditorLayout) => EditorLayout) => void
@@ -86,6 +86,7 @@ export default function EditorScreen({ state, outpostId }: { state: GameState; o
           )}
         </nav>
       </div>
+      <UnlockedContext.Provider value={net.available}>
       <ReactFlowProvider key={outpostId ?? 'macro'}>
         {outpostId ? (
           solved ? (
@@ -97,6 +98,7 @@ export default function EditorScreen({ state, outpostId }: { state: GameState; o
           <MacroEditor net={net} layout={layout} update={update} />
         )}
       </ReactFlowProvider>
+      </UnlockedContext.Provider>
     </div>
   )
 }
@@ -191,6 +193,7 @@ function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEd
 function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; update: UpdateLayout }) {
   const [sel, setSel] = useState<Selection>(null)
   const [routes] = useState(() => new RouteRegistry())
+  const unlocked = useUnlocked()
   const all = net.solved
 
   // Plans are the source of truth: blocks are rebuilt from them on every render, with the
@@ -297,7 +300,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           what the first has spare. Double-click an outpost for its floor plan.
         </p>
         <h3>Links</h3>
-        {transports.map((t) => (
+        {unlocked.transports.map((t) => (
           <div key={t.id} className="ne-legend">
             <span className={`ne-swatch ne-link-${t.id}`} />
             {t.label}
@@ -383,19 +386,20 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const [sel, setSel] = useState<Selection>(null)
   const [routes] = useState(() => new RouteRegistry())
   const graph = layout.micro[id]
-  const maxBeltTier = graph?.maxBeltTier ?? 3
+  const unlocked = useUnlocked()
+  const maxBeltTier = graph?.maxBeltTier ?? unlocked.beltTier
   const { fitView } = useReactFlow()
   const links = useMemo(() => portLinks(net.solved, layout, id), [net.solved, layout, id])
 
   const propose = useCallback(
-    (tier: number) => proposeLayout({ solved, ...links, maxBeltTier: tier }),
-    [solved, links],
+    (tier: number) => proposeLayout({ solved, ...links, maxBeltTier: tier, maxPipeTier: unlocked.pipeTier }),
+    [solved, links, unlocked.pipeTier],
   )
 
   // First visit: propose a layout from the plan.
   useEffect(() => {
-    if (!graph) update((l) => ({ ...l, micro: { ...l.micro, [id]: propose(3) } }))
-  }, [graph, id, propose, update])
+    if (!graph) update((l) => ({ ...l, micro: { ...l.micro, [id]: propose(unlocked.beltTier) } }))
+  }, [graph, id, propose, update, unlocked.beltTier])
 
   const setGraph = useCallback(
     (fn: (g: MicroGraph) => MicroGraph) => update((l) => (l.micro[id] ? { ...l, micro: { ...l.micro, [id]: fn(l.micro[id]) } } : l)),
@@ -438,7 +442,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
     let data: MicroNode['data']
     if (p.kind === 'machine') {
       const b = buildingsById.get(p.building)
-      data = { kind: 'machine', building: p.building, recipe: b?.generator ? '' : (recipesIn(p.building)[0]?.id ?? ''), fuel: b?.generator?.fuels[0]?.fuel, clock: 1, count: 1, floor: 0 }
+      data = { kind: 'machine', building: p.building, recipe: b?.generator ? '' : (unlocked.recipesIn(p.building)[0]?.id ?? ''), fuel: unlocked.fuelsOf(b)[0]?.fuel, clock: 1, count: 1, floor: 0 }
     } else if (p.kind === 'port') data = { kind: 'port', direction: p.direction as 'in' | 'out', transport: p.transport as PortData['transport'], perMin: 60, label: 'Added by hand' }
     else data = { kind: p.kind as 'splitter' | 'merger', floor: 0 }
     setGraph((g) => edited({ ...g, nodes: [...g.nodes, { id: nid, type: p.kind, position, data }] }))
@@ -479,13 +483,13 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
     <div className="ne-body">
       <aside className="ne-palette">
         <h3>Machines</h3>
-        {machineBuildings.map((b) => (
+        {unlocked.machines.map((b) => (
           <PaletteItem key={b.id} payload={{ kind: 'machine', building: b.id }} icon={b.id} onAdd={drop.addAtCenter}>
             {b.name}
           </PaletteItem>
         ))}
         <h3>Power</h3>
-        {generatorBuildings.map((b) => (
+        {unlocked.generators.map((b) => (
           <PaletteItem key={b.id} payload={{ kind: 'machine', building: b.id }} icon={b.id} onAdd={drop.addAtCenter}>
             {b.name}
           </PaletteItem>
@@ -498,7 +502,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           Merger
         </PaletteItem>
         <h3>Ports</h3>
-        {transports.flatMap((t) =>
+        {unlocked.transports.flatMap((t) =>
           (['in', 'out'] as const).map((dir) => (
             <PaletteItem key={t.id + dir} payload={{ kind: 'port', direction: dir, transport: t.id }} icon={t.icon} onAdd={drop.addAtCenter}>
               {t.label} {dir}
@@ -524,7 +528,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
                 else setGraph((g) => ({ ...g, maxBeltTier: tier }))
               }}
             >
-              {beltRates.map((r, i) => (
+              {beltRates.slice(0, Math.max(unlocked.beltTier, maxBeltTier)).map((r, i) => (
                 <option key={r} value={i + 1}>
                   Mk.{i + 1} ({r}/min)
                 </option>
@@ -602,7 +606,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             data={selEdge.data ?? {}}
             onChange={(data) => {
               const fluid = !!data.item && itemsById.get(data.item)?.form !== 'solid'
-              const t = data.perMin ? beltTierFor(data.perMin, fluid ? 2 : maxBeltTier, fluid) : undefined
+              const t = data.perMin ? beltTierFor(data.perMin, fluid ? unlocked.pipeTier : maxBeltTier, fluid) : undefined
               setGraph((g) =>
                 edited({ ...g, edges: g.edges.map((e) => (e.id === selEdge.id ? { ...e, data: { ...data, tier: t?.tier, overCapacity: t?.over } } : e)) }),
               )
