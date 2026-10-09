@@ -164,6 +164,33 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .tab { background: transparent; color: var(--muted); border: 1px solid transparent; padding: 6px 12px; }
 .tab.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); }
 .cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
+/* Catalog grouped like the game: categories on the left, their groups as sections on the right. */
+.catalog-body { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; align-items: start; }
+.catalog-nav { position: sticky; top: 12px; display: grid; gap: 2px; }
+.cat-link { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; text-align: left; background: transparent; color: var(--text); border: 1px solid transparent; font-weight: 500; padding: 7px 10px; line-height: 1.25; }
+.cat-link:hover { background: var(--surface-2); }
+.cat-link.active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-ink); font-weight: 600; }
+.cat-count { color: var(--muted); font-size: .78rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.catalog-groups { display: grid; gap: 20px; min-width: 0; }
+.catalog-category { display: grid; gap: 8px; }
+.catalog-category > .category-title { margin-bottom: 4px; }
+.category-title { margin: 0; font-size: 1.15rem; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.catalog-group { border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.catalog-group > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; cursor: pointer; list-style: none; }
+.catalog-group > summary::-webkit-details-marker { display: none; }
+.catalog-group > summary::before { content: '▸'; color: var(--muted); transition: transform .15s; }
+.catalog-group[open] > summary::before { transform: rotate(90deg); }
+.catalog-group > summary:hover .group-title { color: var(--accent-ink); }
+.catalog-group > .cards { padding: 4px 12px 12px; }
+.group-title { font-weight: 600; font-size: .95rem; }
+.group-preview { display: flex; align-items: center; gap: 4px; margin-left: auto; min-width: 0; overflow: hidden; }
+.group-actions { display: flex; justify-content: flex-end; gap: 16px; font-size: .85rem; margin-bottom: -12px; }
+.category-title .cat-count { margin-left: 4px; }
+@media (max-width: 760px) {
+  .catalog-body { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .catalog-nav { position: static; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+  .cat-link { width: auto; flex: none; border-color: var(--border); border-radius: 999px; padding: 5px 12px; }
+}
 .card.recipe { gap: 10px; }
 .card.recipe .flow { gap: 8px; }
 .card.recipe .rate { padding: 3px 6px; gap: 4px; font-size: .9rem; }
@@ -174,6 +201,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 @media (min-width: 1200px) {
   .cards { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
   .rate-name { display: inline; }
+  .cards.compact { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 .ellipsis { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card header .with-icon { min-width: 0; }
