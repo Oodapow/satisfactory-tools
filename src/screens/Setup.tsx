@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { itemName, progression, schematicsById } from '../data'
+import { progression, schematicsById, type Schematic } from '../data'
 import { go } from '../router'
 import {
   catalog,
@@ -7,19 +7,48 @@ import {
   emptyGameState,
   knownSchematics,
   openTiers,
+  purchasable,
   throughTier,
   useGameState,
   type GameState,
 } from '../state/gameState'
 import { Backup } from './Backup'
+import { NoIconLinks } from '../ui/GameIcon'
+import { Costs, SchematicIcon, Unlocks } from '../ui/SchematicIcon'
 
 const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id])
 
-const costText = (id: string) =>
-  schematicsById
-    .get(id)
-    ?.cost.map((c) => `${c.amount} ${itemName(c.item)}`)
-    .join(', ')
+const treeName = (tree: string) => (tree === 'HardDrive' ? 'Hard Drives' : tree)
+
+/** A tickable schematic: icon, name, and optionally its cost and unlocks. */
+function Tile({
+  schematic,
+  checked,
+  onToggle,
+  detail = false,
+}: {
+  schematic: Schematic
+  checked: boolean
+  onToggle: () => void
+  detail?: boolean
+}) {
+  return (
+    // A click anywhere on the tile ticks it, so its icons are not catalog links.
+    <NoIconLinks>
+      <label className={checked ? 'tile done' : 'tile'}>
+        <input type="checkbox" checked={checked} onChange={onToggle} />
+        <SchematicIcon schematic={schematic} size={36} />
+        <span className="tile-body">
+          <span className="tile-name">{schematic.name.replace('Alternate: ', '')}</span>
+          {detail && schematic.cost.length > 0 && <Costs list={schematic.cost} />}
+        </span>
+        <span className="tile-check" aria-hidden>
+          ✓
+        </span>
+      </label>
+    </NoIconLinks>
+  )
+}
 
 export function Setup() {
   const [stored, setState] = useGameState()
@@ -51,15 +80,71 @@ export function Setup() {
   const alternates = knownSchematics(state, 'alternate').filter((s) => s.unlocks.recipes.length > 0)
   const altShown = alternates.filter((s) => s.name.toLowerCase().includes(altQuery.trim().toLowerCase()))
   const cat = catalog(state)
+  const next = purchasable(state).filter((s) => s.type === 'milestone' || s.type === 'tutorial')
+  const flip = (id: string) => set({ purchased: toggle(state.purchased, id) })
+  const nextPhase = progression.spaceElevatorPhases.find((p) => p.phase === state.spaceElevatorPhase + 1)
 
   return (
     <div className="setup">
-      <section className="panel">
-        <h2>Your game state</h2>
-        <p className="muted">
-          {state.source === 'save' ? `Loaded from ${state.saveName}. ` : ''}The rest of the app only shows what's ticked here.
-        </p>
+      <section className="panel state-head">
+        <div>
+          <h2>Your game state</h2>
+          <p className="muted">
+            {state.source === 'save' ? `Loaded from ${state.saveName}. ` : ''}The rest of the app only shows what's ticked
+            here.
+          </p>
+        </div>
+        <dl className="facts">
+          <div>
+            <dt>Tier</dt>
+            <dd>{Math.max(tier, 0)}</dd>
+          </div>
+          <div>
+            <dt>Space Elevator</dt>
+            <dd>{state.spaceElevatorPhase ? `Phase ${state.spaceElevatorPhase}` : 'Not started'}</dd>
+          </div>
+          <div>
+            <dt>Recipes</dt>
+            <dd>{cat.recipes.length}</dd>
+          </div>
+          <div>
+            <dt>Buildings</dt>
+            <dd>{cat.buildings.length}</dd>
+          </div>
+        </dl>
+      </section>
 
+      <section className="panel">
+        <h3>Next milestones</h3>
+        {next.length === 0 ? (
+          <p className="muted">Nothing to buy in the HUB right now. Deliver the next Space Elevator phase.</p>
+        ) : (
+          <ul className="next-grid">
+            {next.map((m) => (
+              <li key={m.id} className="next-card">
+                <SchematicIcon schematic={m} size={40} />
+                <div className="next-body">
+                  <strong>{m.name}</strong>
+                  <span className="muted small">Tier {m.tier}</span>
+                  <span className="labelled">
+                    <span className="label">Cost</span>
+                    <Costs list={m.cost} />
+                  </span>
+                  <span className="labelled">
+                    <span className="label">Unlocks</span>
+                    <Unlocks schematic={m} size={26} />
+                  </span>
+                </div>
+                <button type="button" className="secondary small" onClick={() => flip(m.id)}>
+                  Mark done
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="panel">
         <h3>How far are you?</h3>
         <div className="row tier-picks">
           {visibleTiers.map((t) => (
@@ -89,6 +174,12 @@ export function Setup() {
             </label>
           ))}
         </div>
+        {nextPhase && (
+          <p className="row phase-cost">
+            <span className="muted small">Phase {nextPhase.phase} needs</span>
+            <Costs list={nextPhase.cost} />
+          </p>
+        )}
         <p className="muted small">Each phase you deliver opens the next two tiers.</p>
       </section>
 
@@ -96,24 +187,28 @@ export function Setup() {
         <h3>Milestones</h3>
         {progression.tiers
           .filter((t) => visibleTiers.includes(t.tier))
-          .map((t) => (
-            <fieldset key={t.tier} className="tier">
-              <legend>{t.tier === 0 ? 'Tier 0 · HUB upgrades' : `Tier ${t.tier}`}</legend>
-              {[...t.milestones]
-                .sort((a, b) => (schematicsById.get(a)?.name ?? '').localeCompare(schematicsById.get(b)?.name ?? ''))
-                .map((id) => (
-                  <label key={id} className="check">
-                    <input
-                      type="checkbox"
-                      checked={owned(id)}
-                      onChange={() => set({ purchased: toggle(state.purchased, id) })}
-                    />
-                    <span>{schematicsById.get(id)?.name}</span>
-                    <span className="muted small">{costText(id)}</span>
-                  </label>
-                ))}
-            </fieldset>
-          ))}
+          .map((t) => {
+            const done = t.milestones.filter(owned).length
+            return (
+              <details key={t.tier} className="group" open={done < t.milestones.length}>
+                <summary>
+                  <span>{t.tier === 0 ? 'Tier 0 · HUB upgrades' : `Tier ${t.tier}`}</span>
+                  <span className="muted small">
+                    {done}/{t.milestones.length} done
+                  </span>
+                </summary>
+                <div className="tiles">
+                  {t.milestones
+                    .map((id) => schematicsById.get(id))
+                    .filter((m): m is Schematic => !!m)
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((m) => (
+                      <Tile key={m.id} schematic={m} checked={owned(m.id)} onToggle={() => flip(m.id)} detail />
+                    ))}
+                </div>
+              </details>
+            )
+          })}
         {hiddenTiers > 0 && (
           <p className="spoiler-note">
             {hiddenTiers} later {hiddenTiers === 1 ? 'tier is' : 'tiers are'} hidden to avoid spoilers.{' '}
@@ -127,31 +222,30 @@ export function Setup() {
       <section className="panel">
         <h3>MAM research</h3>
         {research.length === 0 && <p className="muted">Build the MAM (Tier 1, Field Research) to start researching.</p>}
-        {trees.map((tree) => (
-          <fieldset key={tree} className="tier">
-            <legend>{tree === 'HardDrive' ? 'Hard Drives' : tree}</legend>
-            <div className="alt-grid">
-              {research
-                .filter((r) => (r.mamTree ?? 'Other') === tree)
-                .map((r) => (
-                  <label key={r.id} className="check">
-                    <input
-                      type="checkbox"
-                      checked={owned(r.id)}
-                      onChange={() => set({ purchased: toggle(state.purchased, r.id) })}
-                    />
-                    <span>{r.name}</span>
-                  </label>
+        {trees.map((tree) => {
+          const nodes = research.filter((r) => (r.mamTree ?? 'Other') === tree)
+          return (
+            <details key={tree} className="group" open>
+              <summary>
+                <span>{treeName(tree)}</span>
+                <span className="muted small">
+                  {nodes.filter((r) => owned(r.id)).length}/{nodes.length} researched
+                </span>
+              </summary>
+              <div className="tiles">
+                {nodes.map((r) => (
+                  <Tile key={r.id} schematic={r} checked={owned(r.id)} onToggle={() => flip(r.id)} />
                 ))}
-            </div>
-          </fieldset>
-        ))}
+              </div>
+            </details>
+          )
+        })}
         {unstarted.length > 0 && (
           <div className="row tree-picks">
             <span className="muted small">Started another tree?</span>
             {unstarted.map((t) => (
               <button key={t} type="button" className="secondary small" onClick={() => setOpenTrees([...openTrees, t])}>
-                {t === 'HardDrive' ? 'Hard Drives' : t}
+                {treeName(t)}
               </button>
             ))}
           </div>
@@ -173,16 +267,9 @@ export function Setup() {
               onChange={(e) => setAltQuery(e.target.value)}
               placeholder={`Filter ${alternates.length} alternates`}
             />
-            <div className="alt-grid">
+            <div className="tiles">
               {altShown.map((s) => (
-                <label key={s.id} className="check">
-                  <input
-                    type="checkbox"
-                    checked={owned(s.id)}
-                    onChange={() => set({ purchased: toggle(state.purchased, s.id) })}
-                  />
-                  <span>{s.name.replace('Alternate: ', '')}</span>
-                </label>
+                <Tile key={s.id} schematic={s} checked={owned(s.id)} onToggle={() => flip(s.id)} />
               ))}
             </div>
           </>
@@ -191,6 +278,7 @@ export function Setup() {
 
       <section className="panel">
         <h3>Spoilers</h3>
+        <p className="muted small">How locked recipes, items and buildings show up in the catalog.</p>
         <div className="segmented" role="radiogroup" aria-label="Spoilers">
           {(
             [

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { buildingsById, itemName } from '../data'
 import { go } from '../router'
-import { catalog, purchasable, type GameState } from '../state/gameState'
+import { catalog, type GameState } from '../state/gameState'
 import { blankPlan, useOutposts } from '../plan/store'
 import { GameIcon } from '../ui/GameIcon'
 import { Rates } from './Rates'
@@ -47,25 +47,9 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
     go(`/outposts/${plan.id}/resources`)
   }
   const makeable = new Set(cat.recipes.flatMap((r) => r.products.map((p) => p.item)))
-  const next = purchasable(state).filter((s) => s.type === 'milestone' || s.type === 'tutorial')
 
   return (
     <div className="planner">
-      <aside className="panel next-up">
-        <h3>Next milestones</h3>
-        {next.length === 0 && <p className="muted small">Nothing to buy right now. Deliver the next Space Elevator phase.</p>}
-        <ul className="plain">
-          {next.map((m) => (
-            <li key={m.id}>
-              <strong>{m.name}</strong>
-              <span className="muted small">
-                Tier {m.tier} · {m.cost.map((c) => `${c.amount} ${itemName(c.item)}`).join(', ')}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </aside>
-
       <section className="panel catalog">
         <div className="toolbar">
           <div className="tabs" role="tablist">
@@ -100,17 +84,23 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
                   <header>
                     <h4 className="with-icon">
                       <GameIcon id={r.products[0].item} size={28} />
-                      {r.name.replace('Alternate: ', '')}
+                      <span className="ellipsis" title={r.name}>{r.name.replace('Alternate: ', '')}</span>
                     </h4>
-                    {r.alternate && <span className="badge">Alternate</span>}
+                    {r.alternate && <span className="badge">Alt</span>}
                   </header>
-                  <p className="muted small">{r.producedIn.filter((b) => cat.available.buildings.has(b)).map((b) => buildingsById.get(b)?.name).join(', ')}</p>
                   <div className="flow">
-                    <Rates list={r.ingredients} recipe={r} />
+                    <Rates list={r.ingredients} recipe={r} compact />
                     <span className="arrow">→</span>
-                    <Rates list={r.products} recipe={r} />
+                    <Rates list={r.products} recipe={r} compact />
                   </div>
-                  <span className="muted small">per minute</span>
+                  <p className="muted small machines">
+                    {r.producedIn.filter((b) => cat.available.buildings.has(b)).map((b) => (
+                      <span key={b} className="with-icon">
+                        <GameIcon id={b} size={20} />
+                        <span className="rate-name">{buildingsById.get(b)?.name}</span>
+                      </span>
+                    ))}
+                  </p>
                 </article>
               ))}
           {tab === 'recipes' && !q && <Locked count={cat.lockedRecipes} noun="recipes" blur={blur} />}
