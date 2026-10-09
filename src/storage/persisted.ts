@@ -94,13 +94,23 @@ export function exportAll(): Record<string, unknown> {
   return { app: 'satisfactory-tools', exportedAt: new Date().toISOString(), entries: out }
 }
 
-/** Replace stored entries with those from a backup produced by exportAll. */
+/**
+ * Restore entries from a backup produced by exportAll. Entries in the backup
+ * overwrite same-named ones here; anything not in the backup is left untouched.
+ */
 export function importAll(backup: unknown) {
-  const b = backup as { app?: string; entries?: Record<string, Envelope<unknown>> }
-  if (b?.app !== 'satisfactory-tools' || typeof b.entries !== 'object') {
+  const b = backup as { app?: string; entries?: Record<string, unknown> }
+  if (b?.app !== 'satisfactory-tools' || typeof b.entries !== 'object' || b.entries === null) {
     throw new Error('Not a Satisfactory Tools backup file')
   }
-  for (const [key, env] of Object.entries(b.entries)) {
+  const entries = Object.entries(b.entries)
+  for (const [key, env] of entries) {
+    const e = env as Envelope<unknown> | null
+    if (typeof e !== 'object' || e === null || typeof e.v !== 'number' || !('data' in e)) {
+      throw new Error(`Backup entry "${key}" is malformed`)
+    }
+  }
+  for (const [key, env] of entries) {
     localStorage.setItem(storageKey(key), JSON.stringify(env))
     cache.delete(key)
     notify(key)
