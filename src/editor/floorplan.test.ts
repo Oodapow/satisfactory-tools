@@ -163,3 +163,41 @@ describe('grid (#52)', () => {
       expect(overlaps(cellOf(placed), 'machine', cellOf(n), n.type as BlockKind, n.type === 'pole' ? 0 : 1), n.id).toBe(false)
   })
 })
+
+describe('full clock and overflow (#73)', () => {
+  it('runs every machine at 100% and lets the last one on the manifold idle', () => {
+    const g = proposeLayout({
+      solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], recipeChoices: { Desc_IronPlate_C: 'Recipe_IronPlate_C', Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all),
+      incoming: [{ linkId: 'ingots', other: 'Smelters', transport: 'belt', item: 'Desc_IronIngot_C', perMin: 75 }],
+      outgoing: [],
+      maxBeltTier: 3,
+    })
+    const plates = g.nodes.filter((n) => n.data.kind === 'machine' && n.data.recipe === 'Recipe_IronPlate_C')
+    expect(plates.map((n) => (n.data.kind === 'machine' ? n.data.clock : 0))).toEqual([1, 1, 1])
+    const fed = plates.map((m) => g.edges.find((e) => e.target === m.id && e.targetHandle === 'in')!.data!.perMin!)
+    expect(fed[0]).toBeCloseTo(30)
+    expect(fed[1]).toBeCloseTo(30)
+    expect(fed[2]).toBeCloseTo(15)
+  })
+
+  it('exports surplus ore from the end of the manifold, past the last machine', () => {
+    const g = proposeLayout({
+      solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronIngot_C', perMin: 60 }], nodes: [{ id: 'n', resource: 'Desc_OreIron_C', purity: 'pure' }], recipeChoices: { Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all),
+      incoming: [],
+      outgoing: [],
+      maxBeltTier: 6,
+    })
+    const nodes = byId(g)
+    const surplus = g.nodes.find((n) => n.data.kind === 'port' && n.data.item === 'Desc_OreIron_C' && n.data.direction === 'out')!
+    const into = g.edges.find((e) => e.target === surplus.id)!
+    // It comes off a splitter that first feeds a smelter: the manifold's last one.
+    const splitter = nodes.get(into.source)!
+    expect(splitter.type).toBe('splitter')
+    const feeds = g.edges.filter((e) => e.source === splitter.id).map((e) => nodes.get(e.target)!)
+    expect(feeds.some((n) => n.data.kind === 'machine')).toBe(true)
+    // The ore port feeds the manifold directly: nothing is split off before the first smelter.
+    const ore = g.nodes.find((n) => n.data.kind === 'port' && n.data.transport === 'resource')!
+    const first = g.edges.find((e) => e.source === ore.id)!
+    expect(g.edges.filter((e) => e.source === first.target).some((e) => nodes.get(e.target)?.data.kind === 'machine')).toBe(true)
+  })
+})

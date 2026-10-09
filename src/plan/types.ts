@@ -62,9 +62,14 @@ export interface OutpostPlan {
   selfPowered: boolean
   /**
    * Highest clock speed machines are sized for, 1 = 100% (up to 2.5 with three power shards).
-   * Machines that don't divide evenly are underclocked to match. Defaults to 1.
+   * Defaults to 1.
    */
   maxClock?: number
+  /**
+   * Underclock machines that don't divide evenly so they all run at the same lower clock.
+   * Off by default: they run at full clock and the manifold's last machine idles part of the time.
+   */
+  underclock?: boolean
   /** Somersloops slotted into each machine, per recipe. Each one adds output and multiplies power. */
   somersloops?: Record<RecipeId, number>
   createdAt: string

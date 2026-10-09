@@ -549,8 +549,14 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
         </header>
         <p className="muted small">
           Suggested recipes leave nothing short and use the least raw input. Pick another to override; ★ marks alternates.
-          Machines that don't divide evenly all run at the same lower clock, so a manifold feeds them evenly.
+          {plan.underclock
+            ? "Machines that don't divide evenly all run at the same lower clock, so a manifold feeds them evenly."
+            : "Machines run at full clock. When they don't divide evenly, the manifold's last machine idles part of the time; idle machines draw no power."}
         </p>
+        <label className="row small">
+          <input type="checkbox" checked={!!plan.underclock} onChange={(e) => update({ underclock: e.target.checked })} />
+          Underclock to match instead of letting the last machine idle
+        </label>
         {features.has('overclocking') && (
           <label className="row small">
             Highest clock speed
@@ -614,6 +620,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                     <td>
                       <strong>{s.count}</strong> {buildingsById.get(s.building)?.name}
                       {Math.abs(s.clock - 1) > 1e-6 && <span className="muted small"> at {pct(s.clock)}</span>}
+                      {s.count * s.clock - s.machines > 1e-3 && <span className="muted small"> · last one {pct(1 - (s.count * s.clock - s.machines) / s.clock)} busy</span>}
                       {s.shards > 0 && <span className="muted small"> · {s.shards} shards</span>}
                       {features.has('production-amplification') && somersloopBoost(buildingsById.get(s.building)).slots > 0 && (
                         <label className="row small" title="Somersloops per machine. Each adds output; power goes up with the square of the boost.">

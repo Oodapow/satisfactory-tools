@@ -23,6 +23,7 @@ const MACHINE_PITCH = SIZE.machine.w + 2
 /** Grid cells between manifold rows, and between joints in a chain. */
 const ROW = 4
 const FLOOR_GAP = 6
+const EPS = 1e-9
 const PORT_GAP = 6
 
 const isFluid = (item: string) => itemsById.get(item)?.form !== 'solid'
@@ -64,7 +65,10 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   const joint = (item: string, kind: 'splitter' | 'merger') => (isFluid(item) ? 'junction' : kind)
 
   // How many belts meet at each end, to leave room for the splitters and mergers there.
-  const key = (e: End) => ('port' in e ? `p:${e.port}` : `l:${e.line}:${e.slot}`)
+  const key = (e: End) => ('port' in e ? `p:${e.port}` : `l:${e.line}:${e.slot}${e.overflow ? ':x' : ''}`)
+  /** Surplus leaving through the end of a line's input manifold, by `line:slot`. */
+  const overflow = new Map<string, number>()
+  for (const f of plan.flows) if ('line' in f.from && f.from.overflow) overflow.set(`${f.from.line}:${f.from.slot}`, (overflow.get(`${f.from.line}:${f.from.slot}`) ?? 0) + f.perMin)
   const fan = new Map<string, number>()
   for (const f of plan.flows) {
     fan.set(`o${key(f.from)}`, (fan.get(`o${key(f.from)}`) ?? 0) + 1)
@@ -124,27 +128,37 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     const mb = mt + SIZE.machine.h
     const inX = SPREAD[a] ?? []
     const outX = SPREAD[b] ?? []
+    // Generators burn only what the grid draws: the first ones run full, the last one less.
+    const genLoad = (i: number) => (l.recipe ? {} : { load: Math.min(1, Math.max(0, l.busy - i)) })
     const machines = Array.from({ length: l.machines }, (_, i) =>
-      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor, ...(l.boost !== 1 ? { boost: l.boost } : {}) }, floor),
+      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor, ...(l.boost !== 1 ? { boost: l.boost } : {}), ...genLoad(i) }, floor),
     )
     const mx = (i: number) => margin + i * MACHINE_PITCH
     const n = l.machines
     powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + SIZE.machine.w, y: mt + 1 } })) })
 
-    // Input manifolds: a splitter above each machine but the last, flowing right.
+    // What machine i takes or makes per minute: the first ones run full, the last one idles part of the time.
+    const load = (perMin: number) => (i: number) => (l.busy > EPS ? (perMin / l.busy) * Math.min(1, Math.max(0, l.busy - i)) : 0)
+    const sum = (f: (i: number) => number, from: number, to = n) => Array.from({ length: Math.max(0, to - from) }, (_, k) => f(from + k)).reduce((t, x) => t + x, 0)
+
+    // Input manifolds: a splitter above each machine but the last, flowing right. When surplus
+    // leaves through the end of the manifold, the last machine gets a splitter too and the
+    // overflow carries on past it.
     l.ingredients.forEach((ing, j) => {
       const row = top + 2 + ROW * j
-      const per = ing.perMin / n
-      if (n === 1) {
+      const take = load(ing.perMin)
+      const spill = overflow.get(`${l.id}:${j}`) ?? 0
+      if (n === 1 && !spill) {
         ends.set(`il:${l.id}:${j}`, { node: machines[0], handle: inHandle(j), at: { x: mx(0) + inX[j], y: mt }, side: 't', floor, joint: { x: -3, y: row } })
         return
       }
       const kind = joint(ing.item, 'splitter')
-      const splitters = machines.slice(0, -1).map((_, i) => block(kind, { x: mx(i) + inX[j] - 1, y: row - 1 }, { kind, floor }, floor))
+      const splitters = (spill ? machines : machines.slice(0, -1)).map((_, i) => block(kind, { x: mx(i) + inX[j] - 1, y: row - 1 }, { kind, floor }, floor))
       splitters.forEach((s, i) => {
-        edge({ node: s, handle: 'down' }, { node: machines[i], handle: inHandle(j) }, ing.item, per)
-        const next = splitters[i + 1] ? { node: splitters[i + 1], handle: 'in' } : { node: machines[i + 1], handle: inHandle(j) }
-        edge({ node: s, handle: 'out' }, next, ing.item, per * (n - 1 - i))
+        edge({ node: s, handle: 'down' }, { node: machines[i], handle: inHandle(j) }, ing.item, take(i))
+        if (splitters[i + 1]) edge({ node: s, handle: 'out' }, { node: splitters[i + 1], handle: 'in' }, ing.item, sum(take, i + 1) + spill)
+        else if (!spill) edge({ node: s, handle: 'out' }, { node: machines[i + 1], handle: inHandle(j) }, ing.item, take(i + 1))
+        else ends.set(`ol:${l.id}:${j}:x`, { node: s, handle: 'out', at: { x: mx(i) + inX[j] + 1, y: row }, side: 'r', floor })
       })
       ends.set(`il:${l.id}:${j}`, { node: splitters[0], handle: 'in', at: { x: mx(0) + inX[j] - 1, y: row }, side: 'l', floor, joint: { x: -3, y: row } })
     })
@@ -152,18 +166,18 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     // Output manifolds: a merger below each machine but the last, flowing left.
     l.products.forEach((prod, p) => {
       const row = mb + ROW + ROW * p
-      const per = prod.perMin / n
+      const make = load(prod.perMin)
       if (n === 1) {
         ends.set(`ol:${l.id}:${p}`, { node: machines[0], handle: outHandle(p), at: { x: mx(0) + outX[p], y: mb }, side: 'b', floor, joint: { x: -3, y: row } })
         return
       }
       const kind = joint(prod.item, 'merger')
       const mergers = machines.slice(0, -1).map((_, i) => block(kind, { x: mx(i) + outX[p] - 1, y: row - 1 }, { kind, floor }, floor))
-      edge({ node: machines[n - 1], handle: outHandle(p) }, { node: mergers[n - 2], handle: 'in' }, prod.item, per)
       mergers.forEach((m, i) => {
-        edge({ node: machines[i], handle: outHandle(p) }, { node: m, handle: 'up' }, prod.item, per)
-        if (i > 0) edge({ node: m, handle: 'out' }, { node: mergers[i - 1], handle: 'in' }, prod.item, per * (n - i))
+        edge({ node: machines[i], handle: outHandle(p) }, { node: m, handle: 'up' }, prod.item, make(i))
+        if (i > 0) edge({ node: m, handle: 'out' }, { node: mergers[i - 1], handle: 'in' }, prod.item, sum(make, i))
       })
+      edge({ node: machines[n - 1], handle: outHandle(p) }, { node: mergers[n - 2], handle: 'in' }, prod.item, make(n - 1))
       ends.set(`ol:${l.id}:${p}`, { node: mergers[0], handle: 'out', at: { x: mx(0) + outX[p] - 1, y: row }, side: 'l', floor, joint: { x: -3, y: row } })
     })
   }

@@ -26,7 +26,7 @@ export function machineRates(d: MachineData): { ins: ItemRate[]; outs: ItemRate[
   const spec = gen?.fuels.find((f) => f.fuel === d.fuel) ?? gen?.fuels[0]
   const energy = spec ? itemsById.get(spec.fuel)?.energyMJ : undefined
   if (!gen || !spec) return { ins: [], outs: [] }
-  const mw = gen.powerProductionMW * k
+  const mw = gen.powerProductionMW * k * (d.load ?? 1)
   const burn = energy ? (mw * 60) / energy : 0
   const ins: ItemRate[] = [{ item: spec.fuel, perMin: burn }]
   if (spec.supplemental) ins.push({ item: spec.supplemental, perMin: mw * 60 * (gen.supplementalPerMJ ?? 0) })
@@ -93,26 +93,54 @@ export function inferFlows(nodes: MicroNode[], edges: BeltEdge[]): Map<string, F
   // 2. Rates: the most every consumer can get from every source along the lines, as a max flow.
   // Machine outputs and ports feed in what they make; machine inputs and ports take what they need;
   // a line set by hand carries at most its rate. Joints pass anything through.
-  const net = new MaxFlow()
+  // A machine only runs as busy as its outputs can get rid of what it makes: the last machines on a
+  // manifold idle part of the time (#73). Each machine's share of busy time comes from the sinks
+  // backwards: solve with every output able to make its full rate and every input taking its
+  // machine's busy share, see what each output got rid of, and repeat until that settles. The
+  // final flow then has every machine make and take its busy share.
   const tail = (e: BeltEdge) => (isJoint(byId.get(e.source)) ? e.source : `${e.source}:${e.sourceHandle}`)
   const head = (e: BeltEdge) => (isJoint(byId.get(e.target)) ? e.target : `${e.target}:${e.targetHandle}`)
+  const busy = new Map<string, number>()
+  const share = (id: string | undefined) => (id ? (busy.get(id) ?? 1) : 1)
+  const machineOf = (id: string) => (byId.get(id)?.data.kind === 'machine' ? id : undefined)
   const arcs = new Map<string, number>()
-  const fed = new Set<string>()
-  for (const e of lines) {
-    const cap = e.data?.manual && e.data.perMin !== undefined ? e.data.perMin : UNLIMITED
-    arcs.set(e.id, net.add(tail(e), head(e), cap))
-    const sup = supplyOf(e)
-    if (sup && !fed.has(tail(e))) {
-      fed.add(tail(e))
-      net.add(SOURCE, tail(e), sup.perMin)
+  const build = (outputsFull: boolean) => {
+    const net = new MaxFlow()
+    const fed = new Map<string, { arc: number; cap: number; machine?: string }>()
+    const taken = new Set<string>()
+    for (const e of lines) {
+      const cap = e.data?.manual && e.data.perMin !== undefined ? e.data.perMin : UNLIMITED
+      arcs.set(e.id, net.add(tail(e), head(e), cap))
+      const sup = supplyOf(e)
+      if (sup && !fed.has(tail(e))) {
+        const m = machineOf(e.source)
+        const c = sup.perMin * (outputsFull ? 1 : share(m))
+        // A byproduct leaves wherever the plan sends it; the main product sets how busy the machine is.
+        const main = e.sourceHandle === outHandle(0) || e.sourceHandle == null
+        fed.set(tail(e), { arc: net.add(SOURCE, tail(e), c), cap: sup.perMin, machine: main ? m : undefined })
+      }
+      const want = takes(e)
+      if (want !== undefined && !taken.has(head(e))) {
+        taken.add(head(e))
+        net.add(head(e), SINK, Number.isFinite(want) ? want * share(machineOf(e.target)) : UNLIMITED)
+      }
     }
-    const want = takes(e)
-    if (want !== undefined && !fed.has(`>${head(e)}`)) {
-      fed.add(`>${head(e)}`)
-      net.add(head(e), SINK, Number.isFinite(want) ? want : UNLIMITED)
-    }
+    net.solve()
+    return { net, fed }
   }
-  net.solve()
+  for (let round = 0; round < 100; round++) {
+    const { net, fed } = build(true)
+    const next = new Map<string, number>()
+    for (const p of fed.values())
+      if (p.machine && p.cap > 1e-12) next.set(p.machine, Math.min(next.get(p.machine) ?? 1, net.flow(p.arc) / p.cap))
+    let settled = true
+    for (const [m, u] of next) {
+      if (Math.abs(u - share(m)) > 1e-9) settled = false
+      busy.set(m, u)
+    }
+    if (settled) break
+  }
+  const { net } = build(false)
   const reached = net.reachable()
 
   // Lines nothing feeds yet show what their far end would take.
@@ -123,7 +151,7 @@ export function inferFlows(nodes: MicroNode[], edges: BeltEdge[]): Map<string, F
     if (seen.has(e.id)) return Infinity
     seen.add(e.id)
     const t = byId.get(e.target)
-    const d = isJoint(t) ? (outOf.get(t!.id) ?? []).reduce((sum, o) => sum + demand(o, seen), 0) || Infinity : (takes(e) ?? Infinity)
+    const d = isJoint(t) ? (outOf.get(t!.id) ?? []).reduce((sum, o) => sum + demand(o, seen), 0) || Infinity : (takes(e) ?? Infinity) * share(machineOf(e.target))
     demandMemo.set(e.id, d)
     return d
   }

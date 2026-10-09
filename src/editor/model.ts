@@ -56,6 +56,11 @@ export type MachineData = {
   floor: number
   /** Somersloop output multiplier (1 or absent = none). */
   boost?: number
+  /**
+   * Generators: share of full output the grid asks of them (1 or absent = all of it). A generator
+   * burns only the fuel for the power drawn, and nothing downstream says how much that is.
+   */
+  load?: number
 }
 /** Splitters, mergers and pipeline junctions turn to face their lines on their own (see grid.ts). */
 export type SplitterData = { kind: 'splitter'; floor: number }
