@@ -170,13 +170,35 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 }
 
 /* Icons */
-.icon { flex: none; border-radius: 6px; object-fit: contain; vertical-align: middle; }
-.icon-fallback { display: inline-grid; place-items: center; color: #fff; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
-.rate .icon { margin-right: 4px; border-radius: 4px; }
+/* Game icons (src/ui/GameIcon.tsx) */
+.icon-wrap { display: inline-flex; flex: none; vertical-align: middle; line-height: 0; }
+.icon-link { border-radius: 6px; cursor: pointer; transition: transform .1s; }
+.icon-link:hover { transform: scale(1.12); }
+.icon-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.game-icon { display: inline-block; flex: none; object-fit: contain; vertical-align: middle; -webkit-touch-callout: none; }
+.game-icon.fallback { display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; color: #fff; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+.rate .icon-wrap { margin-right: 4px; }
+.tip { position: fixed; z-index: 1000; pointer-events: none; max-width: min(280px, calc(100vw - 16px)); padding: 4px 8px; border-radius: 6px; background: var(--text); color: var(--bg); font-size: .8rem; font-weight: 600; line-height: 1.3; box-shadow: 0 2px 8px #0003; }
+.tip.above { transform: translateY(-100%); }
+
+/* Dropdown with icons (src/ui/IconSelect.tsx) */
+.icon-select { display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px 5px 6px; font-weight: 400; text-align: left; }
+.icon-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.icon-select-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icon-select-caret { color: var(--muted); font-size: .8rem; }
+.icon-select-pop { position: fixed; z-index: 900; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 24px #0004; overflow: hidden; }
+.icon-select-filter { margin: 6px; padding: 6px 8px; }
+.icon-select-list { overflow-y: auto; padding: 4px; }
+.icon-select-option { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+.icon-select-option.active { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.icon-select-option[aria-selected=true] { font-weight: 600; }
+.icon-select-group { padding: 8px 8px 2px; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.icon-select-empty { padding: 8px; color: var(--muted); font-size: .85rem; }
+.icon-select-extra { display: inline-flex; gap: 2px; flex: none; margin-left: auto; }
 .rate { display: inline-flex; align-items: center; gap: 2px; }
 .with-icon { display: flex; align-items: center; gap: 8px; }
 .power { background: color-mix(in srgb, #f2c230 22%, var(--surface)); border-color: color-mix(in srgb, #f2c230 50%, transparent); }
-.power-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; background: color-mix(in srgb, #f2c230 30%, var(--surface)); }
+.power-icon { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; background: color-mix(in srgb, #f2c230 30%, var(--surface)); }
 
 /* Shared bits */
 .between { justify-content: space-between; }
@@ -213,11 +235,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .balance .rate { white-space: normal; }
 .goal-row, .node-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .goal-row input[type=number], .node-row input[type=number] { width: 90px; }
-.goal-row select { flex: 1 1 200px; min-width: 0; }
+.goal-row select, .goal-row .icon-select { flex: 1 1 200px; min-width: 0; }
 .goals { margin-bottom: 12px; }
 .node-rate { margin-left: auto; font-weight: 600; }
 .recipe-cell { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.recipe-cell select { max-width: 240px; }
+.recipe-cell select, .recipe-cell .icon-select { max-width: 320px; }
 .step-table input[type=number] { width: 90px; }
 tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .plain li.goal-row, .plain li.node-row, .plain li.row { display: flex; }

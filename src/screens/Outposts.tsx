@@ -9,12 +9,20 @@ import { useNetwork } from '../plan/useNetwork'
 import { editorPath } from '../editor/route'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
-import { Amount, Icon, PowerIcon } from './Icon'
+import { Amount, GameIcon, NoIconLinks, PowerIcon } from '../ui/GameIcon'
+import { IconSelect } from '../ui/IconSelect'
 import { Rates } from './Rates'
 
 const ceil = (n: number) => Math.ceil(n - 1e-9)
 const PURITIES: Purity[] = ['impure', 'normal', 'pure']
 const TRANSPORTS: Transport[] = ['belt', 'pipe', 'truck', 'train', 'drone']
+const TRANSPORT_ICONS: Record<Transport, string> = {
+  belt: 'Desc_ConveyorBeltMk1_C',
+  pipe: 'Desc_Pipeline_C',
+  truck: 'Desc_TruckStation_C',
+  train: 'Desc_TrainDockingStation_C',
+  drone: 'Desc_DroneStation_C',
+}
 // Views of one outpost, as tabs: any can be opened in any order.
 const TABS = [
   { key: 'goal', label: 'Goal' },
@@ -55,41 +63,43 @@ export function OutpostList({ state }: { state: GameState }) {
           return (
             <li key={plan.id}>
               <button type="button" className="card outpost-card" onClick={() => go(`/outposts/${plan.id}/plan`)}>
-                <header className="row between">
-                  <strong>{plan.name}</strong>
-                  {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
-                </header>
-                <div className="io">
-                  <span className="io-label">In</span>
-                  <span className="rates">
-                    {plan.nodes.length > 0 && (
-                      <span className="rate">
-                        {plan.nodes.length} node{plan.nodes.length > 1 ? 's' : ''}
-                      </span>
-                    )}
-                    {plan.imports.map((i) => (
-                      <span key={i.id} className="rate" title={`from ${nameOf(i.from)} by ${i.via}`}>
-                        <Icon id={i.item} size={16} />
-                        <b>{fmt(i.perMin)}</b> {itemName(i.item)} · {nameOf(i.from)}
-                      </span>
-                    ))}
-                    {plan.nodes.length + plan.imports.length === 0 && <span className="muted small">nothing yet</span>}
+                <NoIconLinks>
+                  <header className="row between">
+                    <strong>{plan.name}</strong>
+                    {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
+                  </header>
+                  <div className="io">
+                    <span className="io-label">In</span>
+                    <span className="rates">
+                      {plan.nodes.length > 0 && (
+                        <span className="rate">
+                          {plan.nodes.length} node{plan.nodes.length > 1 ? 's' : ''}
+                        </span>
+                      )}
+                      {plan.imports.map((i) => (
+                        <span key={i.id} className="rate" title={`from ${nameOf(i.from)} by ${i.via}`}>
+                          <GameIcon id={i.item} size={20} />
+                          <b>{fmt(i.perMin)}</b> {itemName(i.item)} · {nameOf(i.from)}
+                        </span>
+                      ))}
+                      {plan.nodes.length + plan.imports.length === 0 && <span className="muted small">nothing yet</span>}
+                    </span>
+                  </div>
+                  <div className="io">
+                    <span className="io-label">Out</span>
+                    <span className="rates">
+                      {exports.map((e) => (
+                        <Amount key={e.item} item={e.item} perMin={e.perMin} />
+                      ))}
+                      {solution.power.exportedMW > 0 && <span className="rate power"><PowerIcon size={20} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
+                      {exports.length === 0 && solution.power.exportedMW <= 0 && <span className="muted small">no goal yet</span>}
+                    </span>
+                  </div>
+                  <span className="muted small">
+                    {solution.steps.reduce((n, s) => n + ceil(s.machines), 0)} machines · uses{' '}
+                    {fmt(solution.power.consumedMW, 1)} MW
                   </span>
-                </div>
-                <div className="io">
-                  <span className="io-label">Out</span>
-                  <span className="rates">
-                    {exports.map((e) => (
-                      <Amount key={e.item} item={e.item} perMin={e.perMin} />
-                    ))}
-                    {solution.power.exportedMW > 0 && <span className="rate power"><PowerIcon size={16} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
-                    {exports.length === 0 && solution.power.exportedMW <= 0 && <span className="muted small">no goal yet</span>}
-                  </span>
-                </div>
-                <span className="muted small">
-                  {solution.steps.reduce((n, s) => n + ceil(s.machines), 0)} machines · uses{' '}
-                  {fmt(solution.power.consumedMW, 1)} MW
-                </span>
+                </NoIconLinks>
               </button>
             </li>
           )
@@ -193,7 +203,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
           <li key={i} className="goal-row">
             {g.kind === 'item' ? (
               <>
-                <Icon id={g.item} size={28} />
+                <GameIcon id={g.item} size={32} />
                 <input
                   type="number"
                   min={0}
@@ -203,17 +213,16 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
                   aria-label="Per minute"
                 />
                 <span className="muted">/min</span>
-                <select value={g.item} onChange={(e) => setGoal(i, { ...g, item: e.target.value })} aria-label="Product">
-                  {products.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
+                <IconSelect
+                  value={g.item}
+                  onChange={(item) => setGoal(i, { ...g, item })}
+                  aria-label="Product"
+                  options={products.map((p) => ({ value: p.id, label: p.name, icon: p.id }))}
+                />
               </>
             ) : (
               <>
-                <span className="power-icon"><PowerIcon size={22} /></span>
+                <span className="power-icon"><PowerIcon size={26} /></span>
                 <input
                   type="number"
                   min={0}
@@ -223,24 +232,19 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
                   aria-label="Megawatts"
                 />
                 <span className="muted">MW from</span>
-                <select
+                <IconSelect
                   value={`${g.generator}|${g.fuel}`}
-                  onChange={(e) => {
-                    const [generator, fuel] = e.target.value.split('|')
+                  onChange={(v) => {
+                    const [generator, fuel] = v.split('|')
                     setGoal(i, { ...g, generator, fuel })
                   }}
                   aria-label="Generator and fuel"
-                >
-                  {gens.flatMap((b) =>
+                  options={gens.flatMap((b) =>
                     b.generator!.fuels
                       .filter((f) => available.items.has(f.fuel))
-                      .map((f) => (
-                        <option key={`${b.id}|${f.fuel}`} value={`${b.id}|${f.fuel}`}>
-                          {b.name} on {itemName(f.fuel)}
-                        </option>
-                      )),
+                      .map((f) => ({ value: `${b.id}|${f.fuel}`, label: `${b.name} on ${itemName(f.fuel)}`, icon: f.fuel, group: b.name })),
                   )}
-                </select>
+                />
               </>
             )}
             <button
@@ -340,14 +344,13 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
               update({ nodes: plan.nodes.map((x) => (x.id === n.id ? { ...x, ...patch } : x)) })
             return (
               <li key={n.id} className="node-row">
-                <Icon id={n.resource} size={28} />
-                <select value={n.resource} onChange={(e) => set({ resource: e.target.value, extractor: undefined })} aria-label="Resource">
-                  {resources.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name}
-                    </option>
-                  ))}
-                </select>
+                <GameIcon id={n.resource} size={32} />
+                <IconSelect
+                  value={n.resource}
+                  onChange={(resource) => set({ resource, extractor: undefined })}
+                  aria-label="Resource"
+                  options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
+                />
                 <div className="segmented small" role="radiogroup" aria-label="Purity">
                   {PURITIES.map((p) => (
                     <label key={p}>
@@ -357,13 +360,12 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                   ))}
                 </div>
                 {ex.length > 1 ? (
-                  <select value={b?.id} onChange={(e) => set({ extractor: e.target.value })} aria-label="Extractor">
-                    {ex.map((x) => (
-                      <option key={x.id} value={x.id}>
-                        {x.name}
-                      </option>
-                    ))}
-                  </select>
+                  <IconSelect
+                    value={b?.id}
+                    onChange={(extractor) => set({ extractor })}
+                    aria-label="Extractor"
+                    options={ex.map((x) => ({ value: x.id, label: x.name, icon: x.id }))}
+                  />
                 ) : (
                   <span className="muted small">{b?.name}</span>
                 )}
@@ -394,7 +396,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                 update({ imports: plan.imports.map((x) => (x.id === imp.id ? { ...x, ...patch } : x)) })
               return (
                 <li key={imp.id} className="node-row">
-                  <Icon id={imp.item} size={28} />
+                  <GameIcon id={imp.item} size={32} />
                   <input
                     type="number"
                     min={0}
@@ -406,13 +408,12 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                   <span>
                     /min {itemName(imp.item)} <span className="muted small">from {all.find((s) => s.plan.id === imp.from)?.plan.name}</span>
                   </span>
-                  <select value={imp.via} onChange={(e) => set({ via: e.target.value as Transport })} aria-label="Transport">
-                    {TRANSPORTS.map((t) => (
-                      <option key={t} value={t}>
-                        by {t}
-                      </option>
-                    ))}
-                  </select>
+                  <IconSelect
+                    value={imp.via}
+                    onChange={(via) => set({ via: via as Transport })}
+                    aria-label="Transport"
+                    options={TRANSPORTS.map((t) => ({ value: t, label: `by ${t}`, icon: TRANSPORT_ICONS[t] }))}
+                  />
                   <button
                     type="button"
                     className="icon-btn"
@@ -543,21 +544,24 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                   <tr key={s.recipe}>
                     <td>
                       <span className="recipe-cell">
-                        <Icon id={product} size={24} />
+                        <GameIcon id={product} size={28} />
                         {options.length > 1 ? (
-                          <select
+                          <IconSelect
                             value={s.recipe}
-                            onChange={(e) => update({ recipeChoices: { ...plan.recipeChoices, [product]: e.target.value } })}
+                            onChange={(r) => update({ recipeChoices: { ...plan.recipeChoices, [product]: r } })}
                             aria-label={`Recipe for ${itemName(product)}`}
-                          >
-                            {options.map((r) => (
-                              <option key={r.id} value={r.id}>
-                                {r.alternate ? '★ ' : ''}
-                                {r.name.replace('Alternate: ', '')}
-                                {(suggested[product] ?? options[0].id) === r.id ? ' (suggested)' : ''}
-                              </option>
-                            ))}
-                          </select>
+                            options={options.map((r) => ({
+                              value: r.id,
+                              label: `${r.alternate ? '★ ' : ''}${r.name.replace('Alternate: ', '')}${(suggested[product] ?? options[0].id) === r.id ? ' (suggested)' : ''}`,
+                              extra: (
+                                <span className="icon-select-extra" aria-label="Ingredients">
+                                  {r.ingredients.map((x) => (
+                                    <GameIcon key={x.item} id={x.item} size={18} />
+                                  ))}
+                                </span>
+                              ),
+                            }))}
+                          />
                         ) : (
                           recipe.name
                         )}
@@ -583,7 +587,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                 <tr key={g.generator}>
                   <td>
                     <span className="recipe-cell">
-                      <span className="power-icon"><PowerIcon size={22} /></span>
+                      <span className="power-icon"><PowerIcon size={26} /></span>
                       {buildingsById.get(g.generator)?.name}
                     </span>
                   </td>
@@ -592,7 +596,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                   </td>
                   <td>
                     <span className="rate power">
-                      <PowerIcon size={16} /> <b>{fmt(g.mw, 1)}</b> MW
+                      <PowerIcon size={20} /> <b>{fmt(g.mw, 1)}</b> MW
                     </span>
                   </td>
                   <td className="num">+{fmt(g.mw, 1)} MW</td>
@@ -611,7 +615,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
           <ul className="plain">
             {solution.extraction.map((e, i) => (
               <li key={i} className="row">
-                <Icon id={e.resource} size={20} />
+                <GameIcon id={e.resource} size={24} />
                 <span>
                   <strong>{ceil(e.machines)}</strong> × {buildingsById.get(e.extractor)?.name} → {fmt(e.perMin)}/min{' '}
                   {itemName(e.resource)}
@@ -681,7 +685,7 @@ function Balance({ solved, nameOf }: { solved: Solved; nameOf: (id: string) => s
         {solution.power.exportedMW > 1e-6 && (
           <li>
             <span className="rate power">
-              <PowerIcon size={16} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
+              <PowerIcon size={20} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
             </span>{' '}
             <span className="muted small">to grid</span>
           </li>
