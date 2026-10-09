@@ -33,7 +33,11 @@ export default function App() {
   // The page scrolls inside <main>, so start each screen at the top like a page load would.
   const mainRef = useRef<HTMLElement>(null)
   const screenKey = [page, param, sub].join('/')
-  useLayoutEffect(() => mainRef.current?.scrollTo(0, 0), [screenKey])
+  // Braces matter: newer Chrome returns a promise from scrollTo, and React would call a
+  // returned value as the effect's cleanup and crash.
+  useLayoutEffect(() => {
+    mainRef.current?.scrollTo(0, 0)
+  }, [screenKey])
   const screen =
     !page || (needsState && !state) ? (
       <Welcome />

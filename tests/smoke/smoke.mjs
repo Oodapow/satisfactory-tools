@@ -64,6 +64,16 @@ for (const s of scenarios) {
     const page = await browser.newPage()
     const errors = []
     page.on('pageerror', (e) => errors.push(e.message))
+    // Newer Chrome returns promises from scroll methods; behave like it so code that leaks
+    // their return value (into an effect cleanup, say) fails here too.
+    await page.addInitScript(() => {
+      for (const target of [Element.prototype, window]) {
+        for (const name of ['scroll', 'scrollTo', 'scrollBy', 'scrollIntoView']) {
+          const original = target[name]
+          if (typeof original === 'function') target[name] = function (...args) { original.apply(this, args); return Promise.resolve() }
+        }
+      }
+    })
     await page.addInitScript((entries) => {
       if (sessionStorage.getItem('seeded')) return
       sessionStorage.setItem('seeded', '1')
@@ -80,6 +90,32 @@ for (const s of scenarios) {
     if (problem) failures.push(`${s.name} ${route}: ${problem}`)
     await page.close()
   }
+}
+
+// Moving between screens in one page runs effect cleanups, which a fresh load never does.
+{
+  const page = await browser.newPage()
+  const errors = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  await page.addInitScript(() => {
+    for (const target of [Element.prototype, window]) {
+      for (const name of ['scroll', 'scrollTo', 'scrollBy', 'scrollIntoView']) {
+        const original = target[name]
+        if (typeof original === 'function') target[name] = function (...args) { original.apply(this, args); return Promise.resolve() }
+      }
+    }
+  })
+  await page.goto(origin + '#/sample-save')
+  await page.getByRole('button', { name: /Looks right/ }).click()
+  for (const route of [...routes, '#/setup', '#/']) {
+    await page.evaluate((r) => (location.hash = r), route)
+    await page.waitForTimeout(500)
+    const text = (await page.textContent('#root'))?.trim() ?? ''
+    const problem = text.length < 40 ? `blank page${errors.length ? `: ${errors[0]}` : ''}` : text.includes('Something went wrong') ? `error screen: ${text.slice(0, 160)}` : errors.length ? `uncaught error: ${errors[0]}` : null
+    console.log(`${problem ? 'FAIL' : 'ok  '} navigating to ${route}${problem ? ` (${problem})` : ''}`)
+    if (problem) failures.push(`navigating to ${route}: ${problem}`)
+  }
+  await page.close()
 }
 
 // Reading a real save runs the parser in a Web Worker, whose file must resolve under the Pages path.
