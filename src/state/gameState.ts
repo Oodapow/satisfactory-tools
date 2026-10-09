@@ -7,6 +7,8 @@ export type GameState = Unlocks & {
   source: 'manual' | 'save'
   /** File name of the uploaded save, when source is 'save'. */
   saveName?: string
+  /** Last-modified time of that save file, so a linked save is only re-read when it changes. */
+  saveModified?: number
   /** How locked content shows up: not at all, or blurred out. */
   spoilers: 'hide' | 'blur'
 }

@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { startSync } from './save/sync'
 import { ErrorBoundary } from './ui/ErrorBoundary'
 
 // A lazy chunk that 404s usually means the site was redeployed while this tab was open:
@@ -24,3 +25,6 @@ createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </StrictMode>,
 )
+
+// Re-read a linked save, if there is one.
+startSync()
