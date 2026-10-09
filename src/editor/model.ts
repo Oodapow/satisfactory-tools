@@ -55,10 +55,9 @@ export type MachineData = {
   count: number
   floor: number
 }
-/** Which way items flow out: a splitter takes in on the opposite side, a merger sends out on this side. */
-export type Facing = 'left' | 'right'
-export type SplitterData = { kind: 'splitter'; floor: number; facing?: Facing }
-export type MergerData = { kind: 'merger'; floor: number; facing?: Facing }
+/** Splitters and mergers turn to face their belts on their own (see grid.ts). */
+export type SplitterData = { kind: 'splitter'; floor: number }
+export type MergerData = { kind: 'merger'; floor: number }
 export type PortData = {
   kind: 'port'
   direction: 'in' | 'out'
@@ -88,8 +87,6 @@ export type BeltData = {
   overCapacity?: boolean
   /** Floors climbed by a conveyor lift on the way (negative goes down). */
   lift?: number
-  /** Shared vertical lane the belt runs along, so belts between floors stay out of the floors. */
-  laneX?: number
 }
 export type BeltEdge = Edge<BeltData>
 
@@ -98,6 +95,8 @@ export type MicroGraph = {
   edges: BeltEdge[]
   /** Best conveyor tier the player can build, used when proposing layouts. */
   maxBeltTier: number
+  /** Best pipeline tier (1-2). */
+  maxPipeTier?: number
   /** Set while the graph is an untouched proposal; cleared by any edit. */
   generatedAt?: string
   /** Warnings from the last proposal. */

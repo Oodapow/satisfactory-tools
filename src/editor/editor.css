@@ -65,12 +65,14 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-link.selected, .ne-belt.selected { stroke-width: 5; }
 
 /* Micro blocks */
-.ne-machine { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 6px 8px; width: 180px; font-size: .75rem; }
+.ne-machine { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 6px 8px; width: 200px; height: 80px; font-size: .75rem; }
 .ne-machine.selected, .ne-joint.selected, .ne-port.selected { border-color: var(--accent); }
 .ne-machine-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .ne-machine-text strong, .ne-machine-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ne-joint { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--border); background: var(--surface); }
-.ne-port { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px dashed var(--accent); border-radius: 10px; padding: 6px 10px; font-size: .75rem; min-width: 200px; }
+.ne-port { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px dashed var(--accent); border-radius: 10px; padding: 6px 10px; font-size: .75rem; width: 240px; height: 80px; overflow: hidden; }
+.ne-port > div { min-width: 0; }
+.ne-port .ne-sub, .ne-port-item { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ne-port.out { border-color: #20a39e; }
 .ne-port-item { display: inline-flex; gap: 4px; align-items: center; }
 .ne-floor { border: 1px dashed var(--border); border-radius: 14px; background: color-mix(in srgb, var(--accent) 5%, transparent); pointer-events: none; }
@@ -103,7 +105,7 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .react-flow__handle.ne-handle.connected { background: var(--accent); border-color: var(--accent); }
 .react-flow__handle.ne-handle-source.connected { background: #20a39e; border-color: #20a39e; }
 .react-flow__handle.ne-handle:hover { transform-origin: center; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
-.ne-joint { color: var(--text); width: 40px; height: 40px; }
+.ne-joint { color: var(--text); width: 40px; height: 40px; padding: 0; }
 .ne-lift { position: absolute; display: flex; gap: 2px; align-items: center; background: var(--surface); border: 1px solid #6c5ce7; color: #6c5ce7; border-radius: 6px; padding: 1px 4px 1px 2px; font-size: .65rem; font-weight: 700; pointer-events: all; }
 .ne-palette-item svg { flex: none; color: var(--text); }
 .ne-joint.splitter { color: #2b8fd6; }

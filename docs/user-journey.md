@@ -36,14 +36,18 @@ Outposts saved before plans existed (one `target` and `choices`) are migrated on
 
 `src/plan/solve.ts`, pure functions over the game data and `availability()`:
 
-1. Walk demand back from each goal. Imports of an item are used before producing it; resources go to the raw ledger; anything with no unlocked recipe is a shortfall.
-2. A power goal adds generators: fuel per minute is `MW × 60 / energyMJ`, water is `MW × 60 × supplementalPerMJ`. When self-powered, the outpost's own draw is added and solved again until it settles.
-3. Every node runs at full speed (`extractor rate × purity`); water comes from Water Extractors without a node. Raw demand beyond the nodes is a shortfall.
-4. Everything left over (spare node output, byproducts, the goal itself) is exported. Unused imports are reported, not exported.
+1. Walk demand back from each goal. Imports of an item are used first, then byproducts the outpost already makes (for example the water Aluminum Scrap gives off covers part of what Alumina Solution needs), then new production. Resources go to the raw ledger; anything with no unlocked recipe is a shortfall. Because byproducts depend on the steps chosen, the walk repeats until they settle.
+2. A power goal adds generators: fuel per minute is `MW × 60 / energyMJ`, water is `MW × 60 × supplementalPerMJ`, and fuel byproducts (nuclear waste) leave the outpost. When self-powered, the outpost's own draw is added and solved again until it settles.
+3. Machines are sized to the plan's highest clock speed (`maxClock`, 100% until Overclock Production is researched, up to 250%). A step that doesn't divide evenly gets the fewest machines that do the work, all at the same lower clock, so a manifold feeds them evenly: 2.5 machines of work at 100% is 3 machines at 83.3%. Each machine draws `power × clock^1.321928`, and needs one power shard per 50% above 100%.
+4. Somersloops (`somersloops`, per recipe, once Production Amplifier is researched) multiply a machine's output by `1 + slots × boost` and its power by the square of that.
+5. Every node runs at its own clock (`extractor rate × purity × clock`); water comes from Water Extractors without a node, sized like machines. Raw demand beyond the nodes is a shortfall.
+6. Everything left over (spare node output, byproducts, the goal itself) is exported. Unused imports are reported, not exported.
 
 `suggestRecipes` picks a recipe per item the user hasn't overridden: the option that leaves nothing short, then uses the least raw input, then the fewest machines (a few greedy passes). `src/plan/network.ts` solves every outpost and lists what each can still offer to others after existing imports.
 
-Simplifications: machines run at 100% (fractional counts are shown so one can be underclocked), power scales linearly with machines, and outposts are solved independently (an import doesn't check the exporter's live surplus beyond the offer list).
+The Plan step shows each step's machine count, clock and power shards, and has a "Highest clock speed" picker and a Somersloop field per recipe once those are researched. The Resources step has a clock per node.
+
+Simplifications: generators run at 100% (fractional counts), and outposts are solved independently (an import doesn't check the exporter's live surplus beyond the offer list). Tests for this math are in `src/plan/solve.test.ts` (`npm test`).
 
 ## Icons
 

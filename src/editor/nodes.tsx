@@ -1,7 +1,7 @@
 // Custom React Flow nodes and edges for both editor levels. Edges are drawn like a
 // schematic: orthogonal runs with 90° corners and hops where they cross (see router.ts).
 // Ports are hollow circles while free and filled once something connects to them.
-import { useMemo } from 'react'
+import { useContext, useEffect, useMemo, type CSSProperties } from 'react'
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -9,6 +9,7 @@ import {
   Position,
   useEdges,
   useNodeConnections,
+  useUpdateNodeInternals,
   type EdgeProps,
   type HandleType,
   type NodeProps,
@@ -18,13 +19,12 @@ import { exportsOf } from '../plan/network'
 import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { POWER } from '../data/icons'
+import { FloorPlanContext } from './floorPlanView'
+import { anchors, G, machineIO, UPRIGHT, type Anchor, type Side } from './grid'
 import { labelPoints, route, useRoutedPath } from './router'
 import { LiftSymbol, MergerSymbol, SplitterSymbol } from './Symbols'
 import {
   transportById,
-  type Facing,
-  type MergerData,
-  type SplitterData,
   type BeltEdge,
   type FloorData,
   type LinkEdge,
@@ -40,9 +40,30 @@ const transportLabel = (t: string) => (t === 'resource' ? 'Resource node' : (tra
 type Chip = { key: string; icon: string; text: string }
 
 /** A connection point: hollow while free, filled once connected. */
-function Port({ type, position, id }: { type: HandleType; position: Position; id?: string }) {
+function Port({ type, position, id, style }: { type: HandleType; position: Position; id?: string; style?: CSSProperties }) {
   const connected = useNodeConnections({ handleType: type, handleId: id }).length > 0
-  return <Handle type={type} position={position} id={id} className={`ne-handle ne-handle-${type}${connected ? ' connected' : ''}`} />
+  return <Handle type={type} position={position} id={id} style={style} className={`ne-handle ne-handle-${type}${connected ? ' connected' : ''}`} />
+}
+
+/** Which way a joint or port faces; React Flow re-measures its handles when that changes. */
+function useOrient(id: string) {
+  const o = useContext(FloorPlanContext)?.orients.get(id) ?? UPRIGHT
+  const updateInternals = useUpdateNodeInternals()
+  useEffect(() => updateInternals(id), [id, o.rot, o.mirror, updateInternals])
+  return o
+}
+
+const position: Record<Side, Position> = { l: Position.Left, r: Position.Right, t: Position.Top, b: Position.Bottom }
+/** A connection point at its exact grid spot on the block's border. */
+function GridPort({ type, id, a }: { type: HandleType; id: string; a: Anchor }) {
+  return (
+    <Port
+      type={type}
+      id={id}
+      position={position[a.side]}
+      style={{ left: a.dx * G, top: a.dy * G, right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' }}
+    />
+  )
 }
 
 // ---------- Macro ----------
@@ -146,9 +167,13 @@ export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
   const recipe = recipesById.get(d.recipe)
   const building = buildingsById.get(d.building)
   const output = recipe?.products[0]?.item ?? (d.fuel ? POWER : undefined)
+  const io = machineIO(d)
+  const points = Object.entries(anchors('machine', d))
   return (
-    <div className={`ne-machine${selected ? ' selected' : ''}`}>
-      <Port type="target" position={Position.Top} id="in" />
+    <div className={`ne-machine${selected ? ' selected' : ''}`} title={`In: ${io.ins.map(itemName).join(', ') || 'nothing'} · Out: ${io.outs.map(itemName).join(', ') || 'power'}`}>
+      {points.map(([h, a]) => (
+        <GridPort key={h} type={a.side === 't' ? 'target' : 'source'} id={h} a={a} />
+      ))}
       <GameIcon id={d.building} size={30} />
       <div className="ne-machine-text">
         <strong>
@@ -160,49 +185,46 @@ export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
         </span>
       </div>
       {output && <GameIcon id={output} size={22} />}
-      <Port type="source" position={Position.Bottom} id="out" />
     </div>
   )
 }
 
-const sides = (facing: Facing = 'right') =>
-  facing === 'right' ? { out: Position.Right, back: Position.Left } : { out: Position.Left, back: Position.Right }
-
-/** Splitter: in from the back, out ahead, up and down. */
-export function SplitterBlock({ data, selected }: NodeProps<MicroNode>) {
-  const { out, back } = sides((data as SplitterData).facing)
+/** Splitter: in at the back, out ahead, up and down. Its connection points turn to face its belts; the icon stays upright. */
+export function SplitterBlock({ id, data, selected }: NodeProps<MicroNode>) {
+  const a = anchors('splitter', data, useOrient(id))
   return (
     <div className={`ne-joint splitter${selected ? ' selected' : ''}`} title="Conveyor Splitter">
-      <Port type="target" position={back} id="in" />
-      <GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={24} fallback={<SplitterSymbol flip={out === Position.Left} />} />
-      <Port type="source" position={out} id="out" />
-      <Port type="source" position={Position.Top} id="up" />
-      <Port type="source" position={Position.Bottom} id="down" />
+      <GridPort type="target" id="in" a={a.in} />
+      <GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={24} fallback={<SplitterSymbol />} />
+      <GridPort type="source" id="out" a={a.out} />
+      <GridPort type="source" id="up" a={a.up} />
+      <GridPort type="source" id="down" a={a.down} />
     </div>
   )
 }
 
-/** Merger: in from the back, top and bottom, out ahead. */
-export function MergerBlock({ data, selected }: NodeProps<MicroNode>) {
-  const { out, back } = sides((data as MergerData).facing)
+/** Merger: in at the back, up and down, out ahead. Its connection points turn to face its belts; the icon stays upright. */
+export function MergerBlock({ id, data, selected }: NodeProps<MicroNode>) {
+  const a = anchors('merger', data, useOrient(id))
   return (
     <div className={`ne-joint merger${selected ? ' selected' : ''}`} title="Conveyor Merger">
-      <Port type="target" position={back} id="in" />
-      <Port type="target" position={Position.Top} id="up" />
-      <Port type="target" position={Position.Bottom} id="down" />
-      <GameIcon id="Desc_ConveyorAttachmentMerger_C" size={24} fallback={<MergerSymbol flip={out === Position.Left} />} />
-      <Port type="source" position={out} id="out" />
+      <GridPort type="target" id="in" a={a.in} />
+      <GridPort type="target" id="up" a={a.up} />
+      <GridPort type="target" id="down" a={a.down} />
+      <GameIcon id="Desc_ConveyorAttachmentMerger_C" size={24} fallback={<MergerSymbol />} />
+      <GridPort type="source" id="out" a={a.out} />
     </div>
   )
 }
 
-export function PortBlock({ data, selected }: NodeProps<MicroNode>) {
+export function PortBlock({ id, data, selected }: NodeProps<MicroNode>) {
   const d = data as PortData
   const isIn = d.direction === 'in'
+  const a = anchors('port', d, useOrient(id))
   const via = d.transport === 'resource' ? (d.extractor ?? 'Desc_MinerMk1_C') : transportIcon(d.transport)
   return (
     <div className={`ne-port ${d.direction}${selected ? ' selected' : ''}`}>
-      {!isIn && <Port type="target" position={Position.Left} id="in" />}
+      {!isIn && <GridPort type="target" id="in" a={a.in} />}
       <GameIcon id={via} size={26} title={transportLabel(d.transport)} />
       <div>
         <div className="ne-sub">
@@ -220,7 +242,7 @@ export function PortBlock({ data, selected }: NodeProps<MicroNode>) {
           )}
         </strong>
       </div>
-      {isIn && <Port type="source" position={Position.Right} id="out" />}
+      {isIn && <GridPort type="source" id="out" a={a.out} />}
     </div>
   )
 }
@@ -235,20 +257,25 @@ export function FloorBand({ data }: NodeProps<MicroNode>) {
 }
 
 export function BeltLine(props: EdgeProps<BeltEdge>) {
-  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
-  const laneX = data?.laneX
+  const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
+  // The grid route, unless one of its blocks is being dragged (then a plain route follows the drag).
+  const view = useContext(FloorPlanContext)
+  const grid = view && !view.dragging.has(source) && !view.dragging.has(target) ? view.routes.get(id) : undefined
   const pts = useMemo(
-    () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition, { laneX }),
-    [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition, laneX],
+    () => grid ?? route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition),
+    [grid, id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition],
   )
   const path = useRoutedPath(id, pts)
   const { label, vertical } = labelPoints(pts)
+  // Short hops (a splitter dropping into its machine) carry no label, so it doesn't sit on the blocks; selecting the belt shows it.
+  const longest = Math.max(0, ...pts.slice(1).map((p, i) => Math.abs(p.x - pts[i].x) + Math.abs(p.y - pts[i].y)))
+  const showLabel = selected || longest >= 3 * G
   const lift = data?.lift ?? 0
   return (
     <>
       <BaseEdge path={path} markerEnd={markerEnd} className={`ne-belt${data?.overCapacity ? ' over' : ''}${selected ? ' selected' : ''}`} />
       <EdgeLabelRenderer>
-        {data?.perMin !== undefined && (
+        {data?.perMin !== undefined && showLabel && (
           <div
             className={`ne-belt-label nodrag nopan${data.overCapacity ? ' over' : ''}`}
             style={{ transform: `translate(-50%,-50%) translate(${label.x}px,${label.y}px)` }}
