@@ -553,7 +553,6 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                             options={options.map((r) => ({
                               value: r.id,
                               label: `${r.alternate ? '★ ' : ''}${r.name.replace('Alternate: ', '')}${(suggested[product] ?? options[0].id) === r.id ? ' (suggested)' : ''}`,
-                              icon: r.producedIn[0],
                               extra: (
                                 <span className="icon-select-extra" aria-label="Ingredients">
                                   {r.ingredients.map((x) => (

@@ -49,8 +49,8 @@ export function IconSelect({
     const r = button.current!.getBoundingClientRect()
     const below = window.innerHeight - r.bottom - 8
     const above = r.top - 8
-    const width = Math.max(r.width, 240)
-    const left = Math.min(r.left, window.innerWidth - width - 8)
+    const width = Math.min(Math.max(r.width, 300), window.innerWidth - 16)
+    const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8))
     setPos(
       below >= 240 || below >= above
         ? { left, width, top: r.bottom + 4, maxHeight: Math.min(360, below) }

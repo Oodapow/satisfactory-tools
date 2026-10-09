@@ -194,7 +194,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .icon-select-option[aria-selected=true] { font-weight: 600; }
 .icon-select-group { padding: 8px 8px 2px; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .icon-select-empty { padding: 8px; color: var(--muted); font-size: .85rem; }
-.icon-select-extra { display: inline-flex; gap: 2px; flex: none; }
+.icon-select-extra { display: inline-flex; gap: 2px; flex: none; margin-left: auto; }
 .rate { display: inline-flex; align-items: center; gap: 2px; }
 .with-icon { display: flex; align-items: center; gap: 8px; }
 .power { background: color-mix(in srgb, #f2c230 22%, var(--surface)); border-color: color-mix(in srgb, #f2c230 50%, transparent); }
@@ -238,7 +238,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .goals { margin-bottom: 12px; }
 .node-rate { margin-left: auto; font-weight: 600; }
 .recipe-cell { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.recipe-cell select, .recipe-cell .icon-select { max-width: 280px; }
+.recipe-cell select, .recipe-cell .icon-select { max-width: 320px; }
 .step-table input[type=number] { width: 90px; }
 tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .plain li.goal-row, .plain li.node-row, .plain li.row { display: flex; }
