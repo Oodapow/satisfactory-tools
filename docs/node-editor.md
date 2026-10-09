@@ -19,7 +19,7 @@ Links are coloured by how they travel: belt, pipe, truck, train, drone, or power
 
 ## How lines and ports are drawn
 
-Both levels draw lines like a circuit schematic: horizontal and vertical runs with 90° corners, a small hop where one line crosses another (so a crossing never looks like a join), and every connection point a small circle, hollow while free and filled once connected (orange for inputs, teal for outputs).
+Both levels draw lines like a circuit schematic: horizontal and vertical runs with 90° corners, a small hop where one line crosses another (so a crossing never looks like a join), and every connection point a small circle, hollow while free and filled once connected. On the floor plan each point is coloured by what it carries (see [Connection points](#connection-points)).
 
 On the factory map, lines between outposts are routed one by one (`src/editor/router.ts`): a line whose target is behind it goes round through the gap between blocks, and lines that would share a channel are nudged apart.
 
@@ -58,30 +58,52 @@ Power outposts get a generator floor fed by fuel and water:
 
 ![Power outpost](node-editor/6-power-outpost.png)
 
+### Pipes, belts and power
+
+Each line on the floor plan is one of three kinds, and each kind has its own colour (#47, #48):
+
+- **Belts** (orange) carry solids. They split at splitters and join at mergers.
+- **Pipes** (blue, thicker) carry fluids. They split and join at **pipeline junctions**, never at splitters or mergers. A junction has four connection points, each one in or out. Pipes are sized against pipeline Mk rates (300 and 600/min).
+- **Power lines** (thin yellow) run straight from a **power pole** to a machine, generator, extractor, power port or another pole, like wires in the game. They don't follow the grid. Poles take the game's number of lines for their Mk (Mk.1 4, Mk.2 7, Mk.3 10), one per connection point round the pole.
+
+The proposal wires power on its own: a pole right of every machine, chained along each line; a riser through every line's first pole, bottom floor first; and a pole beside each power port and resource node (extractors need power too), chained down the port column. No pole takes more than four lines, so it works with Mk.1 poles; it uses the best pole you have unlocked.
+
+### Connection points
+
+Every connection point is coloured by what it carries: orange for a belt, blue for a pipe, yellow for power. A free point is an empty ring, a used one is filled (#50). Each point takes exactly one line, power and pipes included; the editor refuses a second one. A line only joins points of the same kind, and belts and pipes always run from an output to an input: drag from either end and the line still runs the right way, with an arrow at its input end.
+
+### What a belt carries
+
+Belts and pipes work out their item and rate from what they connect (`src/editor/flow.ts`, #51). The item comes from the source end (a machine output's product, a port's item, whatever reaches a joint), or else from what the far end takes. Rates are a max flow over the lines: machine outputs and ports put in what they make, machine inputs and ports take what they need, and joints pass anything through. So a splitter shares what comes in by what each branch can take, and a merger adds up its inputs. The belt tier follows from the rate.
+
+Select a belt to see its item and rate. Changing either sets it by hand, and the rest of the network works around it; **Work it out again** goes back to the inferred values.
+
 ### The grid
 
-Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top and one output per product along its bottom.
+Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top, one output per product along its bottom, and a power point on its right.
 
-Belts are routed along grid lines (`src/editor/gridRouter.ts`) with these rules:
+Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts can reach its connection points. Power poles may sit right against a block.
+
+Belts and pipes are routed along grid lines (`src/editor/gridRouter.ts`) with these rules:
 
 - No two belts share a grid edge, so lines never run on top of each other.
 - A belt only turns where no other belt is, and two belts only meet where they cross straight through each other (drawn with a hop).
 - The grid point just outside each connection point is kept for that point's belt.
 - Belts don't run through blocks. Each belt is an A* search that prefers few turns and few crossings; short belts (the manifolds) are routed first.
 
-If a belt can't find a clean path it still gets the best one, sharing as little as possible.
+If a belt can't find a clean path it still gets the best one, sharing as little as possible. Such belts are drawn dashed red, and a note says how many there are.
 
 **Splitters and mergers turn to face their belts.** Their connection points rotate (and mirror) to the orientation that points each one at the block at the other end, the single belt (into a splitter, out of a merger) counting double. Only the connection points move: the icon stays upright. Ports turn the same way.
 
 Routes are worked out for the whole plan whenever blocks or belts change. While you drag a block its belts follow it with a plain route, and they snap back onto the grid when you drop it:
 
-![Belts rerouted on the grid after moving a machine](node-editor/5b-grid.png)
+![Belts rerouted on the grid after moving a machine; the one that found no clean route is dashed red](node-editor/5b-grid.png)
 
 ### Editing
 
-Everything is editable. Drag blocks in from the left (or click them): any production machine, generator, splitter, merger, or a port for each transport. Connect an output (bottom or right handle) to an input (top or left handle). New belts take their item from whatever feeds them. Select a block or belt to edit it: machine type, recipe or fuel, clock, count and floor; port direction, transport, item and rate; belt item and rate. Short belts (a splitter dropping into its machine) show their label when selected.
+Everything is editable. Drag blocks in from the left (or click them): any production machine, generator, splitter, merger, pipeline junction, power pole, or a port for each transport. Drag from a free connection point to another of the same colour (see [Connection points](#connection-points)). Select a block or line to edit it: machine type, recipe or fuel, clock, count and floor; port direction, transport, item and rate; belt item and rate. Short belts (a splitter dropping into its machine) show their label when selected. Deleting a block deletes its lines.
 
-Edits change the drawing, not the plan. Once you edit, the toolbar says "Edited" and **Propose layout** asks before replacing your changes. To change what the outpost makes or imports, change the plan or the factory map, then propose again. Floor plans saved before the grid existed are moved onto it when opened.
+Edits change the drawing, not the plan. Once you edit, the toolbar says "Edited" and **Propose layout** asks before replacing your changes. To change what the outpost makes or imports, change the plan or the factory map, then propose again. Floor plans saved before the grid existed are moved onto it when opened. An untouched proposal from an older version of the layout (before pipes and power) is proposed again when opened; an edited one is kept as it is.
 
 ## Storage
 
@@ -101,11 +123,13 @@ All of it is in `src/editor/`:
 | `model.ts` | Types for links, power lines, floor plans, ports, belts; belt tier lookup. |
 | `layout.ts` | The layout algorithm (`planLayout`): floors, lines, ports and which belt carries what, as plain data. |
 | `generate.ts` | Puts that layout on the grid as blocks and belts (`proposeLayout`). |
-| `grid.ts` | Grid size, block sizes, connection points, and turning joints and ports to face their belts. |
-| `gridRouter.ts` | Floor-plan belt routing on the grid. |
+| `grid.ts` | Grid size, block sizes, connection points (what each carries, in or out), and turning joints and ports to face their belts. |
+| `gridRouter.ts` | Floor-plan belt and pipe routing on the grid. |
+| `flow.ts` | What every belt and pipe carries, worked out from what it connects. |
+| `connect.ts` | Which lines may be drawn by hand, and where a dropped block lands. |
 | `nodes.tsx` | Block and line components for both levels. |
 | `router.ts` | Factory-map routing and the hops drawn at crossings on both levels. |
-| `Symbols.tsx` | Splitter, merger and conveyor lift symbols. |
+| `Symbols.tsx` | Splitter, merger, pipeline junction, power pole and conveyor lift symbols. |
 | `Inspector.tsx` | The right-hand panel for whatever is selected. |
 | `store.ts` | The editor's own stored state, the example outposts, palette lists. |
 | `unlocked.ts` | `useUnlocked()`: palette and picker lists cut down to what the game state has unlocked (machines, generators, recipes, fuels, items, link types, best belt and pipe). |
@@ -119,5 +143,7 @@ It uses [React Flow](https://reactflow.dev) (`@xyflow/react`), MIT licensed, for
 - The layout is one proposal, not a search over alternatives: it doesn't try other floor groupings or machine orders to shorten belts.
 - Footprints are estimates from building sizes; they don't place real foundations or check that a floor fits a given area.
 - Power lines are kept by the editor because the plan model has no power imports yet. Power lines don't feed into the solver.
+- Pipes don't account for head lift: a pipe climbing several floors may need a pump in the game.
+- A belt whose item doesn't match the machine input it feeds isn't flagged yet.
 - Floor plan edits are not checked against the plan (for example, deleting a machine doesn't show a shortfall).
 - On phones you can add blocks by tapping the palette, but linking needs a drag between two small handles, which is fiddly.

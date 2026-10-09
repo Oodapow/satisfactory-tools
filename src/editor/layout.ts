@@ -43,6 +43,8 @@ export type LayoutInput = {
   /** Best conveyor belt Mk (1-6) and pipeline Mk (1-2) to build with. */
   maxBeltTier: number
   maxPipeTier?: number
+  /** Best power pole Mk (1-3). */
+  maxPoleTier?: number
 }
 
 /** One manifold: identical machines in a row, fed by one belt per ingredient and collected by one belt per product. */
@@ -55,6 +57,8 @@ export type Line = {
   fuel?: string
   machines: number
   clock: number
+  /** Somersloop output multiplier. */
+  boost: number
   /** Per line, in the order of the machine's inputs and outputs. */
   ingredients: ItemRate[]
   products: ItemRate[]
@@ -113,6 +117,7 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
       building: s.building,
       count: Math.max(1, s.count),
       clock: s.clock,
+      boost: s.boost,
       ingredients: r.ingredients.map((i) => ({ item: i.item, perMin: perMin(i.amount, r) * s.machines })),
       products: r.products.map((p) => ({ item: p.item, perMin: perMin(p.amount, r) * s.machines * s.boost })),
     }
@@ -127,7 +132,7 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
     const products: ItemRate[] = []
     if (spec?.byproduct && spec.byproductAmount && fuel?.energyMJ) products.push({ item: spec.byproduct, perMin: ((g.mw * 60) / fuel.energyMJ) * spec.byproductAmount })
     const count = Math.max(1, Math.ceil(g.machines - EPS))
-    steps.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, recipe: '', fuel: g.fuel, building: g.generator, count, clock: g.machines / count, ingredients, products })
+    steps.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, recipe: '', fuel: g.fuel, building: g.generator, count, clock: g.machines / count, boost: 1, ingredients, products })
   }
 
   // 2. Levels: raw processing at the bottom, a step one above the highest step feeding it.
@@ -182,6 +187,7 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
         fuel: s.fuel,
         machines,
         clock: s.clock,
+        boost: s.boost,
         ingredients: s.ingredients.map((x) => ({ item: x.item, perMin: x.perMin * share })),
         products: s.products.map((x) => ({ item: x.item, perMin: x.perMin * share })),
       }

@@ -8,6 +8,7 @@ import {
   applyNodeChanges,
   Background,
   ConnectionLineType,
+  ConnectionMode,
   Controls,
   MarkerType,
   MiniMap,
@@ -29,6 +30,8 @@ import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostI
 import {
   beltRates,
   beltTierFor,
+  LAYOUT_VERSION,
+  type BeltEdge,
   type EditorLayout,
   type LinkEdge,
   type MachineData,
@@ -38,12 +41,14 @@ import {
   type PortData,
 } from './model'
 import { G, isBlock } from './grid'
+import { connection, place } from './connect'
 import { routeFloorPlan } from './gridRouter'
-import { FloorPlanContext, type FloorPlanView } from './floorPlanView'
-import { BeltLine, FloorBand, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PortBlock, SplitterBlock } from './nodes'
+import { inferFlows } from './flow'
+import { FloorPlanContext, type FloorPlanView, type LineLoad } from './floorPlanView'
+import { BeltLine, FloorBand, JunctionBlock, LineMarkers, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PoleBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
-import { MergerSymbol, SplitterSymbol } from './Symbols'
+import { JunctionSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
 import { examplePlans, useEditorLayout } from './store'
 import { UnlockedContext, useUnlocked } from './unlocked'
 
@@ -54,7 +59,7 @@ type Selection = { kind: 'node' | 'edge'; id: string } | null
 const DND = 'application/x-satisfactory-node'
 const macroNodeTypes = { outpost: OutpostBlock }
 const macroEdgeTypes = { link: LinkLine }
-const microNodeTypes = { machine: MachineBlock, splitter: SplitterBlock, merger: MergerBlock, port: PortBlock, floor: FloorBand }
+const microNodeTypes = { machine: MachineBlock, splitter: SplitterBlock, merger: MergerBlock, junction: JunctionBlock, pole: PoleBlock, port: PortBlock, floor: FloorBand }
 const microEdgeTypes = { belt: BeltLine }
 const arrow = { type: MarkerType.ArrowClosed, width: 18, height: 18 }
 const flowProps = {
@@ -390,21 +395,22 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const [sel, setSel] = useState<Selection>(null)
   const [routes] = useState(() => new RouteRegistry())
   const graph = layout.micro[id]
-  const view = useFloorPlanView(graph)
   const unlocked = useUnlocked()
+  const view = useFloorPlanView(graph, unlocked.pipeTier)
   const maxBeltTier = graph?.maxBeltTier ?? unlocked.beltTier
   const { fitView } = useReactFlow()
   const links = useMemo(() => portLinks(net.solved, layout, id), [net.solved, layout, id])
 
   const propose = useCallback(
-    (tier: number) => proposeLayout({ solved, ...links, maxBeltTier: tier, maxPipeTier: unlocked.pipeTier }),
-    [solved, links, unlocked.pipeTier],
+    (tier: number) => proposeLayout({ solved, ...links, maxBeltTier: tier, maxPipeTier: unlocked.pipeTier, maxPoleTier: unlocked.poleTier }),
+    [solved, links, unlocked.pipeTier, unlocked.poleTier],
   )
 
-  // First visit: propose a layout from the plan.
+  // First visit: propose a layout from the plan. An untouched proposal from an older version is proposed again.
+  const outdated = !!graph?.generatedAt && (graph.version ?? 1) < LAYOUT_VERSION
   useEffect(() => {
-    if (!graph) update((l) => ({ ...l, micro: { ...l.micro, [id]: propose(unlocked.beltTier) } }))
-  }, [graph, id, propose, update, unlocked.beltTier])
+    if (!graph || outdated) update((l) => ({ ...l, micro: { ...l.micro, [id]: propose(graph?.maxBeltTier ?? unlocked.beltTier) } }))
+  }, [graph, outdated, id, propose, update, unlocked.beltTier])
 
   const setGraph = useCallback(
     (fn: (g: MicroGraph) => MicroGraph) => update((l) => (l.micro[id] ? { ...l, micro: { ...l.micro, [id]: fn(l.micro[id]) } } : l)),
@@ -429,9 +435,14 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const onNodesChange = (changes: NodeChange<MicroNode>[]) => {
     for (const c of changes) if (c.type === 'select' && c.selected) setSel({ kind: 'node', id: c.id })
     setGraph((g) => {
-      const nodes = applyNodeChanges(changes, g.nodes)
-      const structural = changes.some((c) => c.type === 'remove' || (c.type === 'position' && c.dragging === false))
-      return structural ? edited({ ...g, nodes }) : { ...g, nodes }
+      let nodes = applyNodeChanges(changes, g.nodes)
+      // A dropped block lands on free grid space: nudged to the nearest spot no other block covers.
+      const dropped = new Set(changes.flatMap((c) => (c.type === 'position' && c.dragging === false ? [c.id] : [])))
+      if (dropped.size) nodes = nodes.map((n) => (dropped.has(n.id) && isBlock(n) ? place(nodes, n) : n))
+      const removed = new Set(changes.flatMap((c) => (c.type === 'remove' ? [c.id] : [])))
+      // Lines go with the blocks they connect.
+      const edges = removed.size ? g.edges.filter((e) => !removed.has(e.source) && !removed.has(e.target)) : g.edges
+      return removed.size || dropped.size ? edited({ ...g, nodes, edges }) : { ...g, nodes }
     })
   }
   const onEdgesChange = (changes: EdgeChange<MicroGraph['edges'][number]>[]) => {
@@ -441,11 +452,11 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       return changes.some((c) => c.type === 'remove') ? edited({ ...g, edges }) : { ...g, edges }
     })
   }
+  // A line joins two free points that carry the same thing, an output to an input; dragging either way works.
+  const check = (c: Connection | BeltEdge) => (graph ? connection(graph, c) : null)
   const onConnect = (c: Connection) => {
-    // Carry over the item from whatever already feeds the source, so new belts start labelled.
-    const src = graph?.nodes.find((n) => n.id === c.source)?.data
-    const item = src?.kind === 'port' ? src.item : graph?.edges.find((e) => e.target === c.source)?.data?.item
-    setGraph((g) => edited({ ...g, edges: addEdge({ ...c, type: 'belt', data: { item } }, g.edges) }))
+    const ok = check(c)
+    if (ok) setGraph((g) => edited({ ...g, edges: addEdge({ ...ok.c, type: 'belt', data: { medium: ok.medium } }, g.edges) }))
   }
 
   const drop = useDrop((p, position) => {
@@ -455,8 +466,9 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       const b = buildingsById.get(p.building)
       data = { kind: 'machine', building: p.building, recipe: b?.generator ? '' : (unlocked.recipesIn(p.building)[0]?.id ?? ''), fuel: unlocked.fuelsOf(b)[0]?.fuel, clock: 1, count: 1, floor: 0 }
     } else if (p.kind === 'port') data = { kind: 'port', direction: p.direction as 'in' | 'out', transport: p.transport as PortData['transport'], perMin: 60, label: 'Added by hand' }
-    else data = { kind: p.kind as 'splitter' | 'merger', floor: 0 }
-    setGraph((g) => edited({ ...g, nodes: [...g.nodes, { id: nid, type: p.kind, position, data }] }))
+    else if (p.kind === 'pole') data = { kind: 'pole', floor: 0, tier: unlocked.poleTier }
+    else data = { kind: p.kind as 'splitter' | 'merger' | 'junction', floor: 0 }
+    setGraph((g) => edited({ ...g, nodes: [...g.nodes, place(g.nodes, { id: nid, type: p.kind, position, data })] }))
     setSel({ kind: 'node', id: nid })
   })
 
@@ -514,6 +526,12 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
         <PaletteItem payload={{ kind: 'merger' }} icon={<GameIcon id="Desc_ConveyorAttachmentMerger_C" size={22} fallback={<MergerSymbol />} />} onAdd={drop.addAtCenter}>
           Merger
         </PaletteItem>
+        <PaletteItem payload={{ kind: 'junction' }} icon={<GameIcon id="Desc_PipelineJunction_Cross_C" size={22} fallback={<JunctionSymbol />} />} onAdd={drop.addAtCenter}>
+          Pipeline Junction
+        </PaletteItem>
+        <PaletteItem payload={{ kind: 'pole' }} icon={<GameIcon id={`Desc_PowerPoleMk${unlocked.poleTier}_C`} size={22} fallback={<PoleSymbol />} />} onAdd={drop.addAtCenter}>
+          Power Pole Mk.{unlocked.poleTier}
+        </PaletteItem>
         <h3>Ports</h3>
         {unlocked.transports.flatMap((t) =>
           (['in', 'out'] as const).map((dir) => (
@@ -554,12 +572,17 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           </span>
           <span className="ne-stat">{graph.generatedAt ? 'Proposed' : 'Edited'}</span>
         </div>
-        {(stale || short || !!graph.notes?.length) && (
+        {(stale || short || view.clashes.size > 0 || !!graph.notes?.length) && (
           <ul className="ne-notes">
             {stale && <li>Links on the factory map changed since this was proposed. Propose layout again to update the ports.</li>}
             {short && (
               <li>
                 Machines draw {fmt(stats.mw)} MW but {fmt(stats.powerIn)} MW comes in. Connect power on the factory map.
+              </li>
+            )}
+            {view.clashes.size > 0 && (
+              <li>
+                {view.clashes.size} line{view.clashes.size === 1 ? '' : 's'} (dashed red) found no grid route of {view.clashes.size === 1 ? 'its' : 'their'} own and share grid space. Move blocks apart to make room.
               </li>
             )}
             {graph.notes?.map((n) => <li key={n}>{n}</li>)}
@@ -578,9 +601,12 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          connectionMode={ConnectionMode.Loose}
+          isValidConnection={(c) => !!check(c as Connection)}
           onPaneClick={() => setSel(null)}
           defaultEdgeOptions={{ type: 'belt' }}
         >
+          <LineMarkers />
           <Background gap={G} />
           <Controls />
           <MiniMap pannable zoomable className="ne-minimap" />
@@ -596,13 +622,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           <PortInspector data={selNode.data} onChange={patchNode} onDelete={removeSelected} />
         ) : selNode ? (
           <section>
-            <h3>{selNode.data.kind === 'splitter' ? 'Splitter' : 'Merger'}</h3>
-            <p className="ne-help">
-              {selNode.data.kind === 'splitter'
-                ? 'One belt in at the back, up to three out: ahead, left and right.'
-                : 'Up to three belts in: back, left and right. One out ahead.'}{' '}
-              Its connection points turn to face the belts on their own.
-            </p>
+            <h3>{jointInfo[selNode.data.kind]?.[0] ?? 'Block'}</h3>
+            <p className="ne-help">{jointInfo[selNode.data.kind]?.[1]}</p>
             <div className="ne-actions">
               <button type="button" className="danger" onClick={removeSelected}>
                 Delete
@@ -612,13 +633,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
         ) : selEdge ? (
           <BeltInspector
             data={selEdge.data ?? {}}
-            onChange={(data) => {
-              const fluid = !!data.item && itemsById.get(data.item)?.form !== 'solid'
-              const t = data.perMin ? beltTierFor(data.perMin, fluid ? unlocked.pipeTier : maxBeltTier, fluid) : undefined
-              setGraph((g) =>
-                edited({ ...g, edges: g.edges.map((e) => (e.id === selEdge.id ? { ...e, data: { ...data, tier: t?.tier, overCapacity: t?.over } } : e)) }),
-              )
-            }}
+            load={view.loads.get(selEdge.id)}
+            onChange={(data) => setGraph((g) => edited({ ...g, edges: g.edges.map((e) => (e.id === selEdge.id ? { ...e, data } : e)) }))}
             onDelete={removeSelected}
           />
         ) : (
@@ -626,14 +642,17 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             <h3>{solved.plan.name}</h3>
             <p className="ne-help">
               {graph.generatedAt
-                ? 'Proposed from the plan: one floor per production type with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, and a line split in two wherever one belt of your best tier can\'t carry it. Belts run along the grid and never share a grid line.'
+                ? 'Proposed from the plan: one floor per production type with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, and a line split in two wherever one belt of your best tier can\'t carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. Belts and pipes run along the grid and never share a grid line.'
                 : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan.'}
             </p>
             <p className="ne-help">
               Move, add or remove anything; it changes this drawing, not the plan. To change what the outpost makes or
               imports, edit the plan or the factory map.
             </p>
-            <p className="ne-help">Drag blocks in from the left, or click them. Connect an output (bottom or right) to an input (top or left).</p>
+            <p className="ne-help">
+              Drag blocks in from the left, or click them. Drag from any free connection point to another of the same colour: orange for belts,
+              blue for pipes, yellow for power. Each point takes one line, and belts and pipes always run from an output to an input.
+            </p>
           </section>
         )}
       </aside>
@@ -641,23 +660,54 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   )
 }
 
+/** What the inspector says about joints and poles. */
+const jointInfo: Partial<Record<MicroNode['data']['kind'], [string, string]>> = {
+  splitter: ['Splitter', 'One belt in at the back, up to three out: ahead, left and right. Its connection points turn to face the belts on their own.'],
+  merger: ['Merger', 'Up to three belts in: back, left and right. One out ahead. Its connection points turn to face the belts on their own.'],
+  junction: ['Pipeline Junction', 'Four pipe connections, each one in or out: it splits a pipe, joins pipes, or both. Fluids never go through splitters or mergers.'],
+  pole: ['Power Pole', 'Takes as many power lines as the game allows for its Mk (4, 7 or 10), one per connection point. Power lines run straight, not along the grid.'],
+}
+
 /**
- * Belt routes on the grid and which way joints and ports face, for the whole floor plan.
- * Worked out again whenever blocks or belts change, but not while a block is being dragged:
- * the belts of a dragged block follow it with a plain route until it is dropped.
+ * Line routes on the grid, which way joints and ports face, what every line carries, and which
+ * connection points are taken, for the whole floor plan.
+ * Routes are worked out again whenever blocks or lines change, but not while a block is being dragged:
+ * the lines of a dragged block follow it with a plain route until it is dropped.
  */
-function useFloorPlanView(graph: MicroGraph | undefined): FloorPlanView {
+function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): FloorPlanView {
   const dragKey = graph?.nodes.flatMap((n) => (n.dragging ? [n.id] : [])).join() ?? ''
   const key = graph
     ? JSON.stringify([
-        graph.nodes.map((n) => [n.id, n.type, n.dragging ? 'drag' : [n.position.x, n.position.y], n.data.kind === 'machine' ? [n.data.recipe, n.data.fuel, n.data.building] : n.data.kind === 'port' ? n.data.direction : 0]),
+        graph.nodes.map((n) => [n.id, n.type, n.dragging ? 'drag' : [n.position.x, n.position.y], n.data.kind === 'machine' ? [n.data.recipe, n.data.fuel, n.data.building] : n.data.kind === 'port' ? [n.data.direction, n.data.transport, n.data.item] : n.data.kind === 'pole' ? n.data.tier : 0]),
         graph.edges.map((e) => [e.id, e.source, e.sourceHandle, e.target, e.targetHandle]),
       ])
     : ''
   // Keyed on the shape of the plan, not on every drag frame.
   const routed = useMemo(() => (graph ? routeFloorPlan(graph.nodes, graph.edges) : undefined), [key]) // eslint-disable-line react-hooks/exhaustive-deps
+  const nodes = graph?.nodes
+  const edges = graph?.edges
+  const beltTier = graph?.maxBeltTier ?? 6
+  const pipes = graph?.maxPipeTier ?? pipeTier
+  const loads = useMemo(() => {
+    const out = new Map<string, LineLoad>()
+    if (!nodes || !edges) return out
+    for (const [id, f] of inferFlows(nodes, edges)) {
+      const fluid = f.medium === 'fluid'
+      const t = f.perMin !== undefined && f.medium !== 'power' ? beltTierFor(f.perMin, fluid ? pipes : beltTier, fluid) : undefined
+      out.set(id, { ...f, tier: t?.tier, over: t?.over })
+    }
+    return out
+  }, [nodes, edges, beltTier, pipes])
+  const used = useMemo(() => new Set((edges ?? []).flatMap((e) => [`${e.source}:${e.sourceHandle}`, `${e.target}:${e.targetHandle}`])), [edges])
   return useMemo(
-    () => ({ routes: routed?.routes ?? new Map(), orients: routed?.orients ?? new Map(), dragging: new Set(dragKey ? dragKey.split(',') : []) }),
-    [routed, dragKey],
+    () => ({
+      routes: routed?.routes ?? new Map(),
+      orients: routed?.orients ?? new Map(),
+      clashes: new Set(routed?.clashes ?? []),
+      dragging: new Set(dragKey ? dragKey.split(',') : []),
+      loads,
+      used,
+    }),
+    [routed, dragKey, loads, used],
   )
 }

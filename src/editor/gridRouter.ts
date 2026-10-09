@@ -1,9 +1,9 @@
-// Routes floor-plan belts along the grid (grid.ts) so they stay readable: belts run on grid
+// Routes floor-plan belts and pipes along the grid (grid.ts) so they stay readable: belts run on grid
 // lines, no two belts share a grid edge, a belt only turns where no other belt is, and two
 // belts may only meet where they cross straight through each other (drawn with a hop).
 // Each belt is an A* search over grid vertices that avoids blocks and the belts routed
 // before it, preferring few turns and few crossings. Short belts (manifolds) go first.
-import { cellOf, G, handleCell, isBlock, orientAll, SIZE, type Cell, type Orient, type Side } from './grid'
+import { cellOf, edgeMedium, G, handleCell, isBlock, orientAll, SIZE, type Cell, type Orient, type Side } from './grid'
 import type { BeltEdge, MicroNode } from './model'
 import type { Point } from './router'
 
@@ -74,7 +74,9 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
     return idx(x, y) * 2 + (d === 0 ? 0 : 1)
   }
 
+  // Power lines are straight wires between poles and machines, so they skip the grid.
   const ends = edges.flatMap((e) => {
+    if (edgeMedium(e, byId) === 'power') return []
     const s = byId.get(e.source)
     const t = byId.get(e.target)
     if (!s || !t) return []

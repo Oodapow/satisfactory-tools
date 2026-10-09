@@ -7,6 +7,7 @@ import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { IconSelect } from '../ui/IconSelect'
 import { POWER } from '../data/icons'
+import type { LineLoad } from './floorPlanView'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData, type PowerLine } from './model'
 import { editorPath } from './route'
 import { useUnlocked } from './unlocked'
@@ -428,26 +429,56 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
   )
 }
 
-export function BeltInspector({ data, onChange, onDelete }: { data: BeltData; onChange: (d: BeltData) => void; onDelete: () => void }) {
+export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltData; load?: LineLoad; onChange: (d: BeltData) => void; onDelete: () => void }) {
+  const medium = load?.medium ?? data.medium ?? 'solid'
+  const name = medium === 'fluid' ? 'Pipe' : medium === 'power' ? 'Power line' : 'Belt'
+  if (medium === 'power')
+    return (
+      <section>
+        <h3>{name}</h3>
+        <p className="ne-help">Carries power between a pole and what it feeds. Power lines run straight, not along the grid.</p>
+        <div className="ne-actions">
+          <button type="button" className="danger" onClick={onDelete}>
+            Delete
+          </button>
+        </div>
+      </section>
+    )
   return (
     <section>
-      <h3>Belt</h3>
+      <h3>{name}</h3>
+      <p className="ne-help">
+        {data.manual
+          ? 'Item and rate set by hand.'
+          : 'Item and rate are worked out from what this connects: the machine, port or joint that feeds it and what takes from it. Change either to set it by hand.'}
+      </p>
       <label className="ne-field">
         Item
-        <ItemSelect value={data.item} onChange={(item) => onChange({ ...data, item })} />
+        <ItemSelect value={load?.item} onChange={(item) => onChange({ ...data, manual: true, item, perMin: load?.perMin })} />
       </label>
       <label className="ne-field">
         Per minute
-        <input type="number" min={0} value={data.perMin ?? 0} onChange={(e) => onChange({ ...data, perMin: num(e.target.value) })} />
+        <input
+          type="number"
+          min={0}
+          value={load?.perMin !== undefined ? Math.round(load.perMin * 100) / 100 : ''}
+          placeholder="Unknown"
+          onChange={(e) => onChange({ ...data, manual: true, item: load?.item, perMin: num(e.target.value) })}
+        />
       </label>
-      {data.tier && (
-        <p className={data.overCapacity ? 'ne-warn' : 'ne-help'}>
-          {data.overCapacity
-            ? `Over capacity: more than a Mk.${data.tier} ${data.item && itemsById.get(data.item)?.form !== 'solid' ? 'pipe' : 'belt'} carries. Split it or raise your best belt.`
-            : `Fits on Mk.${data.tier}.`}
+      {load?.tier && (
+        <p className={load.over ? 'ne-warn' : 'ne-help'}>
+          {load.over
+            ? `Over capacity: more than a Mk.${load.tier} ${medium === 'fluid' ? 'pipe' : 'belt'} carries. Split it or raise your best ${medium === 'fluid' ? 'pipe' : 'belt'}.`
+            : `Fits on a Mk.${load.tier} ${medium === 'fluid' ? 'pipeline' : 'belt'}.`}
         </p>
       )}
       <div className="ne-actions">
+        {data.manual && (
+          <button type="button" className="ghost" onClick={() => onChange({ ...data, manual: undefined })}>
+            Work it out again
+          </button>
+        )}
         <button type="button" className="danger" onClick={onDelete}>
           Delete
         </button>

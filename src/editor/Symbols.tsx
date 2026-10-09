@@ -33,3 +33,23 @@ export function LiftSymbol({ size = 16, down = false }: { size?: number; down?: 
     </svg>
   )
 }
+
+/** Pipeline Junction: four pipe connections, each in or out. */
+export function JunctionSymbol({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden>
+      <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M1 12h6M17 12h6M12 1v6M12 17v6" stroke="currentColor" strokeWidth="3" />
+    </svg>
+  )
+}
+
+/** Power pole: a mast with a lightning bolt. */
+export function PoleSymbol({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden>
+      <path d="M12 6v17M7 23h10" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M13 1l-4 6h4l-2 5 5-7h-4z" fill="currentColor" />
+    </svg>
+  )
+}

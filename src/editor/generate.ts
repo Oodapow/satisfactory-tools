@@ -7,11 +7,13 @@
 // the left, through a gutter where belts climb between floors. Ports sit in a column left of
 // the gutter. Where a source feeds several consumers it gets splitters right after it; where a
 // consumer takes from several sources it gets mergers right before it. All belts are routed
-// later, on the grid (gridRouter.ts).
+// later, on the grid (gridRouter.ts). Fluids get pipes and pipeline junctions instead of belts,
+// splitters and mergers. Power runs on straight power lines: a pole right of every machine,
+// chained along each line, from the power ports to the generators and machines.
 import { itemsById } from '../data'
-import { G, inHandle, outHandle, SIZE, sideDir, SPREAD, type Cell, type Side } from './grid'
+import { anchors, G, inHandle, outHandle, poleHandle, SIZE, sideDir, SPREAD, type Cell, type Side } from './grid'
 import { fmt, planLayout, type End, type LayoutInput, type Line } from './layout'
-import { beltTierFor, type BeltEdge, type MicroGraph, type MicroNode } from './model'
+import { beltTierFor, LAYOUT_VERSION, type BeltEdge, type MicroGraph, type MicroNode } from './model'
 
 export { fmt }
 export type { PortLink } from './layout'
@@ -29,7 +31,7 @@ const isFluid = (item: string) => itemsById.get(item)?.form !== 'solid'
 type Endpoint = { node: string; handle: string; at: Cell; side: Side; floor: number; joint?: Cell }
 
 export function proposeLayout(input: ProposalInput): MicroGraph {
-  const { maxBeltTier, maxPipeTier = 2 } = input
+  const { maxBeltTier, maxPipeTier = 2, maxPoleTier = 1 } = input
   const plan = planLayout(input)
   const nodes: MicroNode[] = []
   const edges: BeltEdge[] = []
@@ -38,7 +40,7 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   const id = (p: string) => `${p}${++seq}`
   const px = (c: Cell) => ({ x: c.x * G, y: c.y * G })
 
-  const block = (type: 'machine' | 'splitter' | 'merger' | 'port', at: Cell, data: MicroNode['data'], floor: number) => {
+  const block = (type: 'machine' | 'splitter' | 'merger' | 'junction' | 'pole' | 'port', at: Cell, data: MicroNode['data'], floor: number) => {
     const nid = id(type[0])
     nodes.push({ id: nid, type, position: px(at), data })
     floorOf.set(nid, floor)
@@ -55,9 +57,11 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
       sourceHandle: from.handle,
       target: to.node,
       targetHandle: to.handle,
-      data: { item, perMin: rate, tier, overCapacity: over, lift: lift || undefined },
+      data: { medium: fluid ? 'fluid' : 'solid', item, perMin: rate, tier, overCapacity: over, lift: lift || undefined },
     })
   }
+  /** A fluid splits and joins at pipeline junctions, a solid at splitters and mergers. */
+  const joint = (item: string, kind: 'splitter' | 'merger') => (isFluid(item) ? 'junction' : kind)
 
   // How many belts meet at each end, to leave room for the splitters and mergers there.
   const key = (e: End) => ('port' in e ? `p:${e.port}` : `l:${e.line}:${e.slot}`)
@@ -80,6 +84,8 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   // Joints for manifold ends sit in the gutter's right edge, in line with their row; belts climb left of them.
   const gutter = 6 + ROW * maxLineJoints + Math.min(80, plan.flows.length + items.size)
   const ends = new Map<string, Endpoint>()
+  /** What needs a power line, in chain order, with where its pole goes. */
+  const powered: { floor: number; clients: { node: string; handle: string; pole: Cell }[] }[] = []
   let y = 0
   const lineHeight = (l: Line) => 2 + ROW * l.ingredients.length + SIZE.machine.h + (l.products.length ? ROW * l.products.length + 2 : 2) + 1
   for (const floor of [...plan.floors].reverse()) {
@@ -119,10 +125,11 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     const inX = SPREAD[a] ?? []
     const outX = SPREAD[b] ?? []
     const machines = Array.from({ length: l.machines }, (_, i) =>
-      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor }, floor),
+      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor, ...(l.boost !== 1 ? { boost: l.boost } : {}) }, floor),
     )
     const mx = (i: number) => margin + i * MACHINE_PITCH
     const n = l.machines
+    powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + SIZE.machine.w, y: mt + 1 } })) })
 
     // Input manifolds: a splitter above each machine but the last, flowing right.
     l.ingredients.forEach((ing, j) => {
@@ -132,7 +139,8 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
         ends.set(`il:${l.id}:${j}`, { node: machines[0], handle: inHandle(j), at: { x: mx(0) + inX[j], y: mt }, side: 't', floor, joint: { x: -3, y: row } })
         return
       }
-      const splitters = machines.slice(0, -1).map((_, i) => block('splitter', { x: mx(i) + inX[j] - 1, y: row - 1 }, { kind: 'splitter', floor }, floor))
+      const kind = joint(ing.item, 'splitter')
+      const splitters = machines.slice(0, -1).map((_, i) => block(kind, { x: mx(i) + inX[j] - 1, y: row - 1 }, { kind, floor }, floor))
       splitters.forEach((s, i) => {
         edge({ node: s, handle: 'down' }, { node: machines[i], handle: inHandle(j) }, ing.item, per)
         const next = splitters[i + 1] ? { node: splitters[i + 1], handle: 'in' } : { node: machines[i + 1], handle: inHandle(j) }
@@ -149,7 +157,8 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
         ends.set(`ol:${l.id}:${p}`, { node: machines[0], handle: outHandle(p), at: { x: mx(0) + outX[p], y: mb }, side: 'b', floor, joint: { x: -3, y: row } })
         return
       }
-      const mergers = machines.slice(0, -1).map((_, i) => block('merger', { x: mx(i) + outX[p] - 1, y: row - 1 }, { kind: 'merger', floor }, floor))
+      const kind = joint(prod.item, 'merger')
+      const mergers = machines.slice(0, -1).map((_, i) => block(kind, { x: mx(i) + outX[p] - 1, y: row - 1 }, { kind, floor }, floor))
       edge({ node: machines[n - 1], handle: outHandle(p) }, { node: mergers[n - 2], handle: 'in' }, prod.item, per)
       mergers.forEach((m, i) => {
         edge({ node: machines[i], handle: outHandle(p) }, { node: m, handle: 'up' }, prod.item, per)
@@ -160,6 +169,8 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   }
 
   // 2. Ports in a column left of the gutter, below the first floor's level: inputs, then outputs.
+  // Power ports and extractors get a pole left of the column.
+  const portPower: { node: string; handle: string; pole: Cell }[] = []
   const portJoints = Math.max(0, ...plan.ports.map((p) => jointsFor(fan.get(`${p.direction === 'in' ? 'o' : 'i'}p:${p.id}`) ?? 0)))
   const portX = -gutter - PORT_GAP - ROW * portJoints - SIZE.port.w
   let portY = y
@@ -168,6 +179,9 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     const at = { x: portX, y: portY }
     const nid = block('port', at, { kind: 'port', ...data }, 0)
     const handle = p.direction === 'in' ? 'out' : 'in'
+    const pole = { x: portX - 5, y: portY + 1 }
+    if (p.transport === 'power') portPower.push({ node: nid, handle, pole })
+    else if (p.transport === 'resource') portPower.push({ node: nid, handle: 'power', pole })
     ends.set(`${p.direction === 'in' ? 'o' : 'i'}p:${pid}`, { node: nid, handle, at: { x: portX + SIZE.port.w, y: portY + SIZE.port.h / 2 }, side: 'r', floor: 0 })
     portY += SIZE.port.h + 2 + ROW * jointsFor(fan.get(`${p.direction === 'in' ? 'o' : 'i'}p:${pid}`) ?? 0)
   }
@@ -193,18 +207,19 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
       ;(k[0] === 'o' ? outs : ins).set(k, [{ node: e.node, handle: e.handle }])
       continue
     }
-    const kind = k[0] === 'o' ? 'splitter' : 'merger'
+    const splits = k[0] === 'o'
+    const kind = joint(item, splits ? 'splitter' : 'merger')
     const joints = Array.from({ length: jointsFor(belts) }, (_, i) => block(kind, near(e, i), { kind, floor: e.floor }, e.floor))
     const handles: { node: string; handle: string }[] = []
     joints.forEach((j, i) => {
       const last = i === joints.length - 1
-      for (const h of last ? (kind === 'splitter' ? ['out', 'up', 'down'] : ['in', 'up', 'down']) : ['up', 'down']) handles.push({ node: j, handle: h })
+      for (const h of last ? (splits ? ['out', 'up', 'down'] : ['in', 'up', 'down']) : ['up', 'down']) handles.push({ node: j, handle: h })
     })
     // Rates along the chain: what still has to pass each joint.
     let left = total
     joints.forEach((j, i) => {
-      const prev = i === 0 ? { node: e.node, handle: e.handle } : { node: joints[i - 1], handle: kind === 'splitter' ? 'out' : 'in' }
-      if (kind === 'splitter') edge(prev, { node: j, handle: 'in' }, item, left)
+      const prev = i === 0 ? { node: e.node, handle: e.handle } : { node: joints[i - 1], handle: splits ? 'out' : 'in' }
+      if (splits) edge(prev, { node: j, handle: 'in' }, item, left)
       else edge({ node: j, handle: 'out' }, prev, item, left)
       left -= flows.slice(i * 2, i * 2 + 2).reduce((t, f) => t + f.perMin, 0)
     })
@@ -223,9 +238,68 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     if (a && b) edge(a, b, f.item, f.perMin)
   }
 
+  // 4. Power: a pole beside each client (power port, extractor, machine). The ports' poles chain down
+  // their column, then a riser climbs through every line's first pole, bottom floor first, and each
+  // line's poles chain along it. No pole takes more than four lines, so even a Mk.1 pole does.
+  const wire = (pole: { node: string; used: number }, to: { node: string; handle: string }) =>
+    edges.push({ id: id('w'), type: 'belt', source: pole.node, sourceHandle: poleHandle(pole.used++), target: to.node, targetHandle: to.handle, data: { medium: 'power' } })
+  const pole = (c: { node: string; handle: string; pole: Cell }, floor: number, from?: { node: string; used: number }) => {
+    const p = { node: block('pole', c.pole, { kind: 'pole', floor, tier: maxPoleTier }, floor), used: 0 }
+    if (from) wire(from, { node: p.node, handle: poleHandle(p.used++) })
+    wire(p, c)
+    return p
+  }
+  let riser: { node: string; used: number } | undefined
+  for (const c of portPower) riser = pole(c, 0, riser)
+  for (const seg of [...powered].sort((a, b) => b.clients[0].pole.y - a.clients[0].pole.y)) {
+    if (!seg.clients.length) continue
+    riser = pole(seg.clients[0], seg.floor, riser)
+    let prev = riser
+    for (const c of seg.clients.slice(1)) prev = pole(c, seg.floor, prev)
+  }
+  nearestHandles(nodes, edges)
+
   const notes = [...plan.notes]
   const lines = plan.floors.reduce((n, f) => n + f.lines.length, 0)
   const steps = new Set(plan.floors.flatMap((f) => f.lines.map((l) => l.recipe + l.fuel))).size
   if (lines > steps) notes.push(`Some steps are split into parallel lines because one belt can't carry them (best belt Mk.${maxBeltTier}).`)
-  return { nodes, edges, maxBeltTier, maxPipeTier, generatedAt: new Date().toISOString(), notes }
+  return { nodes, edges, maxBeltTier, maxPipeTier, version: LAYOUT_VERSION, generatedAt: new Date().toISOString(), notes }
+}
+
+/** Give each pole's power lines the connection points round the pole that face them, so wires don't cross over the pole. */
+function nearestHandles(nodes: MicroNode[], edges: BeltEdge[]) {
+  const byId = new Map(nodes.map((n) => [n.id, n]))
+  const point = (id: string, handle: string | null | undefined) => {
+    const n = byId.get(id)!
+    // Another pole's points are being reassigned too: aim at its middle.
+    const a = n.type === 'pole' ? { dx: SIZE.pole.w / 2, dy: SIZE.pole.h / 2 } : anchors(n.type as 'machine', n.data)[handle ?? '']
+    return { x: n.position.x / G + (a?.dx ?? 0), y: n.position.y / G + (a?.dy ?? 0) }
+  }
+  for (const pole of nodes) {
+    if (pole.data.kind !== 'pole') continue
+    const a = anchors('pole', pole.data)
+    const free = new Set(Object.keys(a))
+    const c = { x: pole.position.x / G + SIZE.pole.w / 2, y: pole.position.y / G + SIZE.pole.h / 2 }
+    const mine = edges
+      .filter((e) => e.source === pole.id || e.target === pole.id)
+      .map((e) => {
+        const far = e.source === pole.id ? point(e.target, e.targetHandle) : point(e.source, e.sourceHandle)
+        return { e, angle: Math.atan2(far.y - c.y, far.x - c.x) }
+      })
+    for (const { e, angle } of mine) {
+      let best = ''
+      let bestD = Infinity
+      for (const h of free) {
+        const t = Math.atan2(a[h].dy - SIZE.pole.h / 2, a[h].dx - SIZE.pole.w / 2) - angle
+        const d = Math.abs(Math.atan2(Math.sin(t), Math.cos(t)))
+        if (d < bestD) {
+          best = h
+          bestD = d
+        }
+      }
+      free.delete(best)
+      if (e.source === pole.id) e.sourceHandle = best
+      else e.targetHandle = best
+    }
+  }
 }
