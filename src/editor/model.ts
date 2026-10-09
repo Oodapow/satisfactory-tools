@@ -55,8 +55,10 @@ export type MachineData = {
   count: number
   floor: number
 }
-export type SplitterData = { kind: 'splitter'; floor: number }
-export type MergerData = { kind: 'merger'; floor: number }
+/** Which way items flow out: a splitter takes in on the opposite side, a merger sends out on this side. */
+export type Facing = 'left' | 'right'
+export type SplitterData = { kind: 'splitter'; floor: number; facing?: Facing }
+export type MergerData = { kind: 'merger'; floor: number; facing?: Facing }
 export type PortData = {
   kind: 'port'
   direction: 'in' | 'out'
@@ -84,6 +86,10 @@ export type BeltData = {
   tier?: number
   /** Rate is above what the best allowed belt can carry. */
   overCapacity?: boolean
+  /** Floors climbed by a conveyor lift on the way (negative goes down). */
+  lift?: number
+  /** Shared vertical lane the belt runs along, so belts between floors stay out of the floors. */
+  laneX?: number
 }
 export type BeltEdge = Edge<BeltData>
 

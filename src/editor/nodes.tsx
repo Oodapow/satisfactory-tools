@@ -1,12 +1,16 @@
-// Custom React Flow nodes and edges for both editor levels. All edges are straight lines.
+// Custom React Flow nodes and edges for both editor levels. Edges are drawn like a
+// schematic: orthogonal runs with 90° corners and hops where they cross (see router.ts).
+// Ports are hollow circles while free and filled once something connects to them.
+import { useMemo } from 'react'
 import {
   BaseEdge,
   EdgeLabelRenderer,
-  getStraightPath,
   Handle,
   Position,
   useEdges,
+  useNodeConnections,
   type EdgeProps,
+  type HandleType,
   type NodeProps,
 } from '@xyflow/react'
 import { buildingsById, itemName, recipesById } from '../data'
@@ -14,8 +18,13 @@ import { exportsOf } from '../plan/network'
 import { fmt } from './generate'
 import { GameIcon } from './GameIcon'
 import { POWER } from './icons'
+import { labelPoints, route, useRoutedPath } from './router'
+import { LiftSymbol, MergerSymbol, SplitterSymbol } from './Symbols'
 import {
   transportById,
+  type Facing,
+  type MergerData,
+  type SplitterData,
   type BeltEdge,
   type FloorData,
   type LinkEdge,
@@ -29,6 +38,12 @@ const transportIcon = (t: string) => (t === 'resource' ? 'Desc_MinerMk1_C' : (tr
 const transportLabel = (t: string) => (t === 'resource' ? 'Resource node' : (transportById.get(t as never)?.label ?? t))
 
 type Chip = { key: string; icon: string; text: string }
+
+/** A connection point: hollow while free, filled once connected. */
+function Port({ type, position, id }: { type: HandleType; position: Position; id?: string }) {
+  const connected = useNodeConnections({ handleType: type, handleId: id }).length > 0
+  return <Handle type={type} position={position} id={id} className={`ne-handle ne-handle-${type}${connected ? ' connected' : ''}`} />
+}
 
 // ---------- Macro ----------
 
@@ -50,7 +65,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
 
   return (
     <div className={`ne-outpost${selected ? ' selected' : ''}`}>
-      <Handle type="target" position={Position.Left} />
+      <Port type="target" position={Position.Left} />
       <div className="ne-outpost-head">
         <GameIcon id={goal?.kind === 'item' ? goal.item : goal?.kind === 'power' ? POWER : 'Desc_TradingPost_C'} size={32} />
         <div>
@@ -70,7 +85,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
         <div className="ne-short">Short: {short.map((f) => `${fmt(f.shortfall)} ${itemName(f.item)}`).join(', ')}</div>
       )}
       <div className="ne-hint">Double-click for the floor plan</div>
-      <Handle type="source" position={Position.Right} />
+      <Port type="source" position={Position.Right} />
     </div>
   )
 }
@@ -92,15 +107,17 @@ function Row({ label, items }: { label: string; items: Chip[] }) {
 }
 
 export function LinkLine(props: EdgeProps<LinkEdge>) {
-  const { id, source, target, sourceX, sourceY, targetX, targetY, data, selected, markerEnd } = props
-  // Several links between the same two outposts are drawn side by side instead of on top of each other.
+  const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
+  // Several links between the same two outposts run side by side instead of on top of each other.
   const siblings = useEdges().filter((e) => (e.source === source && e.target === target) || (e.source === target && e.target === source))
   const i = siblings.findIndex((e) => e.id === id)
-  const shift = (i - (siblings.length - 1) / 2) * 28
-  const len = Math.hypot(targetX - sourceX, targetY - sourceY) || 1
-  const ox = (-(targetY - sourceY) / len) * shift
-  const oy = ((targetX - sourceX) / len) * shift
-  const [path, x, y] = getStraightPath({ sourceX: sourceX + ox, sourceY: sourceY + oy, targetX: targetX + ox, targetY: targetY + oy })
+  const shift = (i - (siblings.length - 1) / 2) * 26
+  const pts = useMemo(
+    () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition, { shift }),
+    [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition, shift],
+  )
+  const path = useRoutedPath(id, pts)
+  const { x, y } = labelPoints(pts).label
   const t = data?.transport ?? 'belt'
   return (
     <>
@@ -131,7 +148,7 @@ export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
   const output = recipe?.products[0]?.item ?? (d.fuel ? POWER : undefined)
   return (
     <div className={`ne-machine${selected ? ' selected' : ''}`}>
-      <Handle type="target" position={Position.Top} id="in" />
+      <Port type="target" position={Position.Top} id="in" />
       <GameIcon id={d.building} size={30} />
       <div className="ne-machine-text">
         <strong>
@@ -143,29 +160,38 @@ export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
         </span>
       </div>
       {output && <GameIcon id={output} size={22} />}
-      <Handle type="source" position={Position.Bottom} id="out" />
+      <Port type="source" position={Position.Bottom} id="out" />
     </div>
   )
 }
 
-export function SplitterBlock({ selected }: NodeProps<MicroNode>) {
+const sides = (facing: Facing = 'right') =>
+  facing === 'right' ? { out: Position.Right, back: Position.Left } : { out: Position.Left, back: Position.Right }
+
+/** Splitter: in from the back, out ahead, up and down. */
+export function SplitterBlock({ data, selected }: NodeProps<MicroNode>) {
+  const { out, back } = sides((data as SplitterData).facing)
   return (
     <div className={`ne-joint splitter${selected ? ' selected' : ''}`} title="Conveyor Splitter">
-      <Handle type="target" position={Position.Left} id="in" />
-      <GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={22} />
-      <Handle type="source" position={Position.Right} id="out" />
-      <Handle type="source" position={Position.Bottom} id="down" />
+      <Port type="target" position={back} id="in" />
+      <SplitterSymbol flip={out === Position.Left} />
+      <Port type="source" position={out} id="out" />
+      <Port type="source" position={Position.Top} id="up" />
+      <Port type="source" position={Position.Bottom} id="down" />
     </div>
   )
 }
 
-export function MergerBlock({ selected }: NodeProps<MicroNode>) {
+/** Merger: in from the back, top and bottom, out ahead. */
+export function MergerBlock({ data, selected }: NodeProps<MicroNode>) {
+  const { out, back } = sides((data as MergerData).facing)
   return (
     <div className={`ne-joint merger${selected ? ' selected' : ''}`} title="Conveyor Merger">
-      <Handle type="target" position={Position.Left} id="in" />
-      <Handle type="target" position={Position.Top} id="up" />
-      <GameIcon id="Desc_ConveyorAttachmentMerger_C" size={22} />
-      <Handle type="source" position={Position.Right} id="out" />
+      <Port type="target" position={back} id="in" />
+      <Port type="target" position={Position.Top} id="up" />
+      <Port type="target" position={Position.Bottom} id="down" />
+      <MergerSymbol flip={out === Position.Left} />
+      <Port type="source" position={out} id="out" />
     </div>
   )
 }
@@ -176,7 +202,7 @@ export function PortBlock({ data, selected }: NodeProps<MicroNode>) {
   const via = d.transport === 'resource' ? (d.extractor ?? 'Desc_MinerMk1_C') : transportIcon(d.transport)
   return (
     <div className={`ne-port ${d.direction}${selected ? ' selected' : ''}`}>
-      {!isIn && <Handle type="target" position={Position.Left} id="in" />}
+      {!isIn && <Port type="target" position={Position.Left} id="in" />}
       <GameIcon id={via} size={26} title={transportLabel(d.transport)} />
       <div>
         <div className="ne-sub">
@@ -194,7 +220,7 @@ export function PortBlock({ data, selected }: NodeProps<MicroNode>) {
           )}
         </strong>
       </div>
-      {isIn && <Handle type="source" position={Position.Right} id="out" />}
+      {isIn && <Port type="source" position={Position.Right} id="out" />}
     </div>
   )
 }
@@ -209,24 +235,41 @@ export function FloorBand({ data }: NodeProps<MicroNode>) {
 }
 
 export function BeltLine(props: EdgeProps<BeltEdge>) {
-  const { sourceX, sourceY, targetX, targetY, data, selected, markerEnd } = props
-  const [path, x, y] = getStraightPath({ sourceX, sourceY, targetX, targetY })
+  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
+  const laneX = data?.laneX
+  const pts = useMemo(
+    () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition, { laneX }),
+    [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition, laneX],
+  )
+  const path = useRoutedPath(id, pts)
+  const { label, vertical } = labelPoints(pts)
+  const lift = data?.lift ?? 0
   return (
     <>
       <BaseEdge path={path} markerEnd={markerEnd} className={`ne-belt${data?.overCapacity ? ' over' : ''}${selected ? ' selected' : ''}`} />
-      {data?.perMin !== undefined && (
-        <EdgeLabelRenderer>
+      <EdgeLabelRenderer>
+        {data?.perMin !== undefined && (
           <div
             className={`ne-belt-label nodrag nopan${data.overCapacity ? ' over' : ''}`}
-            style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}
+            style={{ transform: `translate(-50%,-50%) translate(${label.x}px,${label.y}px)` }}
             title={`${data.item ? itemName(data.item) : 'Unassigned'} · ${fmt(data.perMin)}/min${data.tier ? ` · Mk.${data.tier}` : ''}`}
           >
             <GameIcon id={data.item} size={12} />
             {fmt(data.perMin)}
             {data.tier ? <em>Mk{data.tier}</em> : null}
           </div>
-        </EdgeLabelRenderer>
-      )}
+        )}
+        {lift !== 0 && vertical && (
+          <div
+            className="ne-lift nodrag nopan"
+            style={{ transform: `translate(-50%,-50%) translate(${vertical.x}px,${vertical.y + 22}px)` }}
+            title={`Conveyor lift, ${Math.abs(lift)} floor${Math.abs(lift) === 1 ? '' : 's'} ${lift > 0 ? 'up' : 'down'}`}
+          >
+            <LiftSymbol down={lift < 0} />
+            {Math.abs(lift)}
+          </div>
+        )}
+      </EdgeLabelRenderer>
     </>
   )
 }

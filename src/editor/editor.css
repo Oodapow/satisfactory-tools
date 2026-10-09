@@ -100,3 +100,14 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
   .ne-inspector { order: 3; border-left: 0; border-top: 1px solid var(--border); }
   .ne-notes { left: 10px; right: 10px; bottom: 120px; }
 }
+
+/* Ports: hollow while free, filled once connected. */
+.react-flow__handle.ne-handle { width: 10px; height: 10px; background: var(--surface); border: 2px solid var(--muted); }
+.react-flow__handle.ne-handle.connected { background: var(--accent); border-color: var(--accent); }
+.react-flow__handle.ne-handle-source.connected { background: #20a39e; border-color: #20a39e; }
+.react-flow__handle.ne-handle:hover { transform-origin: center; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
+.ne-joint { color: var(--text); width: 40px; height: 40px; }
+.ne-lift { position: absolute; display: flex; gap: 2px; align-items: center; background: var(--surface); border: 1px solid #6c5ce7; color: #6c5ce7; border-radius: 6px; padding: 1px 4px 1px 2px; font-size: .65rem; font-weight: 700; pointer-events: all; }
+.ne-palette-item svg { flex: none; color: var(--text); }
+.ne-joint.splitter { color: #2b8fd6; }
+.ne-joint.merger { color: #d35400; }

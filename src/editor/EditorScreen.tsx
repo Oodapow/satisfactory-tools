@@ -33,6 +33,8 @@ import {
   type EditorLayout,
   type LinkEdge,
   type MachineData,
+  type MergerData,
+  type SplitterData,
   type MicroGraph,
   type MicroNode,
   type OutpostNode,
@@ -40,6 +42,8 @@ import {
 } from './model'
 import { BeltLine, FloorBand, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
+import { RouteContext, RouteRegistry } from './router'
+import { MergerSymbol, SplitterSymbol } from './Symbols'
 import { examplePlans, generatorBuildings, machineBuildings, recipesIn, useEditorLayout } from './store'
 
 type Net = ReturnType<typeof useNetwork>
@@ -53,7 +57,7 @@ const microNodeTypes = { machine: MachineBlock, splitter: SplitterBlock, merger:
 const microEdgeTypes = { belt: BeltLine }
 const arrow = { type: MarkerType.ArrowClosed, width: 18, height: 18 }
 const flowProps = {
-  connectionLineType: ConnectionLineType.Straight,
+  connectionLineType: ConnectionLineType.Step,
   deleteKeyCode: ['Backspace', 'Delete'],
   fitView: true,
   minZoom: 0.1,
@@ -130,7 +134,7 @@ function PaletteItem({
   children,
 }: {
   payload: Record<string, string>
-  icon: string
+  icon: string | ReactNode
   onAdd: (p: Record<string, string>) => void
   children: ReactNode
 }) {
@@ -146,7 +150,7 @@ function PaletteItem({
         e.dataTransfer.effectAllowed = 'move'
       }}
     >
-      <GameIcon id={icon} size={22} />
+      {typeof icon === 'string' ? <GameIcon id={icon} size={22} /> : icon}
       {children}
     </button>
   )
@@ -186,6 +190,7 @@ function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEd
 
 function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; update: UpdateLayout }) {
   const [sel, setSel] = useState<Selection>(null)
+  const [routes] = useState(() => new RouteRegistry())
   const all = net.solved
 
   // Plans are the source of truth: blocks are rebuilt from them on every render, with the
@@ -300,6 +305,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         ))}
       </aside>
       <div className="ne-canvas" {...drop.canvas}>
+        <RouteContext.Provider value={routes}>
         <ReactFlow
           {...flowProps}
           nodes={nodes}
@@ -316,6 +322,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           <Controls />
           <MiniMap pannable zoomable className="ne-minimap" />
         </ReactFlow>
+        </RouteContext.Provider>
       </div>
       <aside className="ne-inspector">
         {selNode ? (
@@ -374,6 +381,7 @@ function portLinks(all: Solved[], layout: EditorLayout, id: string) {
 function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved; layout: EditorLayout; update: UpdateLayout }) {
   const id = solved.plan.id
   const [sel, setSel] = useState<Selection>(null)
+  const [routes] = useState(() => new RouteRegistry())
   const graph = layout.micro[id]
   const maxBeltTier = graph?.maxBeltTier ?? 3
   const { fitView } = useReactFlow()
@@ -483,10 +491,10 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           </PaletteItem>
         ))}
         <h3>Logistics</h3>
-        <PaletteItem payload={{ kind: 'splitter' }} icon="Desc_ConveyorAttachmentSplitter_C" onAdd={drop.addAtCenter}>
+        <PaletteItem payload={{ kind: 'splitter' }} icon={<SplitterSymbol />} onAdd={drop.addAtCenter}>
           Splitter
         </PaletteItem>
-        <PaletteItem payload={{ kind: 'merger' }} icon="Desc_ConveyorAttachmentMerger_C" onAdd={drop.addAtCenter}>
+        <PaletteItem payload={{ kind: 'merger' }} icon={<MergerSymbol />} onAdd={drop.addAtCenter}>
           Merger
         </PaletteItem>
         <h3>Ports</h3>
@@ -540,6 +548,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             {graph.notes?.map((n) => <li key={n}>{n}</li>)}
           </ul>
         )}
+        <RouteContext.Provider value={routes}>
         <ReactFlow
           {...flowProps}
           nodes={graph.nodes}
@@ -556,6 +565,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           <Controls />
           <MiniMap pannable zoomable className="ne-minimap" />
         </ReactFlow>
+        </RouteContext.Provider>
       </div>
       <aside className="ne-inspector">
         {selNode?.data.kind === 'machine' ? (
@@ -565,9 +575,27 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
         ) : selNode ? (
           <section>
             <h3>{selNode.data.kind === 'splitter' ? 'Splitter' : 'Merger'}</h3>
-            <button type="button" className="danger" onClick={removeSelected}>
-              Delete
-            </button>
+            <p className="ne-help">
+              {selNode.data.kind === 'splitter'
+                ? 'One belt in at the back, up to three out: ahead, up and down.'
+                : 'Up to three belts in: back, up and down. One out ahead.'}{' '}
+              Flip it to swap which side is ahead.
+            </p>
+            <div className="ne-actions">
+              <button
+                type="button"
+                className="ghost"
+                onClick={() => {
+                  const d = selNode.data as SplitterData | MergerData
+                  patchNode({ ...d, facing: d.facing === 'left' ? 'right' : 'left' })
+                }}
+              >
+                Flip
+              </button>
+              <button type="button" className="danger" onClick={removeSelected}>
+                Delete
+              </button>
+            </div>
           </section>
         ) : selEdge ? (
           <BeltInspector
