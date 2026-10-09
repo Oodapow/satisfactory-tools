@@ -24,9 +24,22 @@ body { margin: 0; background: var(--bg); color: var(--text); }
 .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: .8rem; margin: 0; }
 h1 { font-size: clamp(2rem, 6vw, 3.25rem); margin: 8px 0; }
 .lede { color: var(--muted); font-size: 1.1rem; margin: 0; }
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid { margin-bottom: 32px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
 .card h2 { font-size: 1.15rem; margin: 0 0 8px; }
 .card p { color: var(--muted); margin: 0 0 16px; }
 .badge { display: inline-block; font-size: .75rem; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); font-weight: 600; }
 .foot { margin-top: 48px; color: var(--muted); font-size: .8rem; }
+.panel { margin-bottom: 32px; }
+.panel h2 { margin: 0 0 4px; }
+.muted { color: var(--muted); margin: 0 0 12px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 12px; }
+input, textarea, button { font: inherit; color: inherit; }
+input, textarea { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+.row input { flex: 1; min-width: 0; }
+textarea { width: 100%; resize: vertical; margin: 8px 0; }
+.title-input { width: 100%; font-weight: 600; border-color: transparent; padding-left: 0; }
+.title-input:focus { border-color: var(--border); padding-left: 10px; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
+button.danger { background: transparent; color: #d0453a; border: 1px solid currentColor; }
