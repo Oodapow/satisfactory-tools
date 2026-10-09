@@ -1,0 +1,229 @@
+[
+  {
+    "id": "Desc_Coal_C",
+    "name": "Coal",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_3-1_C"
+    ],
+    "nodes": {
+      "impure": 15,
+      "normal": 31,
+      "pure": 16
+    }
+  },
+  {
+    "id": "Desc_LiquidOil_C",
+    "name": "Crude Oil",
+    "form": "liquid",
+    "extractors": [
+      "Desc_OilPump_C",
+      "Desc_FrackingExtractor_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_5-1_C",
+      "Schematic_8-2_C"
+    ],
+    "nodes": {
+      "impure": 10,
+      "normal": 12,
+      "pure": 8
+    }
+  },
+  {
+    "id": "Desc_NitrogenGas_C",
+    "name": "Nitrogen Gas",
+    "form": "gas",
+    "extractors": [
+      "Desc_FrackingExtractor_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_8-2_C"
+    ],
+    "nodes": null
+  },
+  {
+    "id": "Desc_OreBauxite_C",
+    "name": "Bauxite",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_7-1_C"
+    ],
+    "nodes": {
+      "impure": 5,
+      "normal": 6,
+      "pure": 6
+    }
+  },
+  {
+    "id": "Desc_OreCopper_C",
+    "name": "Copper Ore",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_Tutorial1_5_C"
+    ],
+    "nodes": {
+      "impure": 13,
+      "normal": 29,
+      "pure": 13
+    }
+  },
+  {
+    "id": "Desc_OreGold_C",
+    "name": "Caterium Ore",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Research_Caterium_0_C",
+      "Schematic_5-5_C"
+    ],
+    "nodes": {
+      "impure": 0,
+      "normal": 9,
+      "pure": 8
+    }
+  },
+  {
+    "id": "Desc_OreIron_C",
+    "name": "Iron Ore",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_StartingRecipes_C"
+    ],
+    "nodes": {
+      "impure": 39,
+      "normal": 42,
+      "pure": 46
+    }
+  },
+  {
+    "id": "Desc_OreUranium_C",
+    "name": "Uranium",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_8-1_C"
+    ],
+    "nodes": {
+      "impure": 3,
+      "normal": 2,
+      "pure": 0
+    }
+  },
+  {
+    "id": "Desc_RawQuartz_C",
+    "name": "Raw Quartz",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_7-1_C",
+      "Research_Quartz_0_C"
+    ],
+    "nodes": {
+      "impure": 3,
+      "normal": 7,
+      "pure": 7
+    }
+  },
+  {
+    "id": "Desc_SAM_C",
+    "name": "SAM",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_9-1_C",
+      "Research_Alien_SAM_C"
+    ],
+    "nodes": {
+      "impure": 10,
+      "normal": 6,
+      "pure": 3
+    }
+  },
+  {
+    "id": "Desc_Stone_C",
+    "name": "Limestone",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_Tutorial2_C"
+    ],
+    "nodes": {
+      "impure": 15,
+      "normal": 50,
+      "pure": 29
+    }
+  },
+  {
+    "id": "Desc_Sulfur_C",
+    "name": "Sulfur",
+    "form": "solid",
+    "extractors": [
+      "Desc_MinerMk1_C",
+      "Desc_MinerMk2_C",
+      "Desc_MinerMk3_C"
+    ],
+    "scannerUnlockedBy": [
+      "Research_Sulfur_0_C",
+      "Schematic_7-5_C"
+    ],
+    "nodes": {
+      "impure": 6,
+      "normal": 5,
+      "pure": 5
+    }
+  },
+  {
+    "id": "Desc_Water_C",
+    "name": "Water",
+    "form": "liquid",
+    "extractors": [
+      "Desc_WaterPump_C",
+      "Desc_FrackingExtractor_C"
+    ],
+    "scannerUnlockedBy": [
+      "Schematic_8-2_C"
+    ],
+    "nodes": null
+  }
+]

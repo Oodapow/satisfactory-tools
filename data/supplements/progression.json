@@ -1,0 +1,67 @@
+{
+  "_source": "Hand-written from https://satisfactory.wiki.gg/wiki/Space_Elevator (CC BY-NC-SA 4.0). The game's Docs file does not contain Space Elevator phases or tier gating. Amounts are for the default 1x Space Elevator cost multiplier.",
+  "spaceElevatorPhases": [
+    {
+      "phase": 1,
+      "name": "Distribution Platform",
+      "cost": [
+        { "item": "Desc_SpaceElevatorPart_1_C", "amount": 50 }
+      ],
+      "unlocksTiers": [3, 4]
+    },
+    {
+      "phase": 2,
+      "name": "Construction Dock",
+      "cost": [
+        { "item": "Desc_SpaceElevatorPart_1_C", "amount": 1000 },
+        { "item": "Desc_SpaceElevatorPart_2_C", "amount": 1000 },
+        { "item": "Desc_SpaceElevatorPart_3_C", "amount": 100 }
+      ],
+      "unlocksTiers": [5, 6]
+    },
+    {
+      "phase": 3,
+      "name": "Main Body",
+      "cost": [
+        { "item": "Desc_SpaceElevatorPart_2_C", "amount": 2500 },
+        { "item": "Desc_SpaceElevatorPart_4_C", "amount": 500 },
+        { "item": "Desc_SpaceElevatorPart_5_C", "amount": 100 }
+      ],
+      "unlocksTiers": [7, 8]
+    },
+    {
+      "phase": 4,
+      "name": "Propulsion",
+      "cost": [
+        { "item": "Desc_SpaceElevatorPart_7_C", "amount": 500 },
+        { "item": "Desc_SpaceElevatorPart_6_C", "amount": 500 },
+        { "item": "Desc_SpaceElevatorPart_8_C", "amount": 250 },
+        { "item": "Desc_SpaceElevatorPart_9_C", "amount": 100 }
+      ],
+      "unlocksTiers": [9]
+    },
+    {
+      "phase": 5,
+      "name": "Assembly",
+      "cost": [
+        { "item": "Desc_SpaceElevatorPart_9_C", "amount": 1000 },
+        { "item": "Desc_SpaceElevatorPart_10_C", "amount": 1000 },
+        { "item": "Desc_SpaceElevatorPart_12_C", "amount": 256 },
+        { "item": "Desc_SpaceElevatorPart_11_C", "amount": 200 }
+      ],
+      "unlocksTiers": []
+    }
+  ],
+  "tierGates": {
+    "0": { "requires": "start" },
+    "1": { "requires": "tutorial" },
+    "2": { "requires": "tutorial" },
+    "3": { "requires": "phase", "phase": 1 },
+    "4": { "requires": "phase", "phase": 1 },
+    "5": { "requires": "phase", "phase": 2 },
+    "6": { "requires": "phase", "phase": 2 },
+    "7": { "requires": "phase", "phase": 3 },
+    "8": { "requires": "phase", "phase": 3 },
+    "9": { "requires": "phase", "phase": 4 }
+  }
+}

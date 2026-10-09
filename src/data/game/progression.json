@@ -1,0 +1,272 @@
+{
+  "startingSchematics": [
+    "Schematic_StartingRecipes_C"
+  ],
+  "tiers": [
+    {
+      "tier": 0,
+      "gate": {
+        "requires": "start"
+      },
+      "milestones": [
+        "Schematic_Tutorial1_5_C",
+        "Schematic_Tutorial1_C",
+        "Schematic_Tutorial2_C",
+        "Schematic_Tutorial3_C",
+        "Schematic_Tutorial4_C",
+        "Schematic_Tutorial5_C"
+      ]
+    },
+    {
+      "tier": 1,
+      "gate": {
+        "requires": "tutorial"
+      },
+      "milestones": [
+        "Schematic_1-1_C",
+        "Schematic_1-2_C",
+        "Schematic_1-3_C"
+      ]
+    },
+    {
+      "tier": 2,
+      "gate": {
+        "requires": "tutorial"
+      },
+      "milestones": [
+        "Schematic_2-1_C",
+        "Schematic_2-2_C",
+        "Schematic_2-3_C",
+        "Schematic_2-5_C",
+        "Schematic_3-2_C"
+      ]
+    },
+    {
+      "tier": 3,
+      "gate": {
+        "requires": "phase",
+        "phase": 1
+      },
+      "milestones": [
+        "Schematic_3-1_C",
+        "Schematic_3-3_C",
+        "Schematic_3-4_C",
+        "Schematic_4-2_C"
+      ]
+    },
+    {
+      "tier": 4,
+      "gate": {
+        "requires": "phase",
+        "phase": 1
+      },
+      "milestones": [
+        "Schematic_4-1_C",
+        "Schematic_4-3_C",
+        "Schematic_4-4_C",
+        "Schematic_4-5_C",
+        "Schematic_5-3_C"
+      ]
+    },
+    {
+      "tier": 5,
+      "gate": {
+        "requires": "phase",
+        "phase": 2
+      },
+      "milestones": [
+        "Schematic_5-1_C",
+        "Schematic_5-4_C",
+        "Schematic_5-5_C",
+        "Schematic_6-1_C",
+        "Schematic_6-2_C"
+      ]
+    },
+    {
+      "tier": 6,
+      "gate": {
+        "requires": "phase",
+        "phase": 2
+      },
+      "milestones": [
+        "Schematic_5-2_C",
+        "Schematic_6-3_C",
+        "Schematic_6-5_C",
+        "Schematic_6-6_C",
+        "Schematic_6-7_C"
+      ]
+    },
+    {
+      "tier": 7,
+      "gate": {
+        "requires": "phase",
+        "phase": 3
+      },
+      "milestones": [
+        "Schematic_7-1_C",
+        "Schematic_7-2_C",
+        "Schematic_7-3_C",
+        "Schematic_7-5_C",
+        "Schematic_8-3_C"
+      ]
+    },
+    {
+      "tier": 8,
+      "gate": {
+        "requires": "phase",
+        "phase": 3
+      },
+      "milestones": [
+        "Schematic_7-4_C",
+        "Schematic_8-1_C",
+        "Schematic_8-2_C",
+        "Schematic_8-4_C",
+        "Schematic_8-5_C"
+      ]
+    },
+    {
+      "tier": 9,
+      "gate": {
+        "requires": "phase",
+        "phase": 4
+      },
+      "milestones": [
+        "Schematic_9-1_C",
+        "Schematic_9-2_C",
+        "Schematic_9-3_C",
+        "Schematic_9-4_C",
+        "Schematic_9-5_C"
+      ]
+    }
+  ],
+  "spaceElevatorPhases": [
+    {
+      "phase": 1,
+      "name": "Distribution Platform",
+      "cost": [
+        {
+          "item": "Desc_SpaceElevatorPart_1_C",
+          "amount": 50
+        }
+      ],
+      "unlocksTiers": [
+        3,
+        4
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Construction Dock",
+      "cost": [
+        {
+          "item": "Desc_SpaceElevatorPart_1_C",
+          "amount": 1000
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_2_C",
+          "amount": 1000
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_3_C",
+          "amount": 100
+        }
+      ],
+      "unlocksTiers": [
+        5,
+        6
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Main Body",
+      "cost": [
+        {
+          "item": "Desc_SpaceElevatorPart_2_C",
+          "amount": 2500
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_4_C",
+          "amount": 500
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_5_C",
+          "amount": 100
+        }
+      ],
+      "unlocksTiers": [
+        7,
+        8
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Propulsion",
+      "cost": [
+        {
+          "item": "Desc_SpaceElevatorPart_7_C",
+          "amount": 500
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_6_C",
+          "amount": 500
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_8_C",
+          "amount": 250
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_9_C",
+          "amount": 100
+        }
+      ],
+      "unlocksTiers": [
+        9
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Assembly",
+      "cost": [
+        {
+          "item": "Desc_SpaceElevatorPart_9_C",
+          "amount": 1000
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_10_C",
+          "amount": 1000
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_12_C",
+          "amount": 256
+        },
+        {
+          "item": "Desc_SpaceElevatorPart_11_C",
+          "amount": 200
+        }
+      ],
+      "unlocksTiers": []
+    }
+  ],
+  "access": {
+    "mam": {
+      "building": "Desc_Mam_C"
+    },
+    "awesome-shop": {
+      "building": "Desc_ResourceSinkShop_C"
+    },
+    "alternate": {
+      "schematic": "Research_HardDrive_0_C",
+      "note": "Alternates come from Hard Drives researched in the MAM."
+    }
+  },
+  "purityMultipliers": {
+    "impure": 0.5,
+    "normal": 1,
+    "pure": 2
+  },
+  "geysers": {
+    "impure": 9,
+    "normal": 13,
+    "pure": 9
+  }
+}

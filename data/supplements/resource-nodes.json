@@ -1,0 +1,18 @@
+{
+  "_source": "Hand-written from https://satisfactory.wiki.gg/wiki/Resource_node (CC BY-NC-SA 4.0). Counts of resource nodes on the default map by purity. The game's Docs file has no map data. Resource wells (water, nitrogen, crude oil) are not included yet.",
+  "purityMultipliers": { "impure": 0.5, "normal": 1, "pure": 2 },
+  "nodes": {
+    "Desc_OreIron_C": { "impure": 39, "normal": 42, "pure": 46 },
+    "Desc_OreCopper_C": { "impure": 13, "normal": 29, "pure": 13 },
+    "Desc_Stone_C": { "impure": 15, "normal": 50, "pure": 29 },
+    "Desc_Coal_C": { "impure": 15, "normal": 31, "pure": 16 },
+    "Desc_OreGold_C": { "impure": 0, "normal": 9, "pure": 8 },
+    "Desc_RawQuartz_C": { "impure": 3, "normal": 7, "pure": 7 },
+    "Desc_Sulfur_C": { "impure": 6, "normal": 5, "pure": 5 },
+    "Desc_OreBauxite_C": { "impure": 5, "normal": 6, "pure": 6 },
+    "Desc_OreUranium_C": { "impure": 3, "normal": 2, "pure": 0 },
+    "Desc_SAM_C": { "impure": 10, "normal": 6, "pure": 3 },
+    "Desc_LiquidOil_C": { "impure": 10, "normal": 12, "pure": 8 }
+  },
+  "geysers": { "impure": 9, "normal": 13, "pure": 9 }
+}
