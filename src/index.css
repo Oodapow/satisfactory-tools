@@ -215,3 +215,5 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .recipe-cell { flex-wrap: nowrap; }
 .row .muted, .plain .muted { margin: 0; }
 .tree-picks { margin-top: 8px; }
+.step-table .rate { white-space: normal; }
+.step-table td:first-child { min-width: 180px; }

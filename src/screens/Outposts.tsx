@@ -8,7 +8,7 @@ import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { useNetwork } from '../plan/useNetwork'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
-import { Amount, Icon } from './Icon'
+import { Amount, Icon, PowerIcon } from './Icon'
 import { Rates } from './Rates'
 
 const ceil = (n: number) => Math.ceil(n - 1e-9)
@@ -80,7 +80,7 @@ export function OutpostList({ state }: { state: GameState }) {
                     {exports.map((e) => (
                       <Amount key={e.item} item={e.item} perMin={e.perMin} />
                     ))}
-                    {solution.power.exportedMW > 0 && <span className="rate power">⚡ <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
+                    {solution.power.exportedMW > 0 && <span className="rate power"><PowerIcon size={16} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW</span>}
                     {exports.length === 0 && solution.power.exportedMW <= 0 && <span className="muted small">no goal yet</span>}
                   </span>
                 </div>
@@ -219,7 +219,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
               </>
             ) : (
               <>
-                <span className="power-icon">⚡</span>
+                <span className="power-icon"><PowerIcon size={22} /></span>
                 <input
                   type="number"
                   min={0}
@@ -589,7 +589,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                 <tr key={g.generator}>
                   <td>
                     <span className="recipe-cell">
-                      <span className="power-icon">⚡</span>
+                      <span className="power-icon"><PowerIcon size={22} /></span>
                       {buildingsById.get(g.generator)?.name}
                     </span>
                   </td>
@@ -598,7 +598,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                   </td>
                   <td>
                     <span className="rate power">
-                      <b>{fmt(g.mw, 1)}</b> MW
+                      <PowerIcon size={16} /> <b>{fmt(g.mw, 1)}</b> MW
                     </span>
                   </td>
                   <td className="num">+{fmt(g.mw, 1)} MW</td>
@@ -687,7 +687,7 @@ function Balance({ solved, nameOf }: { solved: Solved; nameOf: (id: string) => s
         {solution.power.exportedMW > 1e-6 && (
           <li>
             <span className="rate power">
-              ⚡ <b>{fmt(solution.power.exportedMW, 1)}</b> MW
+              <PowerIcon size={16} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
             </span>{' '}
             <span className="muted small">to grid</span>
           </li>

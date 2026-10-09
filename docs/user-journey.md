@@ -45,7 +45,7 @@ Simplifications: machines run at 100% (fractional counts are shown so one can be
 
 ## Icons
 
-`src/screens/Icon.tsx` renders `src/data/icons.ts → iconUrl(id)`, which reads an `icon` path from the item or building in the game data. Until the data carries icons, it falls back to a colored badge with the name's initials.
+`src/screens/Icon.tsx` shows game icons through `iconUrl(id)` from `src/data/game/icons.ts` (files in `public/icons/`, keyed by the same ids as the game data), and `PowerIcon` for MW amounts. An id with no icon falls back to a colored badge with the name's initials.
 
 ## Next
 

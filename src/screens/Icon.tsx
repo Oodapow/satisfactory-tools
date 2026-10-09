@@ -1,5 +1,5 @@
 import { buildingsById, itemName } from '../data'
-import { iconUrl } from '../data/icons'
+import { iconUrl, powerIconUrl } from '../data/icons'
 import { fmt } from '../format'
 
 const hue = (id: string) => [...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7)
@@ -35,4 +35,9 @@ export function Amount({ item, perMin, unit = '/min' }: { item: string; perMin: 
       {unit} {itemName(item)}
     </span>
   )
+}
+
+/** The electricity icon, for MW amounts. */
+export function PowerIcon({ size = 18 }: { size?: number }) {
+  return <img className="icon" src={powerIconUrl} alt="" width={size} height={size} />
 }
