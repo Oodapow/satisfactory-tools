@@ -24,7 +24,7 @@ few hand-written supplements for things that file does not contain.
 | `src/data/game/availability.ts` | Given a game state, what is unlocked and what can be bought next. |
 | `scripts/fetch-icons.mjs` | Collects icons into `public/icons/<id>.webp` (96 px) and lists them in `src/data/game/icons.json`. |
 | `src/data/game/icons.ts` | `iconUrl(id)` for items and buildings, and `powerIconUrl` for electricity. |
-| `scripts/fetch-map.mjs` | Downloads the in-game map picture into `public/map/world.webp` (4096 px). |
+| `scripts/fetch-map.mjs` | Downloads the in-game map picture and writes `public/map/overview.webp` (2048 px) plus 4×4 full-resolution tiles in `public/map/tiles/`. |
 | `src/data/game/worldMap.ts` | Typed `world-map.json` and the map picture's URL, for the world map screen only. |
 
 Generated files:
@@ -88,7 +88,7 @@ The electricity icon (`public/icons/power.svg`) is our own drawing; power is not
 
 - Game data: `CommunityResources/Docs/en-US.json` from Satisfactory 1.2.4.0, © Coffee Stain Studios. Coffee Stain ships this file for community tools; it is kept here so the app works without a game install. All rights remain with Coffee Stain Studios.
 - Node positions (`data/supplements/world-nodes.json`): adapted from [`WorldResourceNodes.json`](https://github.com/rockfactory/satisfactory-logistics/blob/main/src/recipes/WorldResourceNodes.json) in rockfactory/satisfactory-logistics, MIT License, Copyright (c) 2024 Leonardo Ascione; extracted from the game's map.
-- Map picture (`public/map/world.webp`): the in-game map, [File:Map.jpg](https://satisfactory.wiki.gg/wiki/File:Map.jpg) on the Official Satisfactory Wiki. © Coffee Stain Studios.
+- Map picture (`public/map/`): the in-game map, [File:Map.jpg](https://satisfactory.wiki.gg/wiki/File:Map.jpg) on the Official Satisfactory Wiki. © Coffee Stain Studios.
 - Supplements: adapted from the [Official Satisfactory Wiki](https://satisfactory.wiki.gg/) ([Space Elevator](https://satisfactory.wiki.gg/wiki/Space_Elevator), [Resource node](https://satisfactory.wiki.gg/wiki/Resource_node), research tree diagrams on [MAM](https://satisfactory.wiki.gg/wiki/MAM) and [FICSMAS](https://satisfactory.wiki.gg/wiki/FICSMAS)), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 - Icons: © Coffee Stain Studios, as published on the Official Satisfactory Wiki. Used for a non-commercial fan tool; all rights remain with Coffee Stain Studios.
 - Cross-check: production recipes, cycle times and machine power were compared against the independent 1.2.4.0 extraction in [Satisfunction](https://github.com/jdcravenBD/Satisfunction) (`public/data.js`, CL 502094) and matched exactly.
