@@ -15,9 +15,9 @@ Planning is declarative. You say what an outpost should make and what it has acc
 
 1. **Game state.** Upload a save ([#9](https://github.com/Oodapow/satisfactory-tools/issues/9)) or set it up by hand: tier, milestones, Space Elevator phase, MAM research, alternates. Only what the game itself would show is listed. ([#7](https://github.com/Oodapow/satisfactory-tools/issues/7))
 2. **Planning.** Browse unlocked recipes, items and buildings, and see what can be bought next. Locked content is hidden or blurred. ([#7](https://github.com/Oodapow/satisfactory-tools/issues/7))
-3. **Define an outpost.** Start from its goal and the resources it has access to. Pick imports from other outposts' outputs; list its exports, including raw resources and power. ([#11](https://github.com/Oodapow/satisfactory-tools/issues/11))
+3. **Define an outpost.** Start from its goal and the resources it has access to. Pick imports from other outposts' outputs; list its exports, including raw resources and power. ([#11](https://github.com/Oodapow/satisfactory-tools/issues/11), see [user journey](user-journey.md))
 4. **Get a layout.** The layout algorithm turns the declaration into floors, machine groups, manifolds and belts, honoring imports and chosen recipes. ([#13](https://github.com/Oodapow/satisfactory-tools/issues/13), math in [#14](https://github.com/Oodapow/satisfactory-tools/issues/14))
-5. **Edit visually.** A node editor at two levels: the network of outposts linked by belts, trains, trucks and power (macro), and the machines inside one outpost with its external ports (micro). ([#12](https://github.com/Oodapow/satisfactory-tools/issues/12))
+5. **Edit visually.** A node editor at two levels: the network of outposts linked by belts, trains, trucks and power (macro), and the machines inside one outpost with its external ports (micro). ([#12](https://github.com/Oodapow/satisfactory-tools/issues/12), see [node editor](node-editor.md))
 
 Icons for items, buildings, resources and power appear throughout. ([#8](https://github.com/Oodapow/satisfactory-tools/issues/8))
 
@@ -46,7 +46,7 @@ The app ships its own copy of everything a game state can contain. Full details 
 3. **Check:** `npm run data:check` fails if the generated files differ from what the script produces; CI runs it on every PR.
 4. **Use:** `src/data/game/index.ts` exports typed data and lookups; `availability.ts` answers "what is unlocked" and "what can be bought next" for a game state.
 
-Known gaps: MAM research order ([#10](https://github.com/Oodapow/satisfactory-tools/issues/10)) and icons ([#8](https://github.com/Oodapow/satisfactory-tools/issues/8)).
+Known gap: MAM research order ([#10](https://github.com/Oodapow/satisfactory-tools/issues/10)). Icons are fetched by `scripts/fetch-icons.mjs` into `public/icons/` and listed in `src/data/game/icons.json` ([#8](https://github.com/Oodapow/satisfactory-tools/issues/8)).
 
 To update after a game patch, run the generator with `--from` pointing at your install's `en-US.json` (command in [data/README.md](../data/README.md#regenerating)).
 
@@ -74,12 +74,12 @@ npm run lint
 | [#4](https://github.com/Oodapow/satisfactory-tools/issues/4) | Static app with CI and Pages deploy | done |
 | [#5](https://github.com/Oodapow/satisfactory-tools/issues/5) | Browser persistence, outposts, backup | done in #1 |
 | [#6](https://github.com/Oodapow/satisfactory-tools/issues/6) | Game data for 1.2 | done in #2 |
-| [#7](https://github.com/Oodapow/satisfactory-tools/issues/7) | User journey: game state, spoiler-free planning, outposts | in progress in #3 |
-| [#8](https://github.com/Oodapow/satisfactory-tools/issues/8) | Game icons | planned |
+| [#7](https://github.com/Oodapow/satisfactory-tools/issues/7) | User journey: game state, spoiler-free planning, outposts | done in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) |
+| [#8](https://github.com/Oodapow/satisfactory-tools/issues/8) | Game icons | done in [#17](https://github.com/Oodapow/satisfactory-tools/pull/17) |
 | [#9](https://github.com/Oodapow/satisfactory-tools/issues/9) | Read game state from a save file | planned |
 | [#10](https://github.com/Oodapow/satisfactory-tools/issues/10) | MAM research tree order | planned |
-| [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | planned |
-| [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | planned |
+| [#11](https://github.com/Oodapow/satisfactory-tools/issues/11) | Declarative outpost planning with imports and exports | first version in [#3](https://github.com/Oodapow/satisfactory-tools/pull/3) |
+| [#12](https://github.com/Oodapow/satisfactory-tools/issues/12) | Node editor: outpost network and factory floor | in progress in [#18](https://github.com/Oodapow/satisfactory-tools/pull/18) |
 | [#13](https://github.com/Oodapow/satisfactory-tools/issues/13) | Layout algorithm: manifolds, belts, floors | planned |
 | [#14](https://github.com/Oodapow/satisfactory-tools/issues/14) | Production math: overclocking, purity, byproducts | planned |
 
@@ -88,6 +88,7 @@ The [issue list](https://github.com/Oodapow/satisfactory-tools/issues) is the so
 ## Feature docs
 
 - [Game data](../data/README.md): sources, units, regeneration, licensing.
-- `docs/ui-journey/`: screenshots of the user journey (lands with #3).
+- [User journey and outpost planning](user-journey.md): the flow, the plan model, how a plan is solved, icons. Screenshots in `ui-journey/`.
+- [Node editor](node-editor.md): factory map and floor plans (lands with [#18](https://github.com/Oodapow/satisfactory-tools/pull/18)).
 
-Feature docs for the planner and node editor will be added here as they land.
+New feature docs go in `docs/` as their own file and get a line here.
