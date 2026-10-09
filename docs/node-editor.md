@@ -50,7 +50,7 @@ The first time you open an outpost, the editor proposes a floor plan from the pl
 - **Manifolds**: on each floor, a splitter chain feeds the machines for every ingredient, and a merger chain collects every product. All machines on a floor share the load at the same clock (for example 2.5 machines of work becomes 3 machines at 83.3%). Groups of more than 12 machines are drawn as one block with a count.
 - **Belts sized to your best tier**: pick your best belt in the toolbar. Each belt gets the lowest Mk that carries its rate, and turns red when even the best one can't. Fluids use pipe Mk.1 and Mk.2.
 - **Lanes and conveyor lifts**: belts between floors, ports and hubs run up a vertical lane per item beside the building, so they stay out of the floors. Where a belt changes floor it gets a conveyor lift marker with the number of floors (up or down).
-- **Splitters and mergers** have their own symbols (blue splitter, orange merger) with the game's connection points: a splitter takes one belt in and sends up to three out (ahead, up, down); a merger takes up to three in and sends one out. Select one and use Flip to swap which side is ahead.
+- **Splitters and mergers** show the game icon when the icon set has one, otherwise their own symbols (blue splitter, orange merger), with the game's connection points: a splitter takes one belt in and sends up to three out (ahead, up, down); a merger takes up to three in and sends one out. Select one and use Flip to swap which side is ahead.
 - **Ports** on the ground below the floors, on the left for resource nodes (with their extractor and purity) and imports, and on the right for exports. Exports are split by who takes them (one port per importing outpost), and the rest is shown as Goal or Surplus. Power lines become power ports.
 - **Hubs**: when an item comes from several places or goes to several floors, a merger and splitter on the ground join them at the foot of its lane.
 
@@ -76,7 +76,7 @@ Plans live where the planning flow keeps them (`outposts` in localStorage). The 
 
 ## Icons
 
-Icons come from `src/data/game/icons.ts` (the game icon set, #17). The editor looks that file up at build time, so it also builds on a branch without it. When an item or building has no icon (belts, truck and train stations, the HUB at the moment), blocks show a coloured badge with the name's initials.
+Icons come from `src/data/game/icons.ts` (the game icon set, #17). The editor looks that file up at build time, so it also builds on a branch without it. When an item or building has no icon, blocks show a coloured badge with the name's initials, and splitters, mergers and conveyor lifts show the editor's own symbols. Everything is looked up by game id, so new icons appear without code changes.
 
 ## Code
 

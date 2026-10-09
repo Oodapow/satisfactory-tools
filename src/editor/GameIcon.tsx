@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { displayName, iconUrl } from './icons'
 
 // Icons that failed to load, so they fall back straight away next time.
@@ -11,7 +11,18 @@ function hue(id: string) {
 }
 
 /** Game icon for an item, building or power, or a lettered badge when there is none. */
-export function GameIcon({ id, size = 28, title }: { id?: string; size?: number; title?: string }) {
+export function GameIcon({
+  id,
+  size = 28,
+  title,
+  fallback,
+}: {
+  id?: string
+  size?: number
+  title?: string
+  /** Shown instead of the lettered badge when there is no icon. */
+  fallback?: ReactNode
+}) {
   const src = id ? iconUrl(id) : undefined
   const [, rerender] = useState(0)
   const broken = !src || failed.has(src)
@@ -31,6 +42,7 @@ export function GameIcon({ id, size = 28, title }: { id?: string; size?: number;
         }}
       />
     )
+  if (fallback) return <>{fallback}</>
   const initials = name
     .split(/[\s.]+/)
     .filter(Boolean)

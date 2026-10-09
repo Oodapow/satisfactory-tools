@@ -174,7 +174,7 @@ export function SplitterBlock({ data, selected }: NodeProps<MicroNode>) {
   return (
     <div className={`ne-joint splitter${selected ? ' selected' : ''}`} title="Conveyor Splitter">
       <Port type="target" position={back} id="in" />
-      <SplitterSymbol flip={out === Position.Left} />
+      <GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={24} fallback={<SplitterSymbol flip={out === Position.Left} />} />
       <Port type="source" position={out} id="out" />
       <Port type="source" position={Position.Top} id="up" />
       <Port type="source" position={Position.Bottom} id="down" />
@@ -190,7 +190,7 @@ export function MergerBlock({ data, selected }: NodeProps<MicroNode>) {
       <Port type="target" position={back} id="in" />
       <Port type="target" position={Position.Top} id="up" />
       <Port type="target" position={Position.Bottom} id="down" />
-      <MergerSymbol flip={out === Position.Left} />
+      <GameIcon id="Desc_ConveyorAttachmentMerger_C" size={24} fallback={<MergerSymbol flip={out === Position.Left} />} />
       <Port type="source" position={out} id="out" />
     </div>
   )
@@ -265,7 +265,7 @@ export function BeltLine(props: EdgeProps<BeltEdge>) {
             style={{ transform: `translate(-50%,-50%) translate(${vertical.x}px,${vertical.y + 22}px)` }}
             title={`Conveyor lift, ${Math.abs(lift)} floor${Math.abs(lift) === 1 ? '' : 's'} ${lift > 0 ? 'up' : 'down'}`}
           >
-            <LiftSymbol down={lift < 0} />
+            <GameIcon id="Desc_ConveyorLiftMk1_C" size={16} fallback={<LiftSymbol down={lift < 0} />} />{lift > 0 ? '↑' : '↓'}
             {Math.abs(lift)}
           </div>
         )}

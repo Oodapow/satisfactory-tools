@@ -491,10 +491,10 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           </PaletteItem>
         ))}
         <h3>Logistics</h3>
-        <PaletteItem payload={{ kind: 'splitter' }} icon={<SplitterSymbol />} onAdd={drop.addAtCenter}>
+        <PaletteItem payload={{ kind: 'splitter' }} icon={<GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={22} fallback={<SplitterSymbol />} />} onAdd={drop.addAtCenter}>
           Splitter
         </PaletteItem>
-        <PaletteItem payload={{ kind: 'merger' }} icon={<MergerSymbol />} onAdd={drop.addAtCenter}>
+        <PaletteItem payload={{ kind: 'merger' }} icon={<GameIcon id="Desc_ConveyorAttachmentMerger_C" size={22} fallback={<MergerSymbol />} />} onAdd={drop.addAtCenter}>
           Merger
         </PaletteItem>
         <h3>Ports</h3>
