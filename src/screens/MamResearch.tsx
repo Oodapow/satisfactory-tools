@@ -3,6 +3,7 @@ import { progression, schematicsById, type Schematic } from '../data'
 import { availability, type GameState } from '../state/gameState'
 import { NoIconLinks } from '../ui/GameIcon'
 import { Costs, SchematicIcon } from '../ui/SchematicIcon'
+import { SpoilerNote } from '../ui/SpoilerNote'
 import { layoutTree } from './mamLayout'
 
 const HARD_DRIVE = 'Research_HardDrive_0_C'
@@ -34,6 +35,12 @@ export function MamResearch({ state, flip }: { state: GameState; flip: (id: stri
   // Open on the first tree with research under way, like returning to the MAM.
   const current = trees.find((t) => t.id === tab) ?? trees.find((t) => progress(t.nodes) > 0) ?? trees[0]
 
+  // Research no parent of which is done yet: drawn as a "?" or not at all until revealed.
+  const locked = current.nodes.filter((id) => {
+    const ps = schematicsById.get(id)?.mamParents ?? []
+    return !owned(id) && ps.length > 0 && !ps.some(owned)
+  }).length
+
   return (
     <>
       <div className="tabs subtabs" role="tablist" aria-label="Research trees">
@@ -54,23 +61,11 @@ export function MamResearch({ state, flip }: { state: GameState; flip: (id: stri
         ))}
       </div>
       <Tree key={current.id} nodes={current.nodes} owned={owned} flip={flip} reveal={reveal} />
-      <p className="spoiler-note">
-        {reveal ? (
-          <>
-            Showing the whole tree.{' '}
-            <button type="button" className="link" onClick={() => setReveal(false)}>
-              Hide spoilers
-            </button>
-          </>
-        ) : (
-          <>
-            Research you can't start yet stays a <b>?</b>, and what lies past it stays hidden, as in the MAM.{' '}
-            <button type="button" className="link" onClick={() => setReveal(true)}>
-              Show anyway
-            </button>
-          </>
-        )}
-      </p>
+      <SpoilerNote
+        hidden={locked > 0 ? `${locked} locked research ${locked === 1 ? 'node is' : 'nodes are'}` : null}
+        revealed={reveal}
+        onChange={setReveal}
+      />
     </>
   )
 }

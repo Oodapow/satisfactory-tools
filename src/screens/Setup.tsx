@@ -16,6 +16,7 @@ import { Backup } from './Backup'
 import { NoIconLinks } from '../ui/GameIcon'
 import { Costs, SchematicIcon, Unlocks } from '../ui/SchematicIcon'
 import { MamResearch } from './MamResearch'
+import { SpoilerNote } from '../ui/SpoilerNote'
 
 const toggle = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id])
 
@@ -208,14 +209,11 @@ export function Setup() {
               ))}
           </div>
         )}
-        {hiddenTiers > 0 && (
-          <p className="spoiler-note">
-            {hiddenTiers} later {hiddenTiers === 1 ? 'tier is' : 'tiers are'} hidden to avoid spoilers.{' '}
-            <button type="button" className="link" onClick={() => setRevealAll(true)}>
-              Show anyway
-            </button>
-          </p>
-        )}
+        <SpoilerNote
+          hidden={hiddenTiers > 0 ? `${hiddenTiers} later ${hiddenTiers === 1 ? 'tier is' : 'tiers are'}` : null}
+          revealed={revealAll}
+          onChange={setRevealAll}
+        />
       </section>
 
       <section className="panel">
