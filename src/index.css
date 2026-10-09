@@ -26,6 +26,7 @@
 body { margin: 0; background: var(--bg); color: var(--text); }
 code { font-size: .9em; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 4px; }
 .page { max-width: 1040px; margin: 0 auto; padding: 24px 16px; }
+.page-wide { padding: 0; height: 100%; }
 h1 { font-size: clamp(2rem, 6vw, 3.25rem); margin: 8px 0; }
 h2 { margin: 0 0 4px; }
 h3 { margin: 0 0 10px; font-size: 1.05rem; }

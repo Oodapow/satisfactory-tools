@@ -226,3 +226,24 @@ export interface GameMeta {
   counts: Record<string, number>
   copyright: string
 }
+
+export type Purity = 'impure' | 'normal' | 'pure'
+
+/** A node, resource well spot or geyser on the default map (world-map.json). */
+export interface WorldNode {
+  /** Actor name, as in save files (Persistent_Level:PersistentLevel.<id>). */
+  id: string
+  /** wellCore is where a Resource Well Pressurizer goes; wellSatellite is one of the well's nodes. */
+  kind: 'node' | 'wellCore' | 'wellSatellite' | 'geyser'
+  resource: ItemId
+  purity: Purity
+  /** World position in cm; x grows east, y grows south. */
+  x: number
+  y: number
+}
+
+export interface WorldMap {
+  /** World area covered by the map image (and the save's fog of war), in cm. */
+  bounds: { west: number; east: number; north: number; south: number }
+  nodes: WorldNode[]
+}

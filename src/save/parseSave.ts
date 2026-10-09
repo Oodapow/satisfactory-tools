@@ -41,6 +41,7 @@ export function gameStateFromSave(summary: SaveSummary, fileName: string): SaveI
       saveName: fileName,
       purchased: known,
       spaceElevatorPhase: summary.spaceElevatorPhase,
+      map: summary.map ?? undefined,
     },
     unknown: summary.purchased.filter((id) => !schematicsById.has(id)),
   }

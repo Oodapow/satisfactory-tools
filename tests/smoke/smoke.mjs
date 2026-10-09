@@ -31,7 +31,7 @@ const legacy = JSON.parse(readFileSync(join(fixtures, 'storage-before-navigation
 const outpostIds = legacy['sft:outposts'].data.map((o) => o.id)
 const env = (data) => ({ v: 1, data })
 
-const routes = ['#/', '#/upload', '#/sample-save', '#/setup', '#/catalog', '#/outposts', '#/map']
+const routes = ['#/', '#/upload', '#/sample-save', '#/setup', '#/catalog', '#/outposts', '#/map', '#/world']
 const scenarios = [
   { name: 'empty storage', storage: {}, routes },
   {
