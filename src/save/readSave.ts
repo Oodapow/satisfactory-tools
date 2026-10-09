@@ -1,6 +1,7 @@
 // Pulls the unlock progress out of a Satisfactory save. Runs inside the save
 // worker; the parsing itself is done by @etothepii/satisfactory-file-parser.
 import { Parser, type SaveComponent, type SaveEntity } from '@etothepii/satisfactory-file-parser'
+import { readMap, type SaveMap } from './readMap'
 
 /** What we read from a save, before matching it against our game data. */
 export interface SaveSummary {
@@ -13,6 +14,8 @@ export interface SaveSummary {
   purchased: string[]
   /** Space Elevator phases delivered (0-5). */
   spaceElevatorPhase: number
+  /** Explored area and landmarks for the world map; null if the save has no map data. */
+  map: SaveMap | null
 }
 
 type ObjectRef = { pathName: string }
@@ -41,5 +44,6 @@ export function readSave(name: string, file: ArrayBuffer, onProgress?: (progress
     isModded: Boolean(save.header.isModdedSave),
     purchased: [...new Set(purchased.map(className))],
     spaceElevatorPhase: Math.min(Math.max(phaseNumber, 0), 5),
+    map: readMap(objects),
   }
 }

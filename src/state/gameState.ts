@@ -1,5 +1,6 @@
 import { availability, purchasable, type GameState as Unlocks } from '../data/game/availability'
 import { buildings, items, progression, recipes, schematicsById, type Recipe, type Schematic } from '../data'
+import type { SaveMap } from '../save/readMap'
 import { usePersistentState } from '../storage/persisted'
 
 /** What the player has unlocked so far (the input to planning mode), plus how to show it. */
@@ -9,6 +10,8 @@ export type GameState = Unlocks & {
   saveName?: string
   /** How locked content shows up: not at all, or blurred out. */
   spoilers: 'hide' | 'blur'
+  /** Explored area and landmarks from the save, for the world map. */
+  map?: SaveMap
 }
 
 export function useGameState() {

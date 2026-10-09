@@ -47,6 +47,7 @@ const progression = JSON.parse(readFileSync(join(SUPPLEMENTS, 'progression.json'
 const resourceNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'resource-nodes.json'), 'utf8'))
 const extraItems = JSON.parse(readFileSync(join(SUPPLEMENTS, 'items.json'), 'utf8'))
 const mamTrees = JSON.parse(readFileSync(join(SUPPLEMENTS, 'mam-trees.json'), 'utf8'))
+const worldNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'world-nodes.json'), 'utf8'))
 const previousMeta = readJsonIfExists(join(OUT, 'meta.json'))
 
 function readJsonIfExists(path) {
@@ -563,6 +564,25 @@ for (const b of buildings.values()) for (const f of b.generator?.fuels ?? []) ch
 for (const p of progression.spaceElevatorPhases) for (const x of p.cost) check(x.item, `phase ${p.phase}`)
 for (const id of Object.keys(resourceNodes.nodes)) check(id, 'resource-nodes.json')
 for (const a of Object.values(progressionOut.access)) check(a.building ?? a.schematic, 'progression access')
+for (const n of worldNodes.nodes) check(n.resource, `world-nodes.json ${n.id}`)
+
+// Node positions and the node counts come from different sources; they must agree.
+const purities = ['impure', 'normal', 'pure']
+const tally = (list) => Object.fromEntries(purities.map((p) => [p, list.filter((n) => n.purity === p).length]))
+const sameCounts = (a, b) => purities.every((p) => (a?.[p] ?? 0) === (b?.[p] ?? 0))
+for (const [id, counts] of Object.entries(resourceNodes.nodes)) {
+  const placed = tally(worldNodes.nodes.filter((n) => n.kind === 'node' && n.resource === id))
+  if (!sameCounts(placed, counts)) warnings.push(`world-nodes.json has ${JSON.stringify(placed)} ${id} nodes, resource-nodes.json says ${JSON.stringify(counts)}`)
+}
+const placedGeysers = tally(worldNodes.nodes.filter((n) => n.kind === 'geyser'))
+if (!sameCounts(placedGeysers, resourceNodes.geysers)) warnings.push(`world-nodes.json has ${JSON.stringify(placedGeysers)} geysers, resource-nodes.json says ${JSON.stringify(resourceNodes.geysers)}`)
+
+// The world map: what the in-game map image covers, in world units (cm). Measured against the
+// fog of war and actor positions in a save; x grows east, y grows south.
+const worldMap = {
+  bounds: { west: -324698.832031, east: 425301.832031, north: -375000, south: 375000 },
+  nodes: worldNodes.nodes,
+}
 
 const fatal = warnings
 
@@ -578,6 +598,7 @@ const outputs = {
   'buildings.json': sortById(buildings),
   'schematics.json': sortById(schematics),
   'progression.json': progressionOut,
+  'world-map.json': worldMap,
   'meta.json': {
     gameVersion,
     gameVersionNote: option('--game-version-note') ?? previousMeta?.gameVersionNote ?? null,

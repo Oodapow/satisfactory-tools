@@ -12,12 +12,15 @@ import { TooltipLayer } from './ui/TooltipLayer'
 
 // The node editor pulls in React Flow, so it loads on first visit.
 const EditorScreen = lazy(() => import('./editor/EditorScreen'))
+// The world map carries the node table and the map picture, so it loads on first visit too.
+const WorldScreen = lazy(() => import('./world/WorldScreen'))
 
 // Sections, not steps: the main flow is game state, then the factory map. The catalog is for
 // looking things up, and the outposts list is where one outpost gets defined.
 const tabs = [
   { path: 'setup', label: 'Game state' },
   { path: 'map', label: 'Factory map' },
+  { path: 'world', label: 'World map' },
   { path: 'outposts', label: 'Outposts' },
   { path: 'catalog', label: 'Catalog' },
 ] as const
@@ -29,7 +32,7 @@ export default function App() {
   const page = route === 'plan' ? 'catalog' : route
 
   // These need a game state; without one, start at the welcome screen.
-  const needsState = page === 'catalog' || page === 'outposts' || page === 'map'
+  const needsState = page === 'catalog' || page === 'outposts' || page === 'map' || page === 'world'
   // The page scrolls inside <main>, so start each screen at the top like a page load would.
   const mainRef = useRef<HTMLElement>(null)
   const screenKey = [page, param, sub].join('/')
@@ -50,6 +53,10 @@ export default function App() {
     ) : page === 'map' && state ? (
       <Suspense fallback={<p className="muted">Loading the editor…</p>}>
         <EditorScreen state={state} outpostId={param} />
+      </Suspense>
+    ) : page === 'world' && state ? (
+      <Suspense fallback={<p className="muted">Loading the map…</p>}>
+        <WorldScreen state={state} />
       </Suspense>
     ) : page === 'outposts' && state ? (
       <OutpostList state={state} />
@@ -79,7 +86,7 @@ export default function App() {
         )}
       </header>
       <main className="app-main" ref={mainRef}>
-        <div className={page === 'map' ? 'page-wide' : 'page'}>
+        <div className={page === 'map' || page === 'world' ? 'page-wide' : 'page'}>
           {/* Keyed by route, so moving to another screen clears a crash. */}
           <ErrorBoundary key={screenKey}>{screen}</ErrorBoundary>
         </div>

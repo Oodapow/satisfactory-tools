@@ -12,6 +12,7 @@
     "data:check": "node scripts/generate-game-data.mjs --check",
     "icons:fetch": "node scripts/fetch-icons.mjs",
     "icons:check": "node scripts/fetch-icons.mjs --check",
+    "map:fetch": "node scripts/fetch-map.mjs",
     "test": "vitest run",
     "test:smoke": "node tests/smoke/smoke.mjs"
   },

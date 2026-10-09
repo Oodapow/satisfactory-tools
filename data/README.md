@@ -14,6 +14,7 @@ few hand-written supplements for things that file does not contain.
 | `data/supplements/progression.json` | Space Elevator phases and which tiers each phase opens. Not in the game file. |
 | `data/supplements/resource-nodes.json` | Resource node counts per purity on the map, and purity multipliers. Not in the game file. |
 | `data/supplements/mam-trees.json` | MAM research tree layout: which nodes sit in each tree and which node opens which. Not in the game file. |
+| `data/supplements/world-nodes.json` | Position, resource and purity of every resource node, resource well spot and geyser on the map. Not in the game file. |
 | `data/supplements/items.json` | Items the game file references but does not describe (FICSIT Coupon, Hard Drive). |
 | `scripts/generate-game-data.mjs` | Turns the above into the files below. |
 | `src/data/game/*.json` | Generated, normalized data the app imports. Do not edit by hand. |
@@ -22,6 +23,8 @@ few hand-written supplements for things that file does not contain.
 | `src/data/game/availability.ts` | Given a game state, what is unlocked and what can be bought next. |
 | `scripts/fetch-icons.mjs` | Collects icons into `public/icons/<id>.webp` (96 px) and lists them in `src/data/game/icons.json`. |
 | `src/data/game/icons.ts` | `iconUrl(id)` for items and buildings, and `powerIconUrl` for electricity. |
+| `scripts/fetch-map.mjs` | Downloads the in-game map picture into `public/map/world.webp` (4096 px). |
+| `src/data/game/worldMap.ts` | Typed `world-map.json` and the map picture's URL, for the world map screen only. |
 
 Generated files:
 
@@ -33,6 +36,7 @@ Generated files:
 | `buildings.json` | Every buildable: power, footprint, overclock and Somersloop slots, generator fuels, extractor rates, build recipe. |
 | `schematics.json` | Milestones, HUB upgrades, MAM research, alternate recipes, AWESOME Shop: cost, tier, dependencies, everything it unlocks. |
 | `progression.json` | Tiers with their milestones and gates, Space Elevator phases, what each schematic type needs before it can be bought. |
+| `world-map.json` | The world area the map picture covers, and the nodes from `world-nodes.json`. |
 | `meta.json` | Game version, units, counts, attribution. |
 
 ## Conventions
@@ -72,11 +76,17 @@ The electricity icon (`public/icons/power.svg`) is our own drawing; power is not
 
 - **MAM tree order** is transcribed from the wiki's tree diagrams (`data/supplements/mam-trees.json`): per tree, every node with the nodes drawn directly above it (`parents`). The generator copies them onto each research as `mamParents` and sets `mamTree` from the supplement (the game's folders put Blade Runners and one Inflated Pocket Dimension under Caterium; in the game they sit in the Quartz tree). A node opens once any one parent is researched, as Bio-Organic Properties does after any of the four remains. Research in the game file that no tree shows (Signal Systems, Volatile Applications, an unnamed Sulfur node) is listed under `notInTree` and never offered. `data:check` fails when a supplement id is unknown, its name doesn't match the game's, a parent is outside its tree, or a research node is in neither list, so a game update that adds research shows up.
 - **Space Elevator phases and tier gates** are hand-written from the wiki (`data/supplements/progression.json`), at the default 1× cost. Game-mode cost multipliers (1.2) are not applied.
-- **Map data** is limited to node counts per purity for solid resources, crude oil and geysers. Resource wells (water, nitrogen, oil) and node locations are not included.
+- **Map data:** node positions, resources and purities come from `world-nodes.json` (see Sources). `data:check` fails if its counts per resource and purity stop matching `resource-nodes.json`. The map bounds in the generator were checked against a 1.x save: node actors in the save sit exactly at these positions, and the save's fog of war lines up with the picture. Collectibles (Power Slugs, Somersloops, Mercer Spheres) are not included; crash sites come from the save itself.
+
+## World map from a save
+
+`src/save/readMap.ts` reads the world map's part of a save: the fog of war (`mFogOfWarRawData` on the map manager, 512×512 RGBA with how explored each texel is in the blue channel, kept at 256×256), which nodes have an extractor on them (`mExtractableResource`), and where the HUB, the players and the crash sites are.
 
 ## Sources and licensing
 
 - Game data: `CommunityResources/Docs/en-US.json` from Satisfactory 1.2.4.0, © Coffee Stain Studios. Coffee Stain ships this file for community tools; it is kept here so the app works without a game install. All rights remain with Coffee Stain Studios.
+- Node positions (`data/supplements/world-nodes.json`): adapted from [`WorldResourceNodes.json`](https://github.com/rockfactory/satisfactory-logistics/blob/main/src/recipes/WorldResourceNodes.json) in rockfactory/satisfactory-logistics, MIT License, Copyright (c) 2024 Leonardo Ascione; extracted from the game's map.
+- Map picture (`public/map/world.webp`): the in-game map, [File:Map.jpg](https://satisfactory.wiki.gg/wiki/File:Map.jpg) on the Official Satisfactory Wiki. © Coffee Stain Studios.
 - Supplements: adapted from the [Official Satisfactory Wiki](https://satisfactory.wiki.gg/) ([Space Elevator](https://satisfactory.wiki.gg/wiki/Space_Elevator), [Resource node](https://satisfactory.wiki.gg/wiki/Resource_node), research tree diagrams on [MAM](https://satisfactory.wiki.gg/wiki/MAM) and [FICSMAS](https://satisfactory.wiki.gg/wiki/FICSMAS)), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 - Icons: © Coffee Stain Studios, as published on the Official Satisfactory Wiki. Used for a non-commercial fan tool; all rights remain with Coffee Stain Studios.
 - Cross-check: production recipes, cycle times and machine power were compared against the independent 1.2.4.0 extraction in [Satisfunction](https://github.com/jdcravenBD/Satisfunction) (`public/data.js`, CL 502094) and matched exactly.
