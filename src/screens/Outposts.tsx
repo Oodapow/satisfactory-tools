@@ -3,7 +3,7 @@ import { buildingsById, itemName, itemsById, recipesById, resourcesById } from '
 import { fmt } from '../format'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
-import { blankPlan, newId, type PlanPatch } from '../plan/store'
+import { newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
@@ -38,11 +38,8 @@ type TabKey = (typeof TABS)[number]['key']
 
 export function OutpostList({ state }: { state: GameState }) {
   const net = useNetwork(state)
-  const create = () => {
-    const p = blankPlan(`Outpost ${net.outposts.length + 1}`)
-    net.save(p)
-    go(`/outposts/${p.id}/goal`)
-  }
+  // A new outpost starts on the world map: click where it goes and it gets the nodes around it.
+  const create = () => go('/world/new')
   const nameOf = (id: string) => net.outposts.find((o) => o.id === id)?.name ?? 'removed outpost'
 
   return (
@@ -70,6 +67,7 @@ export function OutpostList({ state }: { state: GameState }) {
                   <header className="row between">
                     <strong>{plan.name}</strong>
                     {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
+                    {!plan.location && <span className="badge muted-badge">Not on the map</span>}
                   </header>
                   <div className="io">
                     <span className="io-label">In</span>
@@ -148,6 +146,9 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           aria-label="Outpost name"
         />
         <div className="row">
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            {plan.location ? 'On the map' : 'Place on the map'}
+          </a>
           <a className="button secondary" href={editorPath(plan.id)}>
             Floor plan
           </a>

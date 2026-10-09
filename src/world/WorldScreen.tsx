@@ -4,13 +4,13 @@ import { displayName, iconUrl } from '../data/icons'
 import type { Purity, WorldNode } from '../data/game/types'
 import { worldMap, worldMapOverview, worldMapTiles } from '../data/game/worldMap'
 import { blankPlan, useOutposts } from '../plan/store'
-import type { OutpostPlan } from '../plan/types'
+import type { OutpostPlan, ResourceNode } from '../plan/types'
 import { go } from '../router'
 import { FOG_SIZE, type Point } from '../save/readMap'
 import type { GameState } from '../state/gameState'
 import { usePersistentState } from '../storage/persisted'
 import { hide, useTip } from '../ui/tooltip'
-import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, PURITIES, toUnit, toWorld, type Marker } from './model'
+import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, nearby, outpostName, pickable, PURITIES, toUnit, toWorld, type Marker } from './model'
 import './world.css'
 
 // The map is laid out on a square "stage" of STAGE px and zoomed with a CSS transform;
@@ -47,9 +47,6 @@ const GROUPS = [
 const groupOf = (resource: string | null) =>
   resource === null ? UNKNOWN : resource === 'Desc_Geyser_C' ? 'geyser' : (resourcesById.get(resource)?.form ?? 'solid')
 
-/** Only plain nodes can be given to an outpost: wells and geysers need buildings the planner doesn't place. */
-const pickable = (m: Marker) => m.node.kind === 'node' && m.resource !== null
-
 export default function WorldScreen({ state, outpostId }: { state: GameState; outpostId?: string }) {
   const [filters, setFilters] = usePersistentState<Filters>('worldMapFilters', defaultFilters)
   const f = { ...defaultFilters, ...filters }
@@ -57,7 +54,15 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
   const { outposts, save: saveOutpost, update: updateOutpost } = useOutposts()
   const active = outposts.find((o) => o.id === outpostId)
   // Placing: the next click on the map creates an outpost there ('new') or moves the selected one.
-  const [placing, setPlacing] = useState<'new' | 'move' | null>(null)
+  // Every outpost belongs somewhere on the map, so one that isn't on it yet asks to be placed.
+  // Unset means the default for the selected outpost; it resets when the selection changes.
+  const [chosenPlacing, setPlacing] = useState<'new' | 'move' | null | undefined>(undefined)
+  const [placingFor, setPlacingFor] = useState(outpostId)
+  if (placingFor !== outpostId) {
+    setPlacingFor(outpostId)
+    setPlacing(undefined)
+  }
+  const placing = chosenPlacing !== undefined ? chosenPlacing : outpostId === 'new' ? 'new' : active && !active.location ? 'move' : null
 
   const save = state.map
   const fog = useMemo(() => (save ? decodeFog(save.fog) : null), [save])
@@ -72,21 +77,40 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
   const usedBy = new Map<string, OutpostPlan>()
   for (const o of outposts) for (const n of o.nodes) if (n.fromMap) usedBy.set(n.id, o)
 
+  // An outpost keeps a name made from its resources until you rename it.
+  const fallbackName = `Outpost ${outposts.length + 1}`
+  const nameFor = (nodes: ResourceNode[]) => outpostName(nodes, displayName, fallbackName)
+  const autoNamed = (o: OutpostPlan) => o.name === outpostName(o.nodes, displayName, o.name) || /^Outpost \d+$/.test(o.name)
+  const withNodes = (o: OutpostPlan, nodes: ResourceNode[]) => ({ nodes, ...(autoNamed(o) ? { name: nameFor(nodes) } : {}) })
+  const asNode = (node: WorldNode): ResourceNode => ({ id: node.id, resource: node.resource, purity: node.purity, fromMap: true })
+
   const toggleNode = (node: WorldNode) => {
     if (!active) return
+    // A node belongs to one outpost at most.
+    const owner = usedBy.get(node.id)
+    if (owner && owner.id !== active.id) return
     const has = active.nodes.some((n) => n.id === node.id)
-    updateOutpost(active.id, {
-      nodes: has
-        ? active.nodes.filter((n) => n.id !== node.id)
-        : [...active.nodes, { id: node.id, resource: node.resource, purity: node.purity, fromMap: true }],
-    })
+    updateOutpost(active.id, withNodes(active, has ? active.nodes.filter((n) => n.id !== node.id) : [...active.nodes, asNode(node)]))
   }
+
+  /** Unclaimed nodes within reach of a spot, for an outpost placed there. */
+  const nodesNear = (p: Point, self?: string) =>
+    nearby(all, p)
+      .filter((m) => {
+        const owner = usedBy.get(m.node.id)
+        return !owner || owner.id === self
+      })
+      .map((m) => asNode(m.node))
 
   const place = (p: Point) => {
     const location = { x: Math.round(p[0]), y: Math.round(p[1]) }
-    if (placing === 'move' && active) updateOutpost(active.id, { location })
-    else {
-      const plan = blankPlan(`Outpost ${outposts.length + 1}`, { location })
+    if (placing === 'move' && active) {
+      // The map-picked nodes follow the outpost to its new spot; nodes added by hand stay.
+      const nodes = [...active.nodes.filter((n) => !n.fromMap), ...nodesNear(p, active.id)]
+      updateOutpost(active.id, { location, ...withNodes(active, nodes) })
+    } else {
+      const nodes = nodesNear(p)
+      const plan = blankPlan(nameFor(nodes), { location, nodes })
       saveOutpost(plan)
       go(`/world/${plan.id}`)
     }
@@ -141,7 +165,11 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
               </button>
             )}
           </div>
-          {placing && <p className="notice small">Click the map where the outpost goes.</p>}
+          {placing && (
+            <p className="notice small">
+              Click the map where {placing === 'move' && active ? <strong>{active.name}</strong> : 'the outpost'} goes. Nodes within 100 m are given to it.
+            </p>
+          )}
           {active && <OutpostNodes plan={active} onRemove={(id) => updateOutpost(active.id, { nodes: active.nodes.filter((n) => n.id !== id) })} />}
         </section>
 
@@ -230,14 +258,16 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
           ))}
           {shown.map((m) => {
             const owner = usedBy.get(m.node.id)
+            const other = owner && owner.id !== active?.id ? owner : undefined
             return (
               <NodeMarker
                 key={m.node.id}
                 marker={m}
                 picked={Boolean(active && owner?.id === active.id)}
-                usedBy={owner && owner.id !== active?.id ? owner.name : undefined}
-                onPick={active && pickable(m) && !placing ? () => toggleNode(m.node) : undefined}
-                hint={active && !pickable(m) && m.node.kind === 'node' ? 'unlock it to plan with it' : undefined}
+                usedBy={other?.name}
+                // A node another outpost has can't be taken; clicking it selects that outpost instead.
+                onPick={placing ? undefined : other ? () => go(`/world/${other.id}`) : active && pickable(m) ? () => toggleNode(m.node) : undefined}
+                hint={active && !pickable(m) && m.node.kind === 'node' ? 'unlock it to plan with it' : other ? 'click to select it' : undefined}
               />
             )
           })}

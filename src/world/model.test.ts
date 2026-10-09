@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { worldMap } from '../data/game/worldMap'
 import { FOG_SIZE, type SaveMap } from '../save/readMap'
 import type { GameState } from '../state/gameState'
-import { decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, toUnit, toWorld } from './model'
+import { AUTO_RADIUS, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, outpostName, toUnit, toWorld } from './model'
 
 const b = worldMap.bounds
 const encode = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes))
@@ -115,5 +115,28 @@ describe('markers', () => {
   it('knows geysers once geothermal power is unlocked', () => {
     expect(knowsResource(availability(start), 'Desc_Geyser_C')).toBe(false)
     expect(knowsResource(availability(everything), 'Desc_Geyser_C')).toBe(true)
+  })
+})
+
+describe('outposts on the map', () => {
+  const everything: GameState = { source: 'save', purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5, spoilers: 'hide' }
+  const all = markers(worldMap, everything, true)
+
+  it('finds the plain nodes near a spot, nearest first', () => {
+    const iron = worldMap.nodes.find((n) => n.kind === 'node' && n.resource === 'Desc_OreIron_C')!
+    const near = nearby(all, [iron.x + 100, iron.y])
+    expect(near[0].node.id).toBe(iron.id)
+    for (const m of near) {
+      expect(m.node.kind).toBe('node')
+      expect(Math.hypot(m.node.x - iron.x - 100, m.node.y - iron.y)).toBeLessThanOrEqual(AUTO_RADIUS)
+    }
+    expect(nearby(all, [b.west - 1e6, b.north - 1e6])).toEqual([])
+  })
+
+  it('names an outpost after what it mines', () => {
+    const name = (id: string) => ({ a: 'Iron Ore', b: 'Copper Ore', c: 'Coal' })[id] ?? id
+    expect(outpostName([], name, 'Outpost 3')).toBe('Outpost 3')
+    expect(outpostName([{ resource: 'b' }, { resource: 'a' }, { resource: 'a' }], name, '')).toBe('Iron Ore ×2 · Copper Ore')
+    expect(outpostName([{ resource: 'c' }, { resource: 'b' }], name, '')).toBe('Coal · Copper Ore')
   })
 })

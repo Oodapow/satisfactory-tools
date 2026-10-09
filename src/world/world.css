@@ -71,3 +71,8 @@
 .wm-controls button { background: var(--surface); min-width: 36px; }
 .wm-credit { position: absolute; left: 8px; bottom: 6px; margin: 0; font-size: .7rem; color: #aab; }
 .wm-credit a { color: inherit; }
+
+/* Nodes another outpost has: dimmed, with a small pin. Clicking one selects that outpost. */
+.wm-node.used { cursor: pointer; }
+.wm-node.used::before { content: ''; position: absolute; left: -5px; top: -7px; width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--accent); border: 2px solid #fff; }
+.wm-node.picked::before { content: ''; position: absolute; left: -5px; top: -7px; width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #fff; border: 2px solid var(--accent); }

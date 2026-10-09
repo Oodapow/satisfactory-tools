@@ -84,3 +84,29 @@ export function exploredBox(fog: Uint8Array): { left: number; top: number; right
   if (right < 0) return null
   return { left: left / FOG_SIZE, top: top / FOG_SIZE, right: (right + 1) / FOG_SIZE, bottom: (bottom + 1) / FOG_SIZE }
 }
+
+/** Nodes within this distance of a newly placed outpost are given to it: 100 m, in cm. */
+export const AUTO_RADIUS = 10_000
+
+/** Only plain nodes of known resources can be given to an outpost: wells and geysers need buildings the planner doesn't place. */
+export const pickable = (m: Marker) => m.node.kind === 'node' && m.resource !== null
+
+/** Pickable markers within `radius` of a world position, nearest first. */
+export function nearby(list: Marker[], [x, y]: Point, radius = AUTO_RADIUS): Marker[] {
+  const dist = (m: Marker) => Math.hypot(m.node.x - x, m.node.y - y)
+  return list.filter((m) => pickable(m) && dist(m) <= radius).sort((a, b) => dist(a) - dist(b))
+}
+
+/**
+ * A name from what an outpost mines, most nodes first: "Iron Ore ×2 · Copper Ore".
+ * `nameOf` turns a resource id into its display name.
+ */
+export function outpostName(nodes: { resource: string }[], nameOf: (id: string) => string, fallback: string) {
+  const counts = new Map<string, number>()
+  for (const n of nodes) counts.set(n.resource, (counts.get(n.resource) ?? 0) + 1)
+  if (counts.size === 0) return fallback
+  return [...counts]
+    .sort((a, b) => b[1] - a[1] || nameOf(a[0]).localeCompare(nameOf(b[0])))
+    .map(([id, n]) => (n > 1 ? `${nameOf(id)} ×${n}` : nameOf(id)))
+    .join(' · ')
+}
