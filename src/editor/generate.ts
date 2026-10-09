@@ -8,7 +8,7 @@
 // the gutter. Where a source feeds several consumers it gets splitters right after it; where a
 // consumer takes from several sources it gets mergers right before it. All belts are routed
 // later, on the grid (gridRouter.ts). Fluids get pipes and pipeline junctions instead of belts,
-// splitters and mergers. Power runs on straight power lines: a pole right of every machine,
+// splitters and mergers. Power lines run on the grid too: a pole right of every machine,
 // chained along each line, from the power ports to the generators and machines.
 import { itemsById } from '../data'
 import { anchors, G, inHandle, outHandle, poleHandle, SIZE, sideDir, SPREAD, type Cell, type Side } from './grid'
@@ -19,7 +19,8 @@ export { fmt }
 export type { PortLink } from './layout'
 export type ProposalInput = LayoutInput
 
-const MACHINE_PITCH = SIZE.machine.w + 2
+/** Each machine has its pole one cell to its right, then a free grid line for the power line to the next pole. */
+const MACHINE_PITCH = SIZE.machine.w + 1 + SIZE.pole.w + 2
 /** Grid cells between manifold rows, and between joints in a chain. */
 const ROW = 4
 const FLOOR_GAP = 6
@@ -135,7 +136,7 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     )
     const mx = (i: number) => margin + i * MACHINE_PITCH
     const n = l.machines
-    powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + SIZE.machine.w, y: mt + 1 } })) })
+    powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + SIZE.machine.w + 1, y: mt + SIZE.machine.h / 2 - SIZE.pole.h / 2 } })) })
 
     // What machine i takes or makes per minute: the first ones run full, the last one idles part of the time.
     const load = (perMin: number) => (i: number) => (l.busy > EPS ? (perMin / l.busy) * Math.min(1, Math.max(0, l.busy - i)) : 0)
@@ -193,7 +194,7 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     const at = { x: portX, y: portY }
     const nid = block('port', at, { kind: 'port', ...data }, 0)
     const handle = p.direction === 'in' ? 'out' : 'in'
-    const pole = { x: portX - 5, y: portY + 1 }
+    const pole = { x: portX - 3 - SIZE.pole.w, y: portY + SIZE.port.h / 2 - SIZE.pole.h / 2 }
     if (p.transport === 'power') portPower.push({ node: nid, handle, pole })
     else if (p.transport === 'resource') portPower.push({ node: nid, handle: 'power', pole })
     ends.set(`${p.direction === 'in' ? 'o' : 'i'}p:${pid}`, { node: nid, handle, at: { x: portX + SIZE.port.w, y: portY + SIZE.port.h / 2 }, side: 'r', floor: 0 })
@@ -280,7 +281,10 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   return { nodes, edges, maxBeltTier, maxPipeTier, version: LAYOUT_VERSION, generatedAt: new Date().toISOString(), notes }
 }
 
-/** Give each pole's power lines the connection points round the pole that face them, so wires don't cross over the pole. */
+/**
+ * Give each pole's power lines the connection points round the pole that face them, so lines don't
+ * wrap round the pole. Lines to machines and ports pick first, since those sit right beside it.
+ */
 function nearestHandles(nodes: MicroNode[], edges: BeltEdge[]) {
   const byId = new Map(nodes.map((n) => [n.id, n]))
   const point = (id: string, handle: string | null | undefined) => {
@@ -298,8 +302,10 @@ function nearestHandles(nodes: MicroNode[], edges: BeltEdge[]) {
       .filter((e) => e.source === pole.id || e.target === pole.id)
       .map((e) => {
         const far = e.source === pole.id ? point(e.target, e.targetHandle) : point(e.source, e.sourceHandle)
-        return { e, angle: Math.atan2(far.y - c.y, far.x - c.x) }
+        const other = byId.get(e.source === pole.id ? e.target : e.source)
+        return { e, angle: Math.atan2(far.y - c.y, far.x - c.x), toPole: other?.type === 'pole' }
       })
+      .sort((p, q) => Number(p.toPole) - Number(q.toPole))
     for (const { e, angle } of mine) {
       let best = ''
       let bestD = Infinity

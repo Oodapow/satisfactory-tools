@@ -94,7 +94,7 @@ export function inferFlows(nodes: MicroNode[], edges: BeltEdge[]): Map<string, F
   // Machine outputs and ports feed in what they make; machine inputs and ports take what they need;
   // a line set by hand carries at most its rate. Joints pass anything through.
   // A machine only runs as busy as its outputs can get rid of what it makes: the last machines on a
-  // manifold idle part of the time (#73). Each machine's share of busy time comes from the sinks
+  // manifold idle part of the time (#60). Each machine's share of busy time comes from the sinks
   // backwards: solve with every output able to make its full rate and every input taking its
   // machine's busy share, see what each output got rid of, and repeat until that settles. The
   // final flow then has every machine make and take its busy share.

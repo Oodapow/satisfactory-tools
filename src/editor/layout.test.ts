@@ -30,7 +30,7 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   ...patch,
   recipeChoices: { ...standard, ...patch.recipeChoices },
 })
-/** Belts and pipes: power lines are straight wires and skip the grid. */
+/** Belts and pipes, without power lines. */
 const lines = <E extends { data?: { medium?: string } }>(edges: E[]) => edges.filter((e) => e.data?.medium !== 'power')
 const ironImport = (perMin: number) => ({ linkId: 'ore', other: 'Iron Fields', transport: 'belt' as const, item: 'Desc_OreIron_C', perMin })
 // The example from #13: 20 Reinforced Iron Plate/min from 240 Iron Ore/min.
@@ -107,7 +107,7 @@ describe('floor plan on the grid', () => {
 
   it('routes every belt with at most one belt per grid edge', () => {
     const { routes, clashes } = routeFloorPlan(graph.nodes, graph.edges)
-    expect(routes.size).toBe(lines(graph.edges).length)
+    expect(routes.size).toBe(graph.edges.length)
     expect(clashes).toEqual([])
     const seen = new Map<string, string>()
     for (const [id, pts] of routes)
@@ -139,7 +139,7 @@ describe('bigger outposts', () => {
     const solved = solvePlan(plan({ goals: [{ kind: 'item', item, perMin }], recipeChoices: {} }), all)
     const g = proposeLayout({ solved, incoming: [], outgoing: [], maxBeltTier: tier })
     const r = routeFloorPlan(g.nodes, g.edges)
-    expect(r.routes.size).toBe(lines(g.edges).length)
+    expect(r.routes.size).toBe(g.edges.length)
     expect(r.clashes).toEqual([])
     // What each belt carries can be worked out again from the blocks it joins.
     const flows = inferFlows(g.nodes, g.edges)

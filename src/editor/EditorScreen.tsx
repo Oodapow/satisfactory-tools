@@ -665,7 +665,7 @@ const jointInfo: Partial<Record<MicroNode['data']['kind'], [string, string]>> = 
   splitter: ['Splitter', 'One belt in at the back, up to three out: ahead, left and right. Its connection points turn to face the belts on their own.'],
   merger: ['Merger', 'Up to three belts in: back, left and right. One out ahead. Its connection points turn to face the belts on their own.'],
   junction: ['Pipeline Junction', 'Four pipe connections, each one in or out: it splits a pipe, joins pipes, or both. Fluids never go through splitters or mergers.'],
-  pole: ['Power Pole', 'Takes as many power lines as the game allows for its Mk (4, 7 or 10), one per connection point. Power lines run straight, not along the grid.'],
+  pole: ['Power Pole', 'Takes as many power lines as the game allows for its Mk (4, 7 or 10), one per connection point; a Mk.3 shows eight here. Power lines run on the grid.'],
 }
 
 /**

@@ -431,7 +431,7 @@ export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltDa
     return (
       <section>
         <h3>{name}</h3>
-        <p className="ne-help">Carries power between a pole and what it feeds. Power lines run straight, not along the grid.</p>
+        <p className="ne-help">Carries power between a pole and what it feeds. Power lines run on the grid like belts, after belts and pipes have their routes.</p>
         <div className="ne-actions">
           <button type="button" className="danger" onClick={onDelete}>
             Delete

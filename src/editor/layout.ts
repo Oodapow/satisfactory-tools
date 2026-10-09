@@ -10,7 +10,7 @@
 //   of the best unlocked tier can't carry its input or output, or when it would have more
 //   than MAX_PER_LINE machines. All machines in a step run at the solver's clock. When they
 //   don't divide evenly the manifold feeds them in order, so the first ones run full and the
-//   last one idles part of the time (#73).
+//   last one idles part of the time (#60).
 // - Imports and exports that one belt can't carry get one port per belt.
 // - Belts pair each item's sources with its consumers in order, never above either's rate.
 import { buildingsById, itemName, itemsById, recipesById } from '../data'
@@ -271,7 +271,7 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
   }
   const flows: Flow[] = []
   // Surplus of an item a line also uses leaves through the end of that line's manifold, as
-  // overflow past its last machine, not split off before its first (#73). The last line that
+  // overflow past its last machine, not split off before its first (#60). The last line that
   // uses it takes it, if its belt has room.
   for (const [item, cons] of consumers) {
     const lineSlots = cons.filter((c) => 'line' in c.end).sort((a, b) => a.order - b.order)

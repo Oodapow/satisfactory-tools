@@ -5,6 +5,7 @@ import { solvePlan } from '../plan/network'
 import type { OutpostPlan } from '../plan/types'
 import { connection, place } from './connect'
 import { inferFlows } from './flow'
+import { routeFloorPlan, routeSegments } from './gridRouter'
 import { gridBalance } from './power'
 import { proposeLayout } from './generate'
 import { cellOf, edgeMedium, overlaps, poleSize, type BlockKind } from './grid'
@@ -32,13 +33,13 @@ const coalPower = () =>
     maxBeltTier: 3,
     maxPoleTier: 1,
   })
-const plates = () =>
-  proposeLayout({
-    solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }], recipeChoices: { Desc_IronScrew_C: 'Recipe_Screw_C' } }), all),
-    incoming: [],
-    outgoing: [],
-    maxBeltTier: 3,
-  })
+const plateInput = () => ({
+  solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }], recipeChoices: { Desc_IronScrew_C: 'Recipe_Screw_C' } }), all),
+  incoming: [],
+  outgoing: [],
+  maxBeltTier: 3,
+})
+const plates = () => proposeLayout(plateInput())
 const byId = (g: MicroGraph) => new Map(g.nodes.map((n) => [n.id, n]))
 
 describe('pipes (#47)', () => {
@@ -83,6 +84,26 @@ describe('power (#48)', () => {
           }
       for (const p of poles) expect(seen.has(p), p).toBe(true)
     })
+
+  it('runs power lines on the grid, clear of belts and of each other', () => {
+    const mk3 = (tier: number) => proposeLayout({ ...plateInput(), maxPoleTier: tier })
+    for (const g of [coalPower(), plates(), mk3(2), mk3(3)]) {
+      const nodes = byId(g)
+      const r = routeFloorPlan(g.nodes, g.edges)
+      expect(r.clashes).toEqual([])
+      const seen = new Map<string, string>()
+      for (const e of g.edges) {
+        const pts = r.routes.get(e.id)!
+        expect(pts, e.id).toBeDefined()
+        // Only horizontal and vertical runs between grid points.
+        for (let i = 1; i < pts.length; i++) expect(pts[i].x === pts[i - 1].x || pts[i].y === pts[i - 1].y, e.id).toBe(true)
+        for (const s of routeSegments(pts)) {
+          expect(seen.get(s), `${e.id} (${edgeMedium(e, nodes)}) shares ${s} with ${seen.get(s)}`).toBeUndefined()
+          seen.set(s, e.id)
+        }
+      }
+    }
+  })
 })
 
 describe('connection points (#50)', () => {
@@ -161,11 +182,11 @@ describe('grid (#52)', () => {
     const placed = place(g.nodes, { id: 'new', type: 'machine', position: { ...m.position }, data: m.data })
     expect(placed.position).not.toEqual(m.position)
     for (const n of g.nodes.filter((x) => x.type && x.type !== 'floor'))
-      expect(overlaps(cellOf(placed), 'machine', cellOf(n), n.type as BlockKind, n.type === 'pole' ? 0 : 1), n.id).toBe(false)
+      expect(overlaps(cellOf(placed), 'machine', cellOf(n), n.type as BlockKind, 1), n.id).toBe(false)
   })
 })
 
-describe('full clock and overflow (#73)', () => {
+describe('full clock and overflow (#60)', () => {
   it('runs every machine at 100% and lets the last one on the manifold idle', () => {
     const g = proposeLayout({
       solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], recipeChoices: { Desc_IronPlate_C: 'Recipe_IronPlate_C', Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all),

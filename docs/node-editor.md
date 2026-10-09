@@ -48,7 +48,7 @@ With no outposts yet, the panel offers **Load example outposts**: Iron Fields (t
 The first time you open an outpost, the editor proposes a floor plan from the plan's solution (`src/editor/layout.ts`, then `generate.ts` puts it on the grid):
 
 - **One floor per production type.** Steps that use the same machine at the same depth of the chain share a floor: smelting, then plates and rods, then screws, then assembly. A floor sits one level above the highest floor that feeds it, so raw processing is at the bottom and the goal at the top. Each floor's label gives its size in foundations (machines side by side along the manifold, a belt per input and output, a walkway) and its height.
-- **Manifolds.** Each step is a row of identical machines. Above it, a splitter chain per ingredient feeds every machine; below it, a merger chain per product collects them. Machines run at full clock (#73): 2.5 machines of work is 3 machines at 100%, and the manifold feeds them in order, so the first two run full and the last one idles half the time. Belts show that: full loads into the first machines, less into the last. A plan can ask to underclock them all evenly instead.
+- **Manifolds.** Each step is a row of identical machines. Above it, a splitter chain per ingredient feeds every machine; below it, a merger chain per product collects them. Machines run at full clock (#60): 2.5 machines of work is 3 machines at 100%, and the manifold feeds them in order, so the first two run full and the last one idles half the time. Belts show that: full loads into the first machines, less into the last. A plan can ask to underclock them all evenly instead.
 - **Lines split to fit your best belt.** When one belt (or pipe) of your best tier can't carry a step's input or output, the step becomes several parallel lines, each with its own belts. A line also splits above 16 machines. Imports and exports that need more than one belt get one port per belt. Each belt gets the lowest Mk that carries its rate, and turns red only when even the best can't (one machine needing more than a belt carries).
 - **Surplus overflows.** When the outpost has more of something than it uses (ore from a node, say), the surplus leaves through the end of the manifold that uses it: the belt carries on past the last machine to the export port, instead of being split off before the first one. That only happens when the belt has room; otherwise the surplus gets its own belt.
 - **Imports are honored.** Anything the plan imports, say 240 Screws/min by truck, arrives at a port and is not made here.
@@ -68,9 +68,9 @@ Each line on the floor plan is one of three kinds, and each kind has its own col
 
 - **Belts** (orange) carry solids. They split at splitters and join at mergers.
 - **Pipes** (blue, thicker) carry fluids. They split and join at **pipeline junctions**, never at splitters or mergers. A junction has four connection points, each one in or out. Pipes are sized against pipeline Mk rates (300 and 600/min).
-- **Power lines** (thin yellow) run straight from a **power pole** to a machine, generator, extractor, power port or another pole, like wires in the game. They don't follow the grid. Poles take the game's number of lines for their Mk (Mk.1 4, Mk.2 7, Mk.3 10), one per connection point round the pole.
+- **Power lines** (thin yellow) run from a **power pole** to a machine, generator, extractor, power port or another pole. They follow the grid like belts: they are routed after belts and pipes, never share a grid edge with them, and only cross them straight through (with a hop). Poles take the game's number of lines for their Mk (Mk.1 4, Mk.2 7, Mk.3 10), one per connection point on the pole's border: the middle of each side, then the corners. A 2x2 pole has eight such points, so a Mk.3 shows eight of its ten.
 
-The proposal wires power on its own: a pole right of every machine, chained along each line; a riser through every line's first pole, bottom floor first; and a pole beside each power port and resource node (extractors need power too), chained down the port column. No pole takes more than four lines, so it works with Mk.1 poles; it uses the best pole you have unlocked.
+The proposal wires power on its own: a pole one cell right of every machine (machines sit further apart to leave a grid line free past each pole), chained along each line; a riser through every line's first pole, bottom floor first; and a pole beside each power port and resource node (extractors need power too), chained down the port column. No pole takes more than four lines, so it works with Mk.1 poles; it uses the best pole you have unlocked.
 
 ### Connection points
 
@@ -86,7 +86,7 @@ Select a belt to see its item and rate. Changing either sets it by hand, and the
 
 Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top, one output per product along its bottom, and a power point on its right.
 
-Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts can reach its connection points. Power poles may sit right against a block.
+Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts and power lines can reach its connection points.
 
 Belts and pipes are routed along grid lines (`src/editor/gridRouter.ts`) with these rules:
 

@@ -36,11 +36,11 @@ export function overlaps(a: Cell, at: BlockKind, b: Cell, bt: BlockKind, gap = 0
 
 /**
  * The free grid spot nearest to `want` for a block of `type`: a grid line clear all round it, so
- * belts can reach its connection points. Power poles may sit right against a block.
+ * belts and power lines can reach its connection points.
  */
 export function freeSpot(nodes: MicroNode[], id: string, type: BlockKind, want: Cell): Cell {
   const others = nodes.filter((n) => n.id !== id && isBlock(n)).map((n) => ({ at: cellOf(n), type: n.type as BlockKind }))
-  const free = (c: Cell) => others.every((o) => !overlaps(c, type, o.at, o.type, type === 'pole' || o.type === 'pole' ? 0 : 1))
+  const free = (c: Cell) => others.every((o) => !overlaps(c, type, o.at, o.type, 1))
   if (free(want)) return want
   for (let r = 1; r < 200; r++) {
     let best: Cell | undefined
@@ -117,20 +117,27 @@ export function anchors(type: BlockKind, data: MicroNodeData, o: Orient = UPRIGH
     return out
   }
   if (type === 'pole') {
-    // Round the pole, starting at the top and going clockwise. Power lines are straight, so these needn't sit on grid vertices.
-    const n = poleSize(data)
+    // Grid vertices round the pole, so power lines run on the grid like belts: the middle of each
+    // side first, then the corners. A 2x2 pole has eight, so a Mk.3 shows eight of its ten.
+    const ring: Anchor[] = [
+      { dx: w / 2, dy: 0, side: 't' },
+      { dx: w, dy: h / 2, side: 'r' },
+      { dx: w / 2, dy: h, side: 'b' },
+      { dx: 0, dy: h / 2, side: 'l' },
+      // Corners leave up or down: a pole often stands one cell from a machine's side.
+      { dx: w, dy: 0, side: 't' },
+      { dx: w, dy: h, side: 'b' },
+      { dx: 0, dy: h, side: 'b' },
+      { dx: 0, dy: 0, side: 't' },
+    ]
     const out: Record<string, Anchor> = {}
-    for (let i = 0; i < n; i++) {
-      const t = -Math.PI / 2 + (i * 2 * Math.PI) / n
-      const x = Math.cos(t)
-      const y = Math.sin(t)
-      const side: Side = Math.abs(x) > Math.abs(y) ? (x > 0 ? 'r' : 'l') : y > 0 ? 'b' : 't'
-      out[poleHandle(i)] = { dx: w / 2 + x * 0.95, dy: h / 2 + y * 0.95, side }
-    }
+    ring.slice(0, poleSize(data)).forEach((a, i) => (out[poleHandle(i)] = a))
     return out
   }
   if (type === 'port') {
-    const main: Record<string, Anchor> = data.kind === 'port' && data.direction === 'out' ? { in: at('l') } : { out: at('r') }
+    // Power ports face their pole on the left; the rest face the belts on the right.
+    const power = data.kind === 'port' && data.transport === 'power'
+    const main: Record<string, Anchor> = data.kind === 'port' && data.direction === 'out' ? { in: at('l') } : { out: at(power ? 'l' : 'r') }
     // Extractors on a resource node draw power from the side away from their belt.
     return hasPower(data) ? { ...main, [POWER_HANDLE]: at('l') } : main
   }
@@ -217,8 +224,8 @@ export function orientAll(nodes: MicroNode[], edges: BeltEdge[]): Map<string, Or
     if (!isBlock(n) || n.type === 'machine' || n.type === 'pole') continue
     const links: { handle: string; at: Cell }[] = []
     for (const e of edges) {
-      // Power lines are straight wires: they don't turn anything.
-      if (edgeMedium(e, byId) === 'power') continue
+      // Power lines don't turn joints, but an extractor's port also faces its pole.
+      if (n.type !== 'port' && edgeMedium(e, byId) === 'power') continue
       if (e.source === n.id) {
         const at = peerPoint(e.target, e.targetHandle)
         if (at) links.push({ handle: e.sourceHandle ?? 'out', at })

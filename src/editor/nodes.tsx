@@ -282,15 +282,22 @@ export function FloorBand({ data }: NodeProps<MicroNode>) {
   )
 }
 
-/** A belt, pipe or power line on the floor plan. Belts and pipes follow their grid route; power lines run straight. */
+/** A belt, pipe or power line on the floor plan, following its grid route. */
 export function BeltLine(props: EdgeProps<BeltEdge>) {
   const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected } = props
   const view = useContext(FloorPlanContext)
   const load = view?.loads.get(id)
   const medium = load?.medium ?? data?.medium ?? 'solid'
-  if (medium === 'power')
-    return <BaseEdge path={`M${sourceX},${sourceY}L${targetX},${targetY}`} className={`ne-wire${selected ? ' selected' : ''}`} />
-  return <FlowLine {...props} load={load} medium={medium} grid={view && !view.dragging.has(source) && !view.dragging.has(target) ? view.routes.get(id) : undefined} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+  const grid = view && !view.dragging.has(source) && !view.dragging.has(target) ? view.routes.get(id) : undefined
+  if (medium === 'power') return <WireLine id={id} grid={grid} selected={!!selected} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+  return <FlowLine {...props} load={load} medium={medium} grid={grid} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+}
+
+/** A power line: on the grid like a belt, but thin, with no direction and nothing carried. */
+function WireLine({ id, grid, selected, clash, sx, sy, tx, ty, sp, tp }: { id: string; grid?: Point[]; selected: boolean; clash: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
+  const pts = useMemo(() => grid ?? route(id, { x: sx, y: sy }, sp, { x: tx, y: ty }, tp), [grid, id, sx, sy, sp, tx, ty, tp])
+  const path = useRoutedPath(id, pts)
+  return <BaseEdge path={path} className={`ne-wire${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
 }
 
 function FlowLine({
