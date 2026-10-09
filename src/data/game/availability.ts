@@ -57,8 +57,8 @@ export function availability(state: GameState): Availability {
 }
 
 /**
- * Schematics the player could buy next. MAM research trees are an approximation:
- * the game's data file does not say which node in a tree comes before which.
+ * Schematics the player could buy next. MAM research follows the tree layout in
+ * data/supplements/mam-trees.json: a node is offered once one of its parents is researched.
  */
 export function purchasable(state: GameState, unlocked = availability(state)): Schematic[] {
   const has = (id: SchematicId) => unlocked.schematics.has(id)
@@ -91,6 +91,7 @@ export function purchasable(state: GameState, unlocked = availability(state)): S
       case 'milestone':
         return tierOpen(s.tier)
       case 'mam':
+        return accessOpen('mam') && !!s.mamParents && (s.mamParents.length === 0 || s.mamParents.some(has))
       case 'hard-drive':
         return accessOpen('mam')
       case 'alternate':

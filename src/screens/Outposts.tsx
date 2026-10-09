@@ -5,6 +5,7 @@ import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, recipesFor, unusedImports } from '../plan/solve'
 import { blankPlan, newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
+import { transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
 import { editorPath } from '../editor/route'
 import { go } from '../router'
@@ -188,7 +189,7 @@ type StepProps = { update: (p: PlanPatch) => void; available: ReturnType<typeof 
 // Goal tab: what the outpost must deliver.
 function GoalStep({ plan, state, update, available }: StepProps & { plan: OutpostPlan; state: GameState }) {
   const cat = catalog(state)
-  const products = cat.items.filter((i) => recipesFor(i.id, available.recipes).length > 0 || resourcesById.has(i.id))
+  const products = cat.items.filter((i) => recipesFor(i.id, available).length > 0 || resourcesById.has(i.id))
   const gens = generatorsFor(available.buildings)
   const setGoal = (i: number, g: Goal) => update({ goals: plan.goals.map((x, j) => (j === i ? g : x)) })
   const hasPower = plan.goals.some((g) => g.kind === 'power')
@@ -412,7 +413,11 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                     value={imp.via}
                     onChange={(via) => set({ via: via as Transport })}
                     aria-label="Transport"
-                    options={TRANSPORTS.map((t) => ({ value: t, label: `by ${t}`, icon: TRANSPORT_ICONS[t] }))}
+                    options={TRANSPORTS.filter((t) => t === imp.via || transportUnlocked(t, available)).map((t) => ({
+                      value: t,
+                      label: `by ${t}`,
+                      icon: TRANSPORT_ICONS[t],
+                    }))}
                   />
                   <button
                     type="button"
@@ -538,7 +543,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
               {solution.steps.map((s) => {
                 const recipe = recipesById.get(s.recipe)!
                 const product = Object.keys(solution.recipes).find((i) => solution.recipes[i] === s.recipe) ?? recipe.products[0].item
-                const options = recipesFor(product, available.recipes)
+                const options = recipesFor(product, available)
                 const isSuggested = suggested[product] === s.recipe || (!suggested[product] && options[0]?.id === s.recipe)
                 return (
                   <tr key={s.recipe}>

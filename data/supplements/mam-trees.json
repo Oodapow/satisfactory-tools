@@ -1,0 +1,823 @@
+{
+  "_source": "Transcribed from the research tree diagrams on the Official Satisfactory Wiki (https://satisfactory.wiki.gg/wiki/MAM and https://satisfactory.wiki.gg/wiki/FICSMAS), CC BY-NC-SA 4.0. The game's Docs file says which folder a research node lives in but not the tree layout. Each tree lists its nodes top to bottom; `parents` are the nodes drawn directly above it. A node opens when any one parent is researched (as with Bio-Organic Properties, which needs just one of the four remains); nodes without parents open with the tree. `name` is the game's display name, checked by the generator so a mistyped id fails.",
+  "trees": {
+    "AlienOrganisms": {
+      "name": "Alien Megafauna",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_AlienOrganisms.png",
+      "nodes": [
+        {
+          "id": "Research_ACarapace_0_C",
+          "name": "Hog Research",
+          "parents": []
+        },
+        {
+          "id": "Research_AO_Hatcher_C",
+          "name": "Hatcher Research",
+          "parents": []
+        },
+        {
+          "id": "Research_AO_Stinger_C",
+          "name": "Stinger Research",
+          "parents": []
+        },
+        {
+          "id": "Research_AOrgans_0_C",
+          "name": "Spitter Research",
+          "parents": []
+        },
+        {
+          "id": "Research_AO_DNACapsule_C",
+          "name": "Bio-Organic Properties",
+          "parents": [
+            "Research_ACarapace_0_C",
+            "Research_AO_Hatcher_C",
+            "Research_AO_Stinger_C",
+            "Research_AOrgans_0_C"
+          ]
+        },
+        {
+          "id": "Research_AOrgans_2_C",
+          "name": "Protein Inhaler",
+          "parents": [
+            "Research_AO_DNACapsule_C"
+          ]
+        },
+        {
+          "id": "Research_AO_Pre_Rebar_C",
+          "name": "Structural Analysis",
+          "parents": [
+            "Research_AO_DNACapsule_C"
+          ]
+        },
+        {
+          "id": "Research_ACarapace_2_C",
+          "name": "The Rebar Gun",
+          "parents": [
+            "Research_AO_Pre_Rebar_C"
+          ]
+        },
+        {
+          "id": "Research_AOrgans_3_C",
+          "name": "Inflated Pocket Dimension",
+          "parents": [
+            "Research_AO_DNACapsule_C"
+          ]
+        },
+        {
+          "id": "Research_ACarapace_3_C",
+          "name": "Expanded Toolbelt",
+          "parents": [
+            "Research_AOrgans_3_C"
+          ]
+        },
+        {
+          "id": "Research_AOrganisms_2_C",
+          "name": "Hostile Organism Detection",
+          "parents": [
+            "Research_AO_DNACapsule_C"
+          ]
+        }
+      ]
+    },
+    "AlienTech": {
+      "name": "Alien Technology",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_AlienTechnology.png",
+      "nodes": [
+        {
+          "id": "Research_Alien_SAM_C",
+          "name": "SAM Analysis",
+          "parents": []
+        },
+        {
+          "id": "Research_Alien_ActiveSAM_C",
+          "name": "SAM Reanimation",
+          "parents": [
+            "Research_Alien_SAM_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_SAMFluctuator_C",
+          "name": "SAM Fluctuator",
+          "parents": [
+            "Research_Alien_ActiveSAM_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_MercerSphere_C",
+          "name": "Mercer Sphere Analysis",
+          "parents": []
+        },
+        {
+          "id": "Research_Alien_Somersloop_C",
+          "name": "Somersloop Analysis",
+          "parents": []
+        },
+        {
+          "id": "Research_Alien_CentralStorage_C",
+          "name": "Dimensional Depot",
+          "parents": [
+            "Research_Alien_SAMFluctuator_C",
+            "Research_Alien_MercerSphere_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_PortalPotty_C",
+          "name": "SPWN",
+          "parents": [
+            "Research_Alien_SAMFluctuator_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_BoosterBlocker_C",
+          "name": "Alien Energy Harnessing",
+          "parents": [
+            "Research_Alien_SAMFluctuator_C",
+            "Research_Alien_Somersloop_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralStackExpansion_01_C",
+          "name": "Depot Expansion (200%)",
+          "parents": [
+            "Research_Alien_CentralStorage_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralUploadBoost_01_C",
+          "name": "Upload Upgrade: 30/min",
+          "parents": [
+            "Research_Alien_CentralStorage_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_PowerBooster_C",
+          "name": "Power Augmenter",
+          "parents": [
+            "Research_Alien_BoosterBlocker_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_ProductionBooster_C",
+          "name": "Production Amplifier",
+          "parents": [
+            "Research_Alien_BoosterBlocker_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralInventory_C",
+          "name": "Manual Depot Uploader",
+          "parents": [
+            "Research_Alien_CentralStorage_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralStackExpansion_02_C",
+          "name": "Depot Expansion (300%)",
+          "parents": [
+            "Research_Alien_CentralStackExpansion_01_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralUploadBoost_02_C",
+          "name": "Upload Upgrade: 60/min",
+          "parents": [
+            "Research_Alien_CentralUploadBoost_01_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_BoosterFuel_C",
+          "name": "Alien Power Matrix",
+          "parents": [
+            "Research_Alien_PowerBooster_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralStackExpansion_03_C",
+          "name": "Depot Expansion (400%)",
+          "parents": [
+            "Research_Alien_CentralStackExpansion_02_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralUploadBoost_03_C",
+          "name": "Upload Upgrade: 120/min",
+          "parents": [
+            "Research_Alien_CentralUploadBoost_02_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralStackExpansion_04_C",
+          "name": "Depot Expansion (500%)",
+          "parents": [
+            "Research_Alien_CentralStackExpansion_03_C"
+          ]
+        },
+        {
+          "id": "Research_Alien_CentralUploadBoost_04_C",
+          "name": "Upload Upgrade: 240/min",
+          "parents": [
+            "Research_Alien_CentralUploadBoost_03_C"
+          ]
+        }
+      ]
+    },
+    "Caterium": {
+      "name": "Caterium",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_Caterium.png",
+      "nodes": [
+        {
+          "id": "Research_Caterium_0_C",
+          "name": "Caterium",
+          "parents": []
+        },
+        {
+          "id": "Research_Caterium_1_C",
+          "name": "Caterium Ingots",
+          "parents": [
+            "Research_Caterium_0_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_2_C",
+          "name": "Quickwire",
+          "parents": [
+            "Research_Caterium_1_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_2_1_C",
+          "name": "Zipline",
+          "parents": [
+            "Research_Caterium_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_3_C",
+          "name": "Caterium Electronics",
+          "parents": [
+            "Research_Caterium_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_3_2_C",
+          "name": "Stun Rebar",
+          "parents": [
+            "Research_Caterium_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_4_1_C",
+          "name": "AI Limiter",
+          "parents": [
+            "Research_Caterium_3_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_4_2_C",
+          "name": "Power Poles Mk.2",
+          "parents": [
+            "Research_Caterium_3_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_5_C",
+          "name": "High-Speed Connector",
+          "parents": [
+            "Research_Caterium_3_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_6_2_C",
+          "name": "Power Poles Mk.3",
+          "parents": [
+            "Research_Caterium_4_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_5_2_C",
+          "name": "Upgraded Power Connectors",
+          "parents": [
+            "Research_Caterium_6_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_4_1_1_C",
+          "name": "Smart Splitter",
+          "parents": [
+            "Research_Caterium_4_1_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_4_1_2_C",
+          "name": "Power Switch",
+          "parents": [
+            "Research_Caterium_4_1_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_5_1_C",
+          "name": "Priority Power Switch",
+          "parents": [
+            "Research_Caterium_5_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_6_3_C",
+          "name": "Bullet Guidance System",
+          "parents": [
+            "Research_Caterium_5_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_7_1_C",
+          "name": "Programmable Splitter",
+          "parents": [
+            "Research_Caterium_4_1_C",
+            "Research_Caterium_5_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_7_2_C",
+          "name": "Geothermal Generator",
+          "parents": [
+            "Research_Caterium_4_1_C",
+            "Research_Caterium_5_C"
+          ]
+        }
+      ]
+    },
+    "Mycelia": {
+      "name": "Mycelia",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_Mycelia.png",
+      "nodes": [
+        {
+          "id": "Research_Mycelia_1_C",
+          "name": "Mycelia",
+          "parents": []
+        },
+        {
+          "id": "Research_Mycelia_2_C",
+          "name": "Fabric",
+          "parents": [
+            "Research_Mycelia_1_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_8_C",
+          "name": "Toxic Cellular Modification",
+          "parents": [
+            "Research_Mycelia_1_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_4_C",
+          "name": "Medical Properties",
+          "parents": [
+            "Research_Mycelia_1_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_3_C",
+          "name": "Parachute",
+          "parents": [
+            "Research_Mycelia_2_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_7_C",
+          "name": "Expanded Toolbelt",
+          "parents": [
+            "Research_Mycelia_2_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_2_1_C",
+          "name": "Synthetic Polyester Fabric",
+          "parents": [
+            "Research_Mycelia_2_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_GasMask_C",
+          "name": "Gas Mask",
+          "parents": [
+            "Research_Mycelia_2_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_5_C",
+          "name": "Vitamin Inhaler",
+          "parents": [
+            "Research_Mycelia_4_C"
+          ]
+        },
+        {
+          "id": "Research_Mycelia_6_C",
+          "name": "Therapeutic Inhaler",
+          "parents": [
+            "Research_Mycelia_4_C"
+          ]
+        }
+      ]
+    },
+    "Nutrients": {
+      "name": "Nutrients",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_Nutrients.png",
+      "nodes": [
+        {
+          "id": "Research_Nutrients_1_C",
+          "name": "Beryl Nut",
+          "parents": []
+        },
+        {
+          "id": "Research_Nutrients_0_C",
+          "name": "Paleberry",
+          "parents": []
+        },
+        {
+          "id": "Research_Nutrients_2_C",
+          "name": "Bacon Agaric",
+          "parents": []
+        },
+        {
+          "id": "Research_Nutrients_3_C",
+          "name": "Nutritional Processor",
+          "parents": [
+            "Research_Nutrients_1_C",
+            "Research_Nutrients_0_C",
+            "Research_Nutrients_2_C"
+          ]
+        },
+        {
+          "id": "Research_Nutrients_4_C",
+          "name": "Nutritional Inhaler",
+          "parents": [
+            "Research_Nutrients_3_C"
+          ]
+        }
+      ]
+    },
+    "PowerSlugs": {
+      "name": "Power Slugs",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_PowerSlug.png",
+      "nodes": [
+        {
+          "id": "Research_PowerSlugs_1_C",
+          "name": "Blue Power Slugs",
+          "parents": []
+        },
+        {
+          "id": "Research_PowerSlugs_3_C",
+          "name": "Slug Scanning",
+          "parents": [
+            "Research_PowerSlugs_1_C"
+          ]
+        },
+        {
+          "id": "Research_PowerSlugs_4_C",
+          "name": "Yellow Power Slugs",
+          "parents": [
+            "Research_PowerSlugs_1_C"
+          ]
+        },
+        {
+          "id": "Research_PowerSlugs_2_C",
+          "name": "Overclock Production",
+          "parents": [
+            "Research_PowerSlugs_1_C"
+          ]
+        },
+        {
+          "id": "Research_PowerSlugs_5_C",
+          "name": "Purple Power Slugs",
+          "parents": [
+            "Research_PowerSlugs_4_C"
+          ]
+        },
+        {
+          "id": "Research_PowerSlugs_6_C",
+          "name": "Synthetic Power Shards",
+          "parents": [
+            "Research_PowerSlugs_5_C"
+          ]
+        }
+      ]
+    },
+    "Quartz": {
+      "name": "Quartz",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_Quartz.png",
+      "nodes": [
+        {
+          "id": "Research_Quartz_0_C",
+          "name": "Quartz",
+          "parents": []
+        },
+        {
+          "id": "Research_Quartz_1_1_C",
+          "name": "Quartz Crystals",
+          "parents": [
+            "Research_Quartz_0_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_1_2_C",
+          "name": "Silica",
+          "parents": [
+            "Research_Quartz_0_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_2_1_C",
+          "name": "Shatter Rebar",
+          "parents": [
+            "Research_Quartz_1_1_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_2_C",
+          "name": "Crystal Oscillator",
+          "parents": [
+            "Research_Quartz_1_1_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_4_3_C",
+          "name": "Blade Runners",
+          "parents": [
+            "Research_Quartz_1_2_C"
+          ]
+        },
+        {
+          "id": "Research_Caterium_3_1_C",
+          "name": "Inflated Pocket Dimension",
+          "parents": [
+            "Research_Quartz_1_2_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_3_1_C",
+          "name": "The Explorer",
+          "parents": [
+            "Research_Quartz_2_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_3_4_C",
+          "name": "Explosive Resonance Application",
+          "parents": [
+            "Research_Quartz_2_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_4_1_C",
+          "name": "Radio Signal Scanning",
+          "parents": [
+            "Research_Quartz_2_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_4_C",
+          "name": "Radar Technology",
+          "parents": [
+            "Research_Quartz_2_C"
+          ]
+        },
+        {
+          "id": "Research_Quartz_PriorityMerger_C",
+          "name": "Material Resonance Screening",
+          "parents": [
+            "Research_Quartz_2_C"
+          ]
+        }
+      ]
+    },
+    "Sulfur": {
+      "name": "Sulfur",
+      "diagram": "https://satisfactory.wiki.gg/images/MAMResearchTree_Sulfur.png",
+      "nodes": [
+        {
+          "id": "Research_Sulfur_0_C",
+          "name": "Sulfur",
+          "parents": []
+        },
+        {
+          "id": "Research_Sulfur_1_C",
+          "name": "Black Powder",
+          "parents": [
+            "Research_Sulfur_0_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_ExperimentalPower_C",
+          "name": "Experimental Power Generation",
+          "parents": [
+            "Research_Sulfur_0_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_CompactedCoal_C",
+          "name": "Compacted Coal",
+          "parents": [
+            "Research_Sulfur_ExperimentalPower_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_TurboFuel_C",
+          "name": "Turbofuel",
+          "parents": [
+            "Research_Sulfur_ExperimentalPower_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_5_C",
+          "name": "Expanded Toolbelt",
+          "parents": [
+            "Research_Sulfur_1_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_3_1_C",
+          "name": "The Nobelisk Detonator",
+          "parents": [
+            "Research_Sulfur_1_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_3_C",
+          "name": "Smokeless Powder",
+          "parents": [
+            "Research_Sulfur_1_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_RocketFuel_C",
+          "name": "Rocket Fuel",
+          "parents": [
+            "Research_Sulfur_TurboFuel_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_IonizedFuel_C",
+          "name": "Ionized Fuel",
+          "parents": [
+            "Research_Sulfur_TurboFuel_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_4_C",
+          "name": "Cluster Nobelisk",
+          "parents": [
+            "Research_Sulfur_3_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_4_2_C",
+          "name": "Explosive Rebar",
+          "parents": [
+            "Research_Sulfur_3_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_4_1_C",
+          "name": "The Rifle",
+          "parents": [
+            "Research_Sulfur_3_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_5_1_C",
+          "name": "Nuclear Deterrent Development",
+          "parents": [
+            "Research_Sulfur_4_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_5_2_C",
+          "name": "Turbo Rifle Ammo",
+          "parents": [
+            "Research_Sulfur_4_1_C"
+          ]
+        },
+        {
+          "id": "Research_Sulfur_6_C",
+          "name": "Inflated Pocket Dimension",
+          "parents": [
+            "Research_Sulfur_4_C",
+            "Research_Sulfur_4_1_C",
+            "Research_Sulfur_5_1_C",
+            "Research_Sulfur_5_2_C"
+          ]
+        }
+      ]
+    },
+    "XMas": {
+      "name": "FICSMAS Holiday Event",
+      "diagram": "https://satisfactory.wiki.gg/images/FICSMAS_Research_Tree_2024.png",
+      "nodes": [
+        {
+          "id": "Research_XMas_1_C",
+          "name": "FICSMAS Tree Base",
+          "parents": []
+        },
+        {
+          "id": "Research_XMas_1-1_C",
+          "name": "Candy Cane Basher",
+          "parents": [
+            "Research_XMas_1_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_1-2_C",
+          "name": "Candy Cane Decor",
+          "parents": [
+            "Research_XMas_1_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_2_C",
+          "name": "Giant FICSMAS Tree: Upgrade 1",
+          "parents": [
+            "Research_XMas_1_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_2-1_C",
+          "name": "A Friend",
+          "parents": [
+            "Research_XMas_2_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_2-2_C",
+          "name": "FICSMAS Gift Tree",
+          "parents": [
+            "Research_XMas_2_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_3_C",
+          "name": "Giant FICSMAS Tree: Upgrade 2",
+          "parents": [
+            "Research_XMas_2_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_3-1_C",
+          "name": "FICSMAS Lights",
+          "parents": [
+            "Research_XMas_3_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_3-2_C",
+          "name": "It's Snowing!",
+          "parents": [
+            "Research_XMas_3_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_4_C",
+          "name": "Giant FICSMAS Tree: Upgrade 3",
+          "parents": [
+            "Research_XMas_3_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_4-1_C",
+          "name": "FICSMAS Decoration",
+          "parents": [
+            "Research_XMas_4_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_4-2_C",
+          "name": "Snowfight!",
+          "parents": [
+            "Research_XMas_4_C"
+          ]
+        },
+        {
+          "id": "Research_XMas_5_C",
+          "name": "Giant FICSMAS Tree: Upgrade 4",
+          "parents": [
+            "Research_XMas_4_C"
+          ]
+        }
+      ]
+    }
+  },
+  "notInTree": [
+    {
+      "id": "Research_Quartz_3_C",
+      "name": "Signal Systems"
+    },
+    {
+      "id": "Research_Sulfur_2_C",
+      "name": "Volatile Applications"
+    },
+    {
+      "id": "Research_Sulfur_3_2_C",
+      "name": ""
+    }
+  ]
+}

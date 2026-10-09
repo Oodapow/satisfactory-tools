@@ -42,8 +42,8 @@ export function Setup() {
     (r) => !r.events?.length && r.name,
   )
   const allTrees = [...new Set(research.map((r) => r.mamTree ?? 'Other'))].sort()
-  // The game data doesn't say which node in a tree comes first, so a tree's nodes
-  // stay folded until the player has researched something in it or opens it.
+  // A tree's first nodes are offered as soon as the MAM is built, so a tree stays folded
+  // until the player has researched something in it or opens it, keeping tree names a surprise.
   const started = (tree: string) =>
     openTrees.includes(tree) || research.some((r) => (r.mamTree ?? 'Other') === tree && owned(r.id))
   const trees = allTrees.filter(started)
