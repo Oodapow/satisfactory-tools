@@ -55,7 +55,7 @@ export function examplePlans(): { plans: OutpostPlan[]; layout: Partial<EditorLa
     ],
   })
   const power = blankPlan('Coal Power', {
-    goals: [{ kind: 'power', mw: 150, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }],
+    goals: [{ kind: 'power', mw: 200, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }],
     nodes: [{ id: newId(), resource: 'Desc_Coal_C', purity: 'normal' }],
   })
   const plates = blankPlan('Plate Works', {
@@ -70,8 +70,8 @@ export function examplePlans(): { plans: OutpostPlan[]; layout: Partial<EditorLa
     layout: {
       positions: { [iron.id]: { x: 0, y: 0 }, [power.id]: { x: 0, y: 340 }, [plates.id]: { x: 560, y: 140 } },
       powerLines: [
-        { id: newId(), from: power.id, to: plates.id, mw: 100 },
-        { id: newId(), from: power.id, to: iron.id, mw: 50 },
+        { id: newId(), from: power.id, to: plates.id, mw: 140 },
+        { id: newId(), from: power.id, to: iron.id, mw: 60 },
       ],
     },
   }
