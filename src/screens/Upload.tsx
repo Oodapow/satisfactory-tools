@@ -1,12 +1,89 @@
 import { useState } from 'react'
 import { schematicsById, type Schematic } from '../data'
 import { go } from '../router'
+import { gameStateFromSave, parseSave, type SaveImport, type SaveSummary } from '../save/parseSave'
 import { currentTier, emptyGameState, throughTier, useGameState, type GameState } from '../state/gameState'
 
-// Save parsing isn't built yet: this screen shows the intended flow with a
-// fixed sample result, so the next step can be designed against it.
-function mockParse(fileName: string): GameState {
-  const base = throughTier({ ...emptyGameState('save'), saveName: fileName, spaceElevatorPhase: 1 }, 3)
+type Status =
+  | { step: 'pick' }
+  | { step: 'reading'; fileName: string; progress: number }
+  | { step: 'failed'; fileName: string; message: string }
+  | { step: 'done'; result: SaveImport; summary: SaveSummary }
+
+export function Upload() {
+  const [, setState] = useGameState()
+  const [status, setStatus] = useState<Status>({ step: 'pick' })
+  const [dragging, setDragging] = useState(false)
+
+  const accept = (file: File | undefined) => {
+    if (!file) return
+    setStatus({ step: 'reading', fileName: file.name, progress: 0 })
+    parseSave(file, (progress) => setStatus({ step: 'reading', fileName: file.name, progress }))
+      .then((summary) => setStatus({ step: 'done', result: gameStateFromSave(summary, file.name), summary }))
+      .catch((err: Error) => setStatus({ step: 'failed', fileName: file.name, message: err.message }))
+  }
+
+  if (status.step === 'reading') {
+    return (
+      <section className="panel">
+        <h2>Reading {status.fileName}</h2>
+        <progress className="save-progress" value={status.progress} max={1} />
+        <p className="muted">Big saves take a few seconds. Everything stays on your device.</p>
+      </section>
+    )
+  }
+
+  if (status.step === 'done') {
+    return (
+      <UploadResult
+        parsed={status.result.state}
+        summary={status.summary}
+        unknown={status.result.unknown}
+        onUse={(s, next) => (setState(s), go(next))}
+      />
+    )
+  }
+
+  return (
+    <section className="panel">
+      <h2>Upload a save</h2>
+      <p className="muted">
+        On Windows, saves live in <code>%LOCALAPPDATA%\FactoryGame\Saved\SaveGames\</code>. The file is read in your
+        browser and never uploaded anywhere.
+      </p>
+      {status.step === 'failed' && (
+        <p className="notice error" role="alert">
+          Couldn't read <strong>{status.fileName}</strong>. Pick a save from Update 8 or 1.x; older saves and other
+          files can't be read. <span className="muted">({status.message})</span>
+        </p>
+      )}
+      <label
+        className={`dropzone${dragging ? ' dragging' : ''}`}
+        onDragOver={(e) => {
+          e.preventDefault()
+          setDragging(true)
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => {
+          e.preventDefault()
+          setDragging(false)
+          accept(e.dataTransfer.files[0])
+        }}
+      >
+        <input type="file" accept=".sav" hidden onChange={(e) => accept(e.target.files?.[0])} />
+        <strong>Drop your .sav file here</strong>
+        <span className="muted">or click to choose one</span>
+      </label>
+      <button type="button" className="link" onClick={() => go('/sample-save')}>
+        No save handy? Try a sample
+      </button>
+    </section>
+  )
+}
+
+// A fixed mid-game state for trying the app without a save.
+function sampleState(): GameState {
+  const base = throughTier({ ...emptyGameState('save'), saveName: 'Sample Save.sav', spaceElevatorPhase: 1 }, 3)
   return {
     ...base,
     purchased: [
@@ -20,66 +97,42 @@ function mockParse(fileName: string): GameState {
   }
 }
 
-export function Upload() {
-  const [, setState] = useGameState()
-  const [parsed, setParsed] = useState<GameState | null>(null)
-  const [dragging, setDragging] = useState(false)
-
-  const accept = (file: File | undefined) => file && setParsed(mockParse(file.name))
-
-  if (!parsed) {
-    return (
-      <section className="panel">
-        <h2>Upload a save</h2>
-        <p className="muted">
-          On Windows, saves live in <code>%LOCALAPPDATA%\FactoryGame\Saved\SaveGames\</code>.
-        </p>
-        <label
-          className={`dropzone${dragging ? ' dragging' : ''}`}
-          onDragOver={(e) => {
-            e.preventDefault()
-            setDragging(true)
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault()
-            setDragging(false)
-            accept(e.dataTransfer.files[0])
-          }}
-        >
-          <input type="file" accept=".sav" hidden onChange={(e) => accept(e.target.files?.[0])} />
-          <strong>Drop your .sav file here</strong>
-          <span className="muted">or click to choose one</span>
-        </label>
-        <button type="button" className="link" onClick={() => go('/sample-save')}>
-          No save handy? Try a sample
-        </button>
-      </section>
-    )
-  }
-
-  return <UploadResult parsed={parsed} onUse={(s, next) => (setState(s), go(next))} />
-}
-
 export function SampleSave() {
   const [, setState] = useGameState()
-  return <UploadResult parsed={mockParse('Sample Save.sav')} onUse={(s, next) => (setState(s), go(next))} />
+  return <UploadResult parsed={sampleState()} onUse={(s, next) => (setState(s), go(next))} />
 }
 
-function UploadResult({ parsed, onUse }: { parsed: GameState; onUse: (s: GameState, next: string) => void }) {
+const playTime = (seconds: number) => {
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  return h ? `${h} h ${m} min` : `${m} min`
+}
+
+function UploadResult({
+  parsed,
+  summary,
+  unknown = [],
+  onUse,
+}: {
+  parsed: GameState
+  summary?: SaveSummary
+  unknown?: string[]
+  onUse: (s: GameState, next: string) => void
+}) {
   const count = (...types: Schematic['type'][]) =>
     parsed.purchased.filter((id) => types.includes(schematicsById.get(id)?.type as Schematic['type'])).length
   return (
     <section className="panel">
-      <p className="notice">Preview: save parsing isn't built yet, so this shows sample results.</p>
+      {!summary && <p className="notice">This is a made-up sample game, so you can look around without a save.</p>}
       <h2>Here's what we found</h2>
       <p className="muted">
-        From <strong>{parsed.saveName}</strong>
+        From <strong>{summary?.sessionName || parsed.saveName}</strong>
+        {summary && <> · {playTime(summary.playSeconds)} played</>}
       </p>
       <dl className="facts">
         <div>
           <dt>Tier</dt>
-          <dd>{currentTier(parsed)}</dd>
+          <dd>{Math.max(currentTier(parsed), 0)}</dd>
         </div>
         <div>
           <dt>Space Elevator</dt>
@@ -97,7 +150,17 @@ function UploadResult({ parsed, onUse }: { parsed: GameState; onUse: (s: GameSta
           <dt>Alternate recipes</dt>
           <dd>{count('alternate')}</dd>
         </div>
+        <div>
+          <dt>AWESOME Shop</dt>
+          <dd>{count('awesome-shop')}</dd>
+        </div>
       </dl>
+      {unknown.length > 0 && (
+        <p className="muted">
+          Skipped {unknown.length} unlock{unknown.length === 1 ? '' : 's'} we don't know
+          {summary?.isModded ? ', probably from mods' : ''}.
+        </p>
+      )}
       <div className="row">
         <button type="button" onClick={() => onUse(parsed, '/plan')}>
           Looks right, start planning

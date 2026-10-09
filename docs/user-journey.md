@@ -5,7 +5,7 @@ What the site does today, how the pieces fit, and where to extend them. Screensh
 ## The flow
 
 1. **Welcome** (`#/`): upload a save or set up by hand. Returning players get "Continue planning".
-2. **Upload** (`#/upload`): drop a `.sav` file. Parsing isn't built yet, so the result screen shows a sample game state and says so (`src/screens/Upload.tsx`, `mockParse`).
+2. **Upload** (`#/upload`): drop a `.sav` file. It is parsed in the browser (`src/save/`) and the result screen shows what was read: tier, Space Elevator phase, milestones, MAM research, alternates and AWESOME Shop unlocks, plus how many unknown (usually modded) unlocks were skipped. "Try a sample" shows a made-up mid-game state instead.
 3. **Game state** (`#/setup`): pick a tier to tick every milestone up to it, set the Space Elevator phase, then fine-tune milestones, MAM research and alternates. Spoiler rules:
    - only tiers the HUB would show are listed (tutorial done, Space Elevator phase reached);
    - MAM trees stay folded until the player has researched something in them or opens them, since the game data doesn't order nodes within a tree; seasonal research is hidden;
@@ -51,4 +51,3 @@ Simplifications: machines run at 100% (fractional counts are shown so one can be
 
 - Layout proposal per outpost: floors by production type, manifolds, best unlocked belts, generated from `OutpostSolution` (tracked as an issue).
 - Node editor: macro view of outposts and their transport links, micro view of machines, built on the plan model.
-- Real save parsing to fill the game state.
