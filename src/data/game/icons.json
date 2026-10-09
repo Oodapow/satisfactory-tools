@@ -1,4 +1,52 @@
 {
+  "BP_EqDescZipLine_C": {
+    "file": "BP_EqDescZipLine_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorCandyCane_C": {
+    "file": "BP_EquipmentDescriptorCandyCane_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorGasmask_C": {
+    "file": "BP_EquipmentDescriptorGasmask_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorHazmatSuit_C": {
+    "file": "BP_EquipmentDescriptorHazmatSuit_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorHoverPack_C": {
+    "file": "BP_EquipmentDescriptorHoverPack_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorJetPack_C": {
+    "file": "BP_EquipmentDescriptorJetPack_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorJumpingStilts_C": {
+    "file": "BP_EquipmentDescriptorJumpingStilts_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorNobeliskDetonator_C": {
+    "file": "BP_EquipmentDescriptorNobeliskDetonator_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorObjectScanner_C": {
+    "file": "BP_EquipmentDescriptorObjectScanner_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorRifle_C": {
+    "file": "BP_EquipmentDescriptorRifle_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorShockShank_C": {
+    "file": "BP_EquipmentDescriptorShockShank_C.webp",
+    "source": "wiki"
+  },
+  "BP_EquipmentDescriptorStunSpear_C": {
+    "file": "BP_EquipmentDescriptorStunSpear_C.webp",
+    "source": "wiki"
+  },
   "BP_ItemDescriptorPortableMiner_C": {
     "file": "BP_ItemDescriptorPortableMiner_C.webp",
     "source": "wiki-mirror"
@@ -6,6 +54,10 @@
   "Desc_AlienDNACapsule_C": {
     "file": "Desc_AlienDNACapsule_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_AlienPowerBuilding_C": {
+    "file": "Desc_AlienPowerBuilding_C.webp",
+    "source": "wiki"
   },
   "Desc_AlienPowerFuel_C": {
     "file": "Desc_AlienPowerFuel_C.webp",
@@ -43,9 +95,81 @@
     "file": "Desc_AssemblerMk1_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Barrier_Corner_C": {
+    "file": "Desc_Barrier_Corner_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Barrier_Low_01_C": {
+    "file": "Desc_Barrier_Low_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Barrier_Tall_01_C": {
+    "file": "Desc_Barrier_Tall_01_C.webp",
+    "source": "wiki"
+  },
   "Desc_Battery_C": {
     "file": "Desc_Battery_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Beam_C": {
+    "file": "Desc_Beam_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Cable_C": {
+    "file": "Desc_Beam_Cable_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Cable_Cluster_C": {
+    "file": "Desc_Beam_Cable_Cluster_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Concrete_C": {
+    "file": "Desc_Beam_Concrete_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Connector_C": {
+    "file": "Desc_Beam_Connector_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Connector_Double_C": {
+    "file": "Desc_Beam_Connector_Double_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Cross_C": {
+    "file": "Desc_Beam_Cross_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_H_C": {
+    "file": "Desc_Beam_H_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Painted_C": {
+    "file": "Desc_Beam_Painted_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Shelf_C": {
+    "file": "Desc_Beam_Shelf_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Beam_Support_C": {
+    "file": "Desc_Beam_Support_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Berry_C": {
+    "file": "Desc_Berry_C.webp",
+    "source": "wiki"
+  },
+  "Desc_BigGarageDoor_16x8_C": {
+    "file": "Desc_BigGarageDoor_16x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_BigGarageDoor_16x8_Concrete_C": {
+    "file": "Desc_BigGarageDoor_16x8_Concrete_C.webp",
+    "source": "wiki"
+  },
+  "Desc_BigGarageDoor_16x8_Steel_C": {
+    "file": "Desc_BigGarageDoor_16x8_Steel_C.webp",
+    "source": "wiki"
   },
   "Desc_Biofuel_C": {
     "file": "Desc_Biofuel_C.webp",
@@ -55,6 +179,18 @@
     "file": "Desc_Blender_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_BlueprintDesigner_C": {
+    "file": "Desc_BlueprintDesigner_C.webp",
+    "source": "wiki"
+  },
+  "Desc_BlueprintDesigner_MK2_C": {
+    "file": "Desc_BlueprintDesigner_MK2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_BlueprintDesigner_MK3_C": {
+    "file": "Desc_BlueprintDesigner_MK3_C.webp",
+    "source": "wiki"
+  },
   "Desc_Cable_C": {
     "file": "Desc_Cable_C.webp",
     "source": "wiki-mirror"
@@ -62,6 +198,10 @@
   "Desc_CandyCane_C": {
     "file": "Desc_CandyCane_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_CandyCaneDecor_C": {
+    "file": "Desc_CandyCaneDecor_C.webp",
+    "source": "wiki"
   },
   "Desc_CartridgeChaos_C": {
     "file": "Desc_CartridgeChaos_C.webp",
@@ -75,9 +215,49 @@
     "file": "Desc_CartridgeStandard_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_CatwalkCross_C": {
+    "file": "Desc_CatwalkCross_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CatwalkRamp_C": {
+    "file": "Desc_CatwalkRamp_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CatwalkStairs_C": {
+    "file": "Desc_CatwalkStairs_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CatwalkStraight_C": {
+    "file": "Desc_CatwalkStraight_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CatwalkT_C": {
+    "file": "Desc_CatwalkT_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CatwalkTurn_C": {
+    "file": "Desc_CatwalkTurn_C.webp",
+    "source": "wiki"
+  },
+  "Desc_CeilingLight_C": {
+    "file": "Desc_CeilingLight_C.webp",
+    "source": "wiki"
+  },
   "Desc_Cement_C": {
     "file": "Desc_Cement_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_CentralStorage_C": {
+    "file": "Desc_CentralStorage_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ChainLinkFence_C": {
+    "file": "Desc_ChainLinkFence_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Chainsaw_C": {
+    "file": "Desc_Chainsaw_C.webp",
+    "source": "wiki"
   },
   "Desc_CircuitBoard_C": {
     "file": "Desc_CircuitBoard_C.webp",
@@ -103,6 +283,10 @@
     "file": "Desc_ComputerSuper_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Concrete_Barrier_01_C": {
+    "file": "Desc_Concrete_Barrier_01_C.webp",
+    "source": "wiki"
+  },
   "Desc_ConstructorMk1_C": {
     "file": "Desc_ConstructorMk1_C.webp",
     "source": "wiki-mirror"
@@ -110,6 +294,98 @@
   "Desc_Converter_C": {
     "file": "Desc_Converter_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_ConveyorAttachmentMerger_C": {
+    "file": "Desc_ConveyorAttachmentMerger_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorAttachmentMergerPriority_C": {
+    "file": "Desc_ConveyorAttachmentMergerPriority_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorAttachmentSplitter_C": {
+    "file": "Desc_ConveyorAttachmentSplitter_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorAttachmentSplitterProgrammable_C": {
+    "file": "Desc_ConveyorAttachmentSplitterProgrammable_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorAttachmentSplitterSmart_C": {
+    "file": "Desc_ConveyorAttachmentSplitterSmart_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk1_C": {
+    "file": "Desc_ConveyorBeltMk1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk2_C": {
+    "file": "Desc_ConveyorBeltMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk3_C": {
+    "file": "Desc_ConveyorBeltMk3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk4_C": {
+    "file": "Desc_ConveyorBeltMk4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk5_C": {
+    "file": "Desc_ConveyorBeltMk5_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorBeltMk6_C": {
+    "file": "Desc_ConveyorBeltMk6_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorCeilingAttachment_C": {
+    "file": "Desc_ConveyorCeilingAttachment_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk1_C": {
+    "file": "Desc_ConveyorLiftMk1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk2_C": {
+    "file": "Desc_ConveyorLiftMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk3_C": {
+    "file": "Desc_ConveyorLiftMk3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk4_C": {
+    "file": "Desc_ConveyorLiftMk4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk5_C": {
+    "file": "Desc_ConveyorLiftMk5_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorLiftMk6_C": {
+    "file": "Desc_ConveyorLiftMk6_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorMonitor_C": {
+    "file": "Desc_ConveyorMonitor_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorPole_C": {
+    "file": "Desc_ConveyorPole_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorPoleStackable_C": {
+    "file": "Desc_ConveyorPoleStackable_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorPoleWall_C": {
+    "file": "Desc_ConveyorPoleWall_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ConveyorWallHole_C": {
+    "file": "Desc_ConveyorWallHole_C.webp",
+    "source": "wiki"
   },
   "Desc_CoolingSystem_C": {
     "file": "Desc_CoolingSystem_C.webp",
@@ -147,6 +423,10 @@
     "file": "Desc_CrystalShard_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_CyberWagon_C": {
+    "file": "Desc_CyberWagon_C.webp",
+    "source": "wiki"
+  },
   "Desc_DarkEnergy_C": {
     "file": "Desc_DarkEnergy_C.webp",
     "source": "wiki-mirror"
@@ -163,13 +443,81 @@
     "file": "Desc_DissolvedSilica_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_DownQuarterPipe_Asphalt_8x4_C": {
+    "file": "Desc_DownQuarterPipe_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipe_Concrete_8x4_C": {
+    "file": "Desc_DownQuarterPipe_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipe_ConcretePolished_8x4_C": {
+    "file": "Desc_DownQuarterPipe_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipe_Grip_8x4_C": {
+    "file": "Desc_DownQuarterPipe_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeInCorner_Asphalt_8x4_C": {
+    "file": "Desc_DownQuarterPipeInCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeInCorner_Concrete_8x4_C": {
+    "file": "Desc_DownQuarterPipeInCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeInCorner_ConcretePolished_8x4_C": {
+    "file": "Desc_DownQuarterPipeInCorner_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeInCorner_Grip_8x4_C": {
+    "file": "Desc_DownQuarterPipeInCorner_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeOutCorner_Asphalt_8x4_C": {
+    "file": "Desc_DownQuarterPipeOutCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeOutCorner_Concrete_8x4_C": {
+    "file": "Desc_DownQuarterPipeOutCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DownQuarterPipeOutCorner_Grip_8x4_C": {
+    "file": "Desc_DownQuarterPipeOutCorner_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DroneStation_C": {
+    "file": "Desc_DroneStation_C.webp",
+    "source": "wiki"
+  },
+  "Desc_DroneTransport_C": {
+    "file": "Desc_DroneTransport_C.webp",
+    "source": "wiki"
+  },
   "Desc_ElectromagneticControlRod_C": {
     "file": "Desc_ElectromagneticControlRod_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Elevator_C": {
+    "file": "Desc_Elevator_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ElevatorFloorStop_C": {
+    "file": "Desc_ElevatorFloorStop_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Explorer_C": {
+    "file": "Desc_Explorer_C.webp",
+    "source": "wiki"
+  },
   "Desc_Fabric_C": {
     "file": "Desc_Fabric_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Fence_01_C": {
+    "file": "Desc_Fence_01_C.webp",
+    "source": "wiki"
   },
   "Desc_FicsiteIngot_C": {
     "file": "Desc_FicsiteIngot_C.webp",
@@ -203,9 +551,101 @@
     "file": "Desc_Fireworks_Projectile_03_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Flat_Frame_01_C": {
+    "file": "Desc_Flat_Frame_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FloodlightPole_C": {
+    "file": "Desc_FloodlightPole_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FloodlightWall_C": {
+    "file": "Desc_FloodlightWall_C.webp",
+    "source": "wiki"
+  },
   "Desc_FluidCanister_C": {
     "file": "Desc_FluidCanister_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_FluidTruck_C": {
+    "file": "Desc_FluidTruck_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FluidTruckStation_C": {
+    "file": "Desc_FluidTruckStation_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_8x1_01_C": {
+    "file": "Desc_Foundation_8x1_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_8x2_01_C": {
+    "file": "Desc_Foundation_8x2_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_8x4_01_C": {
+    "file": "Desc_Foundation_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Asphalt_8x1_C": {
+    "file": "Desc_Foundation_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Asphalt_8x2_C": {
+    "file": "Desc_Foundation_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Asphalt_8x4_C": {
+    "file": "Desc_Foundation_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Concrete_8x1_C": {
+    "file": "Desc_Foundation_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Concrete_8x2_C": {
+    "file": "Desc_Foundation_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Concrete_8x4_C": {
+    "file": "Desc_Foundation_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_ConcretePolished_8x1_C": {
+    "file": "Desc_Foundation_ConcretePolished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Frame_01_C": {
+    "file": "Desc_Foundation_Frame_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Metal_8x1_C": {
+    "file": "Desc_Foundation_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Metal_8x2_C": {
+    "file": "Desc_Foundation_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Foundation_Metal_8x4_C": {
+    "file": "Desc_Foundation_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FoundationGlass_01_C": {
+    "file": "Desc_FoundationGlass_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FoundationPassthrough_Hypertube_C": {
+    "file": "Desc_FoundationPassthrough_Hypertube_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FoundationPassthrough_Lift_C": {
+    "file": "Desc_FoundationPassthrough_Lift_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FoundationPassthrough_Pipe_C": {
+    "file": "Desc_FoundationPassthrough_Pipe_C.webp",
+    "source": "wiki"
   },
   "Desc_FoundryMk1_C": {
     "file": "Desc_FoundryMk1_C.webp",
@@ -215,6 +655,14 @@
     "file": "Desc_FrackingExtractor_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_FrackingSmasher_C": {
+    "file": "Desc_FrackingSmasher_C.webp",
+    "source": "wiki"
+  },
+  "Desc_FreightWagon_C": {
+    "file": "Desc_FreightWagon_C.webp",
+    "source": "wiki"
+  },
   "Desc_Fuel_C": {
     "file": "Desc_Fuel_C.webp",
     "source": "wiki-mirror"
@@ -223,13 +671,53 @@
     "file": "Desc_GasTank_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Gate_Automated_8x4_C": {
+    "file": "Desc_Gate_Automated_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GeneratorBiomass_Automated_C": {
+    "file": "Desc_GeneratorBiomass_Automated_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GeneratorCoal_C": {
+    "file": "Desc_GeneratorCoal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GeneratorFuel_C": {
+    "file": "Desc_GeneratorFuel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GeneratorGeoThermal_C": {
+    "file": "Desc_GeneratorGeoThermal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GeneratorNuclear_C": {
+    "file": "Desc_GeneratorNuclear_C.webp",
+    "source": "wiki"
+  },
   "Desc_GenericBiomass_C": {
     "file": "Desc_GenericBiomass_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Geyser_C": {
+    "file": "Desc_Geyser_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Gift_C": {
+    "file": "Desc_Gift_C.webp",
+    "source": "wiki"
+  },
   "Desc_GoldIngot_C": {
     "file": "Desc_GoldIngot_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_GolfCart_C": {
+    "file": "Desc_GolfCart_C.webp",
+    "source": "wiki"
+  },
+  "Desc_GolfCartGold_C": {
+    "file": "Desc_GolfCartGold_C.webp",
+    "source": "wiki"
   },
   "Desc_Gunpowder_C": {
     "file": "Desc_Gunpowder_C.webp",
@@ -242,6 +730,10 @@
   "Desc_HadronCollider_C": {
     "file": "Desc_HadronCollider_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_HardDrive_C": {
+    "file": "Desc_HardDrive_C.webp",
+    "source": "wiki"
   },
   "Desc_HatcherParts_C": {
     "file": "Desc_HatcherParts_C.webp",
@@ -267,6 +759,174 @@
     "file": "Desc_HogParts_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_HyperPoleStackable_C": {
+    "file": "Desc_HyperPoleStackable_C.webp",
+    "source": "wiki"
+  },
+  "Desc_HyperTubeJunction_C": {
+    "file": "Desc_HyperTubeJunction_C.webp",
+    "source": "wiki"
+  },
+  "Desc_HypertubeTJunction_C": {
+    "file": "Desc_HypertubeTJunction_C.webp",
+    "source": "wiki"
+  },
+  "Desc_HyperTubeWallHole_C": {
+    "file": "Desc_HyperTubeWallHole_C.webp",
+    "source": "wiki"
+  },
+  "Desc_HyperTubeWallSupport_C": {
+    "file": "Desc_HyperTubeWallSupport_C.webp",
+    "source": "wiki"
+  },
+  "Desc_IndustrialTank_C": {
+    "file": "Desc_IndustrialTank_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Asphalt_8x1_C": {
+    "file": "Desc_InvertedRamp_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Asphalt_8x2_C": {
+    "file": "Desc_InvertedRamp_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Asphalt_8x4_C": {
+    "file": "Desc_InvertedRamp_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Concrete_8x1_C": {
+    "file": "Desc_InvertedRamp_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Concrete_8x2_C": {
+    "file": "Desc_InvertedRamp_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Concrete_8x4_C": {
+    "file": "Desc_InvertedRamp_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Asphalt_8x1_C": {
+    "file": "Desc_InvertedRamp_DCorner_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Asphalt_8x2_C": {
+    "file": "Desc_InvertedRamp_DCorner_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Asphalt_8x4_C": {
+    "file": "Desc_InvertedRamp_DCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Concrete_8x1_C": {
+    "file": "Desc_InvertedRamp_DCorner_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Concrete_8x2_C": {
+    "file": "Desc_InvertedRamp_DCorner_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Concrete_8x4_C": {
+    "file": "Desc_InvertedRamp_DCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Metal_8x1_C": {
+    "file": "Desc_InvertedRamp_DCorner_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Metal_8x2_C": {
+    "file": "Desc_InvertedRamp_DCorner_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Metal_8x4_C": {
+    "file": "Desc_InvertedRamp_DCorner_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Polished_8x1_C": {
+    "file": "Desc_InvertedRamp_DCorner_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Polished_8x2_C": {
+    "file": "Desc_InvertedRamp_DCorner_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_DCorner_Polished_8x4_C": {
+    "file": "Desc_InvertedRamp_DCorner_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Metal_8x1_C": {
+    "file": "Desc_InvertedRamp_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Metal_8x2_C": {
+    "file": "Desc_InvertedRamp_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Metal_8x4_C": {
+    "file": "Desc_InvertedRamp_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Polished_8x1_C": {
+    "file": "Desc_InvertedRamp_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Polished_8x2_C": {
+    "file": "Desc_InvertedRamp_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_Polished_8x4_C": {
+    "file": "Desc_InvertedRamp_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Asphalt_8x1_C": {
+    "file": "Desc_InvertedRamp_UCorner_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Asphalt_8x2_C": {
+    "file": "Desc_InvertedRamp_UCorner_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Asphalt_8x4_C": {
+    "file": "Desc_InvertedRamp_UCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Concrete_8x1_C": {
+    "file": "Desc_InvertedRamp_UCorner_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Concrete_8x2_C": {
+    "file": "Desc_InvertedRamp_UCorner_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Concrete_8x4_C": {
+    "file": "Desc_InvertedRamp_UCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Metal_8x1_C": {
+    "file": "Desc_InvertedRamp_UCorner_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Metal_8x2_C": {
+    "file": "Desc_InvertedRamp_UCorner_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Metal_8x4_C": {
+    "file": "Desc_InvertedRamp_UCorner_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Polished_8x1_C": {
+    "file": "Desc_InvertedRamp_UCorner_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Polished_8x2_C": {
+    "file": "Desc_InvertedRamp_UCorner_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_InvertedRamp_UCorner_Polished_8x4_C": {
+    "file": "Desc_InvertedRamp_UCorner_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
   "Desc_IonizedFuel_C": {
     "file": "Desc_IonizedFuel_C.webp",
     "source": "wiki-mirror"
@@ -291,9 +951,33 @@
     "file": "Desc_IronScrew_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_JumpPadAdjustable_C": {
+    "file": "Desc_JumpPadAdjustable_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ladder_C": {
+    "file": "Desc_Ladder_C.webp",
+    "source": "wiki"
+  },
+  "Desc_LandingPad_C": {
+    "file": "Desc_LandingPad_C.webp",
+    "source": "wiki"
+  },
+  "Desc_LargeFan_C": {
+    "file": "Desc_LargeFan_C.webp",
+    "source": "wiki"
+  },
+  "Desc_LargeVent_C": {
+    "file": "Desc_LargeVent_C.webp",
+    "source": "wiki"
+  },
   "Desc_Leaves_C": {
     "file": "Desc_Leaves_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_LightsControlPanel_C": {
+    "file": "Desc_LightsControlPanel_C.webp",
+    "source": "wiki"
   },
   "Desc_LiquidBiofuel_C": {
     "file": "Desc_LiquidBiofuel_C.webp",
@@ -311,9 +995,25 @@
     "file": "Desc_LiquidTurboFuel_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Locomotive_C": {
+    "file": "Desc_Locomotive_C.webp",
+    "source": "wiki"
+  },
+  "Desc_LookoutTower_C": {
+    "file": "Desc_LookoutTower_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Mam_C": {
+    "file": "Desc_Mam_C.webp",
+    "source": "wiki"
+  },
   "Desc_ManufacturerMk1_C": {
     "file": "Desc_ManufacturerMk1_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Medkit_C": {
+    "file": "Desc_Medkit_C.webp",
+    "source": "wiki"
   },
   "Desc_MinerMk1_C": {
     "file": "Desc_MinerMk1_C.webp",
@@ -395,6 +1095,10 @@
     "file": "Desc_NuclearWaste_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Nut_C": {
+    "file": "Desc_Nut_C.webp",
+    "source": "wiki"
+  },
   "Desc_OilPump_C": {
     "file": "Desc_OilPump_C.webp",
     "source": "wiki-mirror"
@@ -467,9 +1171,113 @@
     "file": "Desc_Packager_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Parachute_C": {
+    "file": "Desc_Parachute_C.webp",
+    "source": "wiki"
+  },
   "Desc_PetroleumCoke_C": {
     "file": "Desc_PetroleumCoke_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Pillar_Small_Concrete_C": {
+    "file": "Desc_Pillar_Small_Concrete_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Pillar_Small_Frame_C": {
+    "file": "Desc_Pillar_Small_Frame_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Pillar_Small_Metal_C": {
+    "file": "Desc_Pillar_Small_Metal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarBase_C": {
+    "file": "Desc_PillarBase_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarBase_Small_C": {
+    "file": "Desc_PillarBase_Small_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarMiddle_C": {
+    "file": "Desc_PillarMiddle_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarMiddle_Concrete_C": {
+    "file": "Desc_PillarMiddle_Concrete_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarMiddle_Frame_C": {
+    "file": "Desc_PillarMiddle_Frame_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PillarTop_C": {
+    "file": "Desc_PillarTop_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipeHyper_C": {
+    "file": "Desc_PipeHyper_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipeHyperStart_C": {
+    "file": "Desc_PipeHyperStart_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipeHyperSupport_C": {
+    "file": "Desc_PipeHyperSupport_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Pipeline_C": {
+    "file": "Desc_Pipeline_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Pipeline_NoIndicator_C": {
+    "file": "Desc_Pipeline_NoIndicator_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineJunction_Cross_C": {
+    "file": "Desc_PipelineJunction_Cross_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineJunction_T_C": {
+    "file": "Desc_PipelineJunction_T_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineMK2_C": {
+    "file": "Desc_PipelineMK2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineMK2_NoIndicator_C": {
+    "file": "Desc_PipelineMK2_NoIndicator_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelinePump_C": {
+    "file": "Desc_PipelinePump_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelinePumpMk2_C": {
+    "file": "Desc_PipelinePumpMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineSupport_C": {
+    "file": "Desc_PipelineSupport_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineSupportWall_C": {
+    "file": "Desc_PipelineSupportWall_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipelineSupportWallHole_C": {
+    "file": "Desc_PipelineSupportWallHole_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipeStorageTank_C": {
+    "file": "Desc_PipeStorageTank_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PipeSupportStackable_C": {
+    "file": "Desc_PipeSupportStackable_C.webp",
+    "source": "wiki"
   },
   "Desc_Plastic_C": {
     "file": "Desc_Plastic_C.webp",
@@ -495,9 +1303,81 @@
     "file": "Desc_PolymerResin_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Portal_C": {
+    "file": "Desc_Portal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PortalPotty_C": {
+    "file": "Desc_PortalPotty_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PortalSatellite_C": {
+    "file": "Desc_PortalSatellite_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerLine_C": {
+    "file": "Desc_PowerLine_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleMk1_C": {
+    "file": "Desc_PowerPoleMk1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleMk2_C": {
+    "file": "Desc_PowerPoleMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleMk3_C": {
+    "file": "Desc_PowerPoleMk3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWall_C": {
+    "file": "Desc_PowerPoleWall_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWallDouble_C": {
+    "file": "Desc_PowerPoleWallDouble_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWallDoubleMk2_C": {
+    "file": "Desc_PowerPoleWallDoubleMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWallDoubleMk3_C": {
+    "file": "Desc_PowerPoleWallDoubleMk3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWallMk2_C": {
+    "file": "Desc_PowerPoleWallMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerPoleWallMk3_C": {
+    "file": "Desc_PowerPoleWallMk3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerStorageMk1_C": {
+    "file": "Desc_PowerStorageMk1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerSwitch_C": {
+    "file": "Desc_PowerSwitch_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerTower_C": {
+    "file": "Desc_PowerTower_C.webp",
+    "source": "wiki"
+  },
+  "Desc_PowerTowerPlatform_C": {
+    "file": "Desc_PowerTowerPlatform_C.webp",
+    "source": "wiki"
+  },
   "Desc_PressureConversionCube_C": {
     "file": "Desc_PressureConversionCube_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_PriorityPowerSwitch_C": {
+    "file": "Desc_PriorityPowerSwitch_C.webp",
+    "source": "wiki"
   },
   "Desc_QuantumEncoder_C": {
     "file": "Desc_QuantumEncoder_C.webp",
@@ -511,9 +1391,557 @@
     "file": "Desc_QuantumOscillator_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_QuarterPipe_02_C": {
+    "file": "Desc_QuarterPipe_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipe_Asphalt_8x4_C": {
+    "file": "Desc_QuarterPipe_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipe_C": {
+    "file": "Desc_QuarterPipe_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipe_Concrete_8x4_C": {
+    "file": "Desc_QuarterPipe_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipe_ConcretePolished_8x4_C": {
+    "file": "Desc_QuarterPipe_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipe_Grip_8x4_C": {
+    "file": "Desc_QuarterPipe_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeCorner_01_C": {
+    "file": "Desc_QuarterPipeCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeCorner_02_C": {
+    "file": "Desc_QuarterPipeCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeCorner_03_C": {
+    "file": "Desc_QuarterPipeCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeCorner_04_C": {
+    "file": "Desc_QuarterPipeCorner_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeInCorner_Asphalt_8x4_C": {
+    "file": "Desc_QuarterPipeInCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeInCorner_Concrete_8x4_C": {
+    "file": "Desc_QuarterPipeInCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeInCorner_ConcretePolished_8x4_C": {
+    "file": "Desc_QuarterPipeInCorner_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeInCorner_Grip_8x4_C": {
+    "file": "Desc_QuarterPipeInCorner_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Asphalt_8x1_C": {
+    "file": "Desc_QuarterPipeMiddle_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Asphalt_8x2_C": {
+    "file": "Desc_QuarterPipeMiddle_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Asphalt_8x4_C": {
+    "file": "Desc_QuarterPipeMiddle_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Concrete_8x1_C": {
+    "file": "Desc_QuarterPipeMiddle_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Concrete_8x2_C": {
+    "file": "Desc_QuarterPipeMiddle_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Concrete_8x4_C": {
+    "file": "Desc_QuarterPipeMiddle_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Grip_8x1_C": {
+    "file": "Desc_QuarterPipeMiddle_Grip_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Grip_8x2_C": {
+    "file": "Desc_QuarterPipeMiddle_Grip_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_Grip_8x4_C": {
+    "file": "Desc_QuarterPipeMiddle_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_PolishedConcrete_8x1_C": {
+    "file": "Desc_QuarterPipeMiddle_PolishedConcrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_PolishedConcrete_8x2_C": {
+    "file": "Desc_QuarterPipeMiddle_PolishedConcrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddle_PolishedConcrete_8x4_C": {
+    "file": "Desc_QuarterPipeMiddle_PolishedConcrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Asphalt_8x1_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Asphalt_8x2_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Asphalt_8x4_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Concrete_8x1_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Concrete_8x2_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Concrete_8x4_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Ficsit_8x1_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Ficsit_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Ficsit_8x2_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Ficsit_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Ficsit_8x4_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Ficsit_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Grip_8x1_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Grip_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Grip_8x2_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Grip_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_Grip_8x4_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x1_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x2_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x4_C": {
+    "file": "Desc_QuarterPipeMiddleInCorner_PolishedConcrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x1_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x2_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x4_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Asphalt_4x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Concrete_4x1_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Concrete_4x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Concrete_4x2_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Concrete_4x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Concrete_4x4_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Concrete_4x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x1_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x2_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x4_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Ficsit_4x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Grip_4x1_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Grip_4x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Grip_4x2_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Grip_4x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_Grip_4x4_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_Grip_4x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x1_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x2_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x4_C": {
+    "file": "Desc_QuarterPipeMiddleOutCorner_PolishedConcrete_4x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeOutCorner_Asphalt_8x4_C": {
+    "file": "Desc_QuarterPipeOutCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeOutCorner_Concrete_8x4_C": {
+    "file": "Desc_QuarterPipeOutCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeOutCorner_ConcretePolished_8x4_C": {
+    "file": "Desc_QuarterPipeOutCorner_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_QuarterPipeOutCorner_Grip_8x4_C": {
+    "file": "Desc_QuarterPipeOutCorner_Grip_8x4_C.webp",
+    "source": "wiki"
+  },
   "Desc_QuartzCrystal_C": {
     "file": "Desc_QuartzCrystal_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_RadarTower_C": {
+    "file": "Desc_RadarTower_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Railing_01_C": {
+    "file": "Desc_Railing_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RailroadBlockSignal_C": {
+    "file": "Desc_RailroadBlockSignal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RailroadEndStop_C": {
+    "file": "Desc_RailroadEndStop_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RailroadPathSignal_C": {
+    "file": "Desc_RailroadPathSignal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RailroadTrack_C": {
+    "file": "Desc_RailroadTrack_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_8x1_01_C": {
+    "file": "Desc_Ramp_8x1_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_8x2_01_C": {
+    "file": "Desc_Ramp_8x2_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_8x4_01_C": {
+    "file": "Desc_Ramp_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_8x4_Inverted_01_C": {
+    "file": "Desc_Ramp_8x4_Inverted_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_8x8x8_C": {
+    "file": "Desc_Ramp_8x8x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Asphalt_8x1_C": {
+    "file": "Desc_Ramp_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Asphalt_8x2_C": {
+    "file": "Desc_Ramp_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Asphalt_8x4_C": {
+    "file": "Desc_Ramp_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Concrete_8x1_C": {
+    "file": "Desc_Ramp_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Concrete_8x2_C": {
+    "file": "Desc_Ramp_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Concrete_8x4_C": {
+    "file": "Desc_Ramp_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x1_01_C": {
+    "file": "Desc_Ramp_Diagonal_8x1_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x1_02_C": {
+    "file": "Desc_Ramp_Diagonal_8x1_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x2_01_C": {
+    "file": "Desc_Ramp_Diagonal_8x2_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x2_02_C": {
+    "file": "Desc_Ramp_Diagonal_8x2_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x4_01_C": {
+    "file": "Desc_Ramp_Diagonal_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Diagonal_8x4_02_C": {
+    "file": "Desc_Ramp_Diagonal_8x4_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Asphalt_8x1_C": {
+    "file": "Desc_Ramp_DownCorner_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Asphalt_8x2_C": {
+    "file": "Desc_Ramp_DownCorner_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Asphalt_8x4_C": {
+    "file": "Desc_Ramp_DownCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Concrete_8x1_C": {
+    "file": "Desc_Ramp_DownCorner_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Concrete_8x2_C": {
+    "file": "Desc_Ramp_DownCorner_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Concrete_8x4_C": {
+    "file": "Desc_Ramp_DownCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Metal_8x1_C": {
+    "file": "Desc_Ramp_DownCorner_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Metal_8x2_C": {
+    "file": "Desc_Ramp_DownCorner_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Metal_8x4_C": {
+    "file": "Desc_Ramp_DownCorner_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Polished_8x1_C": {
+    "file": "Desc_Ramp_DownCorner_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Polished_8x2_C": {
+    "file": "Desc_Ramp_DownCorner_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_DownCorner_Polished_8x4_C": {
+    "file": "Desc_Ramp_DownCorner_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Frame_01_C": {
+    "file": "Desc_Ramp_Frame_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Frame_Inverted_01_C": {
+    "file": "Desc_Ramp_Frame_Inverted_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Metal_8x1_C": {
+    "file": "Desc_Ramp_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Metal_8x2_C": {
+    "file": "Desc_Ramp_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Metal_8x4_C": {
+    "file": "Desc_Ramp_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Polished_8x1_C": {
+    "file": "Desc_Ramp_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Polished_8x2_C": {
+    "file": "Desc_Ramp_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_Polished_8x4_C": {
+    "file": "Desc_Ramp_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Asphalt_8x1_C": {
+    "file": "Desc_Ramp_UpCorner_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Asphalt_8x2_C": {
+    "file": "Desc_Ramp_UpCorner_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Asphalt_8x4_C": {
+    "file": "Desc_Ramp_UpCorner_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Concrete_8x1_C": {
+    "file": "Desc_Ramp_UpCorner_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Concrete_8x2_C": {
+    "file": "Desc_Ramp_UpCorner_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Concrete_8x4_C": {
+    "file": "Desc_Ramp_UpCorner_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Metal_8x1_C": {
+    "file": "Desc_Ramp_UpCorner_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Metal_8x2_C": {
+    "file": "Desc_Ramp_UpCorner_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Metal_8x4_C": {
+    "file": "Desc_Ramp_UpCorner_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Polished_8x1_C": {
+    "file": "Desc_Ramp_UpCorner_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Polished_8x2_C": {
+    "file": "Desc_Ramp_UpCorner_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Ramp_UpCorner_Polished_8x4_C": {
+    "file": "Desc_Ramp_UpCorner_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_8x1_C": {
+    "file": "Desc_RampDouble_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Asphalt_8x1_C": {
+    "file": "Desc_RampDouble_Asphalt_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Asphalt_8x2_C": {
+    "file": "Desc_RampDouble_Asphalt_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Asphalt_8x4_C": {
+    "file": "Desc_RampDouble_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_C": {
+    "file": "Desc_RampDouble_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Concrete_8x1_C": {
+    "file": "Desc_RampDouble_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Concrete_8x2_C": {
+    "file": "Desc_RampDouble_Concrete_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Concrete_8x4_C": {
+    "file": "Desc_RampDouble_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Metal_8x1_C": {
+    "file": "Desc_RampDouble_Metal_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Metal_8x2_C": {
+    "file": "Desc_RampDouble_Metal_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Metal_8x4_C": {
+    "file": "Desc_RampDouble_Metal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Polished_8x1_C": {
+    "file": "Desc_RampDouble_Polished_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Polished_8x2_C": {
+    "file": "Desc_RampDouble_Polished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampDouble_Polished_8x4_C": {
+    "file": "Desc_RampDouble_Polished_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x1_C": {
+    "file": "Desc_RampInverted_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x1_Corner_01_C": {
+    "file": "Desc_RampInverted_8x1_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x1_Corner_02_C": {
+    "file": "Desc_RampInverted_8x1_Corner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x2_01_C": {
+    "file": "Desc_RampInverted_8x2_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x2_Corner_01_C": {
+    "file": "Desc_RampInverted_8x2_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x2_Corner_02_C": {
+    "file": "Desc_RampInverted_8x2_Corner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x4_Corner_01_C": {
+    "file": "Desc_RampInverted_8x4_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_RampInverted_8x4_Corner_02_C": {
+    "file": "Desc_RampInverted_8x4_Corner_02_C.webp",
+    "source": "wiki"
   },
   "Desc_RawQuartz_C": {
     "file": "Desc_RawQuartz_C.webp",
@@ -531,9 +1959,185 @@
     "file": "Desc_Rebar_Stunshot_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_RebarGunProjectile_C": {
+    "file": "Desc_RebarGunProjectile_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ResourceSink_C": {
+    "file": "Desc_ResourceSink_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ResourceSinkCoupon_C": {
+    "file": "Desc_ResourceSinkCoupon_C.webp",
+    "source": "wiki"
+  },
+  "Desc_ResourceSinkShop_C": {
+    "file": "Desc_ResourceSinkShop_C.webp",
+    "source": "wiki"
+  },
   "Desc_RocketFuel_C": {
     "file": "Desc_RocketFuel_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Roof_A_01_C": {
+    "file": "Desc_Roof_A_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_A_02_C": {
+    "file": "Desc_Roof_A_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_A_03_C": {
+    "file": "Desc_Roof_A_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_A_04_C": {
+    "file": "Desc_Roof_A_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_InCorner_01_C": {
+    "file": "Desc_Roof_Metal_InCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_InCorner_02_C": {
+    "file": "Desc_Roof_Metal_InCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_InCorner_03_C": {
+    "file": "Desc_Roof_Metal_InCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_OutCorner_01_C": {
+    "file": "Desc_Roof_Metal_OutCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_OutCorner_02_C": {
+    "file": "Desc_Roof_Metal_OutCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Metal_OutCorner_03_C": {
+    "file": "Desc_Roof_Metal_OutCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_01_C": {
+    "file": "Desc_Roof_Orange_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_02_C": {
+    "file": "Desc_Roof_Orange_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_03_C": {
+    "file": "Desc_Roof_Orange_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_04_C": {
+    "file": "Desc_Roof_Orange_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_InCorner_01_C": {
+    "file": "Desc_Roof_Orange_InCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_InCorner_02_C": {
+    "file": "Desc_Roof_Orange_InCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_InCorner_03_C": {
+    "file": "Desc_Roof_Orange_InCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_OutCorner_01_C": {
+    "file": "Desc_Roof_Orange_OutCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_OutCorner_02_C": {
+    "file": "Desc_Roof_Orange_OutCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Orange_OutCorner_03_C": {
+    "file": "Desc_Roof_Orange_OutCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_01_C": {
+    "file": "Desc_Roof_Tar_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_02_C": {
+    "file": "Desc_Roof_Tar_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_03_C": {
+    "file": "Desc_Roof_Tar_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_04_C": {
+    "file": "Desc_Roof_Tar_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_InCorner_01_C": {
+    "file": "Desc_Roof_Tar_InCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_InCorner_02_C": {
+    "file": "Desc_Roof_Tar_InCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_InCorner_03_C": {
+    "file": "Desc_Roof_Tar_InCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_OutCorner_01_C": {
+    "file": "Desc_Roof_Tar_OutCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_OutCorner_02_C": {
+    "file": "Desc_Roof_Tar_OutCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Tar_OutCorner_03_C": {
+    "file": "Desc_Roof_Tar_OutCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_01_C": {
+    "file": "Desc_Roof_Window_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_02_C": {
+    "file": "Desc_Roof_Window_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_03_C": {
+    "file": "Desc_Roof_Window_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_04_C": {
+    "file": "Desc_Roof_Window_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_InCorner_01_C": {
+    "file": "Desc_Roof_Window_InCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_InCorner_02_C": {
+    "file": "Desc_Roof_Window_InCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_InCorner_03_C": {
+    "file": "Desc_Roof_Window_InCorner_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_OutCorner_01_C": {
+    "file": "Desc_Roof_Window_OutCorner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_OutCorner_02_C": {
+    "file": "Desc_Roof_Window_OutCorner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Roof_Window_OutCorner_03_C": {
+    "file": "Desc_Roof_Window_OutCorner_03_C.webp",
+    "source": "wiki"
   },
   "Desc_Rotor_C": {
     "file": "Desc_Rotor_C.webp",
@@ -555,6 +2159,10 @@
     "file": "Desc_SAMIngot_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Shroom_C": {
+    "file": "Desc_Shroom_C.webp",
+    "source": "wiki"
+  },
   "Desc_Silica_C": {
     "file": "Desc_Silica_C.webp",
     "source": "wiki-mirror"
@@ -570,6 +2178,26 @@
   "Desc_Snow_C": {
     "file": "Desc_Snow_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_SnowballProjectile_C": {
+    "file": "Desc_SnowballProjectile_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SnowCannon_C": {
+    "file": "Desc_SnowCannon_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SnowDispenser_C": {
+    "file": "Desc_SnowDispenser_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Snowman_C": {
+    "file": "Desc_Snowman_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SpaceElevator_C": {
+    "file": "Desc_SpaceElevator_C.webp",
+    "source": "wiki"
   },
   "Desc_SpaceElevatorPart_1_C": {
     "file": "Desc_SpaceElevatorPart_1_C.webp",
@@ -627,6 +2255,78 @@
     "file": "Desc_SpitterParts_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_StackableShelf_C": {
+    "file": "Desc_StackableShelf_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stair_Asphalt_8x4_C": {
+    "file": "Desc_Stair_Asphalt_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stair_Concrete_8x4_C": {
+    "file": "Desc_Stair_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stair_FicsitSet_8x4_01_C": {
+    "file": "Desc_Stair_FicsitSet_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stair_GripMetal_8x4_C": {
+    "file": "Desc_Stair_GripMetal_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stair_PolishedConcrete_8x4_C": {
+    "file": "Desc_Stair_PolishedConcrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stairs_Left_01_C": {
+    "file": "Desc_Stairs_Left_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Stairs_Right_01_C": {
+    "file": "Desc_Stairs_Right_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Huge_C": {
+    "file": "Desc_StandaloneWidgetSign_Huge_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Large_C": {
+    "file": "Desc_StandaloneWidgetSign_Large_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Medium_C": {
+    "file": "Desc_StandaloneWidgetSign_Medium_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Portrait_C": {
+    "file": "Desc_StandaloneWidgetSign_Portrait_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Small_C": {
+    "file": "Desc_StandaloneWidgetSign_Small_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_SmallVeryWide_C": {
+    "file": "Desc_StandaloneWidgetSign_SmallVeryWide_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_SmallWide_C": {
+    "file": "Desc_StandaloneWidgetSign_SmallWide_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Square_C": {
+    "file": "Desc_StandaloneWidgetSign_Square_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Square_Small_C": {
+    "file": "Desc_StandaloneWidgetSign_Square_Small_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StandaloneWidgetSign_Square_Tiny_C": {
+    "file": "Desc_StandaloneWidgetSign_Square_Tiny_C.webp",
+    "source": "wiki"
+  },
   "Desc_Stator_C": {
     "file": "Desc_Stator_C.webp",
     "source": "wiki-mirror"
@@ -647,6 +2347,66 @@
     "file": "Desc_SteelPlateReinforced_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_SteelWall_8x1_C": {
+    "file": "Desc_SteelWall_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_C": {
+    "file": "Desc_SteelWall_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_Gate_01_C": {
+    "file": "Desc_SteelWall_8x4_Gate_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_Window_01_C": {
+    "file": "Desc_SteelWall_8x4_Window_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_Window_02_C": {
+    "file": "Desc_SteelWall_8x4_Window_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_Window_03_C": {
+    "file": "Desc_SteelWall_8x4_Window_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_8x4_Window_04_C": {
+    "file": "Desc_SteelWall_8x4_Window_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_FlipTris_8x1_C": {
+    "file": "Desc_SteelWall_FlipTris_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_FlipTris_8x2_C": {
+    "file": "Desc_SteelWall_FlipTris_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_FlipTris_8x4_C": {
+    "file": "Desc_SteelWall_FlipTris_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_FlipTris_8x8_C": {
+    "file": "Desc_SteelWall_FlipTris_8x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_Tris_8x1_C": {
+    "file": "Desc_SteelWall_Tris_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_Tris_8x2_C": {
+    "file": "Desc_SteelWall_Tris_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_Tris_8x4_C": {
+    "file": "Desc_SteelWall_Tris_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_SteelWall_Tris_8x8_C": {
+    "file": "Desc_SteelWall_Tris_8x8_C.webp",
+    "source": "wiki"
+  },
   "Desc_StingerParts_C": {
     "file": "Desc_StingerParts_C.webp",
     "source": "wiki-mirror"
@@ -654,6 +2414,30 @@
   "Desc_Stone_C": {
     "file": "Desc_Stone_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_StorageContainerMk1_C": {
+    "file": "Desc_StorageContainerMk1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StorageContainerMk2_C": {
+    "file": "Desc_StorageContainerMk2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StorageHazard_C": {
+    "file": "Desc_StorageHazard_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StorageMedkit_C": {
+    "file": "Desc_StorageMedkit_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StoragePlayer_C": {
+    "file": "Desc_StoragePlayer_C.webp",
+    "source": "wiki"
+  },
+  "Desc_StreetLight_C": {
+    "file": "Desc_StreetLight_C.webp",
+    "source": "wiki"
   },
   "Desc_Sulfur_C": {
     "file": "Desc_Sulfur_C.webp",
@@ -663,6 +2447,10 @@
     "file": "Desc_SulfuricAcid_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_TarpFence_C": {
+    "file": "Desc_TarpFence_C.webp",
+    "source": "wiki"
+  },
   "Desc_TemporalProcessor_C": {
     "file": "Desc_TemporalProcessor_C.webp",
     "source": "wiki-mirror"
@@ -671,6 +2459,46 @@
     "file": "Desc_TimeCrystal_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_Tractor_C": {
+    "file": "Desc_Tractor_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TradingPost_C": {
+    "file": "Desc_TradingPost_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TrainDockingStation_C": {
+    "file": "Desc_TrainDockingStation_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TrainDockingStationLiquid_C": {
+    "file": "Desc_TrainDockingStationLiquid_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TrainPlatformEmpty_02_C": {
+    "file": "Desc_TrainPlatformEmpty_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TrainPlatformEmpty_C": {
+    "file": "Desc_TrainPlatformEmpty_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TrainStation_C": {
+    "file": "Desc_TrainStation_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TreeGiftProducer_C": {
+    "file": "Desc_TreeGiftProducer_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Truck_C": {
+    "file": "Desc_Truck_C.webp",
+    "source": "wiki"
+  },
+  "Desc_TruckStation_C": {
+    "file": "Desc_TruckStation_C.webp",
+    "source": "wiki"
+  },
   "Desc_TurboFuel_C": {
     "file": "Desc_TurboFuel_C.webp",
     "source": "wiki-mirror"
@@ -678,6 +2506,338 @@
   "Desc_UraniumCell_C": {
     "file": "Desc_UraniumCell_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_Valve_C": {
+    "file": "Desc_Valve_C.webp",
+    "source": "wiki"
+  },
+  "Desc_VehiclePath_Explorer_C": {
+    "file": "Desc_VehiclePath_Explorer_C.webp",
+    "source": "wiki"
+  },
+  "Desc_VehiclePath_FactoryCart_C": {
+    "file": "Desc_VehiclePath_FactoryCart_C.webp",
+    "source": "wiki"
+  },
+  "Desc_VehiclePath_Tractor_C": {
+    "file": "Desc_VehiclePath_Tractor_C.webp",
+    "source": "wiki"
+  },
+  "Desc_VehiclePath_Truck_C": {
+    "file": "Desc_VehiclePath_Truck_C.webp",
+    "source": "wiki"
+  },
+  "Desc_VehiclePath_Universal_C": {
+    "file": "Desc_VehiclePath_Universal_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WalkwayCross_C": {
+    "file": "Desc_WalkwayCross_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WalkwayRamp_C": {
+    "file": "Desc_WalkwayRamp_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WalkwayStraight_C": {
+    "file": "Desc_WalkwayStraight_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WalkwayT_C": {
+    "file": "Desc_WalkwayT_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WalkwayTurn_C": {
+    "file": "Desc_WalkwayTurn_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_8x4_01_C": {
+    "file": "Desc_Wall_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_8x4_02_C": {
+    "file": "Desc_Wall_8x4_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x1_C": {
+    "file": "Desc_Wall_Concrete_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x1_FlipTris_C": {
+    "file": "Desc_Wall_Concrete_8x1_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x1_Tris_C": {
+    "file": "Desc_Wall_Concrete_8x1_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x2_FlipTris_C": {
+    "file": "Desc_Wall_Concrete_8x2_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x2_Tris_C": {
+    "file": "Desc_Wall_Concrete_8x2_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_C": {
+    "file": "Desc_Wall_Concrete_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_ConveyorHole_01_C": {
+    "file": "Desc_Wall_Concrete_8x4_ConveyorHole_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_ConveyorHole_02_C": {
+    "file": "Desc_Wall_Concrete_8x4_ConveyorHole_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_ConveyorHole_03_C": {
+    "file": "Desc_Wall_Concrete_8x4_ConveyorHole_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Corner_01_C": {
+    "file": "Desc_Wall_Concrete_8x4_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Corner_2_C": {
+    "file": "Desc_Wall_Concrete_8x4_Corner_2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_FlipTris_C": {
+    "file": "Desc_Wall_Concrete_8x4_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Tris_C": {
+    "file": "Desc_Wall_Concrete_8x4_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Window_01_C": {
+    "file": "Desc_Wall_Concrete_8x4_Window_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Window_02_C": {
+    "file": "Desc_Wall_Concrete_8x4_Window_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Window_03_C": {
+    "file": "Desc_Wall_Concrete_8x4_Window_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x4_Window_04_C": {
+    "file": "Desc_Wall_Concrete_8x4_Window_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x8_Corner_01_C": {
+    "file": "Desc_Wall_Concrete_8x8_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x8_Corner_2_C": {
+    "file": "Desc_Wall_Concrete_8x8_Corner_2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x8_FlipTris_C": {
+    "file": "Desc_Wall_Concrete_8x8_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_8x8_Tris_C": {
+    "file": "Desc_Wall_Concrete_8x8_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_Angular_8x4_C": {
+    "file": "Desc_Wall_Concrete_Angular_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_Angular_8x8_C": {
+    "file": "Desc_Wall_Concrete_Angular_8x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_CDoor_8x4_C": {
+    "file": "Desc_Wall_Concrete_CDoor_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_Gate_8x4_C": {
+    "file": "Desc_Wall_Concrete_Gate_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Concrete_SDoor_8x4_C": {
+    "file": "Desc_Wall_Concrete_SDoor_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_01_C": {
+    "file": "Desc_Wall_Conveyor_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_01_Steel_C": {
+    "file": "Desc_Wall_Conveyor_8x4_01_Steel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_02_C": {
+    "file": "Desc_Wall_Conveyor_8x4_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_02_Steel_C": {
+    "file": "Desc_Wall_Conveyor_8x4_02_Steel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_03_C": {
+    "file": "Desc_Wall_Conveyor_8x4_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Conveyor_8x4_03_Steel_C": {
+    "file": "Desc_Wall_Conveyor_8x4_03_Steel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Door_8x4_01_C": {
+    "file": "Desc_Wall_Door_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Door_8x4_01_Steel_C": {
+    "file": "Desc_Wall_Door_8x4_01_Steel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Door_8x4_03_C": {
+    "file": "Desc_Wall_Door_8x4_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Door_8x4_03_Steel_C": {
+    "file": "Desc_Wall_Door_8x4_03_Steel_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Frame_01_C": {
+    "file": "Desc_Wall_Frame_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Gate_8x4_01_C": {
+    "file": "Desc_Wall_Gate_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x1_C": {
+    "file": "Desc_Wall_Orange_8x1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x1_FlipTris_C": {
+    "file": "Desc_Wall_Orange_8x1_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x1_Tris_C": {
+    "file": "Desc_Wall_Orange_8x1_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x2_FlipTris_C": {
+    "file": "Desc_Wall_Orange_8x2_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x2_Tris_C": {
+    "file": "Desc_Wall_Orange_8x2_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x4_Corner_01_C": {
+    "file": "Desc_Wall_Orange_8x4_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x4_Corner_02_C": {
+    "file": "Desc_Wall_Orange_8x4_Corner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x4_FlipTris_C": {
+    "file": "Desc_Wall_Orange_8x4_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x4_Tris_C": {
+    "file": "Desc_Wall_Orange_8x4_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x8_Corner_01_C": {
+    "file": "Desc_Wall_Orange_8x8_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x8_Corner_02_C": {
+    "file": "Desc_Wall_Orange_8x8_Corner_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x8_FlipTris_C": {
+    "file": "Desc_Wall_Orange_8x8_FlipTris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_8x8_Tris_C": {
+    "file": "Desc_Wall_Orange_8x8_Tris_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_Angular_8x4_C": {
+    "file": "Desc_Wall_Orange_Angular_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Orange_Angular_8x8_C": {
+    "file": "Desc_Wall_Orange_Angular_8x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Steel_8x4_Corner_01_C": {
+    "file": "Desc_Wall_Steel_8x4_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Steel_8x4_Corner_2_C": {
+    "file": "Desc_Wall_Steel_8x4_Corner_2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Steel_8x8_Corner_01_C": {
+    "file": "Desc_Wall_Steel_8x8_Corner_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Steel_8x8_Corner_2_C": {
+    "file": "Desc_Wall_Steel_8x8_Corner_2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_01_C": {
+    "file": "Desc_Wall_Window_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_02_C": {
+    "file": "Desc_Wall_Window_8x4_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_03_C": {
+    "file": "Desc_Wall_Window_8x4_03_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_04_C": {
+    "file": "Desc_Wall_Window_8x4_04_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_05_C": {
+    "file": "Desc_Wall_Window_8x4_05_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_06_C": {
+    "file": "Desc_Wall_Window_8x4_06_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_8x4_07_C": {
+    "file": "Desc_Wall_Window_8x4_07_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_Thin_8x4_01_C": {
+    "file": "Desc_Wall_Window_Thin_8x4_01_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Wall_Window_Thin_8x4_02_C": {
+    "file": "Desc_Wall_Window_Thin_8x4_02_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WallSet_Steel_Angular_8x4_C": {
+    "file": "Desc_WallSet_Steel_Angular_8x4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WallSet_Steel_Angular_8x8_C": {
+    "file": "Desc_WallSet_Steel_Angular_8x8_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WAT1_C": {
+    "file": "Desc_WAT1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WAT2_C": {
+    "file": "Desc_WAT2_C.webp",
+    "source": "wiki"
   },
   "Desc_Water_C": {
     "file": "Desc_Water_C.webp",
@@ -695,6 +2855,38 @@
     "file": "Desc_Wood_C.webp",
     "source": "wiki-mirror"
   },
+  "Desc_WorkBench_C": {
+    "file": "Desc_WorkBench_C.webp",
+    "source": "wiki"
+  },
+  "Desc_Workshop_C": {
+    "file": "Desc_Workshop_C.webp",
+    "source": "wiki"
+  },
+  "Desc_WreathDecor_C": {
+    "file": "Desc_WreathDecor_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasBall1_C": {
+    "file": "Desc_XmasBall1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasBall2_C": {
+    "file": "Desc_XmasBall2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasBall3_C": {
+    "file": "Desc_XmasBall3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasBall4_C": {
+    "file": "Desc_XmasBall4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasBallCluster_C": {
+    "file": "Desc_XmasBallCluster_C.webp",
+    "source": "wiki"
+  },
   "Desc_XmasBow_C": {
     "file": "Desc_XmasBow_C.webp",
     "source": "wiki-mirror"
@@ -702,5 +2894,45 @@
   "Desc_XmasBranch_C": {
     "file": "Desc_XmasBranch_C.webp",
     "source": "wiki-mirror"
+  },
+  "Desc_XmasDataCartridge1_C": {
+    "file": "Desc_XmasDataCartridge1_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasDataCartridge2_C": {
+    "file": "Desc_XmasDataCartridge2_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasDataCartridge3_C": {
+    "file": "Desc_XmasDataCartridge3_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasDataCartridge4_C": {
+    "file": "Desc_XmasDataCartridge4_C.webp",
+    "source": "wiki"
+  },
+  "Desc_xmassLights_C": {
+    "file": "Desc_xmassLights_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasStar_C": {
+    "file": "Desc_XmasStar_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XMassTree_C": {
+    "file": "Desc_XMassTree_C.webp",
+    "source": "wiki"
+  },
+  "Desc_XmasWreath_C": {
+    "file": "Desc_XmasWreath_C.webp",
+    "source": "wiki"
+  },
+  "Foundation_ConcretePolished_8x2_C": {
+    "file": "Foundation_ConcretePolished_8x2_C.webp",
+    "source": "wiki"
+  },
+  "Foundation_ConcretePolished_8x4_C": {
+    "file": "Foundation_ConcretePolished_8x4_C.webp",
+    "source": "wiki"
   }
 }
