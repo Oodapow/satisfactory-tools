@@ -545,6 +545,7 @@ const progressionOut = {
     'awesome-shop': { building: 'Desc_ResourceSinkShop_C' },
     alternate: { schematic: 'Research_HardDrive_0_C', note: 'Alternates come from Hard Drives researched in the MAM.' },
   },
+  mamTrees: Object.entries(mamTrees.trees).map(([id, t]) => ({ id, name: t.name, nodes: t.nodes.map((n) => n.id) })),
   purityMultipliers: resourceNodes.purityMultipliers,
   geysers: resourceNodes.geysers,
 }
