@@ -108,6 +108,7 @@ All of it is in `src/editor/`:
 | `Symbols.tsx` | Splitter, merger and conveyor lift symbols. |
 | `Inspector.tsx` | The right-hand panel for whatever is selected. |
 | `store.ts` | The editor's own stored state, the example outposts, palette lists. |
+| `unlocked.ts` | `useUnlocked()`: palette and picker lists cut down to what the game state has unlocked (machines, generators, recipes, fuels, items, link types, best belt and pipe). |
 | `icons.ts`, `GameIcon.tsx` | Icon lookup with the lettered fallback. |
 | `route.ts` | `#/map` routes. |
 

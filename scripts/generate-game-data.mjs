@@ -46,6 +46,7 @@ const docs = JSON.parse(decodeDocs(readFileSync(RAW)))
 const progression = JSON.parse(readFileSync(join(SUPPLEMENTS, 'progression.json'), 'utf8'))
 const resourceNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'resource-nodes.json'), 'utf8'))
 const extraItems = JSON.parse(readFileSync(join(SUPPLEMENTS, 'items.json'), 'utf8'))
+const mamTrees = JSON.parse(readFileSync(join(SUPPLEMENTS, 'mam-trees.json'), 'utf8'))
 const previousMeta = readJsonIfExists(join(OUT, 'meta.json'))
 
 function readJsonIfExists(path) {
@@ -462,6 +463,36 @@ for (const c of classesOf('FGSchematic')) {
 
 for (const s of schematics.values()) {
   for (const id of s.unlocks.recipes) recipes.get(id).unlockedBy.push(s.id)
+}
+
+// ---------------------------------------------------------------------------
+// MAM research tree layout (from the supplement; the game file only has folders)
+
+const placed = new Set()
+const mamEntry = (entry, where) => {
+  const s = schematics.get(entry.id)
+  if (!s) return warnings.push(`${where}: unknown schematic ${entry.id}`), null
+  if (s.type !== 'mam') return warnings.push(`${where}: ${entry.id} is ${s.type}, not MAM research`), null
+  if (s.name !== entry.name) warnings.push(`${where}: ${entry.id} is called "${s.name}" in the game, not "${entry.name}"`)
+  if (placed.has(entry.id)) warnings.push(`${where}: ${entry.id} is listed twice`)
+  placed.add(entry.id)
+  return s
+}
+for (const [tree, { nodes }] of Object.entries(mamTrees.trees)) {
+  const inTree = new Set(nodes.map((n) => n.id))
+  for (const node of nodes) {
+    const s = mamEntry(node, `mam-trees.json ${tree}`)
+    if (!s) continue
+    for (const p of node.parents) if (!inTree.has(p)) warnings.push(`mam-trees.json ${tree}: parent ${p} of ${node.id} is not in the tree`)
+    s.mamTree = tree
+    s.mamParents = node.parents
+  }
+}
+for (const entry of mamTrees.notInTree) mamEntry(entry, 'mam-trees.json notInTree')
+for (const s of schematics.values()) {
+  if (s.type === 'mam' && !s.discontinued && !placed.has(s.id)) {
+    warnings.push(`mam-trees.json: research ${s.id} ("${s.name}") is in no tree; add it to a tree or to notInTree`)
+  }
 }
 
 // ---------------------------------------------------------------------------

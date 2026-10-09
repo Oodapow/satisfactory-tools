@@ -5,10 +5,10 @@ import type { ExtractionStep, ItemFlow, OutpostPlan, OutpostSolution, Production
 
 export const perMin = (amount: number, r: Recipe) => (amount * 60) / r.durationSeconds
 
-/** Recipes that make `item` in a machine from the available set, standard ones first. */
-export function recipesFor(item: ItemId, available: Set<RecipeId>) {
+/** Unlocked recipes that make `item` in an unlocked machine, standard ones first. */
+export function recipesFor(item: ItemId, available: Availability) {
   return (recipesProducing.get(item) ?? [])
-    .filter((r) => available.has(r.id) && r.kind === 'production' && r.producedIn.length > 0)
+    .filter((r) => available.recipes.has(r.id) && r.kind === 'production' && r.producedIn.some((b) => available.buildings.has(b)))
     .sort((a, b) => Number(a.alternate) - Number(b.alternate))
 }
 
@@ -99,7 +99,7 @@ export function somersloopBoost(b: Building | undefined, n = 0) {
  */
 export function solve(plan: OutpostPlan, available: Availability, suggested: Choice = {}): OutpostSolution {
   const choose = (item: ItemId) => {
-    const options = recipesFor(item, available.recipes)
+    const options = recipesFor(item, available)
     return (
       options.find((r) => r.id === plan.recipeChoices[item]) ??
       options.find((r) => r.id === suggested[item]) ??
@@ -216,7 +216,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
           made.set(p.item, (made.get(p.item) ?? 0) + rate)
         }
       }
-      const building = recipe.producedIn[0]
+      const building = recipe.producedIn.find((b) => available.buildings.has(b)) ?? recipe.producedIn[0]
       const b = buildingsById.get(building)
       const { count, clock } = sizeMachines(run.machines, b?.overclock?.canOverclock === false ? 1 : maxClock)
       return {
@@ -335,7 +335,7 @@ export function suggestRecipes(plan: OutpostPlan, available: Availability): Choi
     const current = solve(plan, available, choice)
     for (const item of Object.keys(current.recipes)) {
       if (plan.recipeChoices[item]) continue
-      const options = recipesFor(item, available.recipes)
+      const options = recipesFor(item, available)
       if (options.length < 2) continue
       let best = choice[item] ?? current.recipes[item]
       let bestScore = score(solve(plan, available, { ...choice, [item]: best }))

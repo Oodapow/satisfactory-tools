@@ -17,8 +17,8 @@ import {
 import { buildingsById, itemName, recipesById } from '../data'
 import { exportsOf } from '../plan/network'
 import { fmt } from './generate'
-import { GameIcon } from './GameIcon'
-import { POWER } from './icons'
+import { GameIcon } from '../ui/GameIcon'
+import { POWER } from '../data/icons'
 import { FloorPlanContext } from './floorPlanView'
 import { anchors, G, machineIO, UPRIGHT, type Anchor, type Side } from './grid'
 import { labelPoints, route, useRoutedPath } from './router'
@@ -118,7 +118,7 @@ function Row({ label, items }: { label: string; items: Chip[] }) {
       <span className="ne-chips">
         {items.map((c) => (
           <span key={c.key} className="ne-chip">
-            <GameIcon id={c.icon} size={16} />
+            <GameIcon id={c.icon} size={18} />
             {c.text}
           </span>
         ))}
@@ -145,12 +145,12 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
       <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}`} />
       <EdgeLabelRenderer>
         <div className="ne-edge-label nodrag nopan" style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}>
-          <GameIcon id={transportIcon(t)} size={16} title={transportLabel(t)} />
+          <GameIcon id={transportIcon(t)} size={18} title={transportLabel(t)} />
           {t === 'power'
             ? `${fmt(data?.powerMW ?? 0)} MW`
             : (data?.items ?? []).map((r) => (
                 <span key={r.item} className="ne-chip">
-                  <GameIcon id={r.item} size={16} />
+                  <GameIcon id={r.item} size={18} />
                   {fmt(r.perMin)}
                 </span>
               ))}

@@ -2284,7 +2284,8 @@
         "Desc_HogParts_C"
       ]
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": []
   },
   {
     "id": "Research_ACarapace_1_C",
@@ -2388,7 +2389,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AO_Pre_Rebar_C"
+    ]
   },
   {
     "id": "Research_ACarapace_3_C",
@@ -2421,7 +2425,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AOrgans_3_C"
+    ]
   },
   {
     "id": "Research_Alien_ActiveSAM_C",
@@ -2452,7 +2459,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_SAM_C"
+    ]
   },
   {
     "id": "Research_Alien_BoosterBlocker_C",
@@ -2481,7 +2491,11 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_SAMFluctuator_C",
+      "Research_Alien_Somersloop_C"
+    ]
   },
   {
     "id": "Research_Alien_BoosterFuel_C",
@@ -2520,7 +2534,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_PowerBooster_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralInventory_C",
@@ -2559,7 +2576,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStorage_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralStackExpansion_01_C",
@@ -2594,7 +2614,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStorage_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralStackExpansion_02_C",
@@ -2629,7 +2652,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStackExpansion_01_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralStackExpansion_03_C",
@@ -2664,7 +2690,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStackExpansion_02_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralStackExpansion_04_C",
@@ -2699,7 +2728,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStackExpansion_03_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralStorage_C",
@@ -2734,7 +2766,11 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_SAMFluctuator_C",
+      "Research_Alien_MercerSphere_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralUploadBoost_01_C",
@@ -2769,7 +2805,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralStorage_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralUploadBoost_02_C",
@@ -2804,7 +2843,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralUploadBoost_01_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralUploadBoost_03_C",
@@ -2839,7 +2881,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralUploadBoost_02_C"
+    ]
   },
   {
     "id": "Research_Alien_CentralUploadBoost_04_C",
@@ -2874,7 +2919,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_CentralUploadBoost_03_C"
+    ]
   },
   {
     "id": "Research_Alien_MercerSphere_C",
@@ -2906,7 +2954,8 @@
         "Desc_WAT2_C"
       ]
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": []
   },
   {
     "id": "Research_Alien_PortalPotty_C",
@@ -2945,7 +2994,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_SAMFluctuator_C"
+    ]
   },
   {
     "id": "Research_Alien_PowerBooster_C",
@@ -2984,7 +3036,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_BoosterBlocker_C"
+    ]
   },
   {
     "id": "Research_Alien_ProductionBooster_C",
@@ -3023,7 +3078,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_BoosterBlocker_C"
+    ]
   },
   {
     "id": "Research_Alien_SAM_C",
@@ -3054,7 +3112,8 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": []
   },
   {
     "id": "Research_Alien_SAMFluctuator_C",
@@ -3093,7 +3152,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": [
+      "Research_Alien_ActiveSAM_C"
+    ]
   },
   {
     "id": "Research_Alien_Somersloop_C",
@@ -3125,7 +3187,8 @@
         "Desc_WAT1_C"
       ]
     },
-    "mamTree": "AlienTech"
+    "mamTree": "AlienTech",
+    "mamParents": []
   },
   {
     "id": "Research_AO_DNACapsule_C",
@@ -3157,7 +3220,13 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_ACarapace_0_C",
+      "Research_AO_Hatcher_C",
+      "Research_AO_Stinger_C",
+      "Research_AOrgans_0_C"
+    ]
   },
   {
     "id": "Research_AO_Hatcher_C",
@@ -3190,7 +3259,8 @@
         "Desc_HatcherParts_C"
       ]
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": []
   },
   {
     "id": "Research_AO_Pre_Rebar_C",
@@ -3223,7 +3293,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AO_DNACapsule_C"
+    ]
   },
   {
     "id": "Research_AO_Stinger_C",
@@ -3256,7 +3329,8 @@
         "Desc_StingerParts_C"
       ]
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": []
   },
   {
     "id": "Research_AOrganisms_1_C",
@@ -3332,7 +3406,10 @@
         "Desc_HostileCreature_C"
       ]
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AO_DNACapsule_C"
+    ]
   },
   {
     "id": "Research_AOrgans_0_C",
@@ -3365,7 +3442,8 @@
         "Desc_SpitterParts_C"
       ]
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": []
   },
   {
     "id": "Research_AOrgans_1_C",
@@ -3433,7 +3511,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AO_DNACapsule_C"
+    ]
   },
   {
     "id": "Research_AOrgans_3_C",
@@ -3466,7 +3547,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "AlienOrganisms"
+    "mamTree": "AlienOrganisms",
+    "mamParents": [
+      "Research_AO_DNACapsule_C"
+    ]
   },
   {
     "id": "Research_Caterium_0_C",
@@ -3498,7 +3582,8 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": []
   },
   {
     "id": "Research_Caterium_1_C",
@@ -3529,7 +3614,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_0_C"
+    ]
   },
   {
     "id": "Research_Caterium_2_1_C",
@@ -3564,7 +3652,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_2_C",
@@ -3595,7 +3686,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_1_C"
+    ]
   },
   {
     "id": "Research_Caterium_3_1_C",
@@ -3624,7 +3718,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_1_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_3_2_C",
@@ -3659,7 +3756,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_3_C",
@@ -3688,7 +3788,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_4_1_1_C",
@@ -3723,7 +3826,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_4_1_C"
+    ]
   },
   {
     "id": "Research_Caterium_4_1_2_C",
@@ -3758,7 +3864,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_4_1_C"
+    ]
   },
   {
     "id": "Research_Caterium_4_1_C",
@@ -3793,7 +3902,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_3_C"
+    ]
   },
   {
     "id": "Research_Caterium_4_2_C",
@@ -3824,7 +3936,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_3_C"
+    ]
   },
   {
     "id": "Research_Caterium_4_3_C",
@@ -3859,7 +3974,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_1_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_5_1_C",
@@ -3894,7 +4012,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_5_C"
+    ]
   },
   {
     "id": "Research_Caterium_5_2_C",
@@ -3933,7 +4054,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_6_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_5_C",
@@ -3968,7 +4092,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_3_C"
+    ]
   },
   {
     "id": "Research_Caterium_6_2_C",
@@ -4003,7 +4130,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_4_2_C"
+    ]
   },
   {
     "id": "Research_Caterium_6_3_C",
@@ -4038,7 +4168,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_5_C"
+    ]
   },
   {
     "id": "Research_Caterium_7_1_C",
@@ -4077,7 +4210,11 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_4_1_C",
+      "Research_Caterium_5_C"
+    ]
   },
   {
     "id": "Research_Caterium_7_2_C",
@@ -4119,7 +4256,11 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Caterium"
+    "mamTree": "Caterium",
+    "mamParents": [
+      "Research_Caterium_4_1_C",
+      "Research_Caterium_5_C"
+    ]
   },
   {
     "id": "Research_HardDrive_0_C",
@@ -4181,7 +4322,8 @@
         "Desc_Mycelia_C"
       ]
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": []
   },
   {
     "id": "Research_Mycelia_2_1_C",
@@ -4216,7 +4358,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_2_C"
+    ]
   },
   {
     "id": "Research_Mycelia_2_C",
@@ -4251,7 +4396,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_1_C"
+    ]
   },
   {
     "id": "Research_Mycelia_3_C",
@@ -4286,7 +4434,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_2_C"
+    ]
   },
   {
     "id": "Research_Mycelia_4_C",
@@ -4319,7 +4470,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_1_C"
+    ]
   },
   {
     "id": "Research_Mycelia_5_C",
@@ -4354,7 +4508,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_4_C"
+    ]
   },
   {
     "id": "Research_Mycelia_6_C",
@@ -4393,7 +4550,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_4_C"
+    ]
   },
   {
     "id": "Research_Mycelia_7_C",
@@ -4426,7 +4586,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_2_C"
+    ]
   },
   {
     "id": "Research_Mycelia_8_C",
@@ -4465,7 +4628,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_1_C"
+    ]
   },
   {
     "id": "Research_Mycelia_GasMask_C",
@@ -4505,7 +4671,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Mycelia"
+    "mamTree": "Mycelia",
+    "mamParents": [
+      "Research_Mycelia_2_C"
+    ]
   },
   {
     "id": "Research_Nutrients_0_C",
@@ -4537,7 +4706,8 @@
         "Desc_Berry_C"
       ]
     },
-    "mamTree": "Nutrients"
+    "mamTree": "Nutrients",
+    "mamParents": []
   },
   {
     "id": "Research_Nutrients_1_C",
@@ -4569,7 +4739,8 @@
         "Desc_Nut_C"
       ]
     },
-    "mamTree": "Nutrients"
+    "mamTree": "Nutrients",
+    "mamParents": []
   },
   {
     "id": "Research_Nutrients_2_C",
@@ -4601,7 +4772,8 @@
         "Desc_Shroom_C"
       ]
     },
-    "mamTree": "Nutrients"
+    "mamTree": "Nutrients",
+    "mamParents": []
   },
   {
     "id": "Research_Nutrients_3_C",
@@ -4638,7 +4810,12 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Nutrients"
+    "mamTree": "Nutrients",
+    "mamParents": [
+      "Research_Nutrients_1_C",
+      "Research_Nutrients_0_C",
+      "Research_Nutrients_2_C"
+    ]
   },
   {
     "id": "Research_Nutrients_4_C",
@@ -4677,7 +4854,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Nutrients"
+    "mamTree": "Nutrients",
+    "mamParents": [
+      "Research_Nutrients_3_C"
+    ]
   },
   {
     "id": "Research_PowerSlugs_1_C",
@@ -4710,7 +4890,8 @@
         "Desc_Crystal_C"
       ]
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": []
   },
   {
     "id": "Research_PowerSlugs_2_C",
@@ -4749,7 +4930,10 @@
       ],
       "cosmetics": []
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": [
+      "Research_PowerSlugs_1_C"
+    ]
   },
   {
     "id": "Research_PowerSlugs_3_C",
@@ -4788,7 +4972,10 @@
         "Desc_Crystal_C"
       ]
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": [
+      "Research_PowerSlugs_1_C"
+    ]
   },
   {
     "id": "Research_PowerSlugs_4_C",
@@ -4829,7 +5016,10 @@
         "Desc_Crystal_mk2_C"
       ]
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": [
+      "Research_PowerSlugs_1_C"
+    ]
   },
   {
     "id": "Research_PowerSlugs_5_C",
@@ -4870,7 +5060,10 @@
         "Desc_Crystal_mk3_C"
       ]
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": [
+      "Research_PowerSlugs_4_C"
+    ]
   },
   {
     "id": "Research_PowerSlugs_6_C",
@@ -4909,7 +5102,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "PowerSlugs"
+    "mamTree": "PowerSlugs",
+    "mamParents": [
+      "Research_PowerSlugs_5_C"
+    ]
   },
   {
     "id": "Research_Quartz_0_C",
@@ -4941,7 +5137,8 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": []
   },
   {
     "id": "Research_Quartz_1_1_C",
@@ -4972,7 +5169,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_0_C"
+    ]
   },
   {
     "id": "Research_Quartz_1_2_C",
@@ -5003,7 +5203,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_0_C"
+    ]
   },
   {
     "id": "Research_Quartz_2_1_C",
@@ -5038,7 +5241,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_1_1_C"
+    ]
   },
   {
     "id": "Research_Quartz_2_C",
@@ -5073,7 +5279,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_1_1_C"
+    ]
   },
   {
     "id": "Research_Quartz_3_1_C",
@@ -5109,7 +5318,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_2_C"
+    ]
   },
   {
     "id": "Research_Quartz_3_3_C",
@@ -5179,7 +5391,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_2_C"
+    ]
   },
   {
     "id": "Research_Quartz_3_C",
@@ -5252,7 +5467,10 @@
         "Desc_HardDrive_C"
       ]
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_2_C"
+    ]
   },
   {
     "id": "Research_Quartz_4_C",
@@ -5291,7 +5509,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_2_C"
+    ]
   },
   {
     "id": "Research_Quartz_PriorityMerger_C",
@@ -5326,7 +5547,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Quartz"
+    "mamTree": "Quartz",
+    "mamParents": [
+      "Research_Quartz_2_C"
+    ]
   },
   {
     "id": "Research_Sulfur_0_C",
@@ -5358,7 +5582,8 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": []
   },
   {
     "id": "Research_Sulfur_1_C",
@@ -5393,7 +5618,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_0_C"
+    ]
   },
   {
     "id": "Research_Sulfur_2_C",
@@ -5462,7 +5690,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_1_C"
+    ]
   },
   {
     "id": "Research_Sulfur_3_2_1_C",
@@ -5565,7 +5796,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_1_C"
+    ]
   },
   {
     "id": "Research_Sulfur_4_1_C",
@@ -5605,7 +5839,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_3_C"
+    ]
   },
   {
     "id": "Research_Sulfur_4_2_1_C",
@@ -5683,7 +5920,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_3_C"
+    ]
   },
   {
     "id": "Research_Sulfur_4_C",
@@ -5718,7 +5958,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_3_C"
+    ]
   },
   {
     "id": "Research_Sulfur_5_1_C",
@@ -5757,7 +6000,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_4_C"
+    ]
   },
   {
     "id": "Research_Sulfur_5_2_C",
@@ -5798,7 +6044,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_4_1_C"
+    ]
   },
   {
     "id": "Research_Sulfur_5_2_Hidden_C",
@@ -5857,7 +6106,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_1_C"
+    ]
   },
   {
     "id": "Research_Sulfur_6_C",
@@ -5890,7 +6142,13 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_4_C",
+      "Research_Sulfur_4_1_C",
+      "Research_Sulfur_5_1_C",
+      "Research_Sulfur_5_2_C"
+    ]
   },
   {
     "id": "Research_Sulfur_CompactedCoal_C",
@@ -5931,7 +6189,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_ExperimentalPower_C"
+    ]
   },
   {
     "id": "Research_Sulfur_ExperimentalPower_C",
@@ -5968,7 +6229,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_0_C"
+    ]
   },
   {
     "id": "Research_Sulfur_IonizedFuel_C",
@@ -6009,7 +6273,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_TurboFuel_C"
+    ]
   },
   {
     "id": "Research_Sulfur_RocketFuel_C",
@@ -6050,7 +6317,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_TurboFuel_C"
+    ]
   },
   {
     "id": "Research_Sulfur_TurboFuel_C",
@@ -6092,7 +6362,10 @@
       "features": [],
       "cosmetics": []
     },
-    "mamTree": "Sulfur"
+    "mamTree": "Sulfur",
+    "mamParents": [
+      "Research_Sulfur_ExperimentalPower_C"
+    ]
   },
   {
     "id": "Research_XMas_1_C",
@@ -6130,7 +6403,8 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
-    ]
+    ],
+    "mamParents": []
   },
   {
     "id": "Research_XMas_1-1_C",
@@ -6165,6 +6439,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_1_C"
     ]
   },
   {
@@ -6200,6 +6477,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_1_C"
     ]
   },
   {
@@ -6246,6 +6526,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_1_C"
     ]
   },
   {
@@ -6285,6 +6568,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_2_C"
     ]
   },
   {
@@ -6327,6 +6613,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_2_C"
     ]
   },
   {
@@ -6377,6 +6666,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_2_C"
     ]
   },
   {
@@ -6424,6 +6716,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_3_C"
     ]
   },
   {
@@ -6471,6 +6766,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_3_C"
     ]
   },
   {
@@ -6516,6 +6814,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_3_C"
     ]
   },
   {
@@ -6559,6 +6860,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_4_C"
     ]
   },
   {
@@ -6601,6 +6905,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_4_C"
     ]
   },
   {
@@ -6637,6 +6944,9 @@
     "mamTree": "XMas",
     "events": [
       "christmas"
+    ],
+    "mamParents": [
+      "Research_XMas_4_C"
     ]
   },
   {
