@@ -33,13 +33,14 @@ import {
   type EditorLayout,
   type LinkEdge,
   type MachineData,
-  type MergerData,
-  type SplitterData,
   type MicroGraph,
   type MicroNode,
   type OutpostNode,
   type PortData,
 } from './model'
+import { G, isBlock } from './grid'
+import { routeFloorPlan } from './gridRouter'
+import { FloorPlanContext, type FloorPlanView } from './floorPlanView'
 import { BeltLine, FloorBand, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
@@ -383,6 +384,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const [sel, setSel] = useState<Selection>(null)
   const [routes] = useState(() => new RouteRegistry())
   const graph = layout.micro[id]
+  const view = useFloorPlanView(graph)
   const maxBeltTier = graph?.maxBeltTier ?? 3
   const { fitView } = useReactFlow()
   const links = useMemo(() => portLinks(net.solved, layout, id), [net.solved, layout, id])
@@ -401,6 +403,12 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
     (fn: (g: MicroGraph) => MicroGraph) => update((l) => (l.micro[id] ? { ...l, micro: { ...l.micro, [id]: fn(l.micro[id]) } } : l)),
     [id, update],
   )
+
+  // Floor plans saved before the grid existed: put their blocks on it.
+  useEffect(() => {
+    if (graph?.nodes.some((n) => isBlock(n) && (n.position.x % G || n.position.y % G)))
+      setGraph((g) => ({ ...g, nodes: g.nodes.map((n) => (isBlock(n) ? { ...n, position: { x: Math.round(n.position.x / G) * G, y: Math.round(n.position.y / G) * G } } : n)) }))
+  }, [graph, setGraph])
   // Any manual edit means the layout is no longer the untouched proposal.
   const edited = (g: MicroGraph): MicroGraph => ({ ...g, generatedAt: undefined })
 
@@ -548,9 +556,12 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             {graph.notes?.map((n) => <li key={n}>{n}</li>)}
           </ul>
         )}
+        <FloorPlanContext.Provider value={view}>
         <RouteContext.Provider value={routes}>
         <ReactFlow
           {...flowProps}
+          snapToGrid
+          snapGrid={[G, G]}
           nodes={graph.nodes}
           edges={graph.edges}
           nodeTypes={microNodeTypes}
@@ -561,11 +572,12 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           onPaneClick={() => setSel(null)}
           defaultEdgeOptions={{ type: 'belt' }}
         >
-          <Background gap={24} />
+          <Background gap={G} />
           <Controls />
           <MiniMap pannable zoomable className="ne-minimap" />
         </ReactFlow>
         </RouteContext.Provider>
+        </FloorPlanContext.Provider>
       </div>
       <aside className="ne-inspector">
         {selNode?.data.kind === 'machine' ? (
@@ -577,21 +589,11 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             <h3>{selNode.data.kind === 'splitter' ? 'Splitter' : 'Merger'}</h3>
             <p className="ne-help">
               {selNode.data.kind === 'splitter'
-                ? 'One belt in at the back, up to three out: ahead, up and down.'
-                : 'Up to three belts in: back, up and down. One out ahead.'}{' '}
-              Flip it to swap which side is ahead.
+                ? 'One belt in at the back, up to three out: ahead, left and right.'
+                : 'Up to three belts in: back, left and right. One out ahead.'}{' '}
+              Its connection points turn to face the belts on their own.
             </p>
             <div className="ne-actions">
-              <button
-                type="button"
-                className="ghost"
-                onClick={() => {
-                  const d = selNode.data as SplitterData | MergerData
-                  patchNode({ ...d, facing: d.facing === 'left' ? 'right' : 'left' })
-                }}
-              >
-                Flip
-              </button>
               <button type="button" className="danger" onClick={removeSelected}>
                 Delete
               </button>
@@ -614,7 +616,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             <h3>{solved.plan.name}</h3>
             <p className="ne-help">
               {graph.generatedAt
-                ? 'Proposed from the plan: one floor per recipe with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, belts sized to your best tier.'
+                ? 'Proposed from the plan: one floor per production type with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, and a line split in two wherever one belt of your best tier can\'t carry it. Belts run along the grid and never share a grid line.'
                 : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan.'}
             </p>
             <p className="ne-help">
@@ -626,5 +628,26 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
         )}
       </aside>
     </div>
+  )
+}
+
+/**
+ * Belt routes on the grid and which way joints and ports face, for the whole floor plan.
+ * Worked out again whenever blocks or belts change, but not while a block is being dragged:
+ * the belts of a dragged block follow it with a plain route until it is dropped.
+ */
+function useFloorPlanView(graph: MicroGraph | undefined): FloorPlanView {
+  const dragKey = graph?.nodes.flatMap((n) => (n.dragging ? [n.id] : [])).join() ?? ''
+  const key = graph
+    ? JSON.stringify([
+        graph.nodes.map((n) => [n.id, n.type, n.dragging ? 'drag' : [n.position.x, n.position.y], n.data.kind === 'machine' ? [n.data.recipe, n.data.fuel, n.data.building] : n.data.kind === 'port' ? n.data.direction : 0]),
+        graph.edges.map((e) => [e.id, e.source, e.sourceHandle, e.target, e.targetHandle]),
+      ])
+    : ''
+  // Keyed on the shape of the plan, not on every drag frame.
+  const routed = useMemo(() => (graph ? routeFloorPlan(graph.nodes, graph.edges) : undefined), [key]) // eslint-disable-line react-hooks/exhaustive-deps
+  return useMemo(
+    () => ({ routes: routed?.routes ?? new Map(), orients: routed?.orients ?? new Map(), dragging: new Set(dragKey ? dragKey.split(',') : []) }),
+    [routed, dragKey],
   )
 }
