@@ -15,6 +15,7 @@ few hand-written supplements for things that file does not contain.
 | `data/supplements/resource-nodes.json` | Resource node counts per purity on the map, and purity multipliers. Not in the game file. |
 | `data/supplements/mam-trees.json` | MAM research tree layout: which nodes sit in each tree and which node opens which. Not in the game file. |
 | `data/supplements/world-nodes.json` | Position, resource and purity of every resource node, resource well spot and geyser on the map. Not in the game file. |
+| `data/supplements/taxonomy.json` | How the catalog groups things: display names and order for the game's build menu categories, and item categories (the game file has none; these follow the in-game AWESOME Shop part categories). Every item must be listed once. |
 | `data/supplements/items.json` | Items the game file references but does not describe (FICSIT Coupon, Hard Drive). |
 | `scripts/generate-game-data.mjs` | Turns the above into the files below. |
 | `src/data/game/*.json` | Generated, normalized data the app imports. Do not edit by hand. |
@@ -37,6 +38,7 @@ Generated files:
 | `schematics.json` | Milestones, HUB upgrades, MAM research, alternate recipes, AWESOME Shop: cost, tier, dependencies, everything it unlocks. |
 | `progression.json` | Tiers with their milestones and gates, Space Elevator phases, what each schematic type needs before it can be bought. |
 | `world-map.json` | The world area the map picture covers, and the nodes from `world-nodes.json`. |
+| `taxonomy.json` | Items and buildings grouped into categories and subcategories, in display order. Buildings follow the in-game build menu. Use `groupByTaxonomy` from `src/data/game/index.ts` to sort a list into it. |
 | `meta.json` | Game version, units, counts, attribution. |
 
 ## Conventions
