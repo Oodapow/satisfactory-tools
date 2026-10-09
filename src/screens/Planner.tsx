@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { buildingsById, itemName } from '../data'
+import { buildingsById } from '../data'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
+import { autoName } from '../plan/naming'
 import { blankPlan, useOutposts } from '../plan/store'
+import type { Goal } from '../plan/types'
 import { GameIcon } from '../ui/GameIcon'
 import { Rates } from './Rates'
 
@@ -42,7 +44,8 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
   const match = (name: string) => name.toLowerCase().includes(q.trim().toLowerCase())
 
   const planFor = (item: string) => {
-    const plan = blankPlan(`${itemName(item)} outpost`, { goals: [{ kind: 'item', item, perMin: 10 }] })
+    const goals: Goal[] = [{ kind: 'item', item, perMin: 10 }]
+    const plan = blankPlan(autoName({ goals, nodes: [] }), { goals })
     save(plan)
     go(`/outposts/${plan.id}/resources`)
   }

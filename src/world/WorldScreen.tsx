@@ -3,6 +3,7 @@ import { resourcesById } from '../data'
 import { displayName, iconUrl } from '../data/icons'
 import type { Purity, WorldNode } from '../data/game/types'
 import { worldMap, worldMapOverview, worldMapTiles } from '../data/game/worldMap'
+import { autoName } from '../plan/naming'
 import { blankPlan, useOutposts } from '../plan/store'
 import type { OutpostPlan, ResourceNode } from '../plan/types'
 import { go } from '../router'
@@ -10,7 +11,7 @@ import { FOG_SIZE, type Point } from '../save/readMap'
 import type { GameState } from '../state/gameState'
 import { usePersistentState } from '../storage/persisted'
 import { hide, useTip } from '../ui/tooltip'
-import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, nearby, outpostName, pickable, PURITIES, toUnit, toWorld, type Marker } from './model'
+import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, nearby, pickable, PURITIES, toUnit, toWorld, type Marker } from './model'
 import './world.css'
 
 // The map is laid out on a square "stage" of STAGE px and zoomed with a CSS transform;
@@ -77,11 +78,6 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
   const usedBy = new Map<string, OutpostPlan>()
   for (const o of outposts) for (const n of o.nodes) if (n.fromMap) usedBy.set(n.id, o)
 
-  // An outpost keeps a name made from its resources until you rename it.
-  const fallbackName = `Outpost ${outposts.length + 1}`
-  const nameFor = (nodes: ResourceNode[]) => outpostName(nodes, displayName, fallbackName)
-  const autoNamed = (o: OutpostPlan) => o.name === outpostName(o.nodes, displayName, o.name) || /^Outpost \d+$/.test(o.name)
-  const withNodes = (o: OutpostPlan, nodes: ResourceNode[]) => ({ nodes, ...(autoNamed(o) ? { name: nameFor(nodes) } : {}) })
   const asNode = (node: WorldNode): ResourceNode => ({ id: node.id, resource: node.resource, purity: node.purity, fromMap: true })
 
   const toggleNode = (node: WorldNode) => {
@@ -90,7 +86,7 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
     const owner = usedBy.get(node.id)
     if (owner && owner.id !== active.id) return
     const has = active.nodes.some((n) => n.id === node.id)
-    updateOutpost(active.id, withNodes(active, has ? active.nodes.filter((n) => n.id !== node.id) : [...active.nodes, asNode(node)]))
+    updateOutpost(active.id, { nodes: has ? active.nodes.filter((n) => n.id !== node.id) : [...active.nodes, asNode(node)] })
   }
 
   /** Unclaimed nodes within reach of a spot, for an outpost placed there. */
@@ -107,10 +103,10 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
     if (placing === 'move' && active) {
       // The map-picked nodes follow the outpost to its new spot; nodes added by hand stay.
       const nodes = [...active.nodes.filter((n) => !n.fromMap), ...nodesNear(p, active.id)]
-      updateOutpost(active.id, { location, ...withNodes(active, nodes) })
+      updateOutpost(active.id, { location, nodes })
     } else {
       const nodes = nodesNear(p)
-      const plan = blankPlan(nameFor(nodes), { location, nodes })
+      const plan = blankPlan(autoName({ goals: [], nodes }, `Outpost ${outposts.length + 1}`), { location, nodes })
       saveOutpost(plan)
       go(`/world/${plan.id}`)
     }

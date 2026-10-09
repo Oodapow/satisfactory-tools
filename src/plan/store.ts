@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { usePersistentState } from '../storage/persisted'
+import { nameAfter } from './naming'
 import type { OutpostPlan } from './types'
 
 // Outposts saved before plans existed had a single target and recipe choices.
@@ -55,7 +56,16 @@ export function useOutposts() {
       })
     },
     update(id: string, patch: PlanPatch) {
-      setRaw((prev) => prev.map((o) => (o.id === id ? { ...normalize(o), ...patch, updatedAt: now() } : o)))
+      setRaw((prev) =>
+        prev.map((o) => {
+          if (o.id !== id) return o
+          const before = normalize(o)
+          const next = { ...before, ...patch }
+          // Names we made follow what the outpost delivers or mines; typed names stay.
+          if (patch.name === undefined) next.name = nameAfter(before, next)
+          return { ...next, updatedAt: now() }
+        }),
+      )
     },
     remove(id: string) {
       // Drop the outpost and any imports other outposts take from it.

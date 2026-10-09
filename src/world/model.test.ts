@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { worldMap } from '../data/game/worldMap'
 import { FOG_SIZE, type SaveMap } from '../save/readMap'
 import type { GameState } from '../state/gameState'
-import { AUTO_RADIUS, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, outpostName, toUnit, toWorld } from './model'
+import { AUTO_RADIUS, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, toUnit, toWorld } from './model'
 
 const b = worldMap.bounds
 const encode = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes))
@@ -133,10 +133,4 @@ describe('outposts on the map', () => {
     expect(nearby(all, [b.west - 1e6, b.north - 1e6])).toEqual([])
   })
 
-  it('names an outpost after what it mines', () => {
-    const name = (id: string) => ({ a: 'Iron Ore', b: 'Copper Ore', c: 'Coal' })[id] ?? id
-    expect(outpostName([], name, 'Outpost 3')).toBe('Outpost 3')
-    expect(outpostName([{ resource: 'b' }, { resource: 'a' }, { resource: 'a' }], name, '')).toBe('Iron Ore ×2 · Copper Ore')
-    expect(outpostName([{ resource: 'c' }, { resource: 'b' }], name, '')).toBe('Coal · Copper Ore')
-  })
 })
