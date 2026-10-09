@@ -247,3 +247,23 @@ export interface WorldMap {
   bounds: { west: number; east: number; north: number; south: number }
   nodes: WorldNode[]
 }
+
+/** One level of the catalog's grouping: a subcategory and its members in display order. */
+export interface TaxonomyGroup {
+  id: string
+  name: string
+  /** Item or building ids. */
+  members: string[]
+}
+
+export interface TaxonomyCategory {
+  id: string
+  name: string
+  groups: TaxonomyGroup[]
+}
+
+/** How items and buildings are grouped for browsing (taxonomy.json). Buildings follow the in-game build menu. */
+export interface Taxonomy {
+  items: TaxonomyCategory[]
+  buildings: TaxonomyCategory[]
+}

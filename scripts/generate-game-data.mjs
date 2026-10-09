@@ -48,6 +48,7 @@ const resourceNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'resource-nodes.
 const extraItems = JSON.parse(readFileSync(join(SUPPLEMENTS, 'items.json'), 'utf8'))
 const mamTrees = JSON.parse(readFileSync(join(SUPPLEMENTS, 'mam-trees.json'), 'utf8'))
 const worldNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'world-nodes.json'), 'utf8'))
+const taxonomySupplement = JSON.parse(readFileSync(join(SUPPLEMENTS, 'taxonomy.json'), 'utf8'))
 const previousMeta = readJsonIfExists(join(OUT, 'meta.json'))
 
 function readJsonIfExists(path) {
@@ -191,6 +192,8 @@ function footprint(clearance) {
 
 const buildings = new Map()
 const buildToDesc = new Map()
+/** Build menu order within a subcategory (mMenuPriority); only used to order the taxonomy. */
+const menuPriority = new Map()
 for (const d of classesOf('FGBuildingDescriptor')) {
   const buildId = d.ClassName.replace(/^Desc_/, 'Build_')
   const build = buildClasses.get(buildId)
@@ -227,6 +230,7 @@ for (const d of classesOf('FGBuildingDescriptor')) {
   if (building.kind === 'generator') building.generator = generatorInfo(b)
   if (building.kind === 'extractor') building.extractor = extractorInfo(b)
   buildings.set(building.id, building)
+  menuPriority.set(building.id, num(d.mMenuPriority))
   if (build) buildToDesc.set(buildId, building.id)
 }
 
@@ -584,6 +588,47 @@ const worldMap = {
   nodes: worldNodes.nodes,
 }
 
+// ---------------------------------------------------------------------------
+// Taxonomy: how the catalog (and the map legend) group items and buildings, in display order.
+// Buildings follow the game's build menu; items follow data/supplements/taxonomy.json.
+
+function buildTaxonomy() {
+  const buildingTree = taxonomySupplement.buildings.map((cat) => {
+    const groups = Object.entries(cat.groups).map(([id, name]) => {
+      const members = [...buildings.values()]
+        .filter((b) => b.buildMenu?.category === cat.id && b.buildMenu.subCategory === id)
+        .sort((a, b) => menuPriority.get(a.id) - menuPriority.get(b.id) || a.name.localeCompare(b.name))
+      if (!members.length) warnings.push(`taxonomy.json: no building is in ${cat.id} / ${id}`)
+      return { id, name, members: members.map((b) => b.id) }
+    })
+    return { id: cat.id, name: cat.name, groups }
+  })
+  for (const b of buildings.values()) {
+    const cat = taxonomySupplement.buildings.find((c) => c.id === b.buildMenu?.category)
+    if (!cat || !(b.buildMenu.subCategory in cat.groups)) {
+      warnings.push(`taxonomy.json has no build menu group for ${b.id} (${b.buildMenu?.category} / ${b.buildMenu?.subCategory})`)
+    }
+  }
+
+  const listed = new Map()
+  const itemTree = taxonomySupplement.items.map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    groups: cat.groups.map((g) => {
+      for (const id of g.items) {
+        if (!items.has(id)) warnings.push(`taxonomy.json lists unknown item ${id}`)
+        if (listed.has(id)) warnings.push(`taxonomy.json lists ${id} in both ${listed.get(id)} and ${g.id}`)
+        listed.set(id, g.id)
+      }
+      return { id: g.id, name: g.name, members: g.items }
+    }),
+  }))
+  for (const id of items.keys()) if (!listed.has(id)) warnings.push(`taxonomy.json does not list item ${id}`)
+
+  return { items: itemTree, buildings: buildingTree }
+}
+const taxonomy = buildTaxonomy()
+
 const fatal = warnings
 
 // ---------------------------------------------------------------------------
@@ -599,6 +644,7 @@ const outputs = {
   'schematics.json': sortById(schematics),
   'progression.json': progressionOut,
   'world-map.json': worldMap,
+  'taxonomy.json': taxonomy,
   'meta.json': {
     gameVersion,
     gameVersionNote: option('--game-version-note') ?? previousMeta?.gameVersionNote ?? null,
