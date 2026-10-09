@@ -348,10 +348,10 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
               update({ nodes: plan.nodes.map((x) => (x.id === n.id ? { ...x, ...patch } : x)) })
             return (
               <li key={n.id} className="node-row">
-                <GameIcon id={n.resource} size={32} />
                 {n.fromMap ? (
                   // Picked on the world map: resource and purity are the node's real ones.
                   <span className="node-fixed">
+                    <GameIcon id={n.resource} size={32} />
                     {itemName(n.resource)} · {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
                   </span>
                 ) : (

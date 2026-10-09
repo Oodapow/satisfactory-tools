@@ -286,7 +286,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .balance .rate { white-space: normal; }
 .goal-row, .node-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .goal-row input[type=number], .node-row input[type=number] { width: 90px; }
-.node-fixed { font-weight: 600; text-transform: none; }
+.node-fixed { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
 .node-fixed a { font-weight: 500; margin-left: 4px; }
 .goal-row select, .goal-row .icon-select { flex: 1 1 200px; min-width: 0; }
 .goals { margin-bottom: 12px; }
