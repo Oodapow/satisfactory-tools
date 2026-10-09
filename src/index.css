@@ -223,10 +223,6 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .outpost-row:hover { border-color: var(--accent); }
 .editor { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); }
 .editor > .link { justify-self: start; margin-bottom: 12px; }
-.target { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-.target label { display: grid; gap: 4px; }
-.target select { min-width: 220px; }
-.target input { width: 120px; }
 .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: grid; }
 .stat-value { font-size: 1.5rem; font-weight: 800; }
@@ -244,8 +240,6 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
   .topbar { gap: 8px 12px; }
   .topbar .nav-tabs { order: 3; flex-basis: 100%; justify-content: space-between; }
   .nav-tab { padding: 6px; font-size: .9rem; }
-  .target select { min-width: 0; width: 100%; }
-  .target label:first-child { flex: 1 1 200px; }
 }
 
 /* Icons */

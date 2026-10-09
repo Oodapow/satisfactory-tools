@@ -27,6 +27,7 @@ export function useUnlocked() {
       transports: transports.filter((t) => !a || transportUnlocked(t.id, a)),
       beltTier: a ? bestBeltTier(a) : 6,
       pipeTier: a ? bestPipeTier(a) : 2,
+      poleTier: a ? Math.max(1, ...[1, 2, 3].filter((mk) => a.buildings.has(`Desc_PowerPoleMk${mk}_C`))) : 3,
     }
   }, [a])
 }
