@@ -7,9 +7,11 @@ import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { IconSelect } from '../ui/IconSelect'
 import { POWER } from '../data/icons'
+import type { LineLoad } from './floorPlanView'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData, type PowerLine } from './model'
 import { editorPath } from './route'
 import { useUnlocked } from './unlocked'
+import { GridPanel, OutpostPower } from './PowerWidgets'
 
 const num = (v: string, fallback = 0) => (v !== '' && Number.isFinite(Number(v)) ? Number(v) : fallback)
 
@@ -24,8 +26,6 @@ function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string
 }
 
 export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onSelect: (id: string) => void; onExample: () => void }) {
-  const generated = all.reduce((t, s) => t + s.solution.power.generatedMW, 0)
-  const used = all.reduce((t, s) => t + s.solution.power.consumedMW, 0)
   // The example uses an Assembler and Coal Generators; don't show it before those are unlocked.
   const unlocked = useUnlocked()
   const exampleFits = ['Desc_AssemblerMk1_C', 'Desc_GeneratorCoal_C'].every((id) => [...unlocked.machines, ...unlocked.generators].some((b) => b.id === id))
@@ -33,10 +33,11 @@ export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onS
     <section>
       <h3>Factory map</h3>
       <p className="ne-help">
-        Every outpost plan is a block here, and every import is a link. {all.length} outposts, {fmt(generated)} MW generated,{' '}
-        {fmt(used)} MW used.
+        Every outpost plan is a block here, and every import is a link. Select an outpost to see what it imports and exports and
+        what the others can send it.
       </p>
-      <p className="ne-help">Select an outpost to see what it imports and exports and what the others can send it.</p>
+      <GridPanel all={all} onSelect={onSelect} />
+      <h4>Outposts</h4>
       <ul className="ne-list">
         {all.map(({ plan }) => {
           const g = plan.goals[0]
@@ -112,6 +113,7 @@ export function OutpostInspector({
       <a className="ne-textlink" href={`#/outposts/${plan.id}/goal`}>
         Edit goal, resources and recipes
       </a>
+      <OutpostPower solved={solved} all={all} powerLines={powerLines} />
 
       <h4>Imports</h4>
       {plan.imports.length ? (
@@ -133,7 +135,7 @@ export function OutpostInspector({
       )}
 
       <h4>Exports</h4>
-      {exported.length || solution.power.exportedMW > 1e-6 ? (
+      {exported.length ? (
         <ul className="ne-list">
           {exported.map((f) => {
             const taken = importsFromOthers.filter((i) => i.item === f.item)
@@ -145,15 +147,9 @@ export function OutpostInspector({
               </li>
             )
           })}
-          {solution.power.exportedMW > 1e-6 && (
-            <li>
-              <GameIcon id={POWER} size={18} />
-              {fmt(solution.power.exportedMW)} MW
-            </li>
-          )}
         </ul>
       ) : (
-        <p className="ne-help">Nothing leaves this outpost yet.</p>
+        <p className="ne-help">{solution.power.exportedMW > 1e-6 ? 'Only power, shown above.' : 'Nothing leaves this outpost yet.'}</p>
       )}
 
       <h4>Available from other outposts</h4>
@@ -428,26 +424,56 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
   )
 }
 
-export function BeltInspector({ data, onChange, onDelete }: { data: BeltData; onChange: (d: BeltData) => void; onDelete: () => void }) {
+export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltData; load?: LineLoad; onChange: (d: BeltData) => void; onDelete: () => void }) {
+  const medium = load?.medium ?? data.medium ?? 'solid'
+  const name = medium === 'fluid' ? 'Pipe' : medium === 'power' ? 'Power line' : 'Belt'
+  if (medium === 'power')
+    return (
+      <section>
+        <h3>{name}</h3>
+        <p className="ne-help">Carries power between a pole and what it feeds. Power lines run on the grid like belts, after belts and pipes have their routes.</p>
+        <div className="ne-actions">
+          <button type="button" className="danger" onClick={onDelete}>
+            Delete
+          </button>
+        </div>
+      </section>
+    )
   return (
     <section>
-      <h3>Belt</h3>
+      <h3>{name}</h3>
+      <p className="ne-help">
+        {data.manual
+          ? 'Item and rate set by hand.'
+          : 'Item and rate are worked out from what this connects: the machine, port or joint that feeds it and what takes from it. Change either to set it by hand.'}
+      </p>
       <label className="ne-field">
         Item
-        <ItemSelect value={data.item} onChange={(item) => onChange({ ...data, item })} />
+        <ItemSelect value={load?.item} onChange={(item) => onChange({ ...data, manual: true, item, perMin: load?.perMin })} />
       </label>
       <label className="ne-field">
         Per minute
-        <input type="number" min={0} value={data.perMin ?? 0} onChange={(e) => onChange({ ...data, perMin: num(e.target.value) })} />
+        <input
+          type="number"
+          min={0}
+          value={load?.perMin !== undefined ? Math.round(load.perMin * 100) / 100 : ''}
+          placeholder="Unknown"
+          onChange={(e) => onChange({ ...data, manual: true, item: load?.item, perMin: num(e.target.value) })}
+        />
       </label>
-      {data.tier && (
-        <p className={data.overCapacity ? 'ne-warn' : 'ne-help'}>
-          {data.overCapacity
-            ? `Over capacity: more than a Mk.${data.tier} ${data.item && itemsById.get(data.item)?.form !== 'solid' ? 'pipe' : 'belt'} carries. Split it or raise your best belt.`
-            : `Fits on Mk.${data.tier}.`}
+      {load?.tier && (
+        <p className={load.over ? 'ne-warn' : 'ne-help'}>
+          {load.over
+            ? `Over capacity: more than a Mk.${load.tier} ${medium === 'fluid' ? 'pipe' : 'belt'} carries. Split it or raise your best ${medium === 'fluid' ? 'pipe' : 'belt'}.`
+            : `Fits on a Mk.${load.tier} ${medium === 'fluid' ? 'pipeline' : 'belt'}.`}
         </p>
       )}
       <div className="ne-actions">
+        {data.manual && (
+          <button type="button" className="ghost" onClick={() => onChange({ ...data, manual: undefined })}>
+            Work it out again
+          </button>
+        )}
         <button type="button" className="danger" onClick={onDelete}>
           Delete
         </button>

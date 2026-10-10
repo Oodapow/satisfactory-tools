@@ -3,7 +3,7 @@ import { buildingsById, itemName, itemsById, recipesById, resourcesById } from '
 import { fmt } from '../format'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
-import { blankPlan, newId, type PlanPatch } from '../plan/store'
+import { newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
@@ -39,11 +39,8 @@ type TabKey = (typeof TABS)[number]['key']
 
 export function OutpostList({ state }: { state: GameState }) {
   const net = useNetwork(state)
-  const create = () => {
-    const p = blankPlan(`Outpost ${net.outposts.length + 1}`)
-    net.save(p)
-    go(`/outposts/${p.id}/goal`)
-  }
+  // A new outpost starts on the world map: click where it goes and it gets the nodes around it.
+  const create = () => go('/world/new')
   const nameOf = (id: string) => net.outposts.find((o) => o.id === id)?.name ?? 'removed outpost'
 
   return (
@@ -68,6 +65,7 @@ export function OutpostList({ state }: { state: GameState }) {
                   <header className="row between">
                     <strong>{plan.name}</strong>
                     {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
+                    {!plan.location && <span className="badge muted-badge">Not on the map</span>}
                   </header>
                   <div className="io">
                     <span className="io-label">In</span>
@@ -146,6 +144,9 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           aria-label="Outpost name"
         />
         <div className="row">
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            {plan.location ? 'On the map' : 'Place on the map'}
+          </a>
           <a className="button secondary" href={editorPath(plan.id)}>
             Floor plan
           </a>
@@ -344,21 +345,31 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
               update({ nodes: plan.nodes.map((x) => (x.id === n.id ? { ...x, ...patch } : x)) })
             return (
               <li key={n.id} className="node-row">
-                <IconSelect
-                  iconOnly
-                  value={n.resource}
-                  onChange={(resource) => set({ resource, extractor: undefined })}
-                  aria-label="Resource"
-                  options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
-                />
-                <div className="segmented small" role="radiogroup" aria-label="Purity">
-                  {PURITIES.map((p) => (
-                    <label key={p}>
-                      <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
-                      <span>{p}</span>
-                    </label>
-                  ))}
-                </div>
+                {n.fromMap ? (
+                  // Picked on the world map: resource and purity are the node's real ones.
+                  <span className="node-fixed">
+                    <GameIcon id={n.resource} size={32} />
+                    {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
+                  </span>
+                ) : (
+                  <>
+                    <IconSelect
+                      iconOnly
+                      value={n.resource}
+                      onChange={(resource) => set({ resource, extractor: undefined })}
+                      aria-label="Resource"
+                      options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
+                    />
+                    <div className="segmented small" role="radiogroup" aria-label="Purity">
+                      {PURITIES.map((p) => (
+                        <label key={p}>
+                          <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
+                          <span>{p}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {ex.length > 1 ? (
                   <IconSelect
                     iconOnly
@@ -397,9 +408,14 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
             )
           })}
         </ul>
-        <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
-          + Node
-        </button>
+        <div className="row">
+          <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
+            + Node
+          </button>
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            Pick nodes on the world map
+          </a>
+        </div>
       </section>
 
       <section className="panel">
@@ -540,7 +556,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
         <header className="row between">
           <h3>
             Production
-            <Help text="Suggested recipes leave nothing short and use the least raw input; pick another to override. Machines that don't divide evenly all run at one lower clock, so a manifold feeds them evenly." />
+            <Help text="Suggested recipes leave nothing short and use the least raw input; pick another to override." />
           </h3>
           <div className="row">
             {features.has('overclocking') && (
@@ -556,6 +572,11 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                 </select>
               </label>
             )}
+            <label className="row small">
+              <input type="checkbox" checked={!!plan.underclock} onChange={(e) => update({ underclock: e.target.checked })} />
+              Underclock
+              <Help text="Off: machines run at full clock and the manifold's last machine idles part of the time (idle machines draw no power). On: machines that don't divide evenly all run at one lower clock." />
+            </label>
             {overrides > 0 && (
               <button type="button" className="link" onClick={() => update({ recipeChoices: {} })}>
                 Reset recipes
@@ -610,7 +631,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                       </span>
                     </td>
                     <td>
-                      <MachineCount building={s.building} count={s.count} clock={s.clock} shards={s.shards} />
+                      <MachineCount building={s.building} count={s.count} clock={s.clock} shards={s.shards} lastBusy={s.count * s.clock - s.machines > 1e-3 ? 1 - (s.count * s.clock - s.machines) / s.clock : undefined} />
                       {features.has('production-amplification') && sloops > 0 && (
                         <label className="row small sloops">
                           <GameIcon id="Desc_WAT1_C" size={18} title="Somersloops per machine: each adds output, and power goes up with the square of the boost" />
@@ -737,8 +758,8 @@ function PlanHead() {
   )
 }
 
-/** "[building] ×4", plus the clock when it isn't 100% and any power shards. */
-function MachineCount({ building, count, clock = 1, shards = 0 }: { building: string; count: number; clock?: number; shards?: number }) {
+/** "[building] ×4", plus the clock when it isn't 100%, how busy a part-time last machine is, and any power shards. */
+function MachineCount({ building, count, clock = 1, shards = 0, lastBusy }: { building: string; count: number; clock?: number; shards?: number; lastBusy?: number }) {
   return (
     <span className="machine-count">
       <GameIcon id={building} size={24} />
@@ -746,6 +767,11 @@ function MachineCount({ building, count, clock = 1, shards = 0 }: { building: st
       {Math.abs(clock - 1) > 1e-6 && (
         <WithTip className="muted small" text="Clock speed">
           {pct(clock)}
+        </WithTip>
+      )}
+      {lastBusy !== undefined && (
+        <WithTip className="muted small" text={`The last machine is busy ${pct(lastBusy)} of the time`}>
+          ◔ {pct(lastBusy)}
         </WithTip>
       )}
       {shards > 0 && (

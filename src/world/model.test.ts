@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { worldMap } from '../data/game/worldMap'
 import { FOG_SIZE, type SaveMap } from '../save/readMap'
 import type { GameState } from '../state/gameState'
-import { decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, toUnit } from './model'
+import { AUTO_RADIUS, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, toUnit, toWorld } from './model'
 
 const b = worldMap.bounds
 const encode = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes))
@@ -30,6 +30,14 @@ describe('world map data', () => {
       expect(v).toBeGreaterThan(0)
       expect(v).toBeLessThan(1)
     }
+  })
+
+  it('converts between world and map positions', () => {
+    const p: [number, number] = [123456, -98765]
+    const back = toWorld(worldMap, toUnit(worldMap, p))
+    expect(back[0]).toBeCloseTo(p[0], 3)
+    expect(back[1]).toBeCloseTo(p[1], 3)
+    expect(toWorld(worldMap, [0, 0])).toEqual([b.west, b.north])
   })
 
   it('only uses resources the game data knows', () => {
@@ -108,4 +116,21 @@ describe('markers', () => {
     expect(knowsResource(availability(start), 'Desc_Geyser_C')).toBe(false)
     expect(knowsResource(availability(everything), 'Desc_Geyser_C')).toBe(true)
   })
+})
+
+describe('outposts on the map', () => {
+  const everything: GameState = { source: 'save', purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5, spoilers: 'hide' }
+  const all = markers(worldMap, everything, true)
+
+  it('finds the plain nodes near a spot, nearest first', () => {
+    const iron = worldMap.nodes.find((n) => n.kind === 'node' && n.resource === 'Desc_OreIron_C')!
+    const near = nearby(all, [iron.x + 100, iron.y])
+    expect(near[0].node.id).toBe(iron.id)
+    for (const m of near) {
+      expect(m.node.kind).toBe('node')
+      expect(Math.hypot(m.node.x - iron.x - 100, m.node.y - iron.y)).toBeLessThanOrEqual(AUTO_RADIUS)
+    }
+    expect(nearby(all, [b.west - 1e6, b.north - 1e6])).toEqual([])
+  })
+
 })
