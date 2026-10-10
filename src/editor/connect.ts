@@ -1,12 +1,12 @@
 // Rules for editing the floor plan by hand: where a dropped block lands and which lines may be drawn (#50, #52).
 import type { Connection } from '@xyflow/react'
-import { cellOf, freeSpot, G, handleInfo, isBlock, type BlockKind } from './grid'
+import { cellOf, freeSpot, G, handleInfo, isBlock, sizeOf, type BlockKind } from './grid'
 import type { BeltEdge, MicroGraph, MicroNode } from './model'
 
 /** A block put down at `n.position`, snapped to the grid and moved off any block it would cover. */
 export function place(nodes: MicroNode[], n: MicroNode): MicroNode {
   if (!n.type || !isBlock(n)) return n
-  const c = freeSpot(nodes, n.id, n.type as BlockKind, cellOf(n))
+  const c = freeSpot(nodes, n.id, sizeOf(n.type as BlockKind, n.data), cellOf(n))
   return { ...n, position: { x: c.x * G, y: c.y * G } }
 }
 

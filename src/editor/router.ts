@@ -81,12 +81,19 @@ type Seg = { x1: number; y1: number; x2: number; y2: number }
 const verticals = (pts: Point[]): Seg[] =>
   pts.slice(1).flatMap((p, i) => (Math.abs(p.x - pts[i].x) < 0.5 ? [{ x1: p.x, y1: Math.min(p.y, pts[i].y), x2: p.x, y2: Math.max(p.y, pts[i].y) }] : []))
 
-/** SVG path through the points, hopping over the given vertical segments on horizontal runs. */
-export function pathWithHops(pts: Point[], others: Seg[]) {
+/** SVG path through the points, hopping over the given vertical segments on horizontal runs, with corners rounded to `radius`. */
+export function pathWithHops(pts: Point[], others: Seg[], radius = 0) {
+  const len = (a: Point, b: Point) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y)
+  // How far each corner is cut back: up to the radius, at most half of either side.
+  const cut = pts.map((p, i) => (i === 0 || i === pts.length - 1 ? 0 : Math.min(radius, len(pts[i - 1], p) / 2, len(p, pts[i + 1]) / 2)))
+  const toward = (a: Point, b: Point, d: number) => {
+    const l = len(a, b) || 1
+    return { x: a.x + ((b.x - a.x) * d) / l, y: a.y + ((b.y - a.y) * d) / l }
+  }
   let d = `M ${pts[0].x} ${pts[0].y}`
   for (let i = 1; i < pts.length; i++) {
-    const p = pts[i - 1]
-    const q = pts[i]
+    const p = toward(pts[i - 1], pts[i], cut[i - 1])
+    const q = toward(pts[i], pts[i - 1], cut[i])
     if (Math.abs(p.y - q.y) < 0.5 && Math.abs(p.x - q.x) > 2 * HOP) {
       const sign = Math.sign(q.x - p.x)
       const lo = Math.min(p.x, q.x) + HOP + 1
@@ -103,6 +110,10 @@ export function pathWithHops(pts: Point[], others: Seg[]) {
       }
     }
     d += ` L ${q.x} ${q.y}`
+    if (cut[i] > 0.5) {
+      const r = toward(pts[i], pts[i + 1], cut[i])
+      d += ` Q ${pts[i].x} ${pts[i].y} ${r.x} ${r.y}`
+    }
   }
   return d
 }
@@ -163,14 +174,14 @@ export class RouteRegistry {
 export const RouteContext = createContext<RouteRegistry | null>(null)
 
 /** Register this edge's route and get its path, hopping over the edges around it. */
-export function useRoutedPath(id: string, pts: Point[]) {
+export function useRoutedPath(id: string, pts: Point[], radius = 0) {
   const reg = useContext(RouteContext)
   useLayoutEffect(() => {
     reg?.set(id, pts)
   }, [reg, id, pts])
   useLayoutEffect(() => () => reg?.set(id, null), [reg, id])
   const version = useSyncExternalStore(reg?.subscribe ?? noopSubscribe, reg?.getVersion ?? zero)
-  return useMemo(() => pathWithHops(pts, reg ? reg.verticalsExcept(id) : []), [pts, reg, id, version]) // eslint-disable-line react-hooks/exhaustive-deps
+  return useMemo(() => pathWithHops(pts, reg ? reg.verticalsExcept(id) : [], radius), [pts, reg, id, version, radius]) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 const noopSubscribe = () => () => {}

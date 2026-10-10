@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { solvePlan } from '../plan/network'
 import type { OutpostPlan } from '../plan/types'
 import { proposeLayout } from './generate'
-import { G, cellOf, isBlock, SIZE } from './grid'
+import { G, cellOf, isBlock, sizeOf } from './grid'
 import { routeFloorPlan, routeSegments } from './gridRouter'
 import { planLayout } from './layout'
 import { inferFlows } from './flow'
@@ -98,8 +98,8 @@ describe('floor plan on the grid', () => {
       for (let j = i + 1; j < blocks.length; j++) {
         const a = cellOf(blocks[i])
         const b = cellOf(blocks[j])
-        const sa = SIZE[blocks[i].type]
-        const sb = SIZE[blocks[j].type]
+        const sa = sizeOf(blocks[i].type, blocks[i].data)
+        const sb = sizeOf(blocks[j].type, blocks[j].data)
         const apart = a.x + sa.w <= b.x || b.x + sb.w <= a.x || a.y + sa.h <= b.y || b.y + sb.h <= a.y
         expect(apart, `${blocks[i].id} overlaps ${blocks[j].id}`).toBe(true)
       }

@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { buildingsById, itemName, itemsById, recipesById, resourcesById } from '../data'
+import { buildingsById, itemName, recipesById, resourcesById } from '../data'
 import { fmt } from '../format'
 import { gridOf, type PowerGrid } from '../plan/grids'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
 import { newId, type PlanPatch } from '../plan/store'
 import type { Goal, OutpostPlan, Purity, Transport } from '../plan/types'
-import { transportUnlocked } from '../plan/unlocked'
+import { fitTransport, transportsFor, transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
 import { editorPath } from '../editor/route'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
-import { Amount, GameIcon, NoIconLinks, PowerIcon } from '../ui/GameIcon'
+import { Amount, GameIcon, PowerIcon } from '../ui/GameIcon'
 import { IconSelect } from '../ui/IconSelect'
 import { Rates } from './Rates'
 
@@ -19,7 +19,6 @@ const ceil = (n: number) => Math.ceil(n - 1e-9)
 const pct = (clock: number) => `${Math.round(clock * 1000) / 10}%`
 const CLOCKS = [1, 1.5, 2, 2.5]
 const PURITIES: Purity[] = ['impure', 'normal', 'pure']
-const TRANSPORTS: Transport[] = ['belt', 'pipe', 'truck', 'train', 'drone']
 const TRANSPORT_ICONS: Record<Transport, string> = {
   belt: 'Desc_ConveyorBeltMk1_C',
   pipe: 'Desc_Pipeline_C',
@@ -34,84 +33,6 @@ const TABS = [
   { key: 'plan', label: 'Plan' },
 ] as const
 type TabKey = (typeof TABS)[number]['key']
-
-// ---------- List: the outpost network ----------
-
-export function OutpostList({ state }: { state: GameState }) {
-  const net = useNetwork(state)
-  // A new outpost starts on the world map: click where it goes and it gets the nodes around it.
-  const create = () => go('/world/new')
-  const nameOf = (id: string) => net.outposts.find((o) => o.id === id)?.name ?? 'removed outpost'
-
-  return (
-    <section className="network">
-      <header className="row between">
-        <div>
-          <h2>Outposts</h2>
-          <p className="muted">Each outpost declares what it delivers and what it has. Exports of one can feed another.</p>
-        </div>
-        <button type="button" onClick={create}>
-          + New outpost
-        </button>
-      </header>
-      {net.solved.length === 0 && (
-        <p className="panel muted">No outposts yet. Start one here, or from an item in the catalog.</p>
-      )}
-      <ul className="outpost-grid">
-        {net.solved.map(({ plan, solution }) => {
-          const exports = exportsOf(solution)
-          const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
-          return (
-            <li key={plan.id}>
-              <button type="button" className="card outpost-card" onClick={() => go(`/outposts/${plan.id}/plan`)}>
-                <NoIconLinks>
-                  <header className="row between">
-                    <strong>{plan.name}</strong>
-                    {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
-                    {!plan.location && <span className="badge muted-badge">Not on the map</span>}
-                  </header>
-                  <div className="io">
-                    <span className="io-label">In</span>
-                    <span className="rates">
-                      {plan.nodes.length > 0 && (
-                        <span className="rate">
-                          {plan.nodes.length} node{plan.nodes.length > 1 ? 's' : ''}
-                        </span>
-                      )}
-                      {plan.imports.map((i) => (
-                        <span key={i.id} className="rate" title={`from ${nameOf(i.from)} by ${i.via}`}>
-                          <GameIcon id={i.item} size={20} />
-                          <b>{fmt(i.perMin)}</b> {itemName(i.item)} · {nameOf(i.from)}
-                        </span>
-                      ))}
-                      {plan.nodes.length + plan.imports.length === 0 && <span className="muted small">nothing yet</span>}
-                    </span>
-                  </div>
-                  <div className="io">
-                    <span className="io-label">Out</span>
-                    <span className="rates">
-                      {exports.map((e) => (
-                        <Amount key={e.item} item={e.item} perMin={e.perMin} />
-                      ))}
-                      {exports.length === 0 && plan.goals.length === 0 && <span className="muted small">no goal yet</span>}
-                    </span>
-                  </div>
-                  <span className="muted small">
-                    {solution.steps.reduce((n, s) => n + s.count, 0)} machines · uses{' '}
-                    {fmt(solution.power.consumedMW, 1)} MW
-                    {solution.power.generatedMW > 0 && <> · makes {fmt(solution.power.generatedMW, 1)} MW</>}
-                    {' · '}
-                    {gridOf(net.grids, plan.id)?.name}
-                  </span>
-                </NoIconLinks>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-    </section>
-  )
-}
 
 // ---------- Editor ----------
 
@@ -136,8 +57,6 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
     <div className="editor">
       <nav className="crumbs" aria-label="Breadcrumb">
         <a href="#/map">← Factory map</a>
-        <span className="muted">›</span>
-        <a href="#/outposts">Outposts</a>
         <span className="muted">›</span>
         <span>{plan.name}</span>
       </nav>
@@ -448,7 +367,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                     value={imp.via}
                     onChange={(via) => set({ via: via as Transport })}
                     aria-label="Transport"
-                    options={TRANSPORTS.filter((t) => t === imp.via || transportUnlocked(t, available)).map((t) => ({
+                    options={transportsFor(imp.item).filter((t) => t === imp.via || transportUnlocked(t, available)).map((t) => ({
                       value: t,
                       label: `by ${t}`,
                       icon: TRANSPORT_ICONS[t],
@@ -502,7 +421,7 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                             update({
                               imports: [
                                 ...plan.imports,
-                                { id: newId(), from: o.from, item: o.item, perMin: amount, via: isFluidItem(o.item) ? 'pipe' : 'belt' },
+                                { id: newId(), from: o.from, item: o.item, perMin: amount, via: fitTransport(o.item) },
                               ],
                             })
                           }
@@ -522,7 +441,6 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
   )
 }
 
-const isFluidItem = (id: string) => itemsById.get(id)?.form !== 'solid'
 
 // Plan tab: the proposed plan, editable.
 function PlanStep({ solved, update, available }: StepProps & { solved: Solved }) {

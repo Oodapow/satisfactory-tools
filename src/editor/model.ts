@@ -7,6 +7,7 @@
 // stores what the plan model doesn't have: block positions and floor plans.
 import type { Edge, Node } from '@xyflow/react'
 import type { Solved } from '../plan/network'
+import type { MapBlock } from './macro'
 import type { OutpostId, Transport as PlanTransport } from '../plan/types'
 
 export type ItemRate = { item: string; perMin: number }
@@ -22,10 +23,19 @@ export const transports: { id: Transport; label: string; icon: string }[] = [
   { id: 'power', label: 'Power line', icon: 'power' },
 ]
 export const transportById = new Map(transports.map((t) => [t.id, t]))
+/** Line colour per transport on the factory map (matches editor.css). */
+export const transportColor: Record<Transport, string> = {
+  belt: '#e8891c',
+  pipe: '#2b8fd6',
+  truck: '#8a6d3b',
+  train: '#6c5ce7',
+  drone: '#20a39e',
+  power: '#e6c200',
+}
 
 // ---------- Macro level (derived from plans on every render) ----------
 
-export type OutpostNode = Node<Solved, 'outpost'>
+export type OutpostNode = Node<Solved & { block: MapBlock }, 'outpost'>
 
 export type LinkData = {
   transport: Transport
@@ -54,6 +64,8 @@ export type MachineData = {
   /** How many identical machines this block stands for (1 unless the layout collapsed a large group). */
   count: number
   floor: number
+  /** Quarter turns clockwise (ports turn with it, the icon doesn't). */
+  rot?: 0 | 1 | 2 | 3
   /** Somersloop output multiplier (1 or absent = none). */
   boost?: number
   /**
@@ -134,7 +146,7 @@ export const pipeRates = [300, 600]
 /** Power lines a pole takes, by Mk. */
 export const poleConnections = [4, 7, 10]
 /** Bumped when proposals change shape, so untouched old proposals are redone. */
-export const LAYOUT_VERSION = 3
+export const LAYOUT_VERSION = 4
 
 /** Lowest tier that carries `perMin`, capped at `maxTier`. */
 export function beltTierFor(perMin: number, maxTier: number, fluid = false) {

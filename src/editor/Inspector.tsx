@@ -1,8 +1,10 @@
 // Side panel forms for whatever is selected in the editor.
-import { buildingsById, itemName, itemsById, recipesById } from '../data'
-import { offers, type Solved } from '../plan/network'
+import { buildingsById, itemName, itemsById, recipesById, resources } from '../data'
+import { exportsOf, offers, type Solved } from '../plan/network'
+import { extractorPerMin, extractorsFor } from '../plan/solve'
 import { newId, type PlanPatch } from '../plan/store'
-import type { Import, Transport as PlanTransport } from '../plan/types'
+import type { Import, Purity, ResourceNode, Transport as PlanTransport } from '../plan/types'
+import { fitTransport, transportsFor } from '../plan/unlocked'
 import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { IconSelect } from '../ui/IconSelect'
@@ -10,7 +12,8 @@ import { POWER } from '../data/icons'
 import type { LineLoad } from './floorPlanView'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData } from './model'
 import { editorPath } from './route'
-import { useUnlocked } from './unlocked'
+import { UnlockedContext, useUnlocked } from './unlocked'
+import { useContext } from 'react'
 import { GridCard, GridList, OutpostPower } from './PowerWidgets'
 import type { PowerGrid } from '../plan/grids'
 
@@ -45,10 +48,6 @@ export function MacroOverview({
   return (
     <section>
       <h3>Factory map</h3>
-      <p className="ne-help">
-        Every outpost plan is a block here, and every import is a link. Outposts joined by power lines share a power grid.
-        Select an outpost to see what it imports and exports and what the others can send it, or a grid to see it on the map.
-      </p>
       <GridList grids={grids} onSelectGrid={onSelectGrid} onSelect={onSelect} />
       <h4>Outposts</h4>
       <ul className="ne-list">
@@ -70,6 +69,66 @@ export function MacroOverview({
         </button>
       )}
     </section>
+  )
+}
+
+const PURITIES: Purity[] = ['impure', 'normal', 'pure']
+const WATER = 'Desc_Water_C'
+
+/** Resource nodes the outpost sits on, and water extractors. An outpost with nodes and no goal just extracts. */
+function NodesEditor({ nodes, onChange }: { nodes: ResourceNode[]; onChange: (n: ResourceNode[]) => void }) {
+  const a = useContext(UnlockedContext)
+  const has = (id: string) => !a || a.buildings.has(id)
+  const options = resources.filter((r) => (r.extractors ?? []).some(has))
+  const set = (id: string, patch: Partial<ResourceNode>) => onChange(nodes.map((n) => (n.id === id ? { ...n, ...patch } : n)))
+  const extractor = (n: ResourceNode) =>
+    n.resource === WATER ? buildingsById.get('Desc_WaterPump_C') : ((n.extractor && buildingsById.get(n.extractor)) || extractorsFor(n.resource, a?.buildings ?? new Set(buildingsById.keys()))[0])
+  return (
+    <>
+      <h4>Extracts</h4>
+      <ul className="ne-list">
+        {nodes.map((n) => {
+          const b = extractor(n)
+          return (
+            <li key={n.id} className="ne-node-row">
+              <IconSelect
+                value={n.resource}
+                aria-label="Resource"
+                onChange={(resource) => set(n.id, { resource, extractor: resource === WATER ? 'Desc_WaterPump_C' : undefined })}
+                options={options.map((r) => ({ value: r.id, label: r.id === WATER ? 'Water (extractor)' : r.name, icon: r.id }))}
+              />
+              {n.resource !== WATER && (
+                <select value={n.purity} aria-label="Purity" onChange={(e) => set(n.id, { purity: e.target.value as Purity })}>
+                  {PURITIES.map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <span className="ne-grow ne-num" title={b?.name}>
+                {b ? fmt(extractorPerMin(b, n.resource, n.purity) * (n.clock ?? 1)) : '?'}
+              </span>
+              <button type="button" className="ghost" aria-label="Remove node" onClick={() => onChange(nodes.filter((x) => x.id !== n.id))}>
+                ×
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+      {options.length > 0 && (
+        <button
+          type="button"
+          className="ghost small ne-add"
+          onClick={() => {
+            const r = options.find((o) => o.id !== WATER) ?? options[0]
+            onChange([...nodes, { id: newId(), resource: r.id, purity: 'normal', extractor: r.id === WATER ? 'Desc_WaterPump_C' : undefined }])
+          }}
+        >
+          + Node
+        </button>
+      )}
+    </>
   )
 }
 
@@ -98,42 +157,50 @@ export function OutpostInspector({
   const exported = [...solution.flows.values()].filter((f) => f.exported > 1e-6)
   const available = offers(all, plan.id).filter((o) => o.perMin > 1e-6)
   const addImport = (from: string, item: string, perMin: number) => {
-    const via: PlanTransport = itemsById.get(item)?.form === 'solid' ? 'belt' : 'pipe'
-    const imp: Import = { id: newId(), from, item, perMin, via }
+    const imp: Import = { id: newId(), from, item, perMin, via: fitTransport(item) }
     onPatch({ imports: [...plan.imports, imp] })
   }
 
+  // An outpost with no goal only extracts: it has nothing to import.
+  const extraction = plan.goals.length === 0
   return (
     <section>
-      <h3>Outpost</h3>
+      <h3>{extraction ? 'Extraction site' : 'Outpost'}</h3>
       <label className="ne-field">
         Name
         <input value={plan.name} onChange={(e) => onPatch({ name: e.target.value })} />
       </label>
-      <h4>Goal</h4>
-      <ul className="ne-list">
-        {plan.goals.map((g, i) => (
-          <li key={i}>
-            <GameIcon id={g.kind === 'item' ? g.item : POWER} size={20} />
-            {g.kind === 'item' ? `${fmt(g.perMin)} ${itemName(g.item)}/min` : `${fmt(g.mw)} MW from ${itemName(g.fuel)}`}
-          </li>
-        ))}
-        {!plan.goals.length && <li className="ne-help">No goal yet.</li>}
-      </ul>
-      <a className="ne-textlink" href={`#/outposts/${plan.id}/goal`}>
-        Edit goal, resources and recipes
-      </a>
+      {plan.goals.length > 0 && (
+        <>
+          <h4>Goal</h4>
+          <ul className="ne-list">
+            {plan.goals.map((g, i) => (
+              <li key={i}>
+                <GameIcon id={g.kind === 'item' ? g.item : POWER} size={20} />
+                {g.kind === 'item' ? `${fmt(g.perMin)} ${itemName(g.item)}/min` : `${fmt(g.mw)} MW from ${itemName(g.fuel)}`}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      <NodesEditor nodes={plan.nodes} onChange={(nodes) => onPatch({ nodes })} />
+      <p>
+        <a className="ne-textlink" href={`#/outposts/${plan.id}/goal`}>
+          {extraction ? 'Add a goal' : 'Edit goal, resources and recipes'}
+        </a>
+      </p>
       <OutpostPower solved={solved} grid={grid} all={all} onSelectGrid={onSelectGrid} onAddLink={onAddPowerLink} onRemoveLink={onRemovePowerLink} />
 
-      <h4>Imports</h4>
+      {(!extraction || plan.imports.length > 0) && <h4>Imports</h4>}
       {plan.imports.length ? (
         <ul className="ne-list">
           {plan.imports.map((i) => (
             <li key={i.id}>
               <GameIcon id={i.item} size={18} />
-              <span className="ne-grow">
-                {fmt(i.perMin)} {itemName(i.item)} from {nameOf(i.from)} by {i.via}
+              <span className="ne-grow" title={`${itemName(i.item)} from ${nameOf(i.from)} by ${i.via}`}>
+                {fmt(i.perMin)} · {nameOf(i.from)}
               </span>
+              <GameIcon id={transports.find((t) => t.id === i.via)?.icon} size={18} />
               <button type="button" className="ghost" aria-label="Remove import" onClick={() => onPatch({ imports: plan.imports.filter((x) => x.id !== i.id) })}>
                 ×
               </button>
@@ -141,7 +208,7 @@ export function OutpostInspector({
           ))}
         </ul>
       ) : (
-        <p className="ne-help">None yet. Pick from what the others offer below, or drag a link to this outpost.</p>
+        !extraction && <p className="ne-help">None.</p>
       )}
 
       <h4>Exports</h4>
@@ -150,21 +217,21 @@ export function OutpostInspector({
           {exported.map((f) => {
             const taken = importsFromOthers.filter((i) => i.item === f.item)
             return (
-              <li key={f.item}>
+              <li key={f.item} title={itemName(f.item)}>
                 <GameIcon id={f.item} size={18} />
-                {fmt(f.exported)} {itemName(f.item)}/min
-                {taken.length > 0 && <span className="ne-help"> · to {taken.map((t) => t.to).join(', ')}</span>}
+                {fmt(f.exported)}
+                {taken.length > 0 && <span className="ne-help"> · {taken.map((t) => t.to).join(', ')}</span>}
               </li>
             )
           })}
         </ul>
       ) : (
-        <p className="ne-help">Nothing leaves this outpost yet.</p>
+        <p className="ne-help">None.</p>
       )}
 
-      <h4>Available from other outposts</h4>
-      {available.length === 0 && <p className="ne-help">The other outposts have nothing spare.</p>}
-      {available.map((o) => (
+      {!extraction && <h4>Available from other outposts</h4>}
+      {!extraction && available.length === 0 && <p className="ne-help">None.</p>}
+      {!extraction && available.map((o) => (
         <div key={`${o.from}-${o.item}`} className="ne-offer-row">
           <GameIcon id={o.item} size={20} />
           <span className="ne-grow">
@@ -208,7 +275,13 @@ export function LinkInspector({
   const ref = edge.data?.ref
   const imp = ref?.kind === 'import' ? all.find((s) => s.plan.id === ref.planId)?.plan.imports.find((i) => i.id === ref.importId) : undefined
   const unlocked = useUnlocked()
-  const planTransports = transports.filter((t) => t.id !== 'power' && (t.id === imp?.via || unlocked.transports.includes(t)))
+  // Only ways this item can travel (no Water by belt, no Rotors by pipe) that are unlocked.
+  const fits = transportsFor(imp?.item)
+  const planTransports = transports.filter((t) => fits.includes(t.id as PlanTransport) && (t.id === imp?.via || unlocked.transports.includes(t)))
+  // The item is one of the exporter's export points.
+  const source = all.find((s) => s.plan.id === edge.source)
+  const exportItems = source ? exportsOf(source.solution).map((e) => e.item) : []
+  if (imp && !exportItems.includes(imp.item)) exportItems.unshift(imp.item)
   return (
     <section>
       <h3>{ref?.kind === 'power' ? 'Power line' : 'Import'}</h3>
@@ -227,7 +300,11 @@ export function LinkInspector({
           </label>
           <label className="ne-field">
             Item
-            <ItemSelect value={imp.item} onChange={(item) => onImport({ ...imp, item })} />
+            <IconSelect
+              value={imp.item}
+              onChange={(item) => onImport({ ...imp, item, via: fitTransport(item, imp.via) })}
+              options={exportItems.map((i) => ({ value: i, label: itemName(i), icon: i }))}
+            />
           </label>
           <label className="ne-field">
             Per minute
@@ -240,9 +317,7 @@ export function LinkInspector({
           <p className="ne-help">
             Puts both outposts on one power grid. Power goes wherever the grid needs it, so a line carries no set amount.
           </p>
-          {grid && (
-            <GridCard grid={grid} onSelectGrid={onSelectGrid} onSelect={() => onSelectGrid(grid.id)} />
-          )}
+          {grid && <GridCard grid={grid} onSelectGrid={onSelectGrid} onSelect={() => onSelectGrid(grid.id)} />}
         </>
       )}
       <div className="ne-actions">
@@ -356,6 +431,9 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
         </>
       )}
       <div className="ne-actions">
+        <button type="button" className="secondary" title="Turn a quarter clockwise (R)" onClick={() => onChange({ ...data, rot: (((data.rot ?? 0) + 1) % 4) as MachineData['rot'] })}>
+          ⟳ Rotate
+        </button>
         <button type="button" className="danger" onClick={onDelete}>
           Delete
         </button>

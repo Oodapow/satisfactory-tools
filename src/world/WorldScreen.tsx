@@ -11,7 +11,7 @@ import { FOG_SIZE, type Point } from '../save/readMap'
 import type { GameState } from '../state/gameState'
 import { usePersistentState } from '../storage/persisted'
 import { hide, useTip } from '../ui/tooltip'
-import { decodeFog, exploredBox, fogAt, fogOpacity, FOG_REVEALED, markers, nearby, pickable, PURITIES, toUnit, toWorld, type Marker } from './model'
+import { COLLECTIBLES, CRASH_SITE, decodeFog, exploredBox, fogOpacity, markers, nearby, pickable, pickups, PURITIES, toUnit, toWorld, type Marker, type Pickup } from './model'
 import './world.css'
 
 // The map is laid out on a square "stage" of STAGE px and zoomed with a CSS transform;
@@ -24,18 +24,21 @@ type View = { x: number; y: number; k: number }
 type Box = { left: number; top: number; right: number; bottom: number }
 
 type Filters = {
-  /** Resources (or "unknown") the player switched off. */
+  /** Resources and collectibles (or "unknown", "unknown-pickup") the player switched off. */
   hidden: string[]
   hiddenPurities: Purity[]
-  crashSites: boolean
+  /** Hide collectibles already picked up (and crash sites already opened). */
+  hideCollected: boolean
   outposts: boolean
   /** Spoilers: show nodes in unexplored areas too. */
   showAll: boolean
   /** Side panel open; unset means "open on wide screens". */
   panel?: boolean
 }
-const defaultFilters: Filters = { hidden: [], hiddenPurities: [], crashSites: true, outposts: true, showAll: false }
+const defaultFilters: Filters = { hidden: [], hiddenPurities: [], hideCollected: false, outposts: true, showAll: false }
 const UNKNOWN = 'unknown'
+const UNKNOWN_PICKUP = 'unknown-pickup'
+const pickupName = (item: string) => (item === CRASH_SITE ? 'Crash site' : displayName(item))
 
 // Legend groups: the in-game taxonomy's resource groups (ores, fluid resources), in its order,
 // then geysers, which aren't items, and resources the player hasn't unlocked yet.
@@ -70,8 +73,8 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
   const visible = (m: Marker) => !f.hidden.includes(m.resource ?? UNKNOWN) && !f.hiddenPurities.includes(m.node.purity)
   const cores = all.filter((m) => m.node.kind === 'wellCore' && !f.hidden.includes(m.resource ?? UNKNOWN))
   const shown = all.filter((m) => m.node.kind !== 'wellCore' && visible(m))
-  const revealed = (p: Point) => f.showAll || (fog !== null && fogAt(worldMap, fog, p) >= FOG_REVEALED)
-  const crashSites = f.crashSites ? (save?.crashSites ?? []).filter(revealed) : []
+  const allPickups = useMemo(() => pickups(worldMap, state, f.showAll), [state, f.showAll])
+  const shownPickups = allPickups.filter((p) => !f.hidden.includes(p.item ?? UNKNOWN_PICKUP) && !(f.hideCollected && p.collected))
 
   // Which outpost uses each node picked on the map.
   const usedBy = new Map<string, OutpostPlan>()
@@ -190,6 +193,32 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
           )
         })}
 
+        {allPickups.length > 0 && (
+          <section className="wm-section">
+            <h4>Collectibles</h4>
+            {[...COLLECTIBLES, UNKNOWN_PICKUP].map((id) => {
+              const list = allPickups.filter((p) => (p.item ?? UNKNOWN_PICKUP) === id)
+              if (list.length === 0) return null
+              const left = list.filter((p) => !p.collected).length
+              return (
+                <LegendRow
+                  key={id}
+                  on={!f.hidden.includes(id)}
+                  onToggle={() => setFilters({ ...f, hidden: toggle(f.hidden, id) })}
+                  icon={id === UNKNOWN_PICKUP ? <span className="wm-unknown small">?</span> : <img src={iconUrl(id)} alt="" width={22} height={22} />}
+                  label={id === UNKNOWN_PICKUP ? 'Not found yet' : id === CRASH_SITE ? 'Crash sites' : displayName(id)}
+                  count={left === list.length ? left : `${left}/${list.length}`}
+                  title={`${left} of ${list.length} ${id === CRASH_SITE ? 'not opened yet' : 'not collected yet'}`}
+                />
+              )
+            })}
+            <label className="wm-check" title="Collected pickups and opened crash sites come from your save">
+              <input type="checkbox" checked={f.hideCollected} onChange={(e) => setFilters({ ...f, hideCollected: e.target.checked })} />
+              Hide collected
+            </label>
+          </section>
+        )}
+
         <section className="wm-section">
           <h4>Purity</h4>
           {PURITIES.map((p) => (
@@ -213,15 +242,6 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
             label="Outposts"
             count={outposts.filter((o) => o.location).length}
           />
-          {save && (
-            <LegendRow
-              on={f.crashSites}
-              onToggle={() => setFilters({ ...f, crashSites: !f.crashSites })}
-              icon={<img src={iconUrl('Desc_HardDrive_C')} alt="" width={22} height={22} />}
-              label="Crash sites"
-              count={(save.crashSites ?? []).filter(revealed).length}
-            />
-          )}
           <label className="wm-check" title="Shows nodes in places you haven't been yet">
             <input type="checkbox" checked={f.showAll} onChange={(e) => setFilters({ ...f, showAll: e.target.checked })} />
             Show unexplored (spoilers)
@@ -267,8 +287,8 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
               />
             )
           })}
-          {crashSites.map((p) => (
-            <Landmark key={p.join()} at={p} label="Crash site" icon="Desc_HardDrive_C" className="crash" />
+          {shownPickups.map((p) => (
+            <PickupMarker key={p.collectible.id} pickup={p} />
           ))}
           {save?.hub && <Landmark at={save.hub} label="The HUB" icon="Desc_TradingPost_C" className="hub" />}
           {save?.players.map((p) => <Landmark key={p.join()} at={p} label="You (when the game was saved)" className="player" />)}
@@ -286,9 +306,9 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
 
 const purityName = (p: Purity) => p[0].toUpperCase() + p.slice(1)
 
-function LegendRow({ on, onToggle, icon, label, count }: { on: boolean; onToggle: () => void; icon: ReactNode; label: string; count?: number }) {
+function LegendRow({ on, onToggle, icon, label, count, title }: { on: boolean; onToggle: () => void; icon: ReactNode; label: string; count?: ReactNode; title?: string }) {
   return (
-    <button type="button" className={`wm-row${on ? '' : ' off'}`} aria-pressed={on} onClick={onToggle}>
+    <button type="button" className={`wm-row${on ? '' : ' off'}`} aria-pressed={on} onClick={onToggle} title={title}>
       <span className="wm-row-icon">{icon}</span>
       <span className="wm-row-label">{label}</span>
       {count !== undefined && <span className="wm-count">{count}</span>}
@@ -383,6 +403,26 @@ function NodeMarker({
   return (
     <span className={className} style={style} role="img" aria-label={label} tabIndex={0} {...tip}>
       {content}
+    </span>
+  )
+}
+
+function PickupMarker({ pickup }: { pickup: Pickup }) {
+  const { collectible, item, collected } = pickup
+  const crash = collectible.item === CRASH_SITE
+  const label = item === null ? 'Something to pick up (you haven\'t found one yet)' : `${pickupName(item)}${collected ? (crash ? ' (opened)' : ' (collected)') : ''}`
+  const tip = useTip(label, { tapShows: true })
+  const [u, v] = toUnit(worldMap, [collectible.x, collectible.y])
+  return (
+    <span
+      className={`wm-marker wm-pickup${crash ? ' crash' : ''}${collected ? ' collected' : ''}`}
+      style={{ left: `${u * 100}%`, top: `${v * 100}%` }}
+      role="img"
+      aria-label={label}
+      tabIndex={0}
+      {...tip}
+    >
+      {item === null ? <span className="wm-unknown">?</span> : <img src={iconUrl(item)} alt="" draggable={false} />}
     </span>
   )
 }

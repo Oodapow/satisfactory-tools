@@ -7,7 +7,7 @@ import { connection, place } from './connect'
 import { inferFlows } from './flow'
 import { routeFloorPlan, routeSegments } from './gridRouter'
 import { proposeLayout } from './generate'
-import { cellOf, edgeMedium, overlaps, poleSize, type BlockKind } from './grid'
+import { cellOf, edgeMedium, overlaps, poleSize, sizeOf, type BlockKind } from './grid'
 import type { MicroGraph, MicroNode } from './model'
 
 const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
@@ -181,7 +181,7 @@ describe('grid (#52)', () => {
     const placed = place(g.nodes, { id: 'new', type: 'machine', position: { ...m.position }, data: m.data })
     expect(placed.position).not.toEqual(m.position)
     for (const n of g.nodes.filter((x) => x.type && x.type !== 'floor'))
-      expect(overlaps(cellOf(placed), 'machine', cellOf(n), n.type as BlockKind, 1), n.id).toBe(false)
+      expect(overlaps(cellOf(placed), sizeOf('machine', placed.data), cellOf(n), sizeOf(n.type as BlockKind, n.data), 1), n.id).toBe(false)
   })
 })
 
