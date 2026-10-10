@@ -27,10 +27,31 @@ export const SIZE = {
 export type BlockKind = keyof typeof SIZE
 export const isBlock = (n: MicroNode): n is MicroNode & { type: BlockKind } => !!n.type && n.type in SIZE
 
+export type Size = { w: number; h: number }
+/** Quarter turns clockwise. */
+export type Rot = 0 | 1 | 2 | 3
+
+/** Metres per grid cell: a splitter (4 m across) is 2 cells, a foundation (8 m) is 4. */
+export const CELL_M = 2
+
+/**
+ * A machine's ground footprint in cells, from the game's building size: its width across the
+ * top and its length down the side, inputs at the back (top) and outputs at the front (bottom).
+ * Turned a quarter, width and length swap.
+ */
+export function machineSize(building: string, rot: Rot = 0): Size {
+  const s = buildingsById.get(building)?.size
+  const w = s ? Math.max(2, Math.ceil(s.width / CELL_M - 1e-9)) : SIZE.machine.w
+  const h = s ? Math.max(2, Math.ceil(s.length / CELL_M - 1e-9)) : SIZE.machine.h
+  return rot % 2 ? { w: h, h: w } : { w, h }
+}
+
+/** A block's size in cells: machines at their real footprint, the rest fixed. */
+export const sizeOf = (type: BlockKind, data: MicroNodeData): Size =>
+  type === 'machine' && data.kind === 'machine' ? machineSize(data.building, data.rot ?? 0) : SIZE[type]
+
 /** True when two blocks' areas overlap, or come closer than `gap` cells (0: touching borders is fine). */
-export function overlaps(a: Cell, at: BlockKind, b: Cell, bt: BlockKind, gap = 0) {
-  const sa = SIZE[at]
-  const sb = SIZE[bt]
+export function overlaps(a: Cell, sa: Size, b: Cell, sb: Size, gap = 0) {
   return a.x < b.x + sb.w + gap && b.x < a.x + sa.w + gap && a.y < b.y + sb.h + gap && b.y < a.y + sa.h + gap
 }
 
@@ -38,9 +59,9 @@ export function overlaps(a: Cell, at: BlockKind, b: Cell, bt: BlockKind, gap = 0
  * The free grid spot nearest to `want` for a block of `type`: a grid line clear all round it, so
  * belts and power lines can reach its connection points.
  */
-export function freeSpot(nodes: MicroNode[], id: string, type: BlockKind, want: Cell): Cell {
-  const others = nodes.filter((n) => n.id !== id && isBlock(n)).map((n) => ({ at: cellOf(n), type: n.type as BlockKind }))
-  const free = (c: Cell) => others.every((o) => !overlaps(c, type, o.at, o.type, 1))
+export function freeSpot(nodes: MicroNode[], id: string, size: Size, want: Cell): Cell {
+  const others = nodes.filter((n) => n.id !== id && isBlock(n)).map((n) => ({ at: cellOf(n), size: sizeOf(n.type as BlockKind, n.data) }))
+  const free = (c: Cell) => others.every((o) => !overlaps(c, size, o.at, o.size, 2))
   if (free(want)) return want
   for (let r = 1; r < 200; r++) {
     let best: Cell | undefined
@@ -70,8 +91,18 @@ const turn = (s: Side, o: Orient): Side => {
   return CLOCKWISE[(CLOCKWISE.indexOf(m) + o.rot) % 4]
 }
 
-// Connection points on a machine's top (inputs) and bottom (outputs), in cells from its left edge.
-export const SPREAD: Record<number, number[]> = { 1: [5], 2: [3, 7], 3: [2, 5, 8], 4: [2, 4, 6, 8] }
+/** `n` connection points spread evenly along a side `w` cells long, on grid vertices and never on the corners. */
+export function spread(n: number, w: number): number[] {
+  const out: number[] = []
+  for (let i = 0; i < n; i++) {
+    const want = Math.round(((i + 1) * w) / (n + 1))
+    out.push(Math.min(w - 1, Math.max(out.length ? out[out.length - 1] + 1 : 1, want)))
+  }
+  return out
+}
+
+/** Turn a connection point a quarter clockwise inside a block `h` cells high. */
+const quarter = (a: Anchor, h: number): Anchor => ({ dx: h - a.dy, dy: a.dx, side: CLOCKWISE[(CLOCKWISE.indexOf(a.side) + 1) % 4] })
 
 /** Handle ids for a machine's inputs and outputs. The first ones are "in" and "out", so older floor plans still connect. */
 export const inHandle = (j: number) => (j === 0 ? 'in' : `in${j}`)
@@ -103,17 +134,21 @@ export const poleSize = (d: MicroNodeData) => (d.kind === 'pole' ? poleConnectio
 
 /** Every connection point of a block, by handle id. */
 export function anchors(type: BlockKind, data: MicroNodeData, o: Orient = UPRIGHT): Record<string, Anchor> {
-  const { w, h } = SIZE[type]
+  const { w, h } = type === 'machine' && data.kind === 'machine' ? machineSize(data.building) : SIZE[type]
   const at = (side: Side): Anchor => {
     const s = turn(side, o)
     return s === 'l' ? { dx: 0, dy: h / 2, side: s } : s === 'r' ? { dx: w, dy: h / 2, side: s } : s === 't' ? { dx: w / 2, dy: 0, side: s } : { dx: w / 2, dy: h, side: s }
   }
   if (type === 'machine') {
+    // Upright: inputs along the back (top), outputs along the front (bottom), power on the right.
+    // A turned machine carries its points round with it; the icon stays upright.
     const { ins, outs } = machineIO(data)
     const out: Record<string, Anchor> = {}
-    ;(SPREAD[ins.length] ?? []).forEach((dx, j) => (out[inHandle(j)] = { dx, dy: 0, side: 't' }))
-    ;(SPREAD[outs.length] ?? []).forEach((dx, p) => (out[outHandle(p)] = { dx, dy: h, side: 'b' }))
-    if (hasPower(data)) out[POWER_HANDLE] = { dx: w, dy: h / 2, side: 'r' }
+    spread(ins.length, w).forEach((dx, j) => (out[inHandle(j)] = { dx, dy: 0, side: 't' }))
+    spread(outs.length, w).forEach((dx, p) => (out[outHandle(p)] = { dx, dy: h, side: 'b' }))
+    if (hasPower(data)) out[POWER_HANDLE] = { dx: w, dy: Math.floor(h / 2), side: 'r' }
+    const rot = data.kind === 'machine' ? (data.rot ?? 0) : 0
+    for (let k = 0; k < rot; k++) for (const key of Object.keys(out)) out[key] = quarter(out[key], k % 2 ? w : h)
     return out
   }
   if (type === 'pole') {
@@ -218,7 +253,8 @@ export function orientAll(nodes: MicroNode[], edges: BeltEdge[]): Map<string, Or
     if (!n || !isBlock(n)) return undefined
     if (n.type === 'machine') return handleCell(n, handle ?? '')
     const c = cellOf(n)
-    return { x: c.x + SIZE[n.type].w / 2, y: c.y + SIZE[n.type].h / 2 }
+    const s = sizeOf(n.type, n.data)
+    return { x: c.x + s.w / 2, y: c.y + s.h / 2 }
   }
   for (const n of nodes) {
     if (!isBlock(n) || n.type === 'machine' || n.type === 'pole') continue

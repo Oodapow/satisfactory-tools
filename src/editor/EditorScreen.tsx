@@ -432,6 +432,27 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   }, [graph, setGraph])
   // Any manual edit means the layout is no longer the untouched proposal.
   const edited = (g: MicroGraph): MicroGraph => ({ ...g, generatedAt: undefined })
+  // A machine turned a quarter, moved off anything its new footprint would cover.
+  const turn = useCallback(
+    (nodeId: string) =>
+      setGraph((g) => {
+        const n = g.nodes.find((x) => x.id === nodeId)
+        if (!n || n.data.kind !== 'machine') return g
+        const turned = { ...n, data: { ...n.data, rot: (((n.data.rot ?? 0) + 1) % 4) as MachineData['rot'] } }
+        return { ...g, generatedAt: undefined, nodes: g.nodes.map((x) => (x.id === nodeId ? place(g.nodes, turned) : x)) }
+      }),
+    [setGraph],
+  )
+  // R turns the selected machine.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key !== 'r' && e.key !== 'R') || e.ctrlKey || e.metaKey || e.altKey) return
+      if (e.target instanceof HTMLElement && e.target.closest('input, select, textarea, [contenteditable]')) return
+      if (sel?.kind === 'node') turn(sel.id)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [sel, turn])
 
   const regenerate = (tier = maxBeltTier) => {
     if (graph && !graph.generatedAt && !confirm('Replace your edited floor plan with a new proposal?')) return
@@ -625,7 +646,11 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       </NoIconLinks>
       <aside className="ne-inspector">
         {selNode?.data.kind === 'machine' ? (
-          <MachineInspector data={selNode.data as MachineData} onChange={patchNode} onDelete={removeSelected} />
+          <MachineInspector
+            data={selNode.data as MachineData}
+            onChange={(d) => ((d.rot ?? 0) !== ((selNode.data as MachineData).rot ?? 0) ? turn(selNode.id) : patchNode(d))}
+            onDelete={removeSelected}
+          />
         ) : selNode?.data.kind === 'port' ? (
           <PortInspector data={selNode.data} onChange={patchNode} onDelete={removeSelected} />
         ) : selNode ? (
@@ -686,7 +711,7 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
   const dragKey = graph?.nodes.flatMap((n) => (n.dragging ? [n.id] : [])).join() ?? ''
   const key = graph
     ? JSON.stringify([
-        graph.nodes.map((n) => [n.id, n.type, n.dragging ? 'drag' : [n.position.x, n.position.y], n.data.kind === 'machine' ? [n.data.recipe, n.data.fuel, n.data.building] : n.data.kind === 'port' ? [n.data.direction, n.data.transport, n.data.item] : n.data.kind === 'pole' ? n.data.tier : 0]),
+        graph.nodes.map((n) => [n.id, n.type, n.dragging ? 'drag' : [n.position.x, n.position.y], n.data.kind === 'machine' ? [n.data.recipe, n.data.fuel, n.data.building, n.data.rot ?? 0] : n.data.kind === 'port' ? [n.data.direction, n.data.transport, n.data.item] : n.data.kind === 'pole' ? n.data.tier : 0]),
         graph.edges.map((e) => [e.id, e.source, e.sourceHandle, e.target, e.targetHandle]),
       ])
     : ''

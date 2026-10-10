@@ -432,6 +432,9 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
         </>
       )}
       <div className="ne-actions">
+        <button type="button" className="secondary" title="Turn a quarter clockwise (R)" onClick={() => onChange({ ...data, rot: (((data.rot ?? 0) + 1) % 4) as MachineData['rot'] })}>
+          ⟳ Rotate
+        </button>
         <button type="button" className="danger" onClick={onDelete}>
           Delete
         </button>

@@ -80,10 +80,9 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-belt.selected { stroke-width: 5; }
 
 /* Micro blocks */
-.ne-machine { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 6px 8px; width: 200px; height: 80px; font-size: .75rem; }
+.ne-machine { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: center; background: var(--surface); border: 2px solid var(--border); border-radius: 6px; font-size: .65rem; overflow: visible; }
+.ne-machine-clock { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ne-machine.selected, .ne-joint.selected, .ne-port.selected { border-color: var(--accent); }
-.ne-machine-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.ne-machine-text strong, .ne-machine-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ne-joint { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--border); background: var(--surface); }
 .ne-port { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px dashed var(--accent); border-radius: 10px; padding: 6px 10px; font-size: .75rem; width: 240px; height: 80px; overflow: hidden; }
 .ne-port > div { min-width: 0; }

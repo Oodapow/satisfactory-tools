@@ -96,7 +96,12 @@ Select a belt to see its item and rate. Changing either sets it by hand, and the
 
 ### The grid
 
-Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top, one output per product along its bottom, and a power point on its right.
+Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`), one cell per 2 m in the game, so a splitter is 2 × 2 cells and a foundation 4 × 4. Machines are drawn at their real footprint from the game data (#68): a Constructor (8 × 10 m) is 4 × 5 cells, an Assembler (9 × 16 m) 5 × 8. Other blocks have fixed sizes. Blocks snap to the grid when dragged, and a dropped block keeps one free grid line between it and its neighbours so lines can reach it. Every connection point is a grid point on the block's border: a machine has one input per ingredient spread along its back (top), one output per product along its front (bottom), and a power point on its right. Inside, a machine shows only its icon, what it makes, and its clock; hover it for the name and recipe.
+
+**Machines turn.** Select one and press R, or use Rotate in the panel: it turns a quarter clockwise, its footprint swaps width and length, and its connection points go round with it. The icon stays upright. Lines reroute on the grid, and a machine that would land on another block moves to the nearest free spot.
+
+![A machine before and after a quarter turn](node-editor/10-machine-upright.png)
+![The same machine turned](node-editor/11-machine-turned.png)
 
 Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts and power lines can reach its connection points.
 

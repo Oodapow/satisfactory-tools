@@ -19,7 +19,7 @@ import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { POWER } from '../data/icons'
 import { FloorPlanContext, type LineLoad } from './floorPlanView'
-import { anchors, G, handleInfo, machineIO, UPRIGHT, type Anchor, type BlockKind, type Side } from './grid'
+import { anchors, G, handleInfo, machineIO, machineSize, UPRIGHT, type Anchor, type BlockKind, type Side } from './grid'
 import { labelPoints, route, useRoutedPath, type Point } from './router'
 import { JunctionSymbol, LiftSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
 import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
@@ -231,20 +231,25 @@ export function MachineBlock({ id, data, selected }: NodeProps<MicroNode>) {
   const building = buildingsById.get(d.building)
   const output = recipe?.products[0]?.item ?? (d.fuel ? POWER : undefined)
   const io = machineIO(d)
+  // Drawn at the building's real footprint; turning it moves the points, never the icon.
+  const size = machineSize(d.building, d.rot ?? 0)
+  const updateInternals = useUpdateNodeInternals()
+  useEffect(() => {
+    updateInternals(id)
+  }, [id, d.rot, d.building, d.recipe, d.fuel, updateInternals])
   return (
-    <div className={`ne-machine${selected ? ' selected' : ''}`} title={`In: ${io.ins.map(itemName).join(', ') || 'nothing'} · Out: ${io.outs.map(itemName).join(', ') || 'power'}`}>
+    <div
+      className={`ne-machine${selected ? ' selected' : ''}`}
+      style={{ width: size.w * G, height: size.h * G }}
+      title={`${d.count > 1 ? `${d.count}× ` : ''}${building?.name ?? d.building} · ${recipe?.name ?? (d.fuel ? itemName(d.fuel) : 'No recipe')} · ${Math.round(d.clock * 1000) / 10}%\nIn: ${io.ins.map(itemName).join(', ') || 'nothing'} · Out: ${io.outs.map(itemName).join(', ') || 'power'}`}
+    >
       <GridPorts id={id} type="machine" data={d} />
-      <GameIcon id={d.building} size={30} />
-      <div className="ne-machine-text">
-        <strong>
-          {d.count > 1 ? `${d.count}× ` : ''}
-          {building?.name ?? d.building}
-        </strong>
-        <span className="ne-sub">
-          {recipe?.name ?? (d.fuel ? itemName(d.fuel) : 'No recipe')} · {Math.round(d.clock * 1000) / 10}%
-        </span>
-      </div>
-      {output && <GameIcon id={output} size={22} />}
+      <GameIcon id={d.building} size={Math.min(30, (Math.min(size.w, size.h) * G) / 2)} />
+      {output && <GameIcon id={output} size={18} />}
+      <span className="ne-machine-clock">
+        {d.count > 1 ? `${d.count}× ` : ''}
+        {Math.round(d.clock * 100)}%
+      </span>
     </div>
   )
 }

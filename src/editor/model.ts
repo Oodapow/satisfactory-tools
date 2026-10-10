@@ -64,6 +64,8 @@ export type MachineData = {
   /** How many identical machines this block stands for (1 unless the layout collapsed a large group). */
   count: number
   floor: number
+  /** Quarter turns clockwise (ports turn with it, the icon doesn't). */
+  rot?: 0 | 1 | 2 | 3
   /** Somersloop output multiplier (1 or absent = none). */
   boost?: number
   /**
@@ -145,7 +147,7 @@ export const pipeRates = [300, 600]
 /** Power lines a pole takes, by Mk. */
 export const poleConnections = [4, 7, 10]
 /** Bumped when proposals change shape, so untouched old proposals are redone. */
-export const LAYOUT_VERSION = 3
+export const LAYOUT_VERSION = 4
 
 /** Lowest tier that carries `perMin`, capped at `maxTier`. */
 export function beltTierFor(perMin: number, maxTier: number, fluid = false) {
