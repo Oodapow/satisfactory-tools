@@ -146,6 +146,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .tile-check { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); color: transparent; font-size: .8rem; font-weight: 800; }
 .tile.done .tile-check { background: var(--accent); border-color: var(--accent); color: #fff; }
 .tier-picks button { min-width: 80px; }
+.tier-picks { margin-bottom: 16px; }
 .check { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 6px 0; }
 .check input { width: 18px; height: 18px; accent-color: var(--accent); }
 .segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; flex-wrap: wrap; }
@@ -197,12 +198,10 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .card.recipe .flow { gap: 8px; }
 .card.recipe .rate { padding: 3px 6px; gap: 4px; font-size: .9rem; }
 .card.recipe .rate .icon-wrap { margin: 0; }
-.rate-name { display: none; }
 .machines { display: flex; flex-wrap: wrap; gap: 10px; }
 .machines .with-icon { gap: 6px; }
 @media (min-width: 1200px) {
   .cards { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
-  .rate-name { display: inline; }
   .cards.compact { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 .ellipsis { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -245,6 +244,13 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 }
 
 /* Icons */
+/* The app's one naming rule: an icon's name is its tooltip. A name shows beside its icon
+   (RoomyName in src/ui/GameIcon.tsx) only inside a .roomy layout on a wide screen. */
+.rate-name { display: none; margin-left: 2px; }
+@media (min-width: 1200px) { .roomy .rate-name { display: inline; } }
+/* Explanations live in a "?" tooltip beside their heading (src/ui/Help.tsx). */
+.help { display: inline-grid; place-items: center; width: 18px; height: 18px; margin-left: 6px; border-radius: 50%; border: 1px solid var(--border); color: var(--muted); font-size: .72rem; font-weight: 700; line-height: 1; vertical-align: middle; cursor: help; user-select: none; }
+.help:hover, .help:focus-visible { color: var(--accent-ink); border-color: var(--accent); outline: none; }
 /* Game icons (src/ui/GameIcon.tsx) */
 .icon-wrap { display: inline-flex; flex: none; vertical-align: middle; line-height: 0; }
 .icon-link { border-radius: 6px; cursor: pointer; transition: transform .1s; }
@@ -323,13 +329,9 @@ tr.wanted td { background: color-mix(in srgb, var(--accent) 8%, transparent); }
 .title-input { background: transparent; }
 .recipe-cell { flex-wrap: nowrap; }
 .row .muted, .plain .muted { margin: 0; }
-.step-table .rate { white-space: normal; }
+.step-table .rate { white-space: nowrap; }
 .step-table td:first-child { min-width: 180px; }
 .step-table td.arrow { padding: 8px 0; }
-/* Desktop plan table: in and out are columns, so chips keep to icon + amount to fit them side by side. */
-@media (min-width: 641px) { .step-table .rate-item { display: none; } .step-table .rate { white-space: nowrap; } }
-.rate-item { margin-left: 2px; }
-.node-pick { flex: 0 1 170px; }
 .node-what { flex: 1 1 160px; min-width: 0; }
 /* Phones: tables become stacked rows, one card-like block per row, so nothing scrolls sideways. */
 @media (max-width: 640px) {
@@ -371,3 +373,26 @@ label.mam-node.open:hover, label.mam-node.done:hover { border-color: var(--accen
 .mam-node-name { font-weight: 600; font-size: .82rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .mam-node .rates { justify-content: center; gap: 4px; }
 .mam-node .rate { font-size: .75rem; padding: 1px 4px; }
+
+/* Outpost plan tables: icons only, so every column stays narrow and rows line up. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.plan-table td:first-child { min-width: 0; width: 1%; }
+.plan-table td { white-space: nowrap; }
+.plan-table td .rates { flex-wrap: nowrap; }
+.plan-table .recipe-cell { gap: 4px; }
+.plan-table tbody tr:first-child td { border-top: 0; }
+.machine-count { display: inline-flex; align-items: center; gap: 4px; }
+.machine-count .muted { margin: 0; }
+.sloops { margin-top: 4px; gap: 4px; }
+.sloops input[type=number] { width: 56px; }
+.mark { color: var(--accent-ink); font-weight: 700; cursor: help; }
+.icon-select.icon-only { padding: 4px 6px 4px 4px; gap: 4px; }
+.icon-btn.small { width: 24px; height: 24px; font-size: .85rem; }
+@media (max-width: 640px) {
+  .plan-table tr { flex-wrap: wrap; gap: 6px 8px; }
+  .plan-table td:first-child { flex: none; width: auto; }
+  .plan-table td .rates { flex-wrap: wrap; }
+}
+/* How busy a part-time last machine is, as a small pie. */
+.busy { display: inline-flex; cursor: help; }
+.pie { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--muted); background: conic-gradient(var(--muted) var(--p), transparent 0); }

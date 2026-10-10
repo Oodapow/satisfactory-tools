@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { buildingsById, itemName, recipesById, resourcesById } from '../data'
 import { fmt } from '../format'
 import { gridOf, type PowerGrid } from '../plan/grids'
@@ -12,6 +12,7 @@ import { editorPath } from '../editor/route'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
 import { Amount, GameIcon, PowerIcon } from '../ui/GameIcon'
+import { Help, WithTip } from '../ui/Help'
 import { IconSelect } from '../ui/IconSelect'
 import { Rates } from './Rates'
 
@@ -121,9 +122,11 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
 
   return (
     <section className="panel">
-      <h3>What should this outpost deliver?</h3>
-      <p className="muted small">Products leave the outpost by belt, truck or train. Power feeds the outpost's power grid; power lines on the factory map decide which outposts share one.</p>
-      {plan.goals.length === 0 && <p className="muted">No goal yet. Add a product or power below.</p>}
+      <h3>
+        Delivers
+        <Help text="Products leave the outpost by belt, truck or train. Power feeds the outpost's power grid; power lines on the factory map decide which outposts share one." />
+      </h3>
+      {plan.goals.length === 0 && <p className="muted">No goal yet.</p>}
       <ul className="plain goals">
         {plan.goals.map((g, i) => (
           <li key={i} className="goal-row">
@@ -212,7 +215,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
       {hasPower && (
         <label className="check inline">
           <input type="checkbox" checked={plan.selfPowered} onChange={(e) => update({ selfPowered: e.target.checked })} />
-          <span>Also power this outpost's own machines from these generators</span>
+          <span>Powers its own machines too</span>
         </label>
       )}
     </section>
@@ -238,31 +241,30 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
     <>
       {short.length > 0 && (
         <section className="notice">
-          <strong>Still short:</strong>{' '}
-          {short.map((f, i) => (
-            <span key={f.item}>
-              {i > 0 && ', '}
-              {fmt(f.shortfall)}/min {itemName(f.item)}
+          <div className="row">
+            <strong>Short</strong>
+            <Help text="Add a node or import it." />
+            <span className="rates">
+              {short.map((f) => (
+                <Amount key={f.item} item={f.item} perMin={f.shortfall} />
+              ))}
             </span>
-          ))}
-          . Add a node or import it.
-          {short.some((f) => resourcesById.has(f.item)) && (
-            <div className="row" style={{ marginTop: 8 }}>
-              {short
-                .filter((f) => resourcesById.has(f.item))
-                .map((f) => (
-                  <button key={f.item} type="button" className="secondary small" onClick={() => addNode(f.item)}>
-                    + {itemName(f.item)} node
-                  </button>
-                ))}
-            </div>
-          )}
+            {short
+              .filter((f) => resourcesById.has(f.item))
+              .map((f) => (
+                <button key={f.item} type="button" className="secondary small with-icon" aria-label={`Add a ${itemName(f.item)} node`} onClick={() => addNode(f.item)}>
+                  + <GameIcon id={f.item} size={18} link={false} /> node
+                </button>
+              ))}
+          </div>
         </section>
       )}
 
       <section className="panel">
-        <h3>Resource nodes</h3>
-        <p className="muted small">Nodes this outpost sits on. Every node runs at its clock speed; what isn't used is exported.</p>
+        <h3>
+          Resource nodes
+          <Help text="Nodes this outpost sits on. Every node runs at its clock speed; what isn't used is exported." />
+        </h3>
         <ul className="plain">
           {plan.nodes.map((n) => {
             const ex = extractorsFor(n.resource, available.buildings)
@@ -275,12 +277,12 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                   // Picked on the world map: resource and purity are the node's real ones.
                   <span className="node-fixed">
                     <GameIcon id={n.resource} size={32} />
-                    {itemName(n.resource)} · {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
+                    {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
                   </span>
                 ) : (
                   <>
                     <IconSelect
-                      className="node-pick"
+                      iconOnly
                       value={n.resource}
                       onChange={(resource) => set({ resource, extractor: undefined })}
                       aria-label="Resource"
@@ -298,13 +300,14 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                 )}
                 {ex.length > 1 ? (
                   <IconSelect
+                    iconOnly
                     value={b?.id}
                     onChange={(extractor) => set({ extractor })}
                     aria-label="Extractor"
                     options={ex.map((x) => ({ value: x.id, label: x.name, icon: x.id }))}
                   />
                 ) : (
-                  <span className="muted small">{b?.name}</span>
+                  b && <GameIcon id={b.id} size={24} />
                 )}
                 {overclock && (
                   <label className="row small" title="Clock speed. Above 100% needs a power shard per 50%.">
@@ -362,9 +365,10 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
                     aria-label="Per minute"
                   />
                   <span className="node-what">
-                    /min {itemName(imp.item)} <span className="muted small">from {all.find((s) => s.plan.id === imp.from)?.plan.name}</span>
+                    /min <span className="muted small">from {all.find((s) => s.plan.id === imp.from)?.plan.name}</span>
                   </span>
                   <IconSelect
+                    iconOnly
                     value={imp.via}
                     onChange={(via) => set({ via: via as Transport })}
                     aria-label="Transport"
@@ -387,9 +391,9 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
             })}
           </ul>
         )}
-        <h4 className="sub">Still available from your other outposts</h4>
+        <h4 className="sub">From other outposts</h4>
         {offerList.length === 0 ? (
-          <p className="muted small">Nothing yet. Exports from your other outposts show up here.</p>
+          <p className="muted small">Nothing on offer yet.</p>
         ) : (
           <div className="table-wrap">
             <table className="step-table">
@@ -477,70 +481,62 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
 
       <section className="panel">
         <header className="row between">
-          <h3>Production</h3>
-          {overrides > 0 && (
-            <button type="button" className="link" onClick={() => update({ recipeChoices: {} })}>
-              Reset to suggested recipes
-            </button>
-          )}
-        </header>
-        <p className="muted small">
-          Suggested recipes leave nothing short and use the least raw input. Pick another to override; ★ marks alternates.
-          {plan.underclock
-            ? "Machines that don't divide evenly all run at the same lower clock, so a manifold feeds them evenly."
-            : "Machines run at full clock. When they don't divide evenly, the manifold's last machine idles part of the time; idle machines draw no power."}
-        </p>
-        <label className="row small">
-          <input type="checkbox" checked={!!plan.underclock} onChange={(e) => update({ underclock: e.target.checked })} />
-          Underclock to match instead of letting the last machine idle
-        </label>
-        {features.has('overclocking') && (
-          <label className="row small">
-            Highest clock speed
-            <select value={plan.maxClock ?? 1} onChange={(e) => update({ maxClock: Number(e.target.value) })} aria-label="Highest clock speed">
-              {CLOCKS.map((c) => (
-                <option key={c} value={c}>
-                  {pct(c)}
-                  {c > 1 ? ` (${Math.round((c - 1) / 0.5)} shard${c > 1.5 ? 's' : ''} per machine)` : ''}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        {solution.steps.length + solution.generators.length === 0 && <p className="muted">Nothing to produce yet. Set a goal first.</p>}
-        <div className="table-wrap">
-          <table className="step-table">
-            {solution.steps.length + solution.generators.length > 0 && (
-              <thead>
-                <tr>
-                  <th>Recipe</th>
-                  <th>Machines</th>
-                  <th>In (per min)</th>
-                  <th aria-hidden />
-                  <th>Out</th>
-                  <th className="num">Power</th>
-                </tr>
-              </thead>
+          <h3>
+            Production
+            <Help text="Suggested recipes leave nothing short and use the least raw input; pick another to override." />
+          </h3>
+          <div className="row">
+            {features.has('overclocking') && (
+              <label className="row small">
+                <GameIcon id={SHARD} size={20} title="Highest clock speed" />
+                <select value={plan.maxClock ?? 1} onChange={(e) => update({ maxClock: Number(e.target.value) })} aria-label="Highest clock speed">
+                  {CLOCKS.map((c) => (
+                    <option key={c} value={c}>
+                      {pct(c)}
+                      {c > 1 ? ` · ${Math.round((c - 1) / 0.5)} shard${c > 1.5 ? 's' : ''}` : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
             )}
+            <label className="row small">
+              <input type="checkbox" checked={!!plan.underclock} onChange={(e) => update({ underclock: e.target.checked })} />
+              Underclock
+              <Help text="Off: machines run at full clock and the manifold's last machine idles part of the time (idle machines draw no power). On: machines that don't divide evenly all run at one lower clock." />
+            </label>
+            {overrides > 0 && (
+              <button type="button" className="link" onClick={() => update({ recipeChoices: {} })}>
+                Reset recipes
+              </button>
+            )}
+          </div>
+        </header>
+        {solution.steps.length + solution.generators.length === 0 && <p className="muted">Nothing to produce yet.</p>}
+        <div className="table-wrap">
+          <table className="step-table plan-table">
+            {solution.steps.length + solution.generators.length > 0 && <PlanHead />}
             <tbody>
               {solution.steps.map((s) => {
                 const recipe = recipesById.get(s.recipe)!
                 const product = Object.keys(solution.recipes).find((i) => solution.recipes[i] === s.recipe) ?? recipe.products[0].item
                 const options = recipesFor(product, available)
-                const isSuggested = suggested[product] === s.recipe || (!suggested[product] && options[0]?.id === s.recipe)
+                const suggestedId = suggested[product] ?? options[0]?.id
+                const pick = (r: string) => update({ recipeChoices: { ...plan.recipeChoices, [product]: r } })
+                const sloops = somersloopBoost(buildingsById.get(s.building)).slots
                 return (
                   <tr key={s.recipe}>
                     <td>
                       <span className="recipe-cell">
-                        <GameIcon id={product} size={28} />
                         {options.length > 1 ? (
                           <IconSelect
+                            iconOnly
                             value={s.recipe}
-                            onChange={(r) => update({ recipeChoices: { ...plan.recipeChoices, [product]: r } })}
+                            onChange={pick}
                             aria-label={`Recipe for ${itemName(product)}`}
                             options={options.map((r) => ({
                               value: r.id,
-                              label: `${r.alternate ? '★ ' : ''}${r.name.replace('Alternate: ', '')}${(suggested[product] ?? options[0].id) === r.id ? ' (suggested)' : ''}`,
+                              label: `${r.alternate ? '★ ' : ''}${r.name.replace('Alternate: ', '')}${suggestedId === r.id ? ' (suggested)' : ''}`,
+                              icon: product,
                               extra: (
                                 <span className="icon-select-extra" aria-label="Ingredients">
                                   {r.ingredients.map((x) => (
@@ -551,28 +547,30 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                             }))}
                           />
                         ) : (
-                          recipe.name
+                          <GameIcon id={product} size={28} title={recipe.name} />
                         )}
-                        {!isSuggested && <span className="badge">Your pick</span>}
+                        {recipe.alternate && <WithTip className="mark" text="Alternate recipe">★</WithTip>}
+                        {s.recipe !== suggestedId && (
+                          <button type="button" className="icon-btn small" aria-label="Back to the suggested recipe" title="Back to the suggested recipe" onClick={() => pick(suggestedId)}>
+                            ↺
+                          </button>
+                        )}
                       </span>
                     </td>
                     <td>
-                      <strong>{s.count}</strong> {buildingsById.get(s.building)?.name}
-                      {Math.abs(s.clock - 1) > 1e-6 && <span className="muted small"> at {pct(s.clock)}</span>}
-                      {s.count * s.clock - s.machines > 1e-3 && <span className="muted small"> · last one {pct(1 - (s.count * s.clock - s.machines) / s.clock)} busy</span>}
-                      {s.shards > 0 && <span className="muted small"> · {s.shards} shards</span>}
-                      {features.has('production-amplification') && somersloopBoost(buildingsById.get(s.building)).slots > 0 && (
-                        <label className="row small" title="Somersloops per machine. Each adds output; power goes up with the square of the boost.">
-                          <GameIcon id="Desc_WAT1_C" size={18} />
+                      <MachineCount building={s.building} count={s.count} clock={s.clock} shards={s.shards} lastBusy={s.count * s.clock - s.machines > 1e-3 ? 1 - (s.count * s.clock - s.machines) / s.clock : undefined} />
+                      {features.has('production-amplification') && sloops > 0 && (
+                        <label className="row small sloops">
+                          <GameIcon id="Desc_WAT1_C" size={18} title="Somersloops per machine: each adds output, and power goes up with the square of the boost" />
                           <input
                             type="number"
                             min={0}
-                            max={somersloopBoost(buildingsById.get(s.building)).slots}
+                            max={sloops}
                             value={s.somersloops}
                             onChange={(e) => update({ somersloops: { ...plan.somersloops, [s.recipe]: Math.max(0, Number(e.target.value)) } })}
                             aria-label="Somersloops per machine"
                           />
-                          {s.boost > 1 && <span className="muted">×{fmt(s.boost, 2)} output</span>}
+                          {s.boost > 1 && <span className="muted">×{fmt(s.boost, 2)}</span>}
                         </label>
                       )}
                     </td>
@@ -591,14 +589,21 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                 <tr key={g.generator}>
                   <td>
                     <span className="recipe-cell">
-                      <span className="power-icon"><PowerIcon size={26} /></span>
-                      {buildingsById.get(g.generator)?.name}
+                      <span className="power-icon">
+                        <PowerIcon size={22} />
+                      </span>
                     </span>
                   </td>
                   <td>
-                    <strong>{ceil(g.machines)}</strong> on {itemName(g.fuel)}
+                    <MachineCount building={g.generator} count={ceil(g.machines)} />
                   </td>
-                  <td />
+                  <td>
+                    <span className="rates">
+                      <span className="rate">
+                        <GameIcon id={g.fuel} size={20} />
+                      </span>
+                    </span>
+                  </td>
                   <td className="arrow">→</td>
                   <td>
                     <span className="rate power">
@@ -613,25 +618,41 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
         </div>
       </section>
 
-      <section className="panel">
-        <h3>Extraction</h3>
-        {solution.extraction.length === 0 ? (
-          <p className="muted small">No extractors. Add resource nodes in step 2.</p>
-        ) : (
-          <ul className="plain">
-            {solution.extraction.map((e, i) => (
-              <li key={i} className="row">
-                <GameIcon id={e.resource} size={24} />
-                <span>
-                  <strong>{e.count}</strong> × {buildingsById.get(e.extractor)?.name}
-                  {Math.abs(e.clock - 1) > 1e-6 && ` at ${pct(e.clock)}`} → {fmt(e.perMin)}/min {itemName(e.resource)}
-                </span>
-                <span className="muted small">{fmt(e.powerMW, 1)} MW</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {solution.extraction.length > 0 && (
+        <section className="panel">
+          <h3>Extraction</h3>
+          <div className="table-wrap">
+            <table className="step-table plan-table">
+              <PlanHead />
+              <tbody>
+                {solution.extraction.map((e, i) => (
+                  <tr key={i}>
+                    <td>
+                      <span className="recipe-cell">
+                        <GameIcon id={e.resource} size={28} />
+                      </span>
+                    </td>
+                    <td>
+                      <MachineCount building={e.extractor} count={e.count} clock={e.clock} shards={e.shards} />
+                    </td>
+                    <td />
+                    <td className="arrow">→</td>
+                    <td>
+                      <span className="rates">
+                        <span className="rate">
+                          <GameIcon id={e.resource} size={20} />
+                          <b>{fmt(e.perMin)}</b>
+                        </span>
+                      </span>
+                    </td>
+                    <td className="num">{fmt(e.powerMW, 1)} MW</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       <section className="panel">
         <h3>Notes</h3>
@@ -641,11 +662,52 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
           placeholder="Where it is, belts, how it connects..."
           rows={3}
         />
-        <p className="muted small">
-          The floor plan on the factory map lays this out floor by floor, with manifolds and belts sized to your best tier.
-        </p>
       </section>
     </>
+  )
+}
+
+const SHARD = 'Desc_CrystalShard_C'
+
+// The plan tables' columns explain themselves with icons; the headings are for screen readers.
+function PlanHead() {
+  return (
+    <thead className="sr-only">
+      <tr>
+        <th>Recipe</th>
+        <th>Machines</th>
+        <th>In (per min)</th>
+        <th />
+        <th>Out (per min)</th>
+        <th>Power</th>
+      </tr>
+    </thead>
+  )
+}
+
+/** "[building] ×4", plus the clock when it isn't 100%, how busy a part-time last machine is, and any power shards. */
+function MachineCount({ building, count, clock = 1, shards = 0, lastBusy }: { building: string; count: number; clock?: number; shards?: number; lastBusy?: number }) {
+  return (
+    <span className="machine-count">
+      <GameIcon id={building} size={24} />
+      <b>×{count}</b>
+      {Math.abs(clock - 1) > 1e-6 && (
+        <WithTip className="muted small" text="Clock speed">
+          {pct(clock)}
+        </WithTip>
+      )}
+      {lastBusy !== undefined && (
+        <WithTip className="busy" text={`The last machine is busy ${pct(lastBusy)} of the time`}>
+          <span className="pie" style={{ '--p': `${lastBusy * 360}deg` } as CSSProperties} />
+        </WithTip>
+      )}
+      {shards > 0 && (
+        <span className="rate">
+          <GameIcon id={SHARD} size={16} />
+          <b>{shards}</b>
+        </span>
+      )}
+    </span>
   )
 }
 
@@ -720,9 +782,14 @@ function Balance({ solved, grid, nameOf }: { solved: Solved; grid?: PowerGrid; n
         </>
       )}
       {unused.size > 0 && (
-        <p className="muted small">
-          Not needed: {[...unused].map(([item, r]) => `${fmt(r)}/min ${itemName(item)}`).join(', ')}
-        </p>
+        <>
+          <h4 className="sub">Not needed</h4>
+          <span className="rates">
+            {[...unused].map(([item, r]) => (
+              <Amount key={item} item={item} perMin={r} />
+            ))}
+          </span>
+        </>
       )}
     </aside>
   )

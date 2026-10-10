@@ -1,13 +1,16 @@
 import { useRef } from 'react'
 import { downloadBackup, importAll } from '../storage/persisted'
+import { Help } from '../ui/Help'
 
 export function Backup() {
   const fileRef = useRef<HTMLInputElement>(null)
 
   return (
     <section className="panel">
-      <h3>Backup</h3>
-      <p className="muted">Data stays on this device. Export a file to move it to another browser or phone.</p>
+      <h3>
+        Backup
+        <Help text="Data stays on this device. Export a file to move it to another browser or phone." />
+      </h3>
       <div className="row">
         <button type="button" className="secondary" onClick={downloadBackup}>
           Export
