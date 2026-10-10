@@ -8,7 +8,9 @@
 //   A floor sits one level above the highest floor that feeds it.
 // - Each step becomes one or more manifold lines. A line is split when one belt (or pipe)
 //   of the best unlocked tier can't carry its input or output, or when it would have more
-//   than MAX_PER_LINE machines. All machines in a step run at the solver's clock.
+//   than MAX_PER_LINE machines. All machines in a step run at the solver's clock. When they
+//   don't divide evenly the manifold feeds them in order, so the first ones run full and the
+//   last one idles part of the time (#60).
 // - Imports and exports that one belt can't carry get one port per belt.
 // - Belts pair each item's sources with its consumers in order, never above either's rate.
 import { buildingsById, itemName, itemsById, recipesById } from '../data'
@@ -43,6 +45,8 @@ export type LayoutInput = {
   /** Best conveyor belt Mk (1-6) and pipeline Mk (1-2) to build with. */
   maxBeltTier: number
   maxPipeTier?: number
+  /** Best power pole Mk (1-3). */
+  maxPoleTier?: number
 }
 
 /** One manifold: identical machines in a row, fed by one belt per ingredient and collected by one belt per product. */
@@ -55,6 +59,10 @@ export type Line = {
   fuel?: string
   machines: number
   clock: number
+  /** Machines' worth of work the line does at that clock (at most `machines`): the last one may idle. */
+  busy: number
+  /** Somersloop output multiplier. */
+  boost: number
   /** Per line, in the order of the machine's inputs and outputs. */
   ingredients: ItemRate[]
   products: ItemRate[]
@@ -73,8 +81,11 @@ export type Floor = {
 
 export type Port = Omit<PortData, 'kind'> & { id: string }
 
-/** Where a belt starts or ends: a line's input or output slot, or a port. */
-export type End = { line: string; slot: number } | { port: string }
+/**
+ * Where a belt starts or ends: a line's input or output slot, or a port. `overflow` is the far
+ * end of a line's input manifold, where what its machines don't take carries on.
+ */
+export type End = { line: string; slot: number; overflow?: boolean } | { port: string }
 
 export type Flow = { item: string; perMin: number; from: End; to: End }
 
@@ -113,6 +124,8 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
       building: s.building,
       count: Math.max(1, s.count),
       clock: s.clock,
+      busy: s.clock > 0 ? Math.min(Math.max(1, s.count), s.machines / s.clock) : 1,
+      boost: s.boost,
       ingredients: r.ingredients.map((i) => ({ item: i.item, perMin: perMin(i.amount, r) * s.machines })),
       products: r.products.map((p) => ({ item: p.item, perMin: perMin(p.amount, r) * s.machines * s.boost })),
     }
@@ -127,7 +140,8 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
     const products: ItemRate[] = []
     if (spec?.byproduct && spec.byproductAmount && fuel?.energyMJ) products.push({ item: spec.byproduct, perMin: ((g.mw * 60) / fuel.energyMJ) * spec.byproductAmount })
     const count = Math.max(1, Math.ceil(g.machines - EPS))
-    steps.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, recipe: '', fuel: g.fuel, building: g.generator, count, clock: g.machines / count, ingredients, products })
+    const clock = plan.underclock ? g.machines / count : 1
+    steps.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, recipe: '', fuel: g.fuel, building: g.generator, count, clock, busy: g.machines / clock, boost: 1, ingredients, products })
   }
 
   // 2. Levels: raw processing at the bottom, a step one above the highest step feeding it.
@@ -169,19 +183,27 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
   })
 
   function splitStep(s: Step): Omit<Line, 'id' | 'floor'>[] {
+    // Sized for what the line carries with every machine busy, so the first, full machines fit too.
+    const full = (x: ItemRate) => (x.perMin * s.count) / s.busy
     let k = Math.ceil(s.count / MAX_PER_LINE - EPS)
-    for (const x of [...s.ingredients, ...s.products]) k = Math.max(k, Math.ceil(x.perMin / cap(x.item) - EPS))
+    for (const x of [...s.ingredients, ...s.products]) k = Math.max(k, Math.ceil(full(x) / cap(x.item) - EPS))
     k = Math.max(1, Math.min(k, s.count))
     const base = Math.floor(s.count / k)
+    let left = s.busy
     return Array.from({ length: k }, (_, i) => {
       const machines = base + (i < s.count % k ? 1 : 0)
-      const share = machines / s.count
+      // Lines fill in order like machines on a manifold: the last one gets what's left.
+      const busy = Math.min(machines, Math.max(0, left))
+      left -= busy
+      const share = busy / s.busy
       return {
         recipe: s.recipe,
         building: s.building,
         fuel: s.fuel,
         machines,
         clock: s.clock,
+        busy,
+        boost: s.boost,
         ingredients: s.ingredients.map((x) => ({ item: x.item, perMin: x.perMin * share })),
         products: s.products.map((x) => ({ item: x.item, perMin: x.perMin * share })),
       }
@@ -248,6 +270,19 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
     add(p.direction === 'in' ? sources : consumers, p.item, { end: { port: p.id }, perMin: p.perMin, order: p.direction === 'in' ? -1 : floors.length })
   }
   const flows: Flow[] = []
+  // Surplus of an item a line also uses leaves through the end of that line's manifold, as
+  // overflow past its last machine, not split off before its first (#60). The last line that
+  // uses it takes it, if its belt has room.
+  for (const [item, cons] of consumers) {
+    const lineSlots = cons.filter((c) => 'line' in c.end).sort((a, b) => a.order - b.order)
+    const last = lineSlots[lineSlots.length - 1]
+    if (!last || !('line' in last.end)) continue
+    const out = cons.find((c) => 'port' in c.end && last.perMin + c.perMin <= cap(item) + EPS)
+    if (!out) continue
+    flows.push({ item, perMin: out.perMin, from: { ...last.end, overflow: true }, to: out.end })
+    last.perMin += out.perMin
+    cons.splice(cons.indexOf(out), 1)
+  }
   for (const [item, cons] of consumers) {
     const srcs = [...(sources.get(item) ?? [])].sort((a, b) => a.order - b.order)
     cons.sort((a, b) => a.order - b.order)

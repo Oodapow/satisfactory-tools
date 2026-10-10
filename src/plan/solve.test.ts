@@ -28,8 +28,10 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
 const step = (s: ReturnType<typeof solve>, recipe: string) => s.steps.find((x) => x.recipe === recipe)!
 
 describe('machine sizing', () => {
-  it('underclocks the fewest machines evenly', () => {
-    expect(sizeMachines(2.5)).toEqual({ count: 3, clock: 2.5 / 3 })
+  it('runs the fewest machines at full clock, or underclocks them evenly when asked', () => {
+    expect(sizeMachines(2.5)).toEqual({ count: 3, clock: 1 })
+    expect(sizeMachines(2.5, 1, true)).toEqual({ count: 3, clock: 2.5 / 3 })
+    expect(sizeMachines(3, 2)).toEqual({ count: 2, clock: 1.5 })
     expect(sizeMachines(4)).toEqual({ count: 4, clock: 1 })
     expect(sizeMachines(4, 2)).toEqual({ count: 2, clock: 2 })
     expect(sizeMachines(4, 2.5)).toEqual({ count: 2, clock: 2 })
@@ -71,8 +73,17 @@ describe('solve', () => {
     expect(s.flows.get('Desc_OreIron_C')!.shortfall).toBeCloseTo(180)
   })
 
-  it('underclocks to match and draws less power', () => {
+  it('runs machines at full clock and counts only the work done for power', () => {
     const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }] }), all)
+    const plates = step(s, 'Recipe_IronPlate_C')
+    expect(plates.count).toBe(3)
+    expect(plates.clock).toBe(1)
+    // 2.5 machines' worth of work at 4 MW: the last one idles half the time.
+    expect(plates.powerMW).toBeCloseTo(2.5 * 4, 3)
+  })
+
+  it('underclocks to match when the plan asks', () => {
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], underclock: true }), all)
     const plates = step(s, 'Recipe_IronPlate_C')
     expect(plates.count).toBe(3)
     expect(plates.clock).toBeCloseTo(50 / 60)

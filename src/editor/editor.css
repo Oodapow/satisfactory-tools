@@ -115,13 +115,57 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
   .ne-notes { left: 10px; right: 10px; bottom: 120px; }
 }
 
-/* Ports: hollow while free, filled once connected. */
-.react-flow__handle.ne-handle { width: 10px; height: 10px; background: var(--surface); border: 2px solid var(--muted); }
-.react-flow__handle.ne-handle.connected { background: var(--accent); border-color: var(--accent); }
-.react-flow__handle.ne-handle-source.connected { background: #20a39e; border-color: #20a39e; }
-.react-flow__handle.ne-handle:hover { transform-origin: center; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
+/* Connection points, coloured by what they carry: hollow while free, filled once a line connects. */
+.react-flow__handle.ne-handle { --m: #e8891c; width: 10px; height: 10px; margin: 0; background: var(--surface); border: 2px solid var(--m); }
+.react-flow__handle.ne-handle.m-fluid { --m: #2b8fd6; }
+.react-flow__handle.ne-handle.m-power { --m: #d4b000; width: 7px; height: 7px; border-width: 1.5px; }
+.react-flow__handle.ne-handle.connected { background: var(--m); }
+.react-flow__handle.ne-handle:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--m) 35%, transparent); }
+.react-flow__handle.ne-handle.connected:hover { box-shadow: none; }
 .ne-joint { color: var(--text); width: 40px; height: 40px; padding: 0; }
 .ne-lift { position: absolute; display: flex; gap: 2px; align-items: center; background: var(--surface); border: 1px solid #6c5ce7; color: #6c5ce7; border-radius: 6px; padding: 1px 4px 1px 2px; font-size: .65rem; font-weight: 700; pointer-events: all; }
 .ne-palette-item svg { flex: none; color: var(--text); }
 .ne-joint.splitter { color: #2b8fd6; }
 .ne-joint.merger { color: #d35400; }
+.ne-joint.junction { color: #2b8fd6; border-radius: 50%; }
+.ne-pole { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: #b39500; }
+.ne-pole-disc { box-sizing: border-box; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--surface); border: 2px solid #d4b000; }
+.ne-pole.selected .ne-pole-disc { border-color: var(--accent); }
+.ne-belt.pipe { stroke: #2b8fd6; stroke-width: 3.5; }
+.ne-belt.clash { stroke: #d0453a; stroke-dasharray: 6 4; }
+.ne-belt.pipe.selected { stroke-width: 6; }
+.ne-wire { stroke: #d4b000; stroke-width: 1.5; }
+.ne-wire.selected { stroke-width: 3; }
+.ne-belt-label.pipe { border-color: #2b8fd6; }
+.ne-markers { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ne-arrow-belt { fill: #e8891c; }
+.ne-arrow-pipe { fill: #2b8fd6; }
+
+/* Power widgets on the factory map's side panel (#66). */
+.pw-card { border: 1px solid var(--border); border-radius: 10px; background: var(--bg); padding: 10px 12px; margin: 12px 0; display: grid; gap: 8px; }
+.pw-head { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .9rem; }
+.pw-pill { font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.pw-pill.good { background: color-mix(in srgb, #3a9d5d 18%, transparent); color: #3a9d5d; }
+.pw-pill.bad { background: color-mix(in srgb, var(--danger) 18%, transparent); color: var(--danger); }
+.pw-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; }
+.pw-tile { display: grid; gap: 2px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; background: var(--surface); line-height: 1.2; }
+.pw-tile b { font-size: .95rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pw-tile small { font-size: .7rem; font-weight: 600; color: var(--muted); }
+.pw-tile span { font-size: .72rem; color: var(--muted); }
+.pw-tile.good b { color: #3a9d5d; }
+.pw-tile.bad b { color: var(--danger); }
+.pw-meter { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, #d4b000 16%, var(--surface)); border: 1px solid var(--border); }
+.pw-fill { display: block; height: 100%; background: #d4b000; }
+.pw-fill.pw-over { background: var(--danger); }
+.pw-sub { margin: 4px 0 0; font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.pw-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .82rem; }
+.pw-rows li { display: flex; align-items: center; gap: 8px; min-height: 26px; }
+.pw-fuel { display: flex; align-items: center; gap: 4px; color: var(--muted); font-size: .72rem; }
+.pw-mw { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pw-rows .pw-row-btn { border: 0; border-radius: 6px; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; color: var(--text); font-weight: 400; padding: 4px 6px; }
+.pw-name { display: grid; gap: 3px; }
+.pw-share { display: block; height: 4px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.pw-share span { display: block; height: 100%; background: #d4b000; }
+.pw-dir { width: 22px; text-align: center; color: #d4b000; font-weight: 700; }
+.pw-rows .pw-row-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.ne-wire.clash { stroke: var(--danger); stroke-dasharray: 4 3; }

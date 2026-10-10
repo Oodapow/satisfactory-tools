@@ -1,6 +1,7 @@
 // Custom React Flow nodes and edges for both editor levels. Edges are drawn like a
 // schematic: orthogonal runs with 90° corners and hops where they cross (see router.ts).
-// Ports are hollow circles while free and filled once something connects to them.
+// Connection points are coloured by what they carry (belt, pipe, power): hollow while free,
+// filled once a line connects to them. Each takes one line.
 import { useContext, useEffect, useMemo, type CSSProperties } from 'react'
 import {
   BaseEdge,
@@ -17,11 +18,11 @@ import { buildingsById, itemName, recipesById } from '../data'
 import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { POWER } from '../data/icons'
-import { FloorPlanContext } from './floorPlanView'
-import { anchors, G, machineIO, UPRIGHT, type Anchor, type Side } from './grid'
+import { FloorPlanContext, type LineLoad } from './floorPlanView'
+import { anchors, G, handleInfo, machineIO, UPRIGHT, type Anchor, type BlockKind, type Side } from './grid'
+import { labelPoints, route, useRoutedPath, type Point } from './router'
+import { JunctionSymbol, LiftSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
 import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
-import { labelPoints, route, useRoutedPath } from './router'
-import { LiftSymbol, MergerSymbol, SplitterSymbol } from './Symbols'
 import {
   transportById,
   transportColor,
@@ -30,6 +31,8 @@ import {
   type LinkEdge,
   type MachineData,
   type MicroNode,
+  type MicroNodeData,
+  type Medium,
   type OutpostNode,
   type PortData,
 } from './model'
@@ -77,16 +80,26 @@ function useOrient(id: string) {
 }
 
 const position: Record<Side, Position> = { l: Position.Left, r: Position.Right, t: Position.Top, b: Position.Bottom }
-/** A connection point at its exact grid spot on the block's border. */
-function GridPort({ type, id, a }: { type: HandleType; id: string; a: Anchor }) {
+/** A connection point at its exact grid spot on the block's border, coloured by what it carries. */
+function GridPort({ node, data, id, a }: { node: string; data: MicroNodeData; id: string; a: Anchor }) {
+  const info = handleInfo(data, id)
+  const connected = !!useContext(FloorPlanContext)?.used.has(`${node}:${id}`)
   return (
-    <Port
-      type={type}
+    <Handle
+      type={info?.role === 'in' ? 'target' : 'source'}
       id={id}
       position={position[a.side]}
+      isConnectable={!connected}
+      title={`${info?.medium === 'fluid' ? 'Pipe' : info?.medium === 'power' ? 'Power' : 'Belt'} ${info?.role === 'any' ? 'connection' : info?.role === 'in' ? 'input' : 'output'}${connected ? '' : ' (free)'}`}
       style={{ left: a.dx * G, top: a.dy * G, right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' }}
+      className={`ne-handle m-${info?.medium ?? 'solid'}${info?.role === 'in' ? ' in' : ''}${connected ? ' connected' : ''}`}
     />
   )
+}
+
+/** Every connection point of a block. */
+function GridPorts({ id, type, data, a }: { id: string; type: BlockKind; data: MicroNodeData; a?: Record<string, Anchor> }) {
+  return Object.entries(a ?? anchors(type, data)).map(([h, at]) => <GridPort key={h} node={id} data={data} id={h} a={at} />)
 }
 
 // ---------- Macro ----------
@@ -212,18 +225,15 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
 
 // ---------- Micro ----------
 
-export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
+export function MachineBlock({ id, data, selected }: NodeProps<MicroNode>) {
   const d = data as MachineData
   const recipe = recipesById.get(d.recipe)
   const building = buildingsById.get(d.building)
   const output = recipe?.products[0]?.item ?? (d.fuel ? POWER : undefined)
   const io = machineIO(d)
-  const points = Object.entries(anchors('machine', d))
   return (
     <div className={`ne-machine${selected ? ' selected' : ''}`} title={`In: ${io.ins.map(itemName).join(', ') || 'nothing'} · Out: ${io.outs.map(itemName).join(', ') || 'power'}`}>
-      {points.map(([h, a]) => (
-        <GridPort key={h} type={a.side === 't' ? 'target' : 'source'} id={h} a={a} />
-      ))}
+      <GridPorts id={id} type="machine" data={d} />
       <GameIcon id={d.building} size={30} />
       <div className="ne-machine-text">
         <strong>
@@ -241,28 +251,43 @@ export function MachineBlock({ data, selected }: NodeProps<MicroNode>) {
 
 /** Splitter: in at the back, out ahead, up and down. Its connection points turn to face its belts; the icon stays upright. */
 export function SplitterBlock({ id, data, selected }: NodeProps<MicroNode>) {
-  const a = anchors('splitter', data, useOrient(id))
   return (
     <div className={`ne-joint splitter${selected ? ' selected' : ''}`} title="Conveyor Splitter">
-      <GridPort type="target" id="in" a={a.in} />
+      <GridPorts id={id} type="splitter" data={data} a={anchors('splitter', data, useOrient(id))} />
       <GameIcon id="Desc_ConveyorAttachmentSplitter_C" size={24} fallback={<SplitterSymbol />} />
-      <GridPort type="source" id="out" a={a.out} />
-      <GridPort type="source" id="up" a={a.up} />
-      <GridPort type="source" id="down" a={a.down} />
     </div>
   )
 }
 
 /** Merger: in at the back, up and down, out ahead. Its connection points turn to face its belts; the icon stays upright. */
 export function MergerBlock({ id, data, selected }: NodeProps<MicroNode>) {
-  const a = anchors('merger', data, useOrient(id))
   return (
     <div className={`ne-joint merger${selected ? ' selected' : ''}`} title="Conveyor Merger">
-      <GridPort type="target" id="in" a={a.in} />
-      <GridPort type="target" id="up" a={a.up} />
-      <GridPort type="target" id="down" a={a.down} />
+      <GridPorts id={id} type="merger" data={data} a={anchors('merger', data, useOrient(id))} />
       <GameIcon id="Desc_ConveyorAttachmentMerger_C" size={24} fallback={<MergerSymbol />} />
-      <GridPort type="source" id="out" a={a.out} />
+    </div>
+  )
+}
+
+/** Pipeline Junction: four pipe connections, each in or out. */
+export function JunctionBlock({ id, data, selected }: NodeProps<MicroNode>) {
+  return (
+    <div className={`ne-joint junction${selected ? ' selected' : ''}`} title="Pipeline Junction">
+      <GridPorts id={id} type="junction" data={data} a={anchors('junction', data, useOrient(id))} />
+      <GameIcon id="Desc_PipelineJunction_Cross_C" size={24} fallback={<JunctionSymbol />} />
+    </div>
+  )
+}
+
+/** Power pole: its power lines round the edge, one per connection point. */
+export function PoleBlock({ id, data, selected }: NodeProps<MicroNode>) {
+  const tier = data.kind === 'pole' ? data.tier : 1
+  return (
+    <div className={`ne-pole${selected ? ' selected' : ''}`} title={`Power Pole Mk.${tier}`}>
+      <GridPorts id={id} type="pole" data={data} />
+      <div className="ne-pole-disc">
+        <GameIcon id={`Desc_PowerPoleMk${tier}_C`} size={20} fallback={<PoleSymbol size={18} />} />
+      </div>
     </div>
   )
 }
@@ -274,7 +299,7 @@ export function PortBlock({ id, data, selected }: NodeProps<MicroNode>) {
   const via = d.transport === 'resource' ? (d.extractor ?? 'Desc_MinerMk1_C') : transportIcon(d.transport)
   return (
     <div className={`ne-port ${d.direction}${selected ? ' selected' : ''}`}>
-      {!isIn && <GridPort type="target" id="in" a={a.in} />}
+      <GridPorts id={id} type="port" data={d} a={a} />
       <GameIcon id={via} size={26} title={transportLabel(d.transport)} />
       <div>
         <div className="ne-sub">
@@ -292,7 +317,6 @@ export function PortBlock({ id, data, selected }: NodeProps<MicroNode>) {
           )}
         </strong>
       </div>
-      {isIn && <GridPort type="source" id="out" a={a.out} />}
     </div>
   )
 }
@@ -306,34 +330,63 @@ export function FloorBand({ data }: NodeProps<MicroNode>) {
   )
 }
 
+/** A belt, pipe or power line on the floor plan, following its grid route. */
 export function BeltLine(props: EdgeProps<BeltEdge>) {
-  const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
-  // The grid route, unless one of its blocks is being dragged (then a plain route follows the drag).
+  const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected } = props
   const view = useContext(FloorPlanContext)
+  const load = view?.loads.get(id)
+  const medium = load?.medium ?? data?.medium ?? 'solid'
   const grid = view && !view.dragging.has(source) && !view.dragging.has(target) ? view.routes.get(id) : undefined
-  const pts = useMemo(
-    () => grid ?? route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition),
-    [grid, id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition],
-  )
+  if (medium === 'power') return <WireLine id={id} grid={grid} selected={!!selected} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+  return <FlowLine {...props} load={load} medium={medium} grid={grid} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+}
+
+/** A power line: on the grid like a belt, but thin, with no direction and nothing carried. */
+function WireLine({ id, grid, selected, clash, sx, sy, tx, ty, sp, tp }: { id: string; grid?: Point[]; selected: boolean; clash: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
+  const pts = useMemo(() => grid ?? route(id, { x: sx, y: sy }, sp, { x: tx, y: ty }, tp), [grid, id, sx, sy, sp, tx, ty, tp])
+  const path = useRoutedPath(id, pts)
+  return <BaseEdge path={path} className={`ne-wire${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
+}
+
+function FlowLine({
+  id,
+  data,
+  selected,
+  load,
+  medium,
+  grid,
+  clash,
+  sx,
+  sy,
+  tx,
+  ty,
+  sp,
+  tp,
+}: EdgeProps<BeltEdge> & { load?: LineLoad; medium: Medium; grid?: Point[]; clash: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
+  // The grid route, unless one of its blocks is being dragged (then a plain route follows the drag).
+  const pts = useMemo(() => grid ?? route(id, { x: sx, y: sy }, sp, { x: tx, y: ty }, tp), [grid, id, sx, sy, sp, tx, ty, tp])
   const path = useRoutedPath(id, pts)
   const { label, vertical } = labelPoints(pts)
-  // Short hops (a splitter dropping into its machine) carry no label, so it doesn't sit on the blocks; selecting the belt shows it.
+  // Short hops (a splitter dropping into its machine) carry no label, so it doesn't sit on the blocks; selecting the line shows it.
   const longest = Math.max(0, ...pts.slice(1).map((p, i) => Math.abs(p.x - pts[i].x) + Math.abs(p.y - pts[i].y)))
   const showLabel = selected || longest >= 3 * G
-  const lift = data?.lift ?? 0
+  const lift = medium === 'solid' ? (data?.lift ?? 0) : 0
+  const pipe = medium === 'fluid'
+  const over = !!load?.over
+  const what = `${load?.item ? itemName(load.item) : 'Unassigned'} · ${load?.perMin !== undefined ? `${fmt(load.perMin)}/min` : 'rate unknown'}${load?.tier ? ` · ${pipe ? 'Pipeline' : 'Belt'} Mk.${load.tier}` : ''}${load?.manual ? ' · set by hand' : ''}`
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-belt${data?.overCapacity ? ' over' : ''}${selected ? ' selected' : ''}`} />
+      <BaseEdge path={path} markerEnd={`url(#ne-arrow-${pipe ? 'pipe' : 'belt'})`} className={`ne-belt${pipe ? ' pipe' : ''}${over ? ' over' : ''}${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
       <EdgeLabelRenderer>
-        {data?.perMin !== undefined && showLabel && (
+        {showLabel && (
           <div
-            className={`ne-belt-label nodrag nopan${data.overCapacity ? ' over' : ''}`}
+            className={`ne-belt-label nodrag nopan${pipe ? ' pipe' : ''}${over ? ' over' : ''}`}
             style={{ transform: `translate(-50%,-50%) translate(${label.x}px,${label.y}px)` }}
-            title={`${data.item ? itemName(data.item) : 'Unassigned'} · ${fmt(data.perMin)}/min${data.tier ? ` · Mk.${data.tier}` : ''}`}
+            title={what}
           >
-            <GameIcon id={data.item} size={12} />
-            {fmt(data.perMin)}
-            {data.tier ? <em>Mk{data.tier}</em> : null}
+            {load?.item && <GameIcon id={load.item} size={12} />}
+            {load?.perMin !== undefined ? fmt(load.perMin) : '?'}
+            {load?.tier ? <em>Mk{load.tier}</em> : null}
           </div>
         )}
         {lift !== 0 && vertical && (
@@ -348,5 +401,20 @@ export function BeltLine(props: EdgeProps<BeltEdge>) {
         )}
       </EdgeLabelRenderer>
     </>
+  )
+}
+
+/** Arrowheads for belts and pipes, coloured to match. */
+export function LineMarkers() {
+  return (
+    <svg className="ne-markers" aria-hidden>
+      <defs>
+        {(['belt', 'pipe'] as const).map((k) => (
+          <marker key={k} id={`ne-arrow-${k}`} viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0L10,5L0,10z" className={`ne-arrow-${k}`} />
+          </marker>
+        ))}
+      </defs>
+    </svg>
   )
 }

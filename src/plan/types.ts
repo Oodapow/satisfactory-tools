@@ -21,6 +21,8 @@ export interface ResourceNode {
   extractor?: BuildingId
   /** Clock speed of the extractor, 1 = 100%. Above 1 needs power shards. Defaults to 1. */
   clock?: number
+  /** Picked on the world map: `id` is the node's id there, and resource and purity are the real ones. */
+  fromMap?: boolean
 }
 
 /** Goods brought in from another outpost's exports. */
@@ -62,11 +64,18 @@ export interface OutpostPlan {
   selfPowered: boolean
   /**
    * Highest clock speed machines are sized for, 1 = 100% (up to 2.5 with three power shards).
-   * Machines that don't divide evenly are underclocked to match. Defaults to 1.
+   * Defaults to 1.
    */
   maxClock?: number
+  /**
+   * Underclock machines that don't divide evenly so they all run at the same lower clock.
+   * Off by default: they run at full clock and the manifold's last machine idles part of the time.
+   */
+  underclock?: boolean
   /** Somersloops slotted into each machine, per recipe. Each one adds output and multiplies power. */
   somersloops?: Record<RecipeId, number>
+  /** Where the outpost sits on the world map, in world units (cm). */
+  location?: { x: number; y: number }
   createdAt: string
   updatedAt: string
 }
