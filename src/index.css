@@ -146,6 +146,7 @@ a.chip:hover { border-color: var(--accent); color: var(--text); }
 .tile-check { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); color: transparent; font-size: .8rem; font-weight: 800; }
 .tile.done .tile-check { background: var(--accent); border-color: var(--accent); color: #fff; }
 .tier-picks button { min-width: 80px; }
+.tier-picks { margin-bottom: 16px; }
 .check { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 6px 0; }
 .check input { width: 18px; height: 18px; accent-color: var(--accent); }
 .segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; flex-wrap: wrap; }
@@ -398,3 +399,6 @@ label.mam-node.open:hover, label.mam-node.done:hover { border-color: var(--accen
   .plan-table td:first-child { flex: none; width: auto; }
   .plan-table td .rates { flex-wrap: wrap; }
 }
+/* How busy a part-time last machine is, as a small pie. */
+.busy { display: inline-flex; cursor: help; }
+.pie { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--muted); background: conic-gradient(var(--muted) var(--p), transparent 0); }

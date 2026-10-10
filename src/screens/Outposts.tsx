@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { buildingsById, itemName, itemsById, recipesById, resourcesById } from '../data'
 import { fmt } from '../format'
 import { exportsOf, offers, type Solved } from '../plan/network'
@@ -770,8 +770,8 @@ function MachineCount({ building, count, clock = 1, shards = 0, lastBusy }: { bu
         </WithTip>
       )}
       {lastBusy !== undefined && (
-        <WithTip className="muted small" text={`The last machine is busy ${pct(lastBusy)} of the time`}>
-          ◔ {pct(lastBusy)}
+        <WithTip className="busy" text={`The last machine is busy ${pct(lastBusy)} of the time`}>
+          <span className="pie" style={{ '--p': `${lastBusy * 360}deg` } as CSSProperties} />
         </WithTip>
       )}
       {shards > 0 && (
