@@ -44,6 +44,6 @@ export function readSave(name: string, file: ArrayBuffer, onProgress?: (progress
     isModded: Boolean(save.header.isModdedSave),
     purchased: [...new Set(purchased.map(className))],
     spaceElevatorPhase: Math.min(Math.max(phaseNumber, 0), 5),
-    map: readMap(objects),
+    map: readMap(objects, Object.values(save.levels).flatMap((l) => l.collectables ?? [])),
   }
 }
