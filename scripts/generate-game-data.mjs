@@ -48,6 +48,7 @@ const resourceNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'resource-nodes.
 const extraItems = JSON.parse(readFileSync(join(SUPPLEMENTS, 'items.json'), 'utf8'))
 const mamTrees = JSON.parse(readFileSync(join(SUPPLEMENTS, 'mam-trees.json'), 'utf8'))
 const worldNodes = JSON.parse(readFileSync(join(SUPPLEMENTS, 'world-nodes.json'), 'utf8'))
+const worldCollectibles = JSON.parse(readFileSync(join(SUPPLEMENTS, 'world-collectibles.json'), 'utf8'))
 const taxonomySupplement = JSON.parse(readFileSync(join(SUPPLEMENTS, 'taxonomy.json'), 'utf8'))
 const previousMeta = readJsonIfExists(join(OUT, 'meta.json'))
 
@@ -570,6 +571,7 @@ for (const p of progression.spaceElevatorPhases) for (const x of p.cost) check(x
 for (const id of Object.keys(resourceNodes.nodes)) check(id, 'resource-nodes.json')
 for (const a of Object.values(progressionOut.access)) check(a.building ?? a.schematic, 'progression access')
 for (const n of worldNodes.nodes) check(n.resource, `world-nodes.json ${n.id}`)
+for (const c of worldCollectibles.collectibles) check(c.item, `world-collectibles.json ${c.id}`)
 
 // Node positions and the node counts come from different sources; they must agree.
 const purities = ['impure', 'normal', 'pure']
@@ -582,11 +584,21 @@ for (const [id, counts] of Object.entries(resourceNodes.nodes)) {
 const placedGeysers = tally(worldNodes.nodes.filter((n) => n.kind === 'geyser'))
 if (!sameCounts(placedGeysers, resourceNodes.geysers)) warnings.push(`world-nodes.json has ${JSON.stringify(placedGeysers)} geysers, resource-nodes.json says ${JSON.stringify(resourceNodes.geysers)}`)
 
+// How many of each collectible the game has, per the Official Satisfactory Wiki (1.0).
+const collectibleTotals = { Desc_Crystal_C: 596, Desc_Crystal_mk2_C: 389, Desc_Crystal_mk3_C: 257, Desc_WAT1_C: 106, Desc_WAT2_C: 298, Desc_HardDrive_C: 118 }
+for (const [item, total] of Object.entries(collectibleTotals)) {
+  const placed = worldCollectibles.collectibles.filter((c) => c.item === item).length
+  if (placed !== total) warnings.push(`world-collectibles.json has ${placed} ${item}, the game has ${total}`)
+}
+const collectibleIds = new Set(worldCollectibles.collectibles.map((c) => c.id))
+if (collectibleIds.size !== worldCollectibles.collectibles.length) warnings.push('world-collectibles.json has duplicate ids')
+
 // The world map: what the in-game map image covers, in world units (cm). Measured against the
 // fog of war and actor positions in a save; x grows east, y grows south.
 const worldMap = {
   bounds: { west: -324698.832031, east: 425301.832031, north: -375000, south: 375000 },
   nodes: worldNodes.nodes,
+  collectibles: worldCollectibles.collectibles,
 }
 
 // ---------------------------------------------------------------------------
