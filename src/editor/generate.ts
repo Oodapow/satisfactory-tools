@@ -11,7 +11,7 @@
 // splitters and mergers. Power lines run on the grid too: a pole right of every machine,
 // chained along each line, from the power ports to the generators and machines.
 import { itemsById } from '../data'
-import { anchors, G, inHandle, outHandle, poleHandle, SIZE, sideDir, SPREAD, type Cell, type Side } from './grid'
+import { anchors, G, inHandle, outHandle, poleHandle, machineSize, SIZE, sideDir, spread, type Cell, type Side } from './grid'
 import { fmt, planLayout, type End, type LayoutInput, type Line } from './layout'
 import { beltTierFor, LAYOUT_VERSION, type BeltEdge, type MicroGraph, type MicroNode } from './model'
 
@@ -20,7 +20,7 @@ export type { PortLink } from './layout'
 export type ProposalInput = LayoutInput
 
 /** Each machine has its pole one cell to its right, then a free grid line for the power line to the next pole. */
-const MACHINE_PITCH = SIZE.machine.w + 1 + SIZE.pole.w + 2
+const pitch = (building: string) => machineSize(building).w + 1 + SIZE.pole.w + 2
 /** Grid cells between manifold rows, and between joints in a chain. */
 const ROW = 4
 const FLOOR_GAP = 6
@@ -92,7 +92,7 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
   /** What needs a power line, in chain order, with where its pole goes. */
   const powered: { floor: number; clients: { node: string; handle: string; pole: Cell }[] }[] = []
   let y = 0
-  const lineHeight = (l: Line) => 2 + ROW * l.ingredients.length + SIZE.machine.h + (l.products.length ? ROW * l.products.length + 2 : 2) + 1
+  const lineHeight = (l: Line) => 2 + ROW * l.ingredients.length + machineSize(l.building).h + (l.products.length ? ROW * l.products.length + 2 : 2) + 1
   for (const floor of [...plan.floors].reverse()) {
     const margin = 4
     const top = y
@@ -100,7 +100,7 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     let width = 0
     for (const l of floor.lines) {
       placeLine(l, margin, lineTop, floor.index)
-      width = Math.max(width, margin + l.machines * MACHINE_PITCH)
+      width = Math.max(width, margin + l.machines * pitch(l.building))
       lineTop += lineHeight(l)
     }
     const ft = floor.footprint
@@ -126,17 +126,18 @@ export function proposeLayout(input: ProposalInput): MicroGraph {
     const a = l.ingredients.length
     const b = l.products.length
     const mt = top + 2 + ROW * a
-    const mb = mt + SIZE.machine.h
-    const inX = SPREAD[a] ?? []
-    const outX = SPREAD[b] ?? []
+    const size = machineSize(l.building)
+    const mb = mt + size.h
+    const inX = spread(a, size.w)
+    const outX = spread(b, size.w)
     // Generators burn only what the grid draws: the first ones run full, the last one less.
     const genLoad = (i: number) => (l.recipe ? {} : { load: Math.min(1, Math.max(0, l.busy - i)) })
     const machines = Array.from({ length: l.machines }, (_, i) =>
-      block('machine', { x: margin + i * MACHINE_PITCH, y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor, ...(l.boost !== 1 ? { boost: l.boost } : {}), ...genLoad(i) }, floor),
+      block('machine', { x: margin + i * pitch(l.building), y: mt }, { kind: 'machine', building: l.building, recipe: l.recipe, fuel: l.fuel, clock: l.clock, count: 1, floor, ...(l.boost !== 1 ? { boost: l.boost } : {}), ...genLoad(i) }, floor),
     )
-    const mx = (i: number) => margin + i * MACHINE_PITCH
+    const mx = (i: number) => margin + i * pitch(l.building)
     const n = l.machines
-    powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + SIZE.machine.w + 1, y: mt + SIZE.machine.h / 2 - SIZE.pole.h / 2 } })) })
+    powered.push({ floor, clients: machines.map((m, i) => ({ node: m, handle: 'power', pole: { x: mx(i) + size.w + 1, y: mt + Math.floor(size.h / 2) - SIZE.pole.h / 2 } })) })
 
     // What machine i takes or makes per minute: the first ones run full, the last one idles part of the time.
     const load = (perMin: number) => (i: number) => (l.busy > EPS ? (perMin / l.busy) * Math.min(1, Math.max(0, l.busy - i)) : 0)

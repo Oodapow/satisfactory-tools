@@ -285,12 +285,6 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .segmented.small span { padding: 5px 10px; font-size: .85rem; text-transform: capitalize; }
 
 /* Outpost network */
-.network > header { margin-bottom: 16px; align-items: flex-start; }
-.outpost-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-.outpost-card { width: 100%; text-align: left; color: var(--text); font-weight: 400; gap: 10px; }
-.outpost-card:hover { border-color: var(--accent); }
-.io { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; }
-.io-label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; padding-top: 4px; }
 
 /* Outpost editor */
 .editor-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }

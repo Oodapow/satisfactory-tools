@@ -13,9 +13,15 @@ Tracked in #12. The layout algorithm is #13, the floor-plan grid is #29.
 
 ![Factory map](node-editor/1-factory-map.png)
 
-Each block shows the outpost's goal, what it extracts, what it imports, what it exports (goal, surplus resources and byproducts, from the solver) and how much power it uses. Shortfalls show in red.
+Blocks are drawn with icons rather than text (`src/editor/macro.ts`, #67, #68):
 
-Links are coloured by how they travel: belt, pipe, truck, train, drone, or power line. When two outposts have several links, they are drawn side by side.
+- **Size**: each block is as big as the outpost's largest floor (or its extractors side by side), on a grid of half foundations (16 px is 4 m), with room for its connection points. Blocks snap to that grid as you drag them; faint lines mark whole foundations. Hover a block for its name and footprint; the name shows inside only when the block is wide enough.
+- **Export points** on the right edge: one per item it sends out (goal, surplus resources, byproducts), with the item's icon and rate.
+- **Import points** on the left edge: one per import, with its icon and rate, plus one free point below them. A link fills the free point and a new free point appears; a point never takes two links.
+- **Power**: a power point under the import points (power in) and under the export points (power out).
+- **Inside**: the goal's icon (an extractor for extraction sites), what it extracts for itself, its power, and anything it is short on in red.
+
+Links are coloured by how they travel: belt, pipe, truck, train, drone, or power line, with rounded corners, a small arrowhead at the import end and a compact label with the transport, item and rate.
 
 With nothing selected, the right-hand panel shows the **power grid** as a widget (#66): what the generators make, what the outposts use, and what is spare or short, as tiles and a bar that turns red past what is made. Below it are the generators (count, type and fuel) and every outpost's draw, with a bar for its share; click one to select it. All outposts share one grid for now; separate grids are #61.
 
@@ -30,7 +36,9 @@ The floor plan is stricter, see [The grid](#the-grid) below.
 What you can do:
 
 - **Add an outpost**: drag "Outpost" from the left onto the map, or click it. This creates an empty plan.
-- **Import between outposts**: drag from one outpost's right edge to another's left edge. The new link imports whatever the first outpost has spare (its first open offer). If it only has power spare, you get a power line instead. Select the link to change the item, rate or transport.
+- **Add an extraction site** (#69): "Extraction site" creates an outpost with one node and no goal. Pick its nodes (or water extractors) in the panel; everything it mines is exported, one export point per resource, and its floor plan shows just the extractors and export ports.
+- **Import between outposts**: drag from an export point to another outpost's free import point. The link imports that item: whatever the exporter still has spare. Power out connects only to power in. Select the link to change the item (one of the exporter's exports), rate or transport.
+- **Only transports that fit the item**: solids go by belt, truck, train or drone; fluids and gases by pipe or train (fluid freight). The pickers never offer Water by belt or Rotors by pipe.
 - **See an outpost's power**: select it. A power widget shows what it uses and makes, what it takes from or gives to the grid, how much of its output is spoken for, and its power lines to other outposts.
 - **See what you could import**: select an outpost. The panel lists its imports and exports, and everything the other outposts still have spare, each with an Import button. Power from power outposts has a Connect button.
 - **Open the floor plan**: double-click an outpost, or use "Open floor plan" in its panel.
@@ -38,6 +46,10 @@ What you can do:
 - **Edit the plan itself** (goal, resource nodes, recipes): "Edit goal, resources and recipes" opens the outpost in the planning flow.
 
 ![Outpost selected](node-editor/2-outpost-inspector.png)
+
+![A new link and its panel](node-editor/3-new-link.png)
+
+![An extraction site](node-editor/9-extraction-site.png)
 
 With no outposts yet, the panel offers **Load example outposts**: Iron Fields (two pure iron nodes, makes 120 screws), Coal Power (200 MW) and Plate Works (20 Reinforced Iron Plates from imported ore and screws).
 
@@ -84,7 +96,12 @@ Select a belt to see its item and rate. Changing either sets it by hand, and the
 
 ### The grid
 
-Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top, one output per product along its bottom, and a power point on its right.
+Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`), one cell per 2 m in the game, so a splitter is 2 × 2 cells and a foundation 4 × 4. Machines are drawn at their real footprint from the game data (#68): a Constructor (8 × 10 m) is 4 × 5 cells, an Assembler (9 × 16 m) 5 × 8. Other blocks have fixed sizes. Blocks snap to the grid when dragged, and a dropped block keeps one free grid line between it and its neighbours so lines can reach it. Every connection point is a grid point on the block's border: a machine has one input per ingredient spread along its back (top), one output per product along its front (bottom), and a power point on its right. Inside, a machine shows only its icon, what it makes, and its clock; hover it for the name and recipe.
+
+**Machines turn.** Select one and press R, or use Rotate in the panel: it turns a quarter clockwise, its footprint swaps width and length, and its connection points go round with it. The icon stays upright. Lines reroute on the grid, and a machine that would land on another block moves to the nearest free spot.
+
+![A machine before and after a quarter turn](node-editor/10-machine-upright.png)
+![The same machine turned](node-editor/11-machine-turned.png)
 
 Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts and power lines can reach its connection points.
 

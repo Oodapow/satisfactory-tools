@@ -4,7 +4,7 @@ What the site does today, how the pieces fit, and where to extend them. Screensh
 
 ## The flow
 
-The top bar has four tabs, not steps: **Game state**, **Factory map**, **Outposts** and **Catalog**. The main flow is game state, then the factory map; the catalog is for looking things up, and the outposts screens are where one outpost is defined. A footer with the game data version and the "not actually approved" notice is always visible, with the page scrolling between the top bar and the footer.
+The top bar has tabs, not steps: **Game state**, **Factory map**, **World map** and **Catalog**. The main flow is game state, then the factory map; the catalog is for looking things up, and the outpost editor (opened from the factory map) is where one outpost is defined. The old outposts list was dropped because the factory map shows the same outposts better (#65); `#/outposts` now opens the factory map. A footer with the game data version and the "not actually approved" notice is always visible, with the page scrolling between the top bar and the footer.
 
 1. **Welcome** (`#/`): upload a save or set up by hand. Returning players get "Open your factory map".
 2. **Upload** (`#/upload`): drop a `.sav` file. It is parsed in the browser (`src/save/`) and the result screen shows what was read: tier, Space Elevator phase, milestones, MAM research, alternates and AWESOME Shop unlocks, plus how many unknown (usually modded) unlocks were skipped. "Try a sample" shows a made-up mid-game state instead. In Chrome and Edge on a computer the player can instead link the save folder (or one file, or drop either on the page): the browser keeps a handle to it in IndexedDB, and every visit re-reads the newest save of the linked session when it changed (`src/save/linked.ts`, `src/save/sync.ts`). Browsers ask again for access once per visit, through the "Update from save" chip in the top bar. Other browsers get a note to upload again after playing.
@@ -14,8 +14,8 @@ The top bar has four tabs, not steps: **Game state**, **Factory map**, **Outpost
    - alternates list only what a hard drive could give right now;
    - "Show anyway" reveals later tiers. The spoiler setting (hide or blur locked things) also lives here.
 4. **Catalog** (`#/catalog`, `#/plan` still works): index and search of unlocked recipes (per-minute rates), items and buildings, plus the milestones you can buy next. Locked content is a count, or blurred cards with no names. "Plan an outpost" on an item starts an outpost with that goal.
-5. **Outposts** (`#/outposts`): the network of outposts, each showing what goes in (nodes, imports) and what comes out (goal, spare resources, byproducts, power).
-6. **Outpost editor** (`#/outposts/:id/goal|resources|plan`), declarative, in three tabs that can be opened in any order. A breadcrumb leads back to the factory map (or the outposts list), and the header has "Floor plan" and "Delete":
+5. **Factory map** (`#/map`): the network of outposts, each showing what goes in (nodes, imports) and what comes out (goal, spare resources, byproducts, power). See [node editor](node-editor.md).
+6. **Outpost editor** (`#/outposts/:id/goal|resources|plan`), declarative, in three tabs that can be opened in any order. A breadcrumb leads back to the factory map, and the header has "Floor plan" and "Delete":
    - **Goal**: what it must deliver. Products (anything producible or a raw resource) and/or power in MW from a chosen generator and fuel. Optionally self-powered.
    - **Resources**: the nodes it sits on (resource, purity, extractor) and imports. Imports are picked from what other outposts still have spare, with amount and transport. Items the outpost is short on are highlighted, with one-tap "add a node" buttons.
    - **Plan**: the proposed production steps, generators and extractors. Each item with more than one unlocked recipe has a picker; the suggested one is marked and "Reset to suggested recipes" drops overrides.
