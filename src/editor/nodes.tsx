@@ -118,7 +118,7 @@ function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
         position={left ? Position.Left : Position.Right}
         style={{ top: p.dy * MAP_G }}
         className={power ? 'ne-handle-power' : undefined}
-        title={free ? 'Free import point' : power ? `Power ${left ? 'in' : 'out'} · ${rate}` : `${itemName(p.item ?? '')} · ${rate}/min`}
+        title={free ? 'Free import point' : power ? `Power line · ${left ? 'uses' : 'makes'} ${rate}` : `${itemName(p.item ?? '')} · ${rate}/min`}
       />
       {!free && (
         <span className={`ne-map-port ${left ? 'in' : 'out'}`} style={{ top: p.dy * MAP_G }}>
@@ -145,7 +145,9 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   const resources = new Map<string, number>()
   if (goal) for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
   const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
-  const power = solution.power.exportedMW > 1e-6 ? `+${fmt(solution.power.exportedMW)}` : `${fmt(solution.power.consumedMW)}`
+  // Power isn't exported: what the outpost makes goes to its grid.
+  const net = solution.power.generatedMW - solution.power.consumedMW
+  const power = net > 1e-6 ? `+${fmt(net)}` : `${fmt(-net)}`
   const { x, y } = block.foundations
 
   return (
@@ -172,8 +174,8 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
               {fmt(r)}
             </span>
           ))}
-          {solution.power.consumedMW + solution.power.exportedMW > 1e-6 && (
-            <span className="ne-chip" title={solution.power.exportedMW > 1e-6 ? 'Power sent out (MW)' : 'Power used (MW)'}>
+          {solution.power.consumedMW + solution.power.generatedMW > 1e-6 && (
+            <span className="ne-chip" title={`Uses ${fmt(solution.power.consumedMW)} MW${solution.power.generatedMW > 1e-6 ? `, makes ${fmt(solution.power.generatedMW)} MW` : ''}`}>
               <GameIcon id={POWER} size={16} />
               {power}
             </span>
@@ -201,17 +203,15 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
   const r = data?.items[0]
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}`} />
+      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}${data?.lit ? ' ne-lit' : ''}`} />
       <EdgeLabelRenderer>
         <div
-          className={`ne-edge-label nodrag nopan${selected ? ' selected' : ''}`}
+          className={`ne-edge-label nodrag nopan${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`}
           style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)`, borderColor: transportColor[t] }}
           title={`${transportLabel(t)}${r ? ` · ${itemName(r.item)}` : ''}`}
         >
           <GameIcon id={transportIcon(t)} size={14} />
-          {t === 'power' ? (
-            `${fmt(data?.powerMW ?? 0)} MW`
-          ) : r ? (
+          {t === 'power' ? null : r ? (
             <>
               <GameIcon id={r.item} size={14} />
               {fmt(r.perMin)}

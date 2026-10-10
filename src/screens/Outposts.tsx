@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { buildingsById, itemName, recipesById, resourcesById } from '../data'
 import { fmt } from '../format'
+import { gridOf, type PowerGrid } from '../plan/grids'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
 import { newId, type PlanPatch } from '../plan/store'
@@ -102,7 +103,7 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           {current === 'plan' && <PlanStep solved={solved} update={update} available={net.available} />}
 
         </div>
-        <Balance solved={solved} nameOf={(i) => net.outposts.find((o) => o.id === i)?.name ?? '?'} />
+        <Balance solved={solved} grid={gridOf(net.grids, solved.plan.id)} nameOf={(i) => net.outposts.find((o) => o.id === i)?.name ?? '?'} />
       </div>
     </div>
   )
@@ -121,7 +122,7 @@ function GoalStep({ plan, state, update, available }: StepProps & { plan: Outpos
   return (
     <section className="panel">
       <h3>What should this outpost deliver?</h3>
-      <p className="muted small">Products leave the outpost by belt, truck or train. Power feeds the grid.</p>
+      <p className="muted small">Products leave the outpost by belt, truck or train. Power feeds the outpost's power grid; power lines on the factory map decide which outposts share one.</p>
       {plan.goals.length === 0 && <p className="muted">No goal yet. Add a product or power below.</p>}
       <ul className="plain goals">
         {plan.goals.map((g, i) => (
@@ -642,7 +643,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
 }
 
 // Always-visible summary: what goes in and what comes out.
-function Balance({ solved, nameOf }: { solved: Solved; nameOf: (id: string) => string }) {
+function Balance({ solved, grid, nameOf }: { solved: Solved; grid?: PowerGrid; nameOf: (id: string) => string }) {
   const { plan, solution } = solved
   const flows = [...solution.flows.values()]
   const exports = exportsOf(solution)
@@ -680,23 +681,25 @@ function Balance({ solved, nameOf }: { solved: Solved; nameOf: (id: string) => s
             <span className="muted small">{goalItems.has(e.item) ? 'goal' : resourcesById.has(e.item) ? 'spare' : 'surplus'}</span>
           </li>
         ))}
-        {solution.power.exportedMW > 1e-6 && (
-          <li>
-            <span className="rate power">
-              <PowerIcon size={20} /> <b>{fmt(solution.power.exportedMW, 1)}</b> MW
-            </span>{' '}
-            <span className="muted small">to grid</span>
-          </li>
-        )}
-        {exports.length === 0 && solution.power.exportedMW <= 1e-6 && <li className="muted small">Nothing yet</li>}
+        {exports.length === 0 && <li className="muted small">Nothing yet</li>}
       </ul>
       <h4 className="sub">Power</h4>
       <p className="small">
         Uses {fmt(solution.power.consumedMW, 1)} MW
         {solution.power.generatedMW > 0 && `, makes ${fmt(solution.power.generatedMW, 1)} MW`}
-        {!plan.selfPowered && solution.power.consumedMW > 0 && <span className="muted"> · from the grid</span>}
         {plan.selfPowered && net < -1e-6 && <span className="warn-text"> · short {fmt(-net, 1)} MW</span>}
       </p>
+      {grid && (
+        <p className="small">
+          On <a href={editorPath()}>{grid.name}</a>
+          {grid.members.length > 1 && <span className="muted"> with {grid.members.length - 1} other outpost{grid.members.length === 2 ? '' : 's'}</span>}
+          {grid.headroom < -1e-6 ? (
+            <span className="warn-text"> · grid short {fmt(-grid.headroom, 1)} MW</span>
+          ) : (
+            <span className="muted"> · {fmt(grid.headroom, 1)} MW spare</span>
+          )}
+        </p>
+      )}
       {short.length > 0 && (
         <>
           <h4 className="sub warn-text">Short</h4>

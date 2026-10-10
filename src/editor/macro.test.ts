@@ -1,3 +1,4 @@
+import type { PowerGrid } from '../plan/grids'
 import { describe, expect, it } from 'vitest'
 import { schematics } from '../data'
 import { availability } from '../data/game/availability'
@@ -20,7 +21,7 @@ const plan = (id: string, patch: Partial<OutpostPlan>): OutpostPlan => ({
   updatedAt: '',
   ...patch,
 })
-const noLines = { powerLines: [] }
+const noLines: PowerGrid[] = []
 
 describe('transport per item', () => {
   it('keeps fluids in pipes and solids off them', () => {

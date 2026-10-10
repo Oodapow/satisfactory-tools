@@ -168,3 +168,21 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .pw-dir { width: 22px; text-align: center; color: #d4b000; font-weight: 700; }
 .pw-rows .pw-row-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
 .ne-wire.clash { stroke: var(--danger); stroke-dasharray: 4 3; }
+
+/* Power grids (#61): a selected grid lights up its outposts and power lines; the rest fades. */
+.react-flow__node.ne-dim, .ne-link.ne-dim, .ne-edge-label.ne-dim { opacity: .25; }
+.react-flow__node.ne-on-grid .ne-outpost { box-shadow: 0 0 0 3px color-mix(in srgb, #d4b000 55%, transparent); }
+.react-flow__edge .react-flow__edge-path.ne-link-power { stroke: #e6c200; }
+.ne-link-power.selected, .ne-link-power.ne-lit { stroke-dasharray: none; stroke-width: 5; }
+.ne-seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.ne-seg button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 0; background: var(--surface); color: var(--text); font-weight: 600; font-size: .8rem; padding: 6px 8px; }
+.ne-seg button + button { border-left: 1px solid var(--border); }
+.ne-seg button.on { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); color: var(--accent); }
+.pw-card.selected { border-color: #d4b000; }
+.pw-pill:not(.good):not(.bad) { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--muted); }
+.pw-head .pw-title { border: 0; padding: 2px 4px; display: grid; text-align: left; color: var(--text); font-weight: 700; font-size: .9rem; }
+.pw-head .pw-title small { font-weight: 400; font-size: .72rem; color: var(--muted); }
+.pw-head .pw-title:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.pw-mw.good { color: #3a9d5d; }
+.pw-card .pw-grid-link { border: 0; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; color: var(--text); font-weight: 400; font-size: .82rem; padding: 4px 6px; border-radius: 6px; }
+.pw-card .pw-grid-link:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }

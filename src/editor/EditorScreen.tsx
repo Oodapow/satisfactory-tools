@@ -20,6 +20,7 @@ import {
   type NodeChange,
 } from '@xyflow/react'
 import { buildingsById } from '../data'
+import { activeGrids, addLink, gridOf, removeLinks as removePowerLinks, renameGrid, type PowerGrid, type PowerLink } from '../plan/grids'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorsFor } from '../plan/solve'
 import { autoName } from '../plan/naming'
@@ -30,6 +31,7 @@ import { fmt, proposeLayout } from './generate'
 import { fitTransport } from '../plan/unlocked'
 import { inHandleOf, itemOfOut, linkMarker, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
 import { GameIcon, NoIconLinks } from '../ui/GameIcon'
+import { GridInspector } from './PowerWidgets'
 import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostInspector, PortInspector } from './Inspector'
 import {
   beltRates,
@@ -58,7 +60,7 @@ import { UnlockedContext, useUnlocked } from './unlocked'
 
 type Net = ReturnType<typeof useNetwork>
 type UpdateLayout = (fn: (l: EditorLayout) => EditorLayout) => void
-type Selection = { kind: 'node' | 'edge'; id: string } | null
+type Selection = { kind: 'node' | 'edge' | 'grid'; id: string } | null
 
 const DND = 'application/x-satisfactory-node'
 const macroNodeTypes = { outpost: OutpostBlock }
@@ -169,8 +171,8 @@ function PaletteItem({
 
 // ---------- Macro ----------
 
-/** Links on the map: every plan import, from the exporter's point for that item to its own import point, plus the editor's power lines. */
-function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEdge[] {
+/** Links on the map: every plan import, from the exporter's point for that item to its own import point, plus the power lines between outposts. */
+function macroEdges(all: Solved[], links: PowerLink[], sel: Selection, grid: PowerGrid | undefined): LinkEdge[] {
   const ids = new Set(all.map((s) => s.plan.id))
   const edges: LinkEdge[] = []
   for (const { plan } of all)
@@ -187,19 +189,21 @@ function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEd
           selected: sel?.kind === 'edge' && sel.id === imp.id,
           data: { transport: imp.via, items: [{ item: imp.item, perMin: imp.perMin }], ref: { kind: 'import', planId: plan.id, importId: imp.id } },
         })
-  for (const l of layout.powerLines)
-    if (ids.has(l.from) && ids.has(l.to))
+  // Power lines have no direction, so no arrow: they run from the right power point of the outpost they were drawn from.
+  for (const l of links)
+    if (ids.has(l.a) && ids.has(l.b))
       edges.push({
         id: l.id,
         type: 'link',
-        source: l.from,
+        source: l.a,
         sourceHandle: POWER_OUT,
-        target: l.to,
+        target: l.b,
         targetHandle: POWER_IN,
-        markerEnd: linkMarker('power'),
         selected: sel?.kind === 'edge' && sel.id === l.id,
-        data: { transport: 'power', items: [], powerMW: l.mw, ref: { kind: 'power', id: l.id } },
+        data: { transport: 'power', items: [], ref: { kind: 'power', id: l.id }, ...(grid ? (grid.links.some((x) => x.id === l.id) ? { lit: true } : { dim: true }) : {}) },
       })
+  // With a grid selected, everything not on it fades.
+  if (grid) for (const e of edges) if (e.data && e.data.transport !== 'power') e.data = { ...e.data, dim: true }
   return edges
 }
 
@@ -208,13 +212,14 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
   const [routes] = useState(() => new RouteRegistry())
   const unlocked = useUnlocked()
   const all = net.solved
+  const selGrid = sel?.kind === 'grid' ? net.grids.find((g) => g.id === sel.id) : undefined
 
   // Plans are the source of truth: blocks are rebuilt from them on every render, with the
   // sizes React Flow measured and the positions the editor stores.
   const [measured, setMeasured] = useState<Record<string, { width: number; height: number }>>({})
   const blocks = useMemo(
-    () => new Map(all.map((s) => [s.plan.id, mapBlock(s, all, layout, unlocked.beltTier, unlocked.pipeTier)])),
-    [all, layout.powerLines, unlocked.beltTier, unlocked.pipeTier], // eslint-disable-line react-hooks/exhaustive-deps
+    () => new Map(all.map((s) => [s.plan.id, mapBlock(s, all, net.grids, unlocked.beltTier, unlocked.pipeTier)])),
+    [all, net.grids, unlocked.beltTier, unlocked.pipeTier],
   )
   const nodes = useMemo<OutpostNode[]>(
     () =>
@@ -225,10 +230,11 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         data: { ...s, block: blocks.get(s.plan.id)! },
         measured: measured[s.plan.id],
         selected: sel?.kind === 'node' && sel.id === s.plan.id,
+        className: selGrid ? (selGrid.members.includes(s.plan.id) ? 'ne-on-grid' : 'ne-dim') : undefined,
       })),
-    [all, blocks, layout.positions, measured, sel],
+    [all, blocks, layout.positions, measured, sel, selGrid],
   )
-  const edges = useMemo(() => macroEdges(all, layout, sel), [all, layout, sel])
+  const edges = useMemo(() => macroEdges(all, net.gridStore.links, sel, selGrid), [all, net.gridStore.links, sel, selGrid])
 
   const removeOutposts = (ids: string[]) => {
     for (const id of ids) net.remove(id)
@@ -239,7 +245,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         delete positions[id]
         delete micro[id]
       }
-      return { ...l, positions, micro, powerLines: l.powerLines.filter((p) => !ids.includes(p.from) && !ids.includes(p.to)) }
+      return { ...l, positions, micro }
     })
   }
 
@@ -251,7 +257,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         if (plan) net.update(plan.id, { imports: plan.imports.filter((i) => i.id !== ref.importId) })
       }
     }
-    update((l) => ({ ...l, powerLines: l.powerLines.filter((p) => !ids.includes(p.id)) }))
+    net.updateGrids((g) => removePowerLinks(g, ids))
   }
 
   const onNodesChange = (changes: NodeChange<OutpostNode>[]) => {
@@ -269,6 +275,14 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
     for (const c of changes) if (c.type === 'select' && c.selected) setSel({ kind: 'edge', id: c.id })
   }
 
+  const connectPower = (a: string, b: string) => {
+    const existing = net.gridStore.links.find((l) => (l.a === a && l.b === b) || (l.a === b && l.b === a))
+    if (existing) return existing.id
+    const id = crypto.randomUUID()
+    net.updateGrids((g) => addLink(g, a, b, id))
+    return id
+  }
+
   // An export point links only to a free import point, and power only to power.
   const isValidConnection = (c: Connection | LinkEdge) => {
     if (c.source === c.target) return false
@@ -281,18 +295,17 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
     if (!isValidConnection(c)) return
     const from = all.find((s) => s.plan.id === c.source)!
     const to = all.find((s) => s.plan.id === c.target)!
-    const id = crypto.randomUUID()
+    // A power line puts both outposts on one grid.
     if (c.sourceHandle === POWER_OUT) {
-      const sent = layout.powerLines.filter((l) => l.from === from.plan.id).reduce((t, l) => t + l.mw, 0)
-      const mw = Math.max(0, from.solution.power.exportedMW - sent)
-      update((l) => ({ ...l, powerLines: [...l.powerLines, { id, from: from.plan.id, to: to.plan.id, mw }] }))
-    } else {
-      const item = itemOfOut(c.sourceHandle)!
-      const offer = offers(all, to.plan.id).find((o) => o.from === from.plan.id && o.item === item)
-      const total = exportsOf(from.solution).find((e) => e.item === item)?.perMin ?? 0
-      const perMin = offer && offer.perMin > 1e-6 ? offer.perMin : total
-      net.update(to.plan.id, { imports: [...to.plan.imports, { id, from: from.plan.id, item, perMin, via: fitTransport(item) }] })
+      setSel({ kind: 'edge', id: connectPower(from.plan.id, to.plan.id) })
+      return
     }
+    const id = crypto.randomUUID()
+    const item = itemOfOut(c.sourceHandle)!
+    const offer = offers(all, to.plan.id).find((o) => o.from === from.plan.id && o.item === item)
+    const total = exportsOf(from.solution).find((e) => e.item === item)?.perMin ?? 0
+    const perMin = offer && offer.perMin > 1e-6 ? offer.perMin : total
+    net.update(to.plan.id, { imports: [...to.plan.imports, { id, from: from.plan.id, item, perMin, via: fitTransport(item) }] })
     setSel({ kind: 'edge', id })
   }
 
@@ -309,7 +322,8 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
   const loadExample = () => {
     const ex = examplePlans()
     for (const p of ex.plans) net.save(p)
-    update((l) => ({ ...l, positions: { ...l.positions, ...ex.layout.positions }, powerLines: [...l.powerLines, ...(ex.layout.powerLines ?? [])] }))
+    update((l) => ({ ...l, positions: { ...l.positions, ...ex.layout.positions } }))
+    net.updateGrids((g) => ex.powerLinks.reduce((s, [a, b]) => addLink(s, a, b), g))
   }
 
   const selNode = sel?.kind === 'node' ? all.find((s) => s.plan.id === sel.id) : undefined
@@ -366,9 +380,11 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           <OutpostInspector
             solved={selNode}
             all={all}
-            powerLines={layout.powerLines}
+            grid={gridOf(net.grids, selNode.plan.id)}
             onPatch={(p) => net.update(selNode.plan.id, p)}
-            onAddPower={(line) => update((l) => ({ ...l, powerLines: [...l.powerLines, line] }))}
+            onSelectGrid={(id) => setSel({ kind: 'grid', id })}
+            onAddPowerLink={(other) => connectPower(selNode.plan.id, other)}
+            onRemovePowerLink={(id) => net.updateGrids((g) => removePowerLinks(g, [id]))}
             onDelete={() => {
               removeOutposts([selNode.plan.id])
               setSel(null)
@@ -382,14 +398,31 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
               const plan = all.find((s) => s.plan.id === selEdge.target)!.plan
               net.update(plan.id, { imports: plan.imports.map((i) => (i.id === imp.id ? imp : i)) })
             }}
-            onPower={(line) => update((l) => ({ ...l, powerLines: l.powerLines.map((p) => (p.id === line.id ? line : p)) }))}
+            grid={selEdge.data?.ref.kind === 'power' ? gridOf(net.grids, selEdge.source) : undefined}
+            onSelectGrid={(id) => setSel({ kind: 'grid', id })}
             onDelete={() => {
               removeLinks([selEdge.id])
               setSel(null)
             }}
           />
         ) : (
-          <MacroOverview all={all} onSelect={(id) => setSel({ kind: 'node', id })} onExample={loadExample} />
+          selGrid ? (
+            <GridInspector
+              grid={selGrid}
+              all={all}
+              onRename={(name) => net.updateGrids((g) => renameGrid(g, selGrid, name))}
+              onRemoveLink={(id) => net.updateGrids((g) => removePowerLinks(g, [id]))}
+              onSelect={(id) => setSel({ kind: 'node', id })}
+            />
+          ) : (
+            <MacroOverview
+              all={all}
+              grids={activeGrids(net.grids)}
+              onSelect={(id) => setSel({ kind: 'node', id })}
+              onSelectGrid={(id) => setSel({ kind: 'grid', id })}
+              onExample={loadExample}
+            />
+          )
         )}
       </aside>
     </div>
@@ -407,7 +440,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const view = useFloorPlanView(graph, unlocked.pipeTier)
   const maxBeltTier = graph?.maxBeltTier ?? unlocked.beltTier
   const { fitView } = useReactFlow()
-  const links = useMemo(() => portLinks(net.solved, layout, id), [net.solved, layout, id])
+  const grid = gridOf(net.grids, id)
+  const links = useMemo(() => portLinks(net.solved, net.grids, id), [net.solved, net.grids, id])
 
   const propose = useCallback(
     (tier: number) => proposeLayout({ solved, ...links, maxBeltTier: tier, maxPipeTier: unlocked.pipeTier, maxPoleTier: unlocked.poleTier }),
@@ -516,9 +550,10 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       floors.add(n.data.floor)
       if (!b?.generator) mw += (b?.powerConsumptionMW ?? 0) * n.data.count * Math.pow(n.data.clock, b?.powerConsumptionExponent ?? 1.321928)
     }
-    const powerIn = links.incoming.reduce((t, l) => t + (l.powerMW ?? 0), 0) + (solved.plan.selfPowered ? solved.solution.power.generatedMW : 0)
-    return { mw, machines, floors: floors.size, powerIn }
-  }, [graph, links, solved])
+    // What the grid has for this outpost: everything it makes, less what the grid's other outposts use.
+    const powerIn = grid ? grid.made - (grid.used - solved.solution.power.consumedMW) : solved.solution.power.generatedMW
+    return { mw, machines, floors: floors.size, powerIn: Math.max(0, powerIn) }
+  }, [graph, grid, solved])
 
   if (!graph) return null
   const selNode = sel?.kind === 'node' ? graph.nodes.find((n) => n.id === sel.id) : undefined
@@ -597,7 +632,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           </label>
           <span className="ne-stat">
             {stats.machines} machines · {stats.floors} floors · {fmt(stats.mw)} MW
-            {stats.powerIn > 0 && <> of {fmt(stats.powerIn)} MW in</>}
+            {stats.powerIn > 0 && <> of {fmt(stats.powerIn)} MW on {grid?.name ?? 'the grid'}</>}
           </span>
           <span className="ne-stat">{graph.generatedAt ? 'Proposed' : 'Edited'}</span>
         </div>
@@ -606,7 +641,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             {stale && <li>Links on the factory map changed since this was proposed. Propose layout again to update the ports.</li>}
             {short && (
               <li>
-                Machines draw {fmt(stats.mw)} MW but {fmt(stats.powerIn)} MW comes in. Connect power on the factory map.
+                Machines draw {fmt(stats.mw)} MW but {grid?.name ?? 'the grid'} has {fmt(stats.powerIn)} MW for them. Run a power line to a
+                power plant on the factory map, or add generators.
               </li>
             )}
             {view.clashes.size > 0 && (

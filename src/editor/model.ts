@@ -1,10 +1,10 @@
 // Data model for the node editor. Two levels:
 // - macro: the factory map. Blocks are outpost plans (src/plan), links are their imports,
-//   plus power lines between outposts.
+//   plus power lines between outposts (src/plan/grids.ts).
 // - micro: the inside of one outpost: machines, splitters, mergers, and ports that connect
 //   to the macro links (imports, exports, power) and to local resource nodes.
 // The plans stay the source of truth for goals, nodes, imports and recipes. This module only
-// stores what the plan model doesn't have: block positions, power lines and floor plans.
+// stores what the plan model doesn't have: block positions and floor plans.
 import type { Edge, Node } from '@xyflow/react'
 import type { Solved } from '../plan/network'
 import type { MapBlock } from './macro'
@@ -41,14 +41,14 @@ export type LinkData = {
   transport: Transport
   /** Empty for power lines. */
   items: ItemRate[]
-  powerMW?: number
+  /** Faded while a power grid it isn't part of is selected. */
+  dim?: boolean
+  /** A power line of the selected grid. */
+  lit?: boolean
   /** The plan import this link shows, or the power line id. */
   ref: { kind: 'import'; planId: OutpostId; importId: string } | { kind: 'power'; id: string }
 }
 export type LinkEdge = Edge<LinkData>
-
-/** Power sent from one outpost to another. The plan model has no power imports yet, so the editor keeps these. */
-export type PowerLine = { id: string; from: OutpostId; to: OutpostId; mw: number }
 
 // ---------- Micro level (stored per outpost) ----------
 
@@ -138,7 +138,6 @@ export type MicroGraph = {
 /** Everything the editor stores, under one localStorage key. */
 export type EditorLayout = {
   positions: Record<OutpostId, { x: number; y: number }>
-  powerLines: PowerLine[]
   micro: Record<OutpostId, MicroGraph>
 }
 

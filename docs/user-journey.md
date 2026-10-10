@@ -14,7 +14,7 @@ The top bar has tabs, not steps: **Game state**, **Factory map**, **World map** 
    - alternates list only what a hard drive could give right now;
    - "Show anyway" reveals later tiers. The spoiler setting (hide or blur locked things) also lives here.
 4. **Catalog** (`#/catalog`, `#/plan` still works): index and search of unlocked recipes (per-minute rates), items and buildings, plus the milestones you can buy next. Locked content is a count, or blurred cards with no names. "Plan an outpost" on an item starts an outpost with that goal.
-5. **Factory map** (`#/map`): the network of outposts, each showing what goes in (nodes, imports) and what comes out (goal, spare resources, byproducts, power). See [node editor](node-editor.md).
+5. **Factory map** (`#/map`): the network of outposts, each showing what goes in (nodes, imports) and what comes out (goal, spare resources, byproducts), and the power grids they form. See [node editor](node-editor.md).
 6. **Outpost editor** (`#/outposts/:id/goal|resources|plan`), declarative, in three tabs that can be opened in any order. A breadcrumb leads back to the factory map, and the header has "Floor plan" and "Delete":
    - **Goal**: what it must deliver. Products (anything producible or a raw resource) and/or power in MW from a chosen generator and fuel. Optionally self-powered.
    - **Resources**: the nodes it sits on (resource, purity, extractor) and imports. Imports are picked from what other outposts still have spare, with amount and transport. Items the outpost is short on are highlighted, with one-tap "add a node" buttons.

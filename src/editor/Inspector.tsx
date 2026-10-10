@@ -10,11 +10,12 @@ import { GameIcon } from '../ui/GameIcon'
 import { IconSelect } from '../ui/IconSelect'
 import { POWER } from '../data/icons'
 import type { LineLoad } from './floorPlanView'
-import { transports, type BeltData, type LinkEdge, type MachineData, type PortData, type PowerLine } from './model'
+import { transports, type BeltData, type LinkEdge, type MachineData, type PortData } from './model'
 import { editorPath } from './route'
 import { UnlockedContext, useUnlocked } from './unlocked'
 import { useContext } from 'react'
-import { GridPanel, OutpostPower } from './PowerWidgets'
+import { GridCard, GridList, OutpostPower } from './PowerWidgets'
+import type { PowerGrid } from '../plan/grids'
 
 const num = (v: string, fallback = 0) => (v !== '' && Number.isFinite(Number(v)) ? Number(v) : fallback)
 
@@ -28,14 +29,26 @@ function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string
   )
 }
 
-export function MacroOverview({ all, onSelect, onExample }: { all: Solved[]; onSelect: (id: string) => void; onExample: () => void }) {
+export function MacroOverview({
+  all,
+  grids,
+  onSelect,
+  onSelectGrid,
+  onExample,
+}: {
+  all: Solved[]
+  grids: PowerGrid[]
+  onSelect: (id: string) => void
+  onSelectGrid: (id: string) => void
+  onExample: () => void
+}) {
   // The example uses an Assembler and Coal Generators; don't show it before those are unlocked.
   const unlocked = useUnlocked()
   const exampleFits = ['Desc_AssemblerMk1_C', 'Desc_GeneratorCoal_C'].every((id) => [...unlocked.machines, ...unlocked.generators].some((b) => b.id === id))
   return (
     <section>
       <h3>Factory map</h3>
-      <GridPanel all={all} onSelect={onSelect} />
+      <GridList grids={grids} onSelectGrid={onSelectGrid} onSelect={onSelect} />
       <h4>Outposts</h4>
       <ul className="ne-list">
         {all.map(({ plan }) => {
@@ -122,16 +135,20 @@ function NodesEditor({ nodes, onChange }: { nodes: ResourceNode[]; onChange: (n:
 export function OutpostInspector({
   solved,
   all,
-  powerLines,
+  grid,
   onPatch,
-  onAddPower,
+  onSelectGrid,
+  onAddPowerLink,
+  onRemovePowerLink,
   onDelete,
 }: {
   solved: Solved
   all: Solved[]
-  powerLines: PowerLine[]
+  grid: PowerGrid | undefined
   onPatch: (p: PlanPatch) => void
-  onAddPower: (line: PowerLine) => void
+  onSelectGrid: (id: string) => void
+  onAddPowerLink: (other: string) => void
+  onRemovePowerLink: (id: string) => void
   onDelete: () => void
 }) {
   const { plan, solution } = solved
@@ -139,13 +156,6 @@ export function OutpostInspector({
   const importsFromOthers = all.flatMap((s) => s.plan.imports.filter((i) => i.from === plan.id).map((i) => ({ ...i, to: s.plan.name })))
   const exported = [...solution.flows.values()].filter((f) => f.exported > 1e-6)
   const available = offers(all, plan.id).filter((o) => o.perMin > 1e-6)
-  const powerOffers = all
-    .filter((s) => s.plan.id !== plan.id && s.solution.power.exportedMW > 1e-6)
-    .map((s) => ({
-      from: s.plan,
-      free: s.solution.power.exportedMW - powerLines.filter((l) => l.from === s.plan.id).reduce((t, l) => t + l.mw, 0),
-    }))
-    .filter((o) => o.free > 1e-6)
   const addImport = (from: string, item: string, perMin: number) => {
     const imp: Import = { id: newId(), from, item, perMin, via: fitTransport(item) }
     onPatch({ imports: [...plan.imports, imp] })
@@ -179,7 +189,7 @@ export function OutpostInspector({
           {extraction ? 'Add a goal' : 'Edit goal, resources and recipes'}
         </a>
       </p>
-      <OutpostPower solved={solved} all={all} powerLines={powerLines} />
+      <OutpostPower solved={solved} grid={grid} all={all} onSelectGrid={onSelectGrid} onAddLink={onAddPowerLink} onRemoveLink={onRemovePowerLink} />
 
       {(!extraction || plan.imports.length > 0) && <h4>Imports</h4>}
       {plan.imports.length ? (
@@ -216,11 +226,11 @@ export function OutpostInspector({
           })}
         </ul>
       ) : (
-        solution.power.exportedMW <= 1e-6 && <p className="ne-help">None.</p>
+        <p className="ne-help">None.</p>
       )}
 
       {!extraction && <h4>Available from other outposts</h4>}
-      {!extraction && available.length === 0 && powerOffers.length === 0 && <p className="ne-help">None.</p>}
+      {!extraction && available.length === 0 && <p className="ne-help">None.</p>}
       {!extraction && available.map((o) => (
         <div key={`${o.from}-${o.item}`} className="ne-offer-row">
           <GameIcon id={o.item} size={20} />
@@ -229,17 +239,6 @@ export function OutpostInspector({
           </span>
           <button type="button" className="ghost" onClick={() => addImport(o.from, o.item, o.perMin)}>
             Import
-          </button>
-        </div>
-      ))}
-      {powerOffers.map((o) => (
-        <div key={o.from.id} className="ne-offer-row">
-          <GameIcon id={POWER} size={20} />
-          <span className="ne-grow">
-            {fmt(o.free)} MW · {o.from.name}
-          </span>
-          <button type="button" className="ghost" onClick={() => onAddPower({ id: newId(), from: o.from.id, to: plan.id, mw: o.free })}>
-            Connect
           </button>
         </div>
       ))}
@@ -259,14 +258,17 @@ export function OutpostInspector({
 export function LinkInspector({
   edge,
   all,
+  grid,
   onImport,
-  onPower,
+  onSelectGrid,
   onDelete,
 }: {
   edge: LinkEdge
   all: Solved[]
+  /** For power lines: the grid the line is part of. */
+  grid?: PowerGrid
   onImport: (imp: Import) => void
-  onPower: (line: PowerLine) => void
+  onSelectGrid: (id: string) => void
   onDelete: () => void
 }) {
   const nameOf = (id: string) => all.find((s) => s.plan.id === id)?.plan.name ?? '?'
@@ -284,7 +286,7 @@ export function LinkInspector({
     <section>
       <h3>{ref?.kind === 'power' ? 'Power line' : 'Import'}</h3>
       <p className="ne-help">
-        {nameOf(edge.source)} → {nameOf(edge.target)}
+        {ref?.kind === 'power' ? `${nameOf(edge.source)} — ${nameOf(edge.target)}` : `${nameOf(edge.source)} → ${nameOf(edge.target)}`}
       </p>
       {imp && (
         <>
@@ -311,15 +313,12 @@ export function LinkInspector({
         </>
       )}
       {ref?.kind === 'power' && (
-        <label className="ne-field">
-          Power (MW)
-          <input
-            type="number"
-            min={0}
-            value={edge.data?.powerMW ?? 0}
-            onChange={(e) => onPower({ id: ref.id, from: edge.source, to: edge.target, mw: num(e.target.value) })}
-          />
-        </label>
+        <>
+          <p className="ne-help">
+            Puts both outposts on one power grid. Power goes wherever the grid needs it, so a line carries no set amount.
+          </p>
+          {grid && <GridCard grid={grid} onSelectGrid={onSelectGrid} onSelect={() => onSelectGrid(grid.id)} />}
+        </>
       )}
       <div className="ne-actions">
         <button type="button" className="danger" onClick={onDelete}>
