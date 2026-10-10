@@ -294,7 +294,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       generators,
       extraction,
       flows,
-      power: { consumedMW, generatedMW: mw, exportedMW: plan.selfPowered ? mw - consumedMW : mw },
+      power: { consumedMW, generatedMW: mw },
       recipes,
     }
     return { solution, consumedMW, byproducts: made }

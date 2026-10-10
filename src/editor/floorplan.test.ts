@@ -6,9 +6,8 @@ import type { OutpostPlan } from '../plan/types'
 import { connection, place } from './connect'
 import { inferFlows } from './flow'
 import { routeFloorPlan, routeSegments } from './gridRouter'
-import { gridBalance } from './power'
 import { proposeLayout } from './generate'
-import { cellOf, edgeMedium, overlaps, poleSize, type BlockKind } from './grid'
+import { cellOf, edgeMedium, overlaps, poleSize, sizeOf, type BlockKind } from './grid'
 import type { MicroGraph, MicroNode } from './model'
 
 const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
@@ -182,7 +181,7 @@ describe('grid (#52)', () => {
     const placed = place(g.nodes, { id: 'new', type: 'machine', position: { ...m.position }, data: m.data })
     expect(placed.position).not.toEqual(m.position)
     for (const n of g.nodes.filter((x) => x.type && x.type !== 'floor'))
-      expect(overlaps(cellOf(placed), 'machine', cellOf(n), n.type as BlockKind, 1), n.id).toBe(false)
+      expect(overlaps(cellOf(placed), sizeOf('machine', placed.data), cellOf(n), sizeOf(n.type as BlockKind, n.data), 1), n.id).toBe(false)
   })
 })
 
@@ -221,19 +220,5 @@ describe('full clock and overflow (#60)', () => {
     const ore = g.nodes.find((n) => n.data.kind === 'port' && n.data.transport === 'resource')!
     const first = g.edges.find((e) => e.source === ore.id)!
     expect(g.edges.filter((e) => e.source === first.target).some((e) => nodes.get(e.target)?.data.kind === 'machine')).toBe(true)
-  })
-})
-
-describe('power grid on the factory map (#66)', () => {
-  it('adds up what generators make and what outposts use', () => {
-    const power = solvePlan(plan({ id: 'p', name: 'Power', goals: [{ kind: 'power', mw: 200, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }], nodes: [{ id: 'n', resource: 'Desc_Coal_C', purity: 'normal' }] }), all)
-    const works = solvePlan(plan({ id: 'w', name: 'Works', goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }], recipeChoices: { Desc_IronScrew_C: 'Recipe_Screw_C' } }), all)
-    const g = gridBalance([power, works])
-    expect(g.made).toBeCloseTo(200)
-    expect(g.used).toBeCloseTo(power.solution.power.consumedMW + works.solution.power.consumedMW)
-    expect(g.headroom).toBeCloseTo(g.made - g.used)
-    expect(g.generators).toEqual([{ generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C', count: 3, mw: 200 }])
-    expect(g.consumers.map((c) => c.id)).toContain('w')
-    expect(g.consumers.every((c, i, a) => i === 0 || a[i - 1].mw >= c.mw)).toBe(true)
   })
 })

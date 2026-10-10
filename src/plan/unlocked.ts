@@ -1,6 +1,6 @@
 // Which ways of moving goods the player has unlocked, so pickers don't offer locked ones.
 import type { Availability } from '../data/game/availability'
-import type { BuildingId } from '../data'
+import { itemsById, resourcesById, type BuildingId, type ItemId } from '../data'
 import type { Transport } from './types'
 
 /** Buildings that make each transport usable; any one of them is enough. */
@@ -24,3 +24,19 @@ export const bestBeltTier = (a: Availability) => best(beltTiers, a)
 /** Highest pipeline Mk the player can build (1 when none is unlocked yet). */
 export const bestPipeTier = (a: Availability) => best(pipeTiers, a)
 
+
+/**
+ * Ways an item can travel between outposts: solids by belt, truck, train or drone; fluids and
+ * gases by pipe or in a fluid freight car. Packaged fluids are solid items, so they go by belt.
+ */
+export function transportsFor(item: ItemId | undefined): Transport[] {
+  if (!item) return ['belt', 'pipe', 'truck', 'train', 'drone']
+  const form = itemsById.get(item)?.form ?? resourcesById.get(item)?.form
+  return form && form !== 'solid' ? ['pipe', 'train'] : ['belt', 'truck', 'train', 'drone']
+}
+
+/** `via` if the item can travel that way, otherwise the first way it can. */
+export const fitTransport = (item: ItemId | undefined, via?: Transport): Transport => {
+  const ok = transportsFor(item)
+  return via && ok.includes(via) ? via : ok[0]
+}
