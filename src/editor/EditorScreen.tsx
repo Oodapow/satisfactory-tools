@@ -193,11 +193,11 @@ function macroEdges(all: Solved[], links: PowerLink[], sel: Selection, grid: Pow
         type: 'link',
         source: l.a,
         target: l.b,
-        selected: (sel?.kind === 'edge' && sel.id === l.id) || !!grid?.links.some((x) => x.id === l.id),
-        data: { transport: 'power', items: [], ref: { kind: 'power', id: l.id } },
+        selected: sel?.kind === 'edge' && sel.id === l.id,
+        data: { transport: 'power', items: [], ref: { kind: 'power', id: l.id }, ...(grid ? (grid.links.some((x) => x.id === l.id) ? { lit: true } : { dim: true }) : {}) },
       })
   // With a grid selected, everything not on it fades.
-  if (grid) for (const e of edges) if (e.data && (e.data.transport !== 'power' || !e.selected)) e.data = { ...e.data, dim: true }
+  if (grid) for (const e of edges) if (e.data && e.data.transport !== 'power') e.data = { ...e.data, dim: true }
   return edges
 }
 

@@ -33,6 +33,8 @@ export type LinkData = {
   items: ItemRate[]
   /** Faded while a power grid it isn't part of is selected. */
   dim?: boolean
+  /** A power line of the selected grid. */
+  lit?: boolean
   /** The plan import this link shows, or the power line id. */
   ref: { kind: 'import'; planId: OutpostId; importId: string } | { kind: 'power'; id: string }
 }

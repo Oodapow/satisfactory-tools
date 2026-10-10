@@ -157,7 +157,8 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 /* Power grids (#61): a selected grid lights up its outposts and power lines; the rest fades. */
 .react-flow__node.ne-dim, .ne-link.ne-dim, .ne-edge-label.ne-dim { opacity: .25; }
 .react-flow__node.ne-on-grid .ne-outpost { box-shadow: 0 0 0 3px color-mix(in srgb, #d4b000 55%, transparent); }
-.ne-link-power.selected { stroke-dasharray: none; }
+.react-flow__edge .react-flow__edge-path.ne-link-power { stroke: #e6c200; }
+.ne-link-power.selected, .ne-link-power.ne-lit { stroke-dasharray: none; stroke-width: 5; }
 .ne-seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .ne-seg button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 0; background: var(--surface); color: var(--text); font-weight: 600; font-size: .8rem; padding: 6px 8px; }
 .ne-seg button + button { border-left: 1px solid var(--border); }

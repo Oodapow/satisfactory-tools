@@ -157,7 +157,7 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
   const t = data?.transport ?? 'belt'
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`} />
+      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}${data?.lit ? ' ne-lit' : ''}`} />
       <EdgeLabelRenderer>
         <div className={`ne-edge-label nodrag nopan${data?.dim ? ' ne-dim' : ''}`} style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}>
           <GameIcon id={transportIcon(t)} size={18} title={transportLabel(t)} />
