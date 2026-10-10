@@ -13,12 +13,15 @@ type Legacy = Partial<OutpostPlan> & {
 
 function normalize(o: Legacy): OutpostPlan {
   const now = new Date().toISOString()
+  const goals: OutpostPlan['goals'] = o.goals ?? (o.target ? [{ kind: 'item', ...o.target }] : [])
+  const nodes = o.nodes ?? []
   return {
     id: o.id,
-    name: o.name,
+    // Names we made in an older format catch up to the current one.
+    name: typeof o.name === 'string' ? nameAfter({ name: o.name, goals, nodes }, { goals, nodes }) : o.name,
     notes: o.notes ?? '',
-    goals: o.goals ?? (o.target ? [{ kind: 'item', ...o.target }] : []),
-    nodes: o.nodes ?? [],
+    goals,
+    nodes,
     imports: o.imports ?? [],
     recipeChoices: o.recipeChoices ?? o.choices ?? {},
     selfPowered: o.selfPowered ?? false,
