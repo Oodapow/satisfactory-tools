@@ -2,8 +2,8 @@
 // point is a grid vertex on the block's border, so the router (gridRouter.ts) can run
 // belts along grid lines. Splitters, mergers and ports turn their connection points to
 // face whatever they connect to; the icon itself never turns.
-import { buildingsById, recipesById } from '../data'
-import type { BeltEdge, MicroNode, MicroNodeData } from './model'
+import { buildingsById, itemsById, recipesById } from '../data'
+import { poleConnections, type BeltEdge, type Medium, type MicroNode, type MicroNodeData } from './model'
 
 /** Grid size in px. */
 export const G = 20
@@ -19,11 +19,46 @@ export const SIZE = {
   machine: { w: 10, h: 4 },
   splitter: { w: 2, h: 2 },
   merger: { w: 2, h: 2 },
+  junction: { w: 2, h: 2 },
+  pole: { w: 2, h: 2 },
   port: { w: 12, h: 4 },
 } as const
 
 export type BlockKind = keyof typeof SIZE
 export const isBlock = (n: MicroNode): n is MicroNode & { type: BlockKind } => !!n.type && n.type in SIZE
+
+/** True when two blocks' areas overlap, or come closer than `gap` cells (0: touching borders is fine). */
+export function overlaps(a: Cell, at: BlockKind, b: Cell, bt: BlockKind, gap = 0) {
+  const sa = SIZE[at]
+  const sb = SIZE[bt]
+  return a.x < b.x + sb.w + gap && b.x < a.x + sa.w + gap && a.y < b.y + sb.h + gap && b.y < a.y + sa.h + gap
+}
+
+/**
+ * The free grid spot nearest to `want` for a block of `type`: a grid line clear all round it, so
+ * belts and power lines can reach its connection points.
+ */
+export function freeSpot(nodes: MicroNode[], id: string, type: BlockKind, want: Cell): Cell {
+  const others = nodes.filter((n) => n.id !== id && isBlock(n)).map((n) => ({ at: cellOf(n), type: n.type as BlockKind }))
+  const free = (c: Cell) => others.every((o) => !overlaps(c, type, o.at, o.type, 1))
+  if (free(want)) return want
+  for (let r = 1; r < 200; r++) {
+    let best: Cell | undefined
+    let bestD = Infinity
+    for (let dx = -r; dx <= r; dx++)
+      for (let dy = -r; dy <= r; dy++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue
+        const c = { x: want.x + dx, y: want.y + dy }
+        const d = dx * dx + dy * dy
+        if (d < bestD && free(c)) {
+          best = c
+          bestD = d
+        }
+      }
+    if (best) return best
+  }
+  return want
+}
 
 /** How a splitter, merger or port is turned: quarter turns clockwise, after swapping top and bottom when mirrored. */
 export type Orient = { rot: 0 | 1 | 2 | 3; mirror: boolean }
@@ -56,6 +91,16 @@ export function machineIO(d: MicroNodeData): { ins: string[]; outs: string[] } {
 /** A connection point: offset from the block's top-left corner in cells, and the side it faces. */
 export type Anchor = { dx: number; dy: number; side: Side }
 
+/** Machines that use or make power have a power connection on their right side. */
+const POWER_HANDLE = 'power'
+const hasPower = (d: MicroNodeData) =>
+  (d.kind === 'machine' && (!!buildingsById.get(d.building)?.generator || (buildingsById.get(d.building)?.powerConsumptionMW ?? 0) > 0)) ||
+  (d.kind === 'port' && d.transport === 'resource')
+
+/** Pole connection handle ids. */
+export const poleHandle = (i: number) => `p${i}`
+export const poleSize = (d: MicroNodeData) => (d.kind === 'pole' ? poleConnections[Math.min(Math.max(d.tier, 1), poleConnections.length) - 1] : 0)
+
 /** Every connection point of a block, by handle id. */
 export function anchors(type: BlockKind, data: MicroNodeData, o: Orient = UPRIGHT): Record<string, Anchor> {
   const { w, h } = SIZE[type]
@@ -68,11 +113,79 @@ export function anchors(type: BlockKind, data: MicroNodeData, o: Orient = UPRIGH
     const out: Record<string, Anchor> = {}
     ;(SPREAD[ins.length] ?? []).forEach((dx, j) => (out[inHandle(j)] = { dx, dy: 0, side: 't' }))
     ;(SPREAD[outs.length] ?? []).forEach((dx, p) => (out[outHandle(p)] = { dx, dy: h, side: 'b' }))
+    if (hasPower(data)) out[POWER_HANDLE] = { dx: w, dy: h / 2, side: 'r' }
     return out
   }
-  if (type === 'port') return data.kind === 'port' && data.direction === 'out' ? { in: at('l') } : { out: at('r') }
+  if (type === 'pole') {
+    // Grid vertices round the pole, so power lines run on the grid like belts: the middle of each
+    // side first, then the corners. A 2x2 pole has eight, so a Mk.3 shows eight of its ten.
+    const ring: Anchor[] = [
+      { dx: w / 2, dy: 0, side: 't' },
+      { dx: w, dy: h / 2, side: 'r' },
+      { dx: w / 2, dy: h, side: 'b' },
+      { dx: 0, dy: h / 2, side: 'l' },
+      // Corners leave up or down: a pole often stands one cell from a machine's side.
+      { dx: w, dy: 0, side: 't' },
+      { dx: w, dy: h, side: 'b' },
+      { dx: 0, dy: h, side: 'b' },
+      { dx: 0, dy: 0, side: 't' },
+    ]
+    const out: Record<string, Anchor> = {}
+    ring.slice(0, poleSize(data)).forEach((a, i) => (out[poleHandle(i)] = a))
+    return out
+  }
+  if (type === 'port') {
+    // Power ports face their pole on the left; the rest face the belts on the right.
+    const power = data.kind === 'port' && data.transport === 'power'
+    const main: Record<string, Anchor> = data.kind === 'port' && data.direction === 'out' ? { in: at('l') } : { out: at(power ? 'l' : 'r') }
+    // Extractors on a resource node draw power from the side away from their belt.
+    return hasPower(data) ? { ...main, [POWER_HANDLE]: at('l') } : main
+  }
   // Splitter: in at the back, out ahead, up and down. Merger: in at the back, up and down, out ahead.
+  // Junction: the same four points, each one in or out.
   return { in: at('l'), out: at('r'), up: at('t'), down: at('b') }
+}
+
+const formOf = (item: string | undefined): Medium => (item && itemsById.get(item)?.form && itemsById.get(item)?.form !== 'solid' ? 'fluid' : 'solid')
+
+/** What a connection point carries, and whether things flow out of it, into it, or either way. */
+export type HandleInfo = { medium: Medium; role: 'in' | 'out' | 'any' }
+
+export function handleInfo(d: MicroNodeData, handle: string | null | undefined): HandleInfo | undefined {
+  const h = handle ?? ''
+  if (h === POWER_HANDLE) return hasPower(d) ? { medium: 'power', role: 'any' } : undefined
+  switch (d.kind) {
+    case 'machine': {
+      const { ins, outs } = machineIO(d)
+      const i = ins.findIndex((_, j) => inHandle(j) === h)
+      if (i >= 0) return { medium: formOf(ins[i]), role: 'in' }
+      const o = outs.findIndex((_, p) => outHandle(p) === h)
+      if (o >= 0) return { medium: formOf(outs[o]), role: 'out' }
+      return undefined
+    }
+    case 'splitter':
+      return { medium: 'solid', role: h === 'in' ? 'in' : 'out' }
+    case 'merger':
+      return { medium: 'solid', role: h === 'out' ? 'out' : 'in' }
+    case 'junction':
+      return { medium: 'fluid', role: 'any' }
+    case 'pole':
+      return { medium: 'power', role: 'any' }
+    case 'port': {
+      if (d.transport === 'power') return { medium: 'power', role: 'any' }
+      const medium = d.transport === 'pipe' ? 'fluid' : formOf(d.item)
+      return { medium, role: d.direction === 'in' ? 'out' : 'in' }
+    }
+    default:
+      return undefined
+  }
+}
+
+/** What a line carries: from its source's connection point, or what it was made as. */
+export function edgeMedium(e: BeltEdge, byId: Map<string, MicroNode>): Medium {
+  const s = byId.get(e.source)
+  const t = byId.get(e.target)
+  return (s && handleInfo(s.data, e.sourceHandle)?.medium) ?? (t && handleInfo(t.data, e.targetHandle)?.medium) ?? e.data?.medium ?? formOf(e.data?.item)
 }
 
 /** Position of a block in cells (rounded, for blocks placed before the grid existed). */
@@ -108,9 +221,11 @@ export function orientAll(nodes: MicroNode[], edges: BeltEdge[]): Map<string, Or
     return { x: c.x + SIZE[n.type].w / 2, y: c.y + SIZE[n.type].h / 2 }
   }
   for (const n of nodes) {
-    if (!isBlock(n) || n.type === 'machine') continue
+    if (!isBlock(n) || n.type === 'machine' || n.type === 'pole') continue
     const links: { handle: string; at: Cell }[] = []
     for (const e of edges) {
+      // Power lines don't turn joints, but an extractor's port also faces its pole.
+      if (n.type !== 'port' && edgeMedium(e, byId) === 'power') continue
       if (e.source === n.id) {
         const at = peerPoint(e.target, e.targetHandle)
         if (at) links.push({ handle: e.sourceHandle ?? 'out', at })

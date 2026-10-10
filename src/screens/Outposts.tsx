@@ -3,7 +3,7 @@ import { buildingsById, itemName, itemsById, recipesById, resourcesById } from '
 import { fmt } from '../format'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
-import { blankPlan, newId, type PlanPatch } from '../plan/store'
+import { newId, type PlanPatch } from '../plan/store'
 import { suggestGoalItem, suggestGoalRate } from '../plan/suggest'
 import type { Goal, ItemGoal, OutpostPlan, Purity, Transport } from '../plan/types'
 import { transportUnlocked } from '../plan/unlocked'
@@ -39,11 +39,8 @@ type TabKey = (typeof TABS)[number]['key']
 
 export function OutpostList({ state }: { state: GameState }) {
   const net = useNetwork(state)
-  const create = () => {
-    const p = blankPlan(`Outpost ${net.outposts.length + 1}`)
-    net.save(p)
-    go(`/outposts/${p.id}/goal`)
-  }
+  // A new outpost starts on the world map: click where it goes and it gets the nodes around it.
+  const create = () => go('/world/new')
   const nameOf = (id: string) => net.outposts.find((o) => o.id === id)?.name ?? 'removed outpost'
 
   return (
@@ -71,6 +68,7 @@ export function OutpostList({ state }: { state: GameState }) {
                   <header className="row between">
                     <strong>{plan.name}</strong>
                     {short.length > 0 && <span className="badge warn">Short on {short.length}</span>}
+                    {!plan.location && <span className="badge muted-badge">Not on the map</span>}
                   </header>
                   <div className="io">
                     <span className="io-label">In</span>
@@ -149,6 +147,9 @@ export function OutpostEditor({ id, step, state }: { id: string; step?: string; 
           aria-label="Outpost name"
         />
         <div className="row">
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            {plan.location ? 'On the map' : 'Place on the map'}
+          </a>
           <a className="button secondary" href={editorPath(plan.id)}>
             Floor plan
           </a>
@@ -358,21 +359,30 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
               update({ nodes: plan.nodes.map((x) => (x.id === n.id ? { ...x, ...patch } : x)) })
             return (
               <li key={n.id} className="node-row">
-                <GameIcon id={n.resource} size={32} />
-                <IconSelect
-                  value={n.resource}
-                  onChange={(resource) => set({ resource, extractor: undefined })}
-                  aria-label="Resource"
-                  options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
-                />
-                <div className="segmented small" role="radiogroup" aria-label="Purity">
-                  {PURITIES.map((p) => (
-                    <label key={p}>
-                      <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
-                      <span>{p}</span>
-                    </label>
-                  ))}
-                </div>
+                {n.fromMap ? (
+                  // Picked on the world map: resource and purity are the node's real ones.
+                  <span className="node-fixed">
+                    <GameIcon id={n.resource} size={32} />
+                    {itemName(n.resource)} · {n.purity} <a className="muted small" href={`#/world/${plan.id}`}>on the map</a>
+                  </span>
+                ) : (
+                  <>
+                    <IconSelect
+                      value={n.resource}
+                      onChange={(resource) => set({ resource, extractor: undefined })}
+                      aria-label="Resource"
+                      options={resources.map((r) => ({ value: r.id, label: r.name, icon: r.id }))}
+                    />
+                    <div className="segmented small" role="radiogroup" aria-label="Purity">
+                      {PURITIES.map((p) => (
+                        <label key={p}>
+                          <input type="radio" name={`purity-${n.id}`} checked={n.purity === p} onChange={() => set({ purity: p })} />
+                          <span>{p}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {ex.length > 1 ? (
                   <IconSelect
                     value={b?.id}
@@ -410,9 +420,14 @@ function ResourcesStep({ solved, all, update, available }: StepProps & { solved:
             )
           })}
         </ul>
-        <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
-          + Node
-        </button>
+        <div className="row">
+          <button type="button" className="secondary" disabled={resources.length === 0} onClick={() => addNode(resources[0].id)}>
+            + Node
+          </button>
+          <a className="button secondary" href={`#/world/${plan.id}`}>
+            Pick nodes on the world map
+          </a>
+        </div>
       </section>
 
       <section className="panel">
@@ -559,8 +574,14 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
         </header>
         <p className="muted small">
           Suggested recipes leave nothing short and use the least raw input. Pick another to override; ★ marks alternates.
-          Machines that don't divide evenly all run at the same lower clock, so a manifold feeds them evenly.
+          {plan.underclock
+            ? "Machines that don't divide evenly all run at the same lower clock, so a manifold feeds them evenly."
+            : "Machines run at full clock. When they don't divide evenly, the manifold's last machine idles part of the time; idle machines draw no power."}
         </p>
+        <label className="row small">
+          <input type="checkbox" checked={!!plan.underclock} onChange={(e) => update({ underclock: e.target.checked })} />
+          Underclock to match instead of letting the last machine idle
+        </label>
         {features.has('overclocking') && (
           <label className="row small">
             Highest clock speed
@@ -624,6 +645,7 @@ function PlanStep({ solved, update, available }: StepProps & { solved: Solved })
                     <td>
                       <strong>{s.count}</strong> {buildingsById.get(s.building)?.name}
                       {Math.abs(s.clock - 1) > 1e-6 && <span className="muted small"> at {pct(s.clock)}</span>}
+                      {s.count * s.clock - s.machines > 1e-3 && <span className="muted small"> · last one {pct(1 - (s.count * s.clock - s.machines) / s.clock)} busy</span>}
                       {s.shards > 0 && <span className="muted small"> · {s.shards} shards</span>}
                       {features.has('production-amplification') && somersloopBoost(buildingsById.get(s.building)).slots > 0 && (
                         <label className="row small" title="Somersloops per machine. Each adds output; power goes up with the square of the boost.">

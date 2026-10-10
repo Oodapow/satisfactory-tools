@@ -1,9 +1,11 @@
 import { useState, type ReactNode } from 'react'
-import { buildingsById, groupByTaxonomy, itemName, taxonomy, type Building, type Item, type Recipe } from '../data'
+import { buildingsById, groupByTaxonomy, taxonomy, type Building, type Item, type Recipe } from '../data'
 import { go } from '../router'
 import { catalog, type GameState } from '../state/gameState'
+import { autoName } from '../plan/naming'
 import { blankPlan, useOutposts } from '../plan/store'
 import { suggestGoalRate } from '../plan/suggest'
+import type { Goal } from '../plan/types'
 import { GameIcon } from '../ui/GameIcon'
 import { Rates } from './Rates'
 
@@ -44,7 +46,8 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
   const blur = state.spoilers === 'blur'
 
   const planFor = (item: string) => {
-    const plan = blankPlan(`${itemName(item)} outpost`, { goals: [{ kind: 'item', item, perMin: suggestGoalRate(item, cat.available) }] })
+    const goals: Goal[] = [{ kind: 'item', item, perMin: suggestGoalRate(item, cat.available) }]
+    const plan = blankPlan(autoName({ goals, nodes: [] }), { goals })
     save(plan)
     go(`/outposts/${plan.id}/resources`)
   }
