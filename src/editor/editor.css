@@ -42,17 +42,36 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 
 
 /* Macro blocks */
-.ne-outpost { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 10px 12px; width: 260px; font-size: .8rem; box-shadow: 0 2px 8px #0002; }
+/* Outposts on the factory map: sized in grid cells, connection points on the grid along the edges. */
+.ne-outpost { position: relative; box-sizing: border-box; background: var(--surface); border: 2px solid var(--border); border-radius: 8px; font-size: .75rem; box-shadow: 0 2px 8px #0002; }
 .ne-outpost.selected { border-color: var(--accent); }
-.ne-outpost-head { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; font-size: .95rem; }
+.ne-outpost.short { border-color: #d0453a; }
+.ne-outpost-body { position: absolute; inset: 6px 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; container-type: inline-size; overflow: hidden; }
+.ne-outpost-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .85rem; }
+/* Names only where there is room for them; the tooltip always has it. */
+@container (max-width: 96px) { .ne-outpost-name { display: none; } }
+.ne-outpost-body .ne-chips { justify-content: center; }
+.ne-chip.short { color: #d0453a; box-shadow: inset 0 0 0 1px #d0453a; }
+.ne-map-port { position: absolute; display: flex; align-items: center; gap: 2px; transform: translateY(-50%); font-size: .7rem; font-variant-numeric: tabular-nums; pointer-events: none; }
+.ne-map-port.in { left: 8px; }
+.ne-map-port.out { right: 8px; flex-direction: row-reverse; }
+.react-flow__handle.ne-handle.ne-handle-power { border-color: #e6c200; }
+.react-flow__handle.ne-handle.ne-handle-power.connected { background: #e6c200; }
+.ne-foundation-grid { opacity: .35; }
+.ne-stats { display: flex; gap: 12px; align-items: center; font-variant-numeric: tabular-nums; }
+.ne-stats span { display: inline-flex; gap: 4px; align-items: center; }
+.ne-node-row select { padding: 2px 4px; }
+.ne-num { text-align: right; font-variant-numeric: tabular-nums; }
+.ne-add { margin-top: 4px; }
 .ne-sub { color: var(--muted); font-size: .75rem; }
 .ne-row { display: flex; gap: 6px; margin-top: 4px; align-items: baseline; }
 .ne-row-label { color: var(--muted); width: 64px; flex: none; }
 .ne-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .ne-chip { display: inline-flex; gap: 3px; align-items: center; background: var(--bg); border-radius: 999px; padding: 1px 6px 1px 2px; }
 .ne-hint { color: var(--muted); font-size: .7rem; margin-top: 6px; text-align: right; }
-.ne-edge-label { position: absolute; display: flex; gap: 4px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px 2px 4px; font-size: .75rem; pointer-events: all; }
-.ne-link { stroke-width: 3; }
+.ne-edge-label { position: absolute; display: flex; gap: 3px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1px 5px 1px 3px; font-size: .7rem; font-variant-numeric: tabular-nums; pointer-events: all; }
+.ne-edge-label.selected { box-shadow: 0 0 0 2px var(--accent); }
+.ne-link { stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .ne-link-belt, .ne-swatch.ne-link-belt { stroke: #e8891c; border-color: #e8891c; }
 .ne-link-pipe, .ne-swatch.ne-link-pipe { stroke: #2b8fd6; border-color: #2b8fd6; }
 .ne-link-truck, .ne-swatch.ne-link-truck { stroke: #8a6d3b; border-color: #8a6d3b; stroke-dasharray: 10 6; }
@@ -61,7 +80,8 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-link-power, .ne-swatch.ne-link-power { stroke: #e6c200; border-color: #e6c200; stroke-dasharray: 2 4; }
 .ne-swatch { border-top-style: solid; }
 .ne-swatch.ne-link-truck, .ne-swatch.ne-link-train, .ne-swatch.ne-link-drone, .ne-swatch.ne-link-power { border-top-style: dashed; }
-.ne-link.selected, .ne-belt.selected { stroke-width: 5; }
+.ne-link.selected { stroke-width: 4; }
+.ne-belt.selected { stroke-width: 5; }
 
 /* Micro blocks */
 .ne-machine { display: flex; gap: 8px; align-items: center; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 6px 8px; width: 200px; height: 80px; font-size: .75rem; }

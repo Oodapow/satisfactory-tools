@@ -1,7 +1,7 @@
-import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import { gameMeta } from './data'
 import { go, useRoute } from './router'
-import { OutpostEditor, OutpostList } from './screens/Outposts'
+import { OutpostEditor } from './screens/Outposts'
 import { Planner } from './screens/Planner'
 import { Setup } from './screens/Setup'
 import { SampleSave, Upload } from './screens/Upload'
@@ -17,12 +17,11 @@ const EditorScreen = lazy(() => import('./editor/EditorScreen'))
 const WorldScreen = lazy(() => import('./world/WorldScreen'))
 
 // Sections, not steps: the main flow is game state, then the factory map. The catalog is for
-// looking things up, and the outposts list is where one outpost gets defined.
+// looking things up. One outpost is defined at #/outposts/<id>, opened from the factory map.
 const tabs = [
   { path: 'setup', label: 'Game state' },
   { path: 'map', label: 'Factory map' },
   { path: 'world', label: 'World map' },
-  { path: 'outposts', label: 'Outposts' },
   { path: 'catalog', label: 'Catalog' },
 ] as const
 
@@ -34,6 +33,11 @@ export default function App() {
 
   // These need a game state; without one, start at the welcome screen.
   const needsState = page === 'catalog' || page === 'outposts' || page === 'map' || page === 'world'
+  // The outposts list was folded into the factory map; old links land there.
+  const oldList = page === 'outposts' && !param
+  useEffect(() => {
+    if (oldList) window.location.replace('#/map')
+  }, [oldList])
   // The page scrolls inside <main>, so start each screen at the top like a page load would.
   const mainRef = useRef<HTMLElement>(null)
   const screenKey = [page, param, sub].join('/')
@@ -63,8 +67,6 @@ export default function App() {
       <Suspense fallback={<p className="muted">Loading the map…</p>}>
         <WorldScreen state={state} />
       </Suspense>
-    ) : page === 'outposts' && state ? (
-      <OutpostList state={state} />
     ) : (
       <Welcome />
     )

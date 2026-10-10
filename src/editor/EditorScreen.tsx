@@ -7,9 +7,9 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   Background,
+  BackgroundVariant,
   ConnectionLineType,
   Controls,
-  MarkerType,
   MiniMap,
   ReactFlow,
   ReactFlowProvider,
@@ -19,11 +19,14 @@ import {
   type NodeChange,
 } from '@xyflow/react'
 import { buildingsById, itemsById } from '../data'
-import { offers, type Solved } from '../plan/network'
+import { exportsOf, offers, type Solved } from '../plan/network'
+import { extractorsFor } from '../plan/solve'
 import { blankPlan } from '../plan/store'
 import { useNetwork } from '../plan/useNetwork'
 import type { GameState } from '../state/gameState'
-import { fmt, proposeLayout, type PortLink } from './generate'
+import { fmt, proposeLayout } from './generate'
+import { fitTransport } from '../plan/unlocked'
+import { inHandleOf, itemOfOut, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
 import { GameIcon, NoIconLinks } from '../ui/GameIcon'
 import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostInspector, PortInspector } from './Inspector'
 import {
@@ -40,7 +43,7 @@ import {
 import { G, isBlock } from './grid'
 import { routeFloorPlan } from './gridRouter'
 import { FloorPlanContext, type FloorPlanView } from './floorPlanView'
-import { BeltLine, FloorBand, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PortBlock, SplitterBlock } from './nodes'
+import { BeltLine, FloorBand, LinkLine, linkMarker, MachineBlock, MergerBlock, OutpostBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
 import { MergerSymbol, SplitterSymbol } from './Symbols'
@@ -56,7 +59,6 @@ const macroNodeTypes = { outpost: OutpostBlock }
 const macroEdgeTypes = { link: LinkLine }
 const microNodeTypes = { machine: MachineBlock, splitter: SplitterBlock, merger: MergerBlock, port: PortBlock, floor: FloorBand }
 const microEdgeTypes = { belt: BeltLine }
-const arrow = { type: MarkerType.ArrowClosed, width: 18, height: 18 }
 const flowProps = {
   connectionLineType: ConnectionLineType.Step,
   deleteKeyCode: ['Backspace', 'Delete'],
@@ -161,7 +163,7 @@ function PaletteItem({
 
 // ---------- Macro ----------
 
-/** Links on the map: every plan import, plus the editor's power lines. */
+/** Links on the map: every plan import, from the exporter's point for that item to its own import point, plus the editor's power lines. */
 function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEdge[] {
   const ids = new Set(all.map((s) => s.plan.id))
   const edges: LinkEdge[] = []
@@ -172,8 +174,10 @@ function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEd
           id: imp.id,
           type: 'link',
           source: imp.from,
+          sourceHandle: outHandleOf(imp.item),
           target: plan.id,
-          markerEnd: arrow,
+          targetHandle: inHandleOf(imp.id),
+          markerEnd: linkMarker(imp.via),
           selected: sel?.kind === 'edge' && sel.id === imp.id,
           data: { transport: imp.via, items: [{ item: imp.item, perMin: imp.perMin }], ref: { kind: 'import', planId: plan.id, importId: imp.id } },
         })
@@ -183,8 +187,10 @@ function macroEdges(all: Solved[], layout: EditorLayout, sel: Selection): LinkEd
         id: l.id,
         type: 'link',
         source: l.from,
+        sourceHandle: POWER_OUT,
         target: l.to,
-        markerEnd: arrow,
+        targetHandle: POWER_IN,
+        markerEnd: linkMarker('power'),
         selected: sel?.kind === 'edge' && sel.id === l.id,
         data: { transport: 'power', items: [], powerMW: l.mw, ref: { kind: 'power', id: l.id } },
       })
@@ -200,17 +206,21 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
   // Plans are the source of truth: blocks are rebuilt from them on every render, with the
   // sizes React Flow measured and the positions the editor stores.
   const [measured, setMeasured] = useState<Record<string, { width: number; height: number }>>({})
+  const blocks = useMemo(
+    () => new Map(all.map((s) => [s.plan.id, mapBlock(s, all, layout, unlocked.beltTier, unlocked.pipeTier)])),
+    [all, layout.powerLines, unlocked.beltTier, unlocked.pipeTier], // eslint-disable-line react-hooks/exhaustive-deps
+  )
   const nodes = useMemo<OutpostNode[]>(
     () =>
       all.map((s, i) => ({
         id: s.plan.id,
         type: 'outpost',
-        position: layout.positions[s.plan.id] ?? { x: (i % 3) * 380, y: Math.floor(i / 3) * 320 },
-        data: s,
+        position: snap(layout.positions[s.plan.id] ?? { x: (i % 3) * 400, y: Math.floor(i / 3) * 320 }),
+        data: { ...s, block: blocks.get(s.plan.id)! },
         measured: measured[s.plan.id],
         selected: sel?.kind === 'node' && sel.id === s.plan.id,
       })),
-    [all, layout.positions, measured, sel],
+    [all, blocks, layout.positions, measured, sel],
   )
   const edges = useMemo(() => macroEdges(all, layout, sel), [all, layout, sel])
 
@@ -241,7 +251,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
   const onNodesChange = (changes: NodeChange<OutpostNode>[]) => {
     const sized = changes.flatMap((c) => (c.type === 'dimensions' && c.dimensions ? [[c.id, c.dimensions] as const] : []))
     if (sized.length) setMeasured((m) => ({ ...m, ...Object.fromEntries(sized) }))
-    const moved = changes.flatMap((c) => (c.type === 'position' && c.position ? [[c.id, c.position] as const] : []))
+    const moved = changes.flatMap((c) => (c.type === 'position' && c.position ? [[c.id, snap(c.position)] as const] : []))
     if (moved.length) update((l) => ({ ...l, positions: { ...l.positions, ...Object.fromEntries(moved) } }))
     const removed = changes.flatMap((c) => (c.type === 'remove' ? [c.id] : []))
     if (removed.length) removeOutposts(removed)
@@ -253,29 +263,41 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
     for (const c of changes) if (c.type === 'select' && c.selected) setSel({ kind: 'edge', id: c.id })
   }
 
-  // A new link becomes an import of whatever the source has spare, or a power line.
+  // An export point links only to a free import point, and power only to power.
+  const isValidConnection = (c: Connection | LinkEdge) => {
+    if (c.source === c.target) return false
+    if (c.sourceHandle === POWER_OUT) return c.targetHandle === POWER_IN
+    return !!itemOfOut(c.sourceHandle) && c.targetHandle === NEW_IN
+  }
+
+  // A new link imports that item: whatever the exporter still has spare, by the item's usual transport.
   const onConnect = (c: Connection) => {
-    if (c.source === c.target) return
+    if (!isValidConnection(c)) return
     const from = all.find((s) => s.plan.id === c.source)!
     const to = all.find((s) => s.plan.id === c.target)!
-    const offer = offers(all, to.plan.id).find((o) => o.from === from.plan.id && o.perMin > 1e-6)
-    const goal = from.plan.goals.find((g) => g.kind === 'item')
-    if (!offer && !goal && from.solution.power.exportedMW > 0) {
-      const id = crypto.randomUUID()
-      update((l) => ({ ...l, powerLines: [...l.powerLines, { id, from: from.plan.id, to: to.plan.id, mw: from.solution.power.exportedMW }] }))
-      setSel({ kind: 'edge', id })
-      return
-    }
-    const item = offer?.item ?? (goal?.kind === 'item' ? goal.item : 'Desc_OreIron_C')
     const id = crypto.randomUUID()
-    const via = itemsById.get(item)?.form === 'solid' ? 'belt' : 'pipe'
-    net.update(to.plan.id, { imports: [...to.plan.imports, { id, from: from.plan.id, item, perMin: offer?.perMin ?? 60, via }] })
+    if (c.sourceHandle === POWER_OUT) {
+      const sent = layout.powerLines.filter((l) => l.from === from.plan.id).reduce((t, l) => t + l.mw, 0)
+      const mw = Math.max(0, from.solution.power.exportedMW - sent)
+      update((l) => ({ ...l, powerLines: [...l.powerLines, { id, from: from.plan.id, to: to.plan.id, mw }] }))
+    } else {
+      const item = itemOfOut(c.sourceHandle)!
+      const offer = offers(all, to.plan.id).find((o) => o.from === from.plan.id && o.item === item)
+      const total = exportsOf(from.solution).find((e) => e.item === item)?.perMin ?? 0
+      const perMin = offer && offer.perMin > 1e-6 ? offer.perMin : total
+      net.update(to.plan.id, { imports: [...to.plan.imports, { id, from: from.plan.id, item, perMin, via: fitTransport(item) }] })
+    }
     setSel({ kind: 'edge', id })
   }
 
-  const drop = useDrop((_, position) => {
-    const plan = blankPlan(`Outpost ${all.length + 1}`)
-    update((l) => ({ ...l, positions: { ...l.positions, [plan.id]: position } }))
+  const drop = useDrop((p, position) => {
+    // An extraction site starts on one node and has no goal: it exports what it mines.
+    const resource = ['Desc_OreIron_C', 'Desc_Stone_C', 'Desc_Coal_C'].find((r) => !net.available || extractorsFor(r, net.available.buildings).length > 0)
+    const plan =
+      p.kind === 'extraction'
+        ? blankPlan(`Extraction ${all.length + 1}`, { nodes: resource ? [{ id: crypto.randomUUID(), resource, purity: 'normal' }] : [] })
+        : blankPlan(`Outpost ${all.length + 1}`)
+    update((l) => ({ ...l, positions: { ...l.positions, [plan.id]: snap(position) } }))
     net.save(plan)
     setSel({ kind: 'node', id: plan.id })
   })
@@ -298,10 +320,9 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         <PaletteItem payload={{ kind: 'outpost' }} icon="Desc_TradingPost_C" onAdd={drop.addAtCenter}>
           Outpost
         </PaletteItem>
-        <p className="ne-help">
-          Drag an outpost onto the map, or click it. Drag from one outpost's right edge to another's left edge to import
-          what the first has spare. Double-click an outpost for its floor plan.
-        </p>
+        <PaletteItem payload={{ kind: 'extraction' }} icon="Desc_MinerMk1_C" onAdd={drop.addAtCenter}>
+          Extraction site
+        </PaletteItem>
         <h3>Links</h3>
         {unlocked.transports.map((t) => (
           <div key={t.id} className="ne-legend">
@@ -314,6 +335,8 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
         <RouteContext.Provider value={routes}>
         <ReactFlow
           {...flowProps}
+          snapToGrid
+          snapGrid={[MAP_G, MAP_G]}
           nodes={nodes}
           edges={edges}
           nodeTypes={macroNodeTypes}
@@ -321,10 +344,13 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          isValidConnection={isValidConnection}
           onPaneClick={() => setSel(null)}
           onNodeDoubleClick={(_, n) => (window.location.hash = editorPath(n.id))}
         >
-          <Background gap={24} />
+          {/* Dots every half foundation, lines every foundation. */}
+          <Background id="cells" gap={MAP_G} />
+          <Background id="foundations" variant={BackgroundVariant.Lines} gap={MAP_G * 2} className="ne-foundation-grid" />
           <Controls />
           <MiniMap pannable zoomable className="ne-minimap" />
         </ReactFlow>
@@ -367,23 +393,6 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
 }
 
 // ---------- Micro ----------
-
-/** The macro links touching one outpost, as floor-plan ports. */
-function portLinks(all: Solved[], layout: EditorLayout, id: string) {
-  const name = (pid: string) => all.find((s) => s.plan.id === pid)?.plan.name ?? '?'
-  const plan = all.find((s) => s.plan.id === id)!.plan
-  const incoming: PortLink[] = [
-    ...plan.imports.map((i) => ({ linkId: i.id, other: name(i.from), transport: i.via, item: i.item, perMin: i.perMin })),
-    ...layout.powerLines.filter((l) => l.to === id).map((l) => ({ linkId: l.id, other: name(l.from), transport: 'power' as const, perMin: 0, powerMW: l.mw })),
-  ]
-  const outgoing: PortLink[] = [
-    ...all.flatMap((s) =>
-      s.plan.imports.filter((i) => i.from === id).map((i) => ({ linkId: i.id, other: s.plan.name, transport: i.via, item: i.item, perMin: i.perMin })),
-    ),
-    ...layout.powerLines.filter((l) => l.from === id).map((l) => ({ linkId: l.id, other: name(l.to), transport: 'power' as const, perMin: 0, powerMW: l.mw })),
-  ]
-  return { incoming, outgoing }
-}
 
 function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved; layout: EditorLayout; update: UpdateLayout }) {
   const id = solved.plan.id

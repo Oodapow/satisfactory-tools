@@ -6,8 +6,8 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   Handle,
+  MarkerType,
   Position,
-  useEdges,
   useNodeConnections,
   useUpdateNodeInternals,
   type EdgeProps,
@@ -15,16 +15,17 @@ import {
   type NodeProps,
 } from '@xyflow/react'
 import { buildingsById, itemName, recipesById } from '../data'
-import { exportsOf } from '../plan/network'
 import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { POWER } from '../data/icons'
 import { FloorPlanContext } from './floorPlanView'
 import { anchors, G, machineIO, UPRIGHT, type Anchor, type Side } from './grid'
+import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
 import { labelPoints, route, useRoutedPath } from './router'
 import { LiftSymbol, MergerSymbol, SplitterSymbol } from './Symbols'
 import {
   transportById,
+  transportColor,
   type BeltEdge,
   type FloorData,
   type LinkEdge,
@@ -32,17 +33,39 @@ import {
   type MicroNode,
   type OutpostNode,
   type PortData,
+  type Transport,
 } from './model'
 
 const transportIcon = (t: string) => (t === 'resource' ? 'Desc_MinerMk1_C' : (transportById.get(t as never)?.icon ?? 'Desc_ConveyorBeltMk1_C'))
 const transportLabel = (t: string) => (t === 'resource' ? 'Resource node' : (transportById.get(t as never)?.label ?? t))
 
-type Chip = { key: string; icon: string; text: string }
-
 /** A connection point: hollow while free, filled once connected. */
-function Port({ type, position, id, style }: { type: HandleType; position: Position; id?: string; style?: CSSProperties }) {
+function Port({
+  type,
+  position,
+  id,
+  style,
+  className,
+  title,
+}: {
+  type: HandleType
+  position: Position
+  id?: string
+  style?: CSSProperties
+  className?: string
+  title?: string
+}) {
   const connected = useNodeConnections({ handleType: type, handleId: id }).length > 0
-  return <Handle type={type} position={position} id={id} style={style} className={`ne-handle ne-handle-${type}${connected ? ' connected' : ''}`} />
+  return (
+    <Handle
+      type={type}
+      position={position}
+      id={id}
+      style={style}
+      title={title}
+      className={`ne-handle ne-handle-${type}${connected ? ' connected' : ''}${className ? ` ${className}` : ''}`}
+    />
+  )
 }
 
 /** Which way a joint or port faces; React Flow re-measures its handles when that changes. */
@@ -70,92 +93,116 @@ function GridPort({ type, id, a }: { type: HandleType; id: string; a: Anchor }) 
 
 // ---------- Macro ----------
 
-export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
-  const { plan, solution } = data
-  const edges = useEdges<LinkEdge>()
-  const ins = edges.filter((e) => e.target === id)
-  const goal = plan.goals[0]
-  const resources = new Map<string, number>()
-  for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
-  const imports: Chip[] = ins.flatMap((e) =>
-    e.data?.transport === 'power'
-      ? [{ key: e.id, icon: POWER, text: `${fmt(e.data.powerMW ?? 0)} MW` }]
-      : (e.data?.items ?? []).map((r, i) => ({ key: `${e.id}-${i}`, icon: r.item, text: fmt(r.perMin) })),
-  )
-  const exports: Chip[] = exportsOf(solution).map((r) => ({ key: r.item, icon: r.item, text: fmt(r.perMin) }))
-  if (solution.power.exportedMW > 0) exports.push({ key: 'mw', icon: POWER, text: `${fmt(solution.power.exportedMW)} MW` })
-  const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
-
+/** One connection point on an outpost's edge, with the item it carries next to it. */
+function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
+  const left = type === 'target'
+  const free = p.id === NEW_IN
+  const power = p.id === POWER_IN || p.id === POWER_OUT
+  const rate = power ? `${fmt(p.perMin ?? 0)} MW` : fmt(p.perMin ?? 0)
   return (
-    <div className={`ne-outpost${selected ? ' selected' : ''}`}>
-      <Port type="target" position={Position.Left} />
-      <div className="ne-outpost-head">
-        <GameIcon id={goal?.kind === 'item' ? goal.item : goal?.kind === 'power' ? POWER : 'Desc_TradingPost_C'} size={32} />
-        <div>
-          <strong>{plan.name}</strong>
-          <div className="ne-sub">
-            {plan.goals.length
-              ? plan.goals.map((g) => (g.kind === 'item' ? `${fmt(g.perMin)} ${itemName(g.item)}/min` : `${fmt(g.mw)} MW`)).join(' · ')
-              : 'No goal yet'}
-          </div>
-        </div>
-      </div>
-      {resources.size > 0 && <Row label="Extracts" items={[...resources].map(([item, r]) => ({ key: item, icon: item, text: fmt(r) }))} />}
-      {imports.length > 0 && <Row label="Imports" items={imports} />}
-      {exports.length > 0 && <Row label="Exports" items={exports} />}
-      <Row label="Power" items={[{ key: 'use', icon: POWER, text: `uses ${fmt(solution.power.consumedMW)} MW` }]} />
-      {short.length > 0 && (
-        <div className="ne-short">Short: {short.map((f) => `${fmt(f.shortfall)} ${itemName(f.item)}`).join(', ')}</div>
+    <>
+      <Port
+        type={type}
+        id={p.id}
+        position={left ? Position.Left : Position.Right}
+        style={{ top: p.dy * MAP_G }}
+        className={power ? 'ne-handle-power' : undefined}
+        title={free ? 'Free import point' : power ? `Power ${left ? 'in' : 'out'} · ${rate}` : `${itemName(p.item ?? '')} · ${rate}/min`}
+      />
+      {!free && (
+        <span className={`ne-map-port ${left ? 'in' : 'out'}`} style={{ top: p.dy * MAP_G }}>
+          <GameIcon id={power ? POWER : p.item} size={18} />
+          {(!power || (p.perMin ?? 0) > 0) && <span>{fmt(p.perMin ?? 0)}</span>}
+        </span>
       )}
-      <div className="ne-hint">Double-click for the floor plan</div>
-      <Port type="source" position={Position.Right} />
+    </>
+  )
+}
+
+export function OutpostBlock({ data, selected }: NodeProps<OutpostNode>) {
+  const { plan, solution, block } = data
+  const goal = plan.goals[0]
+  // Outposts that only extract show their extractor; their exports are the resources.
+  const extractor = !goal ? solution.extraction[0]?.extractor : undefined
+  const icon = goal?.kind === 'item' ? goal.item : goal?.kind === 'power' ? POWER : (extractor ?? 'Desc_TradingPost_C')
+  const resources = new Map<string, number>()
+  if (goal) for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
+  const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
+  const power = solution.power.exportedMW > 1e-6 ? `+${fmt(solution.power.exportedMW)}` : `${fmt(solution.power.consumedMW)}`
+  const { x, y } = block.foundations
+
+  return (
+    <div
+      className={`ne-outpost${selected ? ' selected' : ''}${short.length ? ' short' : ''}`}
+      style={{ width: block.w * MAP_G, height: block.h * MAP_G }}
+      title={`${plan.name}${x && y ? ` · ${x} × ${y} foundations` : ''}`}
+    >
+      {block.ins.map((p) => (
+        <MapPortView key={p.id} p={p} type="target" />
+      ))}
+      {block.outs.map((p) => (
+        <MapPortView key={p.id} p={p} type="source" />
+      ))}
+      {block.powerIn && <MapPortView p={block.powerIn} type="target" />}
+      {block.powerOut && <MapPortView p={block.powerOut} type="source" />}
+      <div className="ne-outpost-body">
+        <GameIcon id={icon} size={32} />
+        <strong className="ne-outpost-name">{plan.name}</strong>
+        <span className="ne-chips">
+          {[...resources].map(([item, r]) => (
+            <span key={item} className="ne-chip" title={`Extracts ${fmt(r)} ${itemName(item)}/min`}>
+              <GameIcon id={item} size={16} />
+              {fmt(r)}
+            </span>
+          ))}
+          {solution.power.consumedMW + solution.power.exportedMW > 1e-6 && (
+            <span className="ne-chip" title={solution.power.exportedMW > 1e-6 ? 'Power sent out (MW)' : 'Power used (MW)'}>
+              <GameIcon id={POWER} size={16} />
+              {power}
+            </span>
+          )}
+          {short.map((f) => (
+            <span key={f.item} className="ne-chip short" title={`Short ${fmt(f.shortfall)} ${itemName(f.item)}/min`}>
+              <GameIcon id={f.item} size={16} />−{fmt(f.shortfall)}
+            </span>
+          ))}
+        </span>
+      </div>
     </div>
   )
 }
 
-function Row({ label, items }: { label: string; items: Chip[] }) {
-  return (
-    <div className="ne-row">
-      <span className="ne-row-label">{label}</span>
-      <span className="ne-chips">
-        {items.map((c) => (
-          <span key={c.key} className="ne-chip">
-            <GameIcon id={c.icon} size={18} />
-            {c.text}
-          </span>
-        ))}
-      </span>
-    </div>
-  )
-}
+/** Small arrowhead at a link's input end, in the link's colour. */
+export const linkMarker = (t: Transport) => ({ type: MarkerType.ArrowClosed, width: 14, height: 14, color: transportColor[t], markerUnits: 'userSpaceOnUse', strokeWidth: 1 })
 
 export function LinkLine(props: EdgeProps<LinkEdge>) {
-  const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
-  // Several links between the same two outposts run side by side instead of on top of each other.
-  const siblings = useEdges().filter((e) => (e.source === source && e.target === target) || (e.source === target && e.target === source))
-  const i = siblings.findIndex((e) => e.id === id)
-  const shift = (i - (siblings.length - 1) / 2) * 26
+  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
   const pts = useMemo(
-    () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition, { shift }),
-    [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition, shift],
+    () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition),
+    [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition],
   )
-  const path = useRoutedPath(id, pts)
+  const path = useRoutedPath(id, pts, 8)
   const { x, y } = labelPoints(pts).label
   const t = data?.transport ?? 'belt'
+  const r = data?.items[0]
   return (
     <>
       <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}`} />
       <EdgeLabelRenderer>
-        <div className="ne-edge-label nodrag nopan" style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}>
-          <GameIcon id={transportIcon(t)} size={18} title={transportLabel(t)} />
-          {t === 'power'
-            ? `${fmt(data?.powerMW ?? 0)} MW`
-            : (data?.items ?? []).map((r) => (
-                <span key={r.item} className="ne-chip">
-                  <GameIcon id={r.item} size={18} />
-                  {fmt(r.perMin)}
-                </span>
-              ))}
+        <div
+          className={`ne-edge-label nodrag nopan${selected ? ' selected' : ''}`}
+          style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)`, borderColor: transportColor[t] }}
+          title={`${transportLabel(t)}${r ? ` · ${itemName(r.item)}` : ''}`}
+        >
+          <GameIcon id={transportIcon(t)} size={14} />
+          {t === 'power' ? (
+            `${fmt(data?.powerMW ?? 0)} MW`
+          ) : r ? (
+            <>
+              <GameIcon id={r.item} size={14} />
+              {fmt(r.perMin)}
+            </>
+          ) : null}
         </div>
       </EdgeLabelRenderer>
     </>
