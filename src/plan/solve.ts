@@ -72,15 +72,20 @@ export function machinePowerMW(b: Building | undefined, clock = 1, boost = 1) {
 
 /**
  * Whole machines for `machines` worth of work at 100% clock, run no faster than
- * `maxClock`: the fewest machines, all at the same clock, so a manifold feeds
- * them evenly (2.5 machines of work at 100% max is 3 machines at 83.3%).
+ * `maxClock`: the fewest machines, all at the same clock. By default none runs below
+ * 100%: 2.5 machines of work is 3 machines at 100%, and the manifold leaves the last one
+ * idle half the time. With `underclock` they all slow down to match instead (3 at 83.3%).
  */
-export function sizeMachines(machines: number, maxClock = 1) {
+export function sizeMachines(machines: number, maxClock = 1, underclock = false) {
   if (machines <= 1e-9) return { count: 0, clock: 0 }
   const limit = Math.min(MAX_CLOCK, Math.max(0.01, maxClock))
   const count = Math.max(1, Math.ceil(machines / limit - 1e-9))
-  return { count, clock: machines / count }
+  return { count, clock: underclock ? machines / count : Math.max(Math.min(1, limit), machines / count) }
 }
+
+/** Power for `count` machines at `clock` doing `machines` worth of 100% work: idle time draws nothing. */
+const busyPowerMW = (b: Building | undefined, machines: number, count: number, clock: number, boost = 1) =>
+  clock > 0 ? count * machinePowerMW(b, clock, boost) * Math.min(1, machines / (count * clock)) : 0
 
 /** Somersloops a building can take per machine, and the output multiplier for `n` of them. */
 export function somersloopBoost(b: Building | undefined, n = 0) {
@@ -94,8 +99,9 @@ export function somersloopBoost(b: Building | undefined, n = 0) {
  * goals; imports are used before producing locally, then byproducts of the
  * outpost's own recipes, then new production. Resources come from the plan's
  * nodes. Anything left over (byproducts, unused node output) is exported.
- * Machines are sized to the plan's highest clock speed and underclocked to
- * match, with power following the game's clock exponent and Somersloop boost.
+ * Machines are sized to the plan's highest clock speed and run at full clock, the last
+ * one idling part of the time (or all underclocked to match, when the plan asks), with
+ * power following the game's clock exponent and Somersloop boost.
  */
 export function solve(plan: OutpostPlan, available: Availability, suggested: Choice = {}): OutpostSolution {
   const choose = (item: ItemId) => {
@@ -218,7 +224,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       }
       const building = recipe.producedIn.find((b) => available.buildings.has(b)) ?? recipe.producedIn[0]
       const b = buildingsById.get(building)
-      const { count, clock } = sizeMachines(run.machines, b?.overclock?.canOverclock === false ? 1 : maxClock)
+      const { count, clock } = sizeMachines(run.machines, b?.overclock?.canOverclock === false ? 1 : maxClock, plan.underclock)
       return {
         recipe: id,
         item: run.item,
@@ -229,7 +235,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
         shards: count * shardsFor(clock),
         somersloops: run.sloops,
         boost: run.boost,
-        powerMW: count * machinePowerMW(b, clock, run.boost),
+        powerMW: busyPowerMW(b, run.machines, count, clock, run.boost),
       }
     })
 
@@ -260,7 +266,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       const pump = nodelessExtractor(item, available.buildings)
       if (pump) {
         const machines = missing / extractorPerMin(pump, item)
-        const { count, clock } = sizeMachines(machines, maxClock)
+        const { count, clock } = sizeMachines(machines, maxClock, plan.underclock)
         f.extracted += missing
         extraction.push({
           resource: item,
@@ -270,7 +276,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
           clock,
           shards: count * shardsFor(clock),
           perMin: missing,
-          powerMW: count * machinePowerMW(pump, clock),
+          powerMW: busyPowerMW(pump, machines, count, clock),
         })
       } else f.shortfall += missing
     }
@@ -288,7 +294,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       generators,
       extraction,
       flows,
-      power: { consumedMW, generatedMW: mw, exportedMW: plan.selfPowered ? mw - consumedMW : mw },
+      power: { consumedMW, generatedMW: mw },
       recipes,
     }
     return { solution, consumedMW, byproducts: made }

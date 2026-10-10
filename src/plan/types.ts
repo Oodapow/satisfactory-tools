@@ -41,7 +41,7 @@ export interface ItemGoal {
   perMin: number
 }
 
-/** Power the outpost must feed into the grid, in MW, using one generator type and fuel. */
+/** Power the outpost's generators add to its grid, in MW, using one generator type and fuel. */
 export interface PowerGoal {
   kind: 'power'
   mw: number
@@ -64,9 +64,14 @@ export interface OutpostPlan {
   selfPowered: boolean
   /**
    * Highest clock speed machines are sized for, 1 = 100% (up to 2.5 with three power shards).
-   * Machines that don't divide evenly are underclocked to match. Defaults to 1.
+   * Defaults to 1.
    */
   maxClock?: number
+  /**
+   * Underclock machines that don't divide evenly so they all run at the same lower clock.
+   * Off by default: they run at full clock and the manifold's last machine idles part of the time.
+   */
+  underclock?: boolean
   /** Somersloops slotted into each machine, per recipe. Each one adds output and multiplies power. */
   somersloops?: Record<RecipeId, number>
   /** Where the outpost sits on the world map, in world units (cm). */
@@ -140,7 +145,8 @@ export interface OutpostSolution {
   generators: GeneratorStep[]
   extraction: ExtractionStep[]
   flows: Map<ItemId, ItemFlow>
-  power: { consumedMW: number; generatedMW: number; exportedMW: number }
+  /** Power isn't exported: what the generators make feeds the outpost's grid (see ./grids.ts). */
+  power: { consumedMW: number; generatedMW: number }
   /** Recipe actually used per item (chosen or suggested). */
   recipes: Record<ItemId, RecipeId>
 }

@@ -4,9 +4,10 @@ import { availability } from '../data/game/availability'
 import { solvePlan } from '../plan/network'
 import type { OutpostPlan } from '../plan/types'
 import { proposeLayout } from './generate'
-import { G, cellOf, isBlock, SIZE } from './grid'
+import { G, cellOf, isBlock, sizeOf } from './grid'
 import { routeFloorPlan, routeSegments } from './gridRouter'
 import { planLayout } from './layout'
+import { inferFlows } from './flow'
 
 const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
 const standard = {
@@ -29,6 +30,8 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   ...patch,
   recipeChoices: { ...standard, ...patch.recipeChoices },
 })
+/** Belts and pipes, without power lines. */
+const lines = <E extends { data?: { medium?: string } }>(edges: E[]) => edges.filter((e) => e.data?.medium !== 'power')
 const ironImport = (perMin: number) => ({ linkId: 'ore', other: 'Iron Fields', transport: 'belt' as const, item: 'Desc_OreIron_C', perMin })
 // The example from #13: 20 Reinforced Iron Plate/min from 240 Iron Ore/min.
 const rip = (patch: Partial<OutpostPlan> = {}) =>
@@ -95,8 +98,8 @@ describe('floor plan on the grid', () => {
       for (let j = i + 1; j < blocks.length; j++) {
         const a = cellOf(blocks[i])
         const b = cellOf(blocks[j])
-        const sa = SIZE[blocks[i].type]
-        const sb = SIZE[blocks[j].type]
+        const sa = sizeOf(blocks[i].type, blocks[i].data)
+        const sb = sizeOf(blocks[j].type, blocks[j].data)
         const apart = a.x + sa.w <= b.x || b.x + sb.w <= a.x || a.y + sa.h <= b.y || b.y + sb.h <= a.y
         expect(apart, `${blocks[i].id} overlaps ${blocks[j].id}`).toBe(true)
       }
@@ -138,6 +141,9 @@ describe('bigger outposts', () => {
     const r = routeFloorPlan(g.nodes, g.edges)
     expect(r.routes.size).toBe(g.edges.length)
     expect(r.clashes).toEqual([])
+    // What each belt carries can be worked out again from the blocks it joins.
+    const flows = inferFlows(g.nodes, g.edges)
+    for (const e of lines(g.edges)) expect(flows.get(e.id)?.perMin, e.id).toBeCloseTo(e.data!.perMin!, 4)
     // Every port is connected.
     for (const n of g.nodes.filter((x) => x.type === 'port' && x.data.kind === 'port' && x.data.transport !== 'power'))
       expect(g.edges.some((e) => e.source === n.id || e.target === n.id), n.id).toBe(true)

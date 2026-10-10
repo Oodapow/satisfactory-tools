@@ -13,13 +13,33 @@ Tracked in #12. The layout algorithm is #13, the floor-plan grid is #29.
 
 ![Factory map](node-editor/1-factory-map.png)
 
-Each block shows the outpost's goal, what it extracts, what it imports, what it exports (goal, surplus resources and byproducts, from the solver) and how much power it uses. Shortfalls show in red.
+Blocks are drawn with icons rather than text (`src/editor/macro.ts`, #67, #68):
 
-Links are coloured by how they travel: belt, pipe, truck, train, drone, or power line. When two outposts have several links, they are drawn side by side.
+- **Size**: each block is as big as the outpost's largest floor (or its extractors side by side), on a grid of half foundations (16 px is 4 m), with room for its connection points. Blocks snap to that grid as you drag them; faint lines mark whole foundations. Hover a block for its name and footprint; the name shows inside only when the block is wide enough.
+- **Export points** on the right edge: one per item it sends out (goal, surplus resources, byproducts), with the item's icon and rate.
+- **Import points** on the left edge: one per import, with its icon and rate, plus one free point below them. A link fills the free point and a new free point appears; a point never takes two links.
+- **Power**: a power point under the import points and one under the export points. A power line is drawn from one outpost's right power point to another's left one, but has no direction: it puts both on one power grid (see [Power grids](#power-grids)).
+- **Inside**: the goal's icon (an extractor for extraction sites), what it extracts for itself, its power (what it uses, or `+` what it makes beyond that), and anything it is short on in red. Power is not an import or an export: it belongs to the outpost's grid.
+
+Links are coloured by how they travel: belt, pipe, truck, train, drone, or power line, with rounded corners, a small arrowhead at the import end (none on power lines) and a compact label with the transport, item and rate.
+
+### Power grids
+
+Every outpost is on exactly one **power grid** (#61), and everything inside an outpost is on that grid. Outposts joined by power lines, directly or through other outposts, share a grid; an outpost with no power lines is a grid of its own. So the map can have several independent grids, each fed by the power plants on it, without power lines running across the whole map. A grid makes what its outposts' generators make and uses what all its outposts' machines draw.
+
+With nothing selected, the right-hand panel shows one widget per grid (#66): what it makes, uses and has spare or short, as tiles and a bar that turns red past what is made, its generators (count, type and fuel), and every outpost's draw with a bar for its share. A grid with no generators says so and is marked Short.
+
+![Two grids: the coal grid powers Plate Works, Iron Fields is on its own and short](node-editor/9-power-grids.png)
+
+Click a grid's name to select it: its outposts and power lines light up on the map and everything else fades. The panel then lets you rename the grid (a grid is named after its biggest power plant until you name it) and lists its outposts and power lines, each line with a remove button.
+
+![A selected grid](node-editor/9b-grid-selected.png)
+
+Power lines saved before grids existed (one way, with a set MW) become plain power lines between the same outposts, so the same outposts end up on one grid.
 
 ## How lines and ports are drawn
 
-Both levels draw lines like a circuit schematic: horizontal and vertical runs with 90° corners, a small hop where one line crosses another (so a crossing never looks like a join), and every connection point a small circle, hollow while free and filled once connected (orange for inputs, teal for outputs).
+Both levels draw lines like a circuit schematic: horizontal and vertical runs with 90° corners, a small hop where one line crosses another (so a crossing never looks like a join), and every connection point a small circle, hollow while free and filled once connected. On the floor plan each point is coloured by what it carries (see [Connection points](#connection-points)).
 
 On the factory map, lines between outposts are routed one by one (`src/editor/router.ts`): a line whose target is behind it goes round through the gap between blocks, and lines that would share a channel are nudged apart.
 
@@ -28,13 +48,23 @@ The floor plan is stricter, see [The grid](#the-grid) below.
 What you can do:
 
 - **Add an outpost**: drag "Outpost" from the left onto the map, or click it. This creates an empty plan.
-- **Import between outposts**: drag from one outpost's right edge to another's left edge. The new link imports whatever the first outpost has spare (its first open offer). If it only has power spare, you get a power line instead. Select the link to change the item, rate or transport.
-- **See what you could import**: select an outpost. The panel lists its imports and exports, and everything the other outposts still have spare, each with an Import button. Power from power outposts has a Connect button.
+- **Add an extraction site** (#69): "Extraction site" creates an outpost with one node and no goal. Pick its nodes (or water extractors) in the panel; everything it mines is exported, one export point per resource, and its floor plan shows just the extractors and export ports.
+- **Import between outposts**: drag from an export point to another outpost's free import point. The link imports that item: whatever the exporter still has spare. Select the link to change the item (one of the exporter's exports), rate or transport.
+- **Only transports that fit the item**: solids go by belt, truck, train or drone; fluids and gases by pipe or train (fluid freight). The pickers never offer Water by belt or Rotors by pipe.
+- **Run a power line**: drag from one outpost's right power point to another's left one, or select an outpost and use **Power line to…** in its power widget. Both outposts end up on one grid. Select a power line to see its grid, or delete it to split the grid again.
+- **See an outpost's power**: select it. A power widget shows what it uses and makes, the grid it is on with that grid's balance (click to select the grid), and its power lines to other outposts.
+
+![An outpost's power widget](node-editor/9c-outpost-power.png)
+- **See what you could import**: select an outpost. The panel lists its imports and exports, and everything the other outposts still have spare, each with an Import button. Power isn't offered here: run a power line instead.
 - **Open the floor plan**: double-click an outpost, or use "Open floor plan" in its panel.
 - **Delete**: select a block or link and press Delete or Backspace, or use the button in the panel. Deleting an outpost deletes its plan and any imports that came from it.
 - **Edit the plan itself** (goal, resource nodes, recipes): "Edit goal, resources and recipes" opens the outpost in the planning flow.
 
 ![Outpost selected](node-editor/2-outpost-inspector.png)
+
+![A new link and its panel](node-editor/3-new-link.png)
+
+![An extraction site](node-editor/9-extraction-site.png)
 
 With no outposts yet, the panel offers **Load example outposts**: Iron Fields (two pure iron nodes, makes 120 screws), Coal Power (200 MW) and Plate Works (20 Reinforced Iron Plates from imported ore and screws).
 
@@ -45,47 +75,75 @@ With no outposts yet, the panel offers **Load example outposts**: Iron Fields (t
 The first time you open an outpost, the editor proposes a floor plan from the plan's solution (`src/editor/layout.ts`, then `generate.ts` puts it on the grid):
 
 - **One floor per production type.** Steps that use the same machine at the same depth of the chain share a floor: smelting, then plates and rods, then screws, then assembly. A floor sits one level above the highest floor that feeds it, so raw processing is at the bottom and the goal at the top. Each floor's label gives its size in foundations (machines side by side along the manifold, a belt per input and output, a walkway) and its height.
-- **Manifolds.** Each step is a row of identical machines. Above it, a splitter chain per ingredient feeds every machine; below it, a merger chain per product collects them. All machines in a step run at the same clock from the solver (for example 3 machines at 83.3%).
+- **Manifolds.** Each step is a row of identical machines. Above it, a splitter chain per ingredient feeds every machine; below it, a merger chain per product collects them. Machines run at full clock (#60): 2.5 machines of work is 3 machines at 100%, and the manifold feeds them in order, so the first two run full and the last one idles half the time. Belts show that: full loads into the first machines, less into the last. A plan can ask to underclock them all evenly instead.
 - **Lines split to fit your best belt.** When one belt (or pipe) of your best tier can't carry a step's input or output, the step becomes several parallel lines, each with its own belts. A line also splits above 16 machines. Imports and exports that need more than one belt get one port per belt. Each belt gets the lowest Mk that carries its rate, and turns red only when even the best can't (one machine needing more than a belt carries).
+- **Surplus overflows.** When the outpost has more of something than it uses (ore from a node, say), the surplus leaves through the end of the manifold that uses it: the belt carries on past the last machine to the export port, instead of being split off before the first one. That only happens when the belt has room; otherwise the surplus gets its own belt.
 - **Imports are honored.** Anything the plan imports, say 240 Screws/min by truck, arrives at a port and is not made here.
-- **Gutter and ports.** Every line starts at the left edge of its floor. Left of the floors is a gutter where belts climb between floors (each belt that changes floor shows a conveyor lift with the number of floors). Where one source feeds several consumers, splitters sit in the gutter next to it; where a consumer takes from several sources, mergers do. Ports sit in a column left of the gutter: resource nodes (with extractor, purity and clock) and imports first, then exports. Exports are split by who takes them (one port per importing outpost), and the rest is shown as Goal or Surplus. Power lines become power ports.
+- **Gutter and ports.** Every line starts at the left edge of its floor. Left of the floors is a gutter where belts climb between floors (each belt that changes floor shows a conveyor lift with the number of floors). Where one source feeds several consumers, splitters sit in the gutter next to it; where a consumer takes from several sources, mergers do. Ports sit in a column left of the gutter: resource nodes (with extractor, purity and clock) and imports first, then exports. Exports are split by who takes them (one port per importing outpost), and the rest is shown as Goal or Surplus. Power is one power port, labelled with the outpost's grid: out to the grid when the outpost makes more than it uses, in from the grid otherwise.
 
 ![Zoomed in](node-editor/5-floor-zoom.png)
 
-The toolbar shows machine count, floors and power draw against the power coming in. Warnings appear at the bottom: not enough power, shortfalls, imports nothing uses, lines that had to be split, and links on the factory map that changed since the plan was proposed.
+The toolbar shows machine count, floors and power draw against what the outpost's grid has for it (what the grid makes, less what its other outposts use). Warnings appear at the bottom: not enough power, shortfalls, imports nothing uses, lines that had to be split, and links on the factory map that changed since the plan was proposed.
 
 Power outposts get a generator floor fed by fuel and water:
 
 ![Power outpost](node-editor/6-power-outpost.png)
 
+### Pipes, belts and power
+
+Each line on the floor plan is one of three kinds, and each kind has its own colour (#47, #48):
+
+- **Belts** (orange) carry solids. They split at splitters and join at mergers.
+- **Pipes** (blue, thicker) carry fluids. They split and join at **pipeline junctions**, never at splitters or mergers. A junction has four connection points, each one in or out. Pipes are sized against pipeline Mk rates (300 and 600/min).
+- **Power lines** (thin yellow) run from a **power pole** to a machine, generator, extractor, power port or another pole. They follow the grid like belts: they are routed after belts and pipes, never share a grid edge with them, and only cross them straight through (with a hop). Poles take the game's number of lines for their Mk (Mk.1 4, Mk.2 7, Mk.3 10), one per connection point on the pole's border: the middle of each side, then the corners. A 2x2 pole has eight such points, so a Mk.3 shows eight of its ten.
+
+The proposal wires power on its own: a pole one cell right of every machine (machines sit further apart to leave a grid line free past each pole), chained along each line; a riser through every line's first pole, bottom floor first; and a pole beside each power port and resource node (extractors need power too), chained down the port column. No pole takes more than four lines, so it works with Mk.1 poles; it uses the best pole you have unlocked.
+
+### Connection points
+
+Every connection point is coloured by what it carries: orange for a belt, blue for a pipe, yellow for power. A free point is an empty ring, a used one is filled (#50). Each point takes exactly one line, power and pipes included; the editor refuses a second one. A line only joins points of the same kind, and belts and pipes always run from an output to an input: drag from either end and the line still runs the right way, with an arrow at its input end.
+
+### What a belt carries
+
+Belts and pipes work out their item and rate from what they connect (`src/editor/flow.ts`, #51). The item comes from the source end (a machine output's product, a port's item, whatever reaches a joint), or else from what the far end takes. Rates are a max flow over the lines: machine outputs and ports put in what they make, machine inputs and ports take what they need, and joints pass anything through. So a splitter shares what comes in by what each branch can take, and a merger adds up its inputs. The belt tier follows from the rate.
+
+Select a belt to see its item and rate. Changing either sets it by hand, and the rest of the network works around it; **Work it out again** goes back to the inferred values.
+
 ### The grid
 
-Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`). Blocks have fixed sizes in grid cells and snap to the grid when dragged. Every connection point is a grid point on the block's border: a machine has one input per ingredient along its top and one output per product along its bottom.
+Everything on the floor plan sits on a 20 px grid (`src/editor/grid.ts`), one cell per 2 m in the game, so a splitter is 2 × 2 cells and a foundation 4 × 4. Machines are drawn at their real footprint from the game data (#68): a Constructor (8 × 10 m) is 4 × 5 cells, an Assembler (9 × 16 m) 5 × 8. Other blocks have fixed sizes. Blocks snap to the grid when dragged, and a dropped block keeps one free grid line between it and its neighbours so lines can reach it. Every connection point is a grid point on the block's border: a machine has one input per ingredient spread along its back (top), one output per product along its front (bottom), and a power point on its right. Inside, a machine shows only its icon, what it makes, and its clock; hover it for the name and recipe.
 
-Belts are routed along grid lines (`src/editor/gridRouter.ts`) with these rules:
+**Machines turn.** Select one and press R, or use Rotate in the panel: it turns a quarter clockwise, its footprint swaps width and length, and its connection points go round with it. The icon stays upright. Lines reroute on the grid, and a machine that would land on another block moves to the nearest free spot.
+
+![A machine before and after a quarter turn](node-editor/10-machine-upright.png)
+![The same machine turned](node-editor/11-machine-turned.png)
+
+Blocks never overlap (#52). A block you drop or add lands on the nearest grid spot with a free grid line all round it, so belts and power lines can reach its connection points.
+
+Belts and pipes are routed along grid lines (`src/editor/gridRouter.ts`) with these rules:
 
 - No two belts share a grid edge, so lines never run on top of each other.
 - A belt only turns where no other belt is, and two belts only meet where they cross straight through each other (drawn with a hop).
 - The grid point just outside each connection point is kept for that point's belt.
 - Belts don't run through blocks. Each belt is an A* search that prefers few turns and few crossings; short belts (the manifolds) are routed first.
 
-If a belt can't find a clean path it still gets the best one, sharing as little as possible.
+If a belt can't find a clean path it still gets the best one, sharing as little as possible. Such belts are drawn dashed red, and a note says how many there are.
 
 **Splitters and mergers turn to face their belts.** Their connection points rotate (and mirror) to the orientation that points each one at the block at the other end, the single belt (into a splitter, out of a merger) counting double. Only the connection points move: the icon stays upright. Ports turn the same way.
 
 Routes are worked out for the whole plan whenever blocks or belts change. While you drag a block its belts follow it with a plain route, and they snap back onto the grid when you drop it:
 
-![Belts rerouted on the grid after moving a machine](node-editor/5b-grid.png)
+![Belts rerouted on the grid after moving a machine; the one that found no clean route is dashed red](node-editor/5b-grid.png)
 
 ### Editing
 
-Everything is editable. Drag blocks in from the left (or click them): any production machine, generator, splitter, merger, or a port for each transport. Connect an output (bottom or right handle) to an input (top or left handle). New belts take their item from whatever feeds them. Select a block or belt to edit it: machine type, recipe or fuel, clock, count and floor; port direction, transport, item and rate; belt item and rate. Short belts (a splitter dropping into its machine) show their label when selected.
+Everything is editable. Drag blocks in from the left (or click them): any production machine, generator, splitter, merger, pipeline junction, power pole, or a port for each transport. Drag from a free connection point to another of the same colour (see [Connection points](#connection-points)). Select a block or line to edit it: machine type, recipe or fuel, clock, count and floor; port direction, transport, item and rate; belt item and rate. Short belts (a splitter dropping into its machine) show their label when selected. Deleting a block deletes its lines.
 
-Edits change the drawing, not the plan. Once you edit, the toolbar says "Edited" and **Propose layout** asks before replacing your changes. To change what the outpost makes or imports, change the plan or the factory map, then propose again. Floor plans saved before the grid existed are moved onto it when opened.
+Edits change the drawing, not the plan. Once you edit, the toolbar says "Edited" and **Propose layout** asks before replacing your changes. To change what the outpost makes or imports, change the plan or the factory map, then propose again. Floor plans saved before the grid existed are moved onto it when opened. An untouched proposal from an older version of the layout (before pipes and power) is proposed again when opened; an edited one is kept as it is.
 
 ## Storage
 
-Plans live where the planning flow keeps them (`outposts` in localStorage). The editor adds one entry, `node-editor`, with block positions, power lines and floor plans per outpost. Both go into the existing backup file.
+Plans live where the planning flow keeps them (`outposts` in localStorage). The editor adds one entry, `node-editor`, with block positions and floor plans per outpost. Power lines and grid names live in `power-grids`. Both go into the existing backup file.
 
 ## Icons
 
@@ -98,15 +156,18 @@ All of it is in `src/editor/`:
 | File | What it does |
 | --- | --- |
 | `EditorScreen.tsx` | Both editors, the palette and the selection handling. Loaded lazily with React Flow. |
-| `model.ts` | Types for links, power lines, floor plans, ports, belts; belt tier lookup. |
+| `model.ts` | Types for links, floor plans, ports, belts; belt tier lookup. |
 | `layout.ts` | The layout algorithm (`planLayout`): floors, lines, ports and which belt carries what, as plain data. |
 | `generate.ts` | Puts that layout on the grid as blocks and belts (`proposeLayout`). |
-| `grid.ts` | Grid size, block sizes, connection points, and turning joints and ports to face their belts. |
-| `gridRouter.ts` | Floor-plan belt routing on the grid. |
+| `grid.ts` | Grid size, block sizes, connection points (what each carries, in or out), and turning joints and ports to face their belts. |
+| `gridRouter.ts` | Floor-plan belt and pipe routing on the grid. |
+| `flow.ts` | What every belt and pipe carries, worked out from what it connects. |
+| `connect.ts` | Which lines may be drawn by hand, and where a dropped block lands. |
 | `nodes.tsx` | Block and line components for both levels. |
 | `router.ts` | Factory-map routing and the hops drawn at crossings on both levels. |
-| `Symbols.tsx` | Splitter, merger and conveyor lift symbols. |
+| `Symbols.tsx` | Splitter, merger, pipeline junction, power pole and conveyor lift symbols. |
 | `Inspector.tsx` | The right-hand panel for whatever is selected. |
+| `PowerWidgets.tsx` | The power grid, grid inspector and outpost power widgets in that panel. Grids themselves are worked out in `src/plan/grids.ts`. |
 | `store.ts` | The editor's own stored state, the example outposts, palette lists. |
 | `unlocked.ts` | `useUnlocked()`: palette and picker lists cut down to what the game state has unlocked (machines, generators, recipes, fuels, items, link types, best belt and pipe). |
 | `icons.ts`, `GameIcon.tsx` | Icon lookup with the lettered fallback. |
@@ -118,6 +179,8 @@ It uses [React Flow](https://reactflow.dev) (`@xyflow/react`), MIT licensed, for
 
 - The layout is one proposal, not a search over alternatives: it doesn't try other floor groupings or machine orders to shorten belts.
 - Footprints are estimates from building sizes; they don't place real foundations or check that a floor fits a given area.
-- Power lines are kept by the editor because the plan model has no power imports yet. Power lines don't feed into the solver.
+- Power lines don't feed into the solver: an outpost's generators are sized by its power goal, not by what its grid needs.
+- Pipes don't account for head lift: a pipe climbing several floors may need a pump in the game.
+- A belt whose item doesn't match the machine input it feeds isn't flagged yet.
 - Floor plan edits are not checked against the plan (for example, deleting a machine doesn't show a shortfall).
 - On phones you can add blocks by tapping the palette, but linking needs a drag between two small handles, which is fiddly.

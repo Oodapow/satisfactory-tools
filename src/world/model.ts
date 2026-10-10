@@ -1,7 +1,7 @@
 // What the world map shows for a game state: which nodes sit in explored ground, and
 // whether the player knows what they hold yet (no spoilers).
 import { availability, type Availability, type GameState } from '../data/game/availability'
-import type { Purity, WorldMap, WorldNode } from '../data/game/types'
+import type { Purity, WorldCollectible, WorldMap, WorldNode } from '../data/game/types'
 import { FOG_SIZE, type Point, type SaveMap } from '../save/readMap'
 
 /** Fog values (0-255, the game writes up to ~170) between these fade from hidden to clear. */
@@ -97,3 +97,31 @@ export function nearby(list: Marker[], [x, y]: Point, radius = AUTO_RADIUS): Mar
   return list.filter((m) => pickable(m) && dist(m) <= radius).sort((a, b) => dist(a) - dist(b))
 }
 
+
+/** Collectibles in legend order: the three Power Slugs, Somersloops, Mercer Spheres, then crash sites. */
+export const COLLECTIBLES = ['Desc_Crystal_C', 'Desc_Crystal_mk2_C', 'Desc_Crystal_mk3_C', 'Desc_WAT1_C', 'Desc_WAT2_C', 'Desc_HardDrive_C']
+export const CRASH_SITE = 'Desc_HardDrive_C'
+
+export interface Pickup {
+  collectible: WorldCollectible
+  /** Null when the player hasn't come across this kind of collectible yet. */
+  item: string | null
+  collected: boolean
+}
+
+/**
+ * Collectibles to draw: those in explored ground (or all with `showAll`). A kind the player hasn't
+ * met yet (none collected, nothing unlocked that uses it) is drawn without saying what it is.
+ * Crash sites were always on the map, so they always say what they are.
+ */
+export function pickups(map: WorldMap, state: GameState & { map?: SaveMap }, showAll: boolean): Pickup[] {
+  const a = availability(state)
+  const fog = state.map && decodeFog(state.map.fog)
+  const done = new Set(state.map?.collected)
+  const isCollected = (c: WorldCollectible) => done.has(c.id) || (c.guid !== undefined && done.has(c.guid))
+  const met = new Set(map.collectibles.filter(isCollected).map((c) => c.item))
+  const knows = (item: string) => item === CRASH_SITE || met.has(item) || a.items.has(item)
+  return map.collectibles
+    .filter((c) => showAll || (fog && fogAt(map, fog, [c.x, c.y]) >= FOG_REVEALED))
+    .map((c) => ({ collectible: c, item: knows(c.item) ? c.item : null, collected: isCollected(c) }))
+}

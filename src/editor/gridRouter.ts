@@ -1,9 +1,10 @@
-// Routes floor-plan belts along the grid (grid.ts) so they stay readable: belts run on grid
+// Routes floor-plan belts, pipes and power lines along the grid (grid.ts) so they stay readable: belts run on grid
 // lines, no two belts share a grid edge, a belt only turns where no other belt is, and two
 // belts may only meet where they cross straight through each other (drawn with a hop).
 // Each belt is an A* search over grid vertices that avoids blocks and the belts routed
-// before it, preferring few turns and few crossings. Short belts (manifolds) go first.
-import { cellOf, G, handleCell, isBlock, orientAll, SIZE, type Cell, type Orient, type Side } from './grid'
+// before it, preferring few turns and few crossings. Short belts (manifolds) go first; power
+// lines go last, so they make way for belts and pipes.
+import { cellOf, edgeMedium, G, handleCell, isBlock, orientAll, sizeOf, type Cell, type Orient, type Side } from './grid'
 import type { BeltEdge, MicroNode } from './model'
 import type { Point } from './router'
 
@@ -43,7 +44,7 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
   let maxY = -Infinity
   for (const n of blocks) {
     const c = cellOf(n)
-    const s = SIZE[n.type]
+    const s = sizeOf(n.type, n.data)
     minX = Math.min(minX, c.x)
     minY = Math.min(minY, c.y)
     maxX = Math.max(maxX, c.x + s.w)
@@ -60,7 +61,7 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
   const blocked = new Uint8Array(W * H)
   for (const n of blocks) {
     const c = cellOf(n)
-    const s = SIZE[n.type]
+    const s = sizeOf(n.type, n.data)
     for (let y = c.y; y <= c.y + s.h; y++) for (let x = c.x; x <= c.x + s.w; x++) if (inside(x, y)) blocked[idx(x, y)] = 1
   }
   // What committed belts use: per vertex, bit 1 = runs through horizontally, 2 = vertically,
@@ -80,14 +81,14 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
     if (!s || !t) return []
     const a = handleCell(s, e.sourceHandle ?? 'out', orients.get(s.id))
     const b = handleCell(t, e.targetHandle ?? 'in', orients.get(t.id))
-    return a && b ? [{ e, a, b }] : []
+    return a && b ? [{ e, a, b, power: edgeMedium(e, byId) === 'power' }] : []
   })
   // The grid spot just outside every connection point belongs to that point's belt: others keep off it.
   const reserved = new Uint8Array(W * H)
   const stepOut = (c: Cell & { side: Side }) => ({ x: c.x + DX[dirOf[c.side]], y: c.y + DY[dirOf[c.side]] })
   for (const { a, b } of ends)
     for (const c of [stepOut(a), stepOut(b)]) if (inside(c.x, c.y)) reserved[idx(c.x, c.y)] = 1
-  ends.sort((p, q) => Math.abs(p.a.x - p.b.x) + Math.abs(p.a.y - p.b.y) - (Math.abs(q.a.x - q.b.x) + Math.abs(q.a.y - q.b.y)))
+  ends.sort((p, q) => Number(p.power) - Number(q.power) || Math.abs(p.a.x - p.b.x) + Math.abs(p.a.y - p.b.y) - (Math.abs(q.a.x - q.b.x) + Math.abs(q.a.y - q.b.y)))
 
   // Search state, reused across belts: a state is valid only when its stamp matches.
   const N = W * H * 4

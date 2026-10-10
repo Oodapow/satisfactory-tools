@@ -244,10 +244,23 @@ export interface WorldNode {
   y: number
 }
 
+/** A pickup worth going back for: a Power Slug, Somersloop, Mercer Sphere, or a crash site's hard drive. */
+export interface WorldCollectible {
+  /** Actor name, as in save files. */
+  id: string
+  /** What it gives: Desc_Crystal_C (and _mk2, _mk3), Desc_WAT1_C, Desc_WAT2_C or Desc_HardDrive_C. */
+  item: ItemId
+  x: number
+  y: number
+  /** Pickup id the save lists once it's collected; crash sites have none. */
+  guid?: string
+}
+
 export interface WorldMap {
   /** World area covered by the map image (and the save's fog of war), in cm. */
   bounds: { west: number; east: number; north: number; south: number }
   nodes: WorldNode[]
+  collectibles: WorldCollectible[]
 }
 
 /** One level of the catalog's grouping: a subcategory and its members in display order. */

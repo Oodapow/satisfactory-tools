@@ -1,12 +1,13 @@
 // Data model for the node editor. Two levels:
 // - macro: the factory map. Blocks are outpost plans (src/plan), links are their imports,
-//   plus power lines between outposts.
+//   plus power lines between outposts (src/plan/grids.ts).
 // - micro: the inside of one outpost: machines, splitters, mergers, and ports that connect
 //   to the macro links (imports, exports, power) and to local resource nodes.
 // The plans stay the source of truth for goals, nodes, imports and recipes. This module only
-// stores what the plan model doesn't have: block positions, power lines and floor plans.
+// stores what the plan model doesn't have: block positions and floor plans.
 import type { Edge, Node } from '@xyflow/react'
 import type { Solved } from '../plan/network'
+import type { MapBlock } from './macro'
 import type { OutpostId, Transport as PlanTransport } from '../plan/types'
 
 export type ItemRate = { item: string; perMin: number }
@@ -22,23 +23,32 @@ export const transports: { id: Transport; label: string; icon: string }[] = [
   { id: 'power', label: 'Power line', icon: 'power' },
 ]
 export const transportById = new Map(transports.map((t) => [t.id, t]))
+/** Line colour per transport on the factory map (matches editor.css). */
+export const transportColor: Record<Transport, string> = {
+  belt: '#e8891c',
+  pipe: '#2b8fd6',
+  truck: '#8a6d3b',
+  train: '#6c5ce7',
+  drone: '#20a39e',
+  power: '#e6c200',
+}
 
 // ---------- Macro level (derived from plans on every render) ----------
 
-export type OutpostNode = Node<Solved, 'outpost'>
+export type OutpostNode = Node<Solved & { block: MapBlock }, 'outpost'>
 
 export type LinkData = {
   transport: Transport
   /** Empty for power lines. */
   items: ItemRate[]
-  powerMW?: number
+  /** Faded while a power grid it isn't part of is selected. */
+  dim?: boolean
+  /** A power line of the selected grid. */
+  lit?: boolean
   /** The plan import this link shows, or the power line id. */
   ref: { kind: 'import'; planId: OutpostId; importId: string } | { kind: 'power'; id: string }
 }
 export type LinkEdge = Edge<LinkData>
-
-/** Power sent from one outpost to another. The plan model has no power imports yet, so the editor keeps these. */
-export type PowerLine = { id: string; from: OutpostId; to: OutpostId; mw: number }
 
 // ---------- Micro level (stored per outpost) ----------
 
@@ -54,10 +64,23 @@ export type MachineData = {
   /** How many identical machines this block stands for (1 unless the layout collapsed a large group). */
   count: number
   floor: number
+  /** Quarter turns clockwise (ports turn with it, the icon doesn't). */
+  rot?: 0 | 1 | 2 | 3
+  /** Somersloop output multiplier (1 or absent = none). */
+  boost?: number
+  /**
+   * Generators: share of full output the grid asks of them (1 or absent = all of it). A generator
+   * burns only the fuel for the power drawn, and nothing downstream says how much that is.
+   */
+  load?: number
 }
-/** Splitters and mergers turn to face their belts on their own (see grid.ts). */
+/** Splitters, mergers and pipeline junctions turn to face their lines on their own (see grid.ts). */
 export type SplitterData = { kind: 'splitter'; floor: number }
 export type MergerData = { kind: 'merger'; floor: number }
+/** Pipeline Junction: four pipe connections, any of them in or out. */
+export type JunctionData = { kind: 'junction'; floor: number }
+/** Power pole: as many power lines as the game allows for its Mk (see poleConnections). */
+export type PoleData = { kind: 'pole'; floor: number; tier: number }
 export type PortData = {
   kind: 'port'
   direction: 'in' | 'out'
@@ -75,10 +98,17 @@ export type PortData = {
 }
 export type FloorData = { kind: 'floor'; floor: number; label: string; width: number; height: number }
 
-export type MicroNodeData = MachineData | SplitterData | MergerData | PortData | FloorData
+export type MicroNodeData = MachineData | SplitterData | MergerData | JunctionData | PoleData | PortData | FloorData
 export type MicroNode = Node<MicroNodeData>
 
+/** What a line carries: a conveyor belt (solids), a pipeline (fluids) or a power line. */
+export type Medium = 'solid' | 'fluid' | 'power'
+
 export type BeltData = {
+  /** Set when the line is made; worked out from its connection points when missing. */
+  medium?: Medium
+  /** Item and rate were set by hand. Otherwise they are worked out from the network (see flow.ts) and these are only the proposal's values. */
+  manual?: boolean
   item?: string
   perMin?: number
   /** Conveyor Mk tier (1-6) or pipe Mk (1-2) chosen for the rate. */
@@ -97,6 +127,8 @@ export type MicroGraph = {
   maxBeltTier: number
   /** Best pipeline tier (1-2). */
   maxPipeTier?: number
+  /** Layout generator version that proposed it; untouched proposals from older versions are proposed again. */
+  version?: number
   /** Set while the graph is an untouched proposal; cleared by any edit. */
   generatedAt?: string
   /** Warnings from the last proposal. */
@@ -106,12 +138,15 @@ export type MicroGraph = {
 /** Everything the editor stores, under one localStorage key. */
 export type EditorLayout = {
   positions: Record<OutpostId, { x: number; y: number }>
-  powerLines: PowerLine[]
   micro: Record<OutpostId, MicroGraph>
 }
 
 export const beltRates = [60, 120, 270, 480, 780, 1200]
 export const pipeRates = [300, 600]
+/** Power lines a pole takes, by Mk. */
+export const poleConnections = [4, 7, 10]
+/** Bumped when proposals change shape, so untouched old proposals are redone. */
+export const LAYOUT_VERSION = 4
 
 /** Lowest tier that carries `perMin`, capped at `maxTier`. */
 export function beltTierFor(perMin: number, maxTier: number, fluid = false) {

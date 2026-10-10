@@ -5,10 +5,10 @@ import type { OutpostPlan } from '../plan/types'
 import { usePersistentState } from '../storage/persisted'
 import type { EditorLayout } from './model'
 
-const EMPTY: EditorLayout = { positions: {}, powerLines: [], micro: {} }
+const EMPTY: EditorLayout = { positions: {}, micro: {} }
 
 /**
- * The editor's own state (positions, power lines, floor plans). Edits stay in memory
+ * The editor's own state (positions, floor plans). Edits stay in memory
  * while dragging and are written to storage shortly after they stop, so dragging
  * doesn't serialise on every frame.
  */
@@ -46,7 +46,7 @@ export function useEditorLayout() {
 }
 
 /** Three outposts matching the planning example: 20 Reinforced Iron Plates from imported ore and screws. */
-export function examplePlans(): { plans: OutpostPlan[]; layout: Partial<EditorLayout> } {
+export function examplePlans(): { plans: OutpostPlan[]; layout: Partial<EditorLayout>; powerLinks: [string, string][] } {
   const iron = blankPlan('Iron Fields', {
     goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 120 }],
     nodes: [
@@ -69,11 +69,12 @@ export function examplePlans(): { plans: OutpostPlan[]; layout: Partial<EditorLa
     plans: [iron, power, plates],
     layout: {
       positions: { [iron.id]: { x: 0, y: 0 }, [power.id]: { x: 0, y: 340 }, [plates.id]: { x: 560, y: 140 } },
-      powerLines: [
-        { id: newId(), from: power.id, to: plates.id, mw: 140 },
-        { id: newId(), from: power.id, to: iron.id, mw: 60 },
-      ],
     },
+    // One grid: the coal plant powers both.
+    powerLinks: [
+      [power.id, plates.id],
+      [power.id, iron.id],
+    ],
   }
 }
 
