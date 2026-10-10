@@ -3,7 +3,6 @@
 .ne-pad { padding: 16px; }
 .ne-textlink { color: var(--accent); font-weight: 600; font-size: .85rem; text-decoration: none; }
 .ne-grow { flex: 1; min-width: 0; }
-.ne-short { color: #d0453a; font-size: .75rem; margin-top: 4px; }
 .ne-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
 .ne-crumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ne-crumbs a { color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -64,23 +63,20 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-num { text-align: right; font-variant-numeric: tabular-nums; }
 .ne-add { margin-top: 4px; }
 .ne-sub { color: var(--muted); font-size: .75rem; }
-.ne-row { display: flex; gap: 6px; margin-top: 4px; align-items: baseline; }
-.ne-row-label { color: var(--muted); width: 64px; flex: none; }
 .ne-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .ne-chip { display: inline-flex; gap: 3px; align-items: center; background: var(--bg); border-radius: 999px; padding: 1px 6px 1px 2px; }
-.ne-hint { color: var(--muted); font-size: .7rem; margin-top: 6px; text-align: right; }
 .ne-edge-label { position: absolute; display: flex; gap: 3px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1px 5px 1px 3px; font-size: .7rem; font-variant-numeric: tabular-nums; pointer-events: all; }
 .ne-edge-label.selected { box-shadow: 0 0 0 2px var(--accent); }
 .ne-link { stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.ne-link-belt, .ne-swatch.ne-link-belt { stroke: #e8891c; border-color: #e8891c; }
-.ne-link-pipe, .ne-swatch.ne-link-pipe { stroke: #2b8fd6; border-color: #2b8fd6; }
-.ne-link-truck, .ne-swatch.ne-link-truck { stroke: #8a6d3b; border-color: #8a6d3b; stroke-dasharray: 10 6; }
-.ne-link-train, .ne-swatch.ne-link-train { stroke: #6c5ce7; border-color: #6c5ce7; stroke-dasharray: 16 6; }
-.ne-link-drone, .ne-swatch.ne-link-drone { stroke: #20a39e; border-color: #20a39e; stroke-dasharray: 3 6; }
-.ne-link-power, .ne-swatch.ne-link-power { stroke: #e6c200; border-color: #e6c200; stroke-dasharray: 2 4; }
+.react-flow__edge .react-flow__edge-path.ne-link-belt, .ne-swatch.ne-link-belt { stroke: #e8891c; border-color: #e8891c; }
+.react-flow__edge .react-flow__edge-path.ne-link-pipe, .ne-swatch.ne-link-pipe { stroke: #2b8fd6; border-color: #2b8fd6; }
+.react-flow__edge .react-flow__edge-path.ne-link-truck, .ne-swatch.ne-link-truck { stroke: #8a6d3b; border-color: #8a6d3b; stroke-dasharray: 10 6; }
+.react-flow__edge .react-flow__edge-path.ne-link-train, .ne-swatch.ne-link-train { stroke: #6c5ce7; border-color: #6c5ce7; stroke-dasharray: 16 6; }
+.react-flow__edge .react-flow__edge-path.ne-link-drone, .ne-swatch.ne-link-drone { stroke: #20a39e; border-color: #20a39e; stroke-dasharray: 3 6; }
+.react-flow__edge .react-flow__edge-path.ne-link-power, .ne-swatch.ne-link-power { stroke: #e6c200; border-color: #e6c200; stroke-dasharray: 2 4; }
 .ne-swatch { border-top-style: solid; }
 .ne-swatch.ne-link-truck, .ne-swatch.ne-link-train, .ne-swatch.ne-link-drone, .ne-swatch.ne-link-power { border-top-style: dashed; }
-.ne-link.selected { stroke-width: 4; }
+.react-flow__edge .react-flow__edge-path.ne-link.selected { stroke-width: 4; }
 .ne-belt.selected { stroke-width: 5; }
 
 /* Micro blocks */

@@ -7,7 +7,8 @@ import { exportsOf, type Solved } from '../plan/network'
 import type { ItemId } from '../data'
 import type { Transport } from '../plan/types'
 import { planLayout, type PortLink } from './layout'
-import type { EditorLayout } from './model'
+import { MarkerType } from '@xyflow/react'
+import { transportColor, type EditorLayout, type Transport as LinkTransport } from './model'
 
 /** Factory map grid size in px: one cell is half a foundation (4 m). */
 export const MAP_G = 16
@@ -127,3 +128,6 @@ export function mapBlock(s: Solved, all: Solved[], layout: Pick<EditorLayout, 'p
 
 /** Snap a position to the map grid. */
 export const snap = (p: { x: number; y: number }) => ({ x: Math.round(p.x / MAP_G) * MAP_G, y: Math.round(p.y / MAP_G) * MAP_G })
+
+/** Small arrowhead at a link's input end, in the link's colour. */
+export const linkMarker = (t: LinkTransport) => ({ type: MarkerType.ArrowClosed, width: 14, height: 14, color: transportColor[t], markerUnits: 'userSpaceOnUse', strokeWidth: 1 })

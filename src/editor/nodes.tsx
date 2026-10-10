@@ -6,7 +6,6 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   Handle,
-  MarkerType,
   Position,
   useNodeConnections,
   useUpdateNodeInternals,
@@ -33,7 +32,6 @@ import {
   type MicroNode,
   type OutpostNode,
   type PortData,
-  type Transport,
 } from './model'
 
 const transportIcon = (t: string) => (t === 'resource' ? 'Desc_MinerMk1_C' : (transportById.get(t as never)?.icon ?? 'Desc_ConveyorBeltMk1_C'))
@@ -119,8 +117,14 @@ function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
   )
 }
 
-export function OutpostBlock({ data, selected }: NodeProps<OutpostNode>) {
+export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   const { plan, solution, block } = data
+  // Points come and go as links are made; React Flow re-measures them only when told to.
+  const points = [...block.ins, ...block.outs, block.powerIn, block.powerOut].map((p) => p && `${p.id}@${p.dy}`).join()
+  const updateInternals = useUpdateNodeInternals()
+  useEffect(() => {
+    updateInternals(id)
+  }, [id, points, block.w, block.h, updateInternals])
   const goal = plan.goals[0]
   // Outposts that only extract show their extractor; their exports are the resources.
   const extractor = !goal ? solution.extraction[0]?.extractor : undefined
@@ -171,9 +175,6 @@ export function OutpostBlock({ data, selected }: NodeProps<OutpostNode>) {
     </div>
   )
 }
-
-/** Small arrowhead at a link's input end, in the link's colour. */
-export const linkMarker = (t: Transport) => ({ type: MarkerType.ArrowClosed, width: 14, height: 14, color: transportColor[t], markerUnits: 'userSpaceOnUse', strokeWidth: 1 })
 
 export function LinkLine(props: EdgeProps<LinkEdge>) {
   const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
