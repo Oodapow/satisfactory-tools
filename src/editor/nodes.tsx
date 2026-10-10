@@ -90,13 +90,13 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   const goal = plan.goals[0]
   const resources = new Map<string, number>()
   for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
+  // Power lines aren't imports: power is the grid's, shown on its own row.
   const imports: Chip[] = ins.flatMap((e) =>
-    e.data?.transport === 'power'
-      ? [{ key: e.id, icon: POWER, text: `${fmt(e.data.powerMW ?? 0)} MW` }]
-      : (e.data?.items ?? []).map((r, i) => ({ key: `${e.id}-${i}`, icon: r.item, text: fmt(r.perMin) })),
+    e.data?.transport === 'power' ? [] : (e.data?.items ?? []).map((r, i) => ({ key: `${e.id}-${i}`, icon: r.item, text: fmt(r.perMin) })),
   )
   const exports: Chip[] = exportsOf(solution).map((r) => ({ key: r.item, icon: r.item, text: fmt(r.perMin) }))
-  if (solution.power.exportedMW > 0) exports.push({ key: 'mw', icon: POWER, text: `${fmt(solution.power.exportedMW)} MW` })
+  const power: Chip[] = [{ key: 'use', icon: POWER, text: `uses ${fmt(solution.power.consumedMW)} MW` }]
+  if (solution.power.generatedMW > 0) power.push({ key: 'make', icon: POWER, text: `makes ${fmt(solution.power.generatedMW)} MW` })
   const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
 
   return (
@@ -116,7 +116,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
       {resources.size > 0 && <Row label="Extracts" items={[...resources].map(([item, r]) => ({ key: item, icon: item, text: fmt(r) }))} />}
       {imports.length > 0 && <Row label="Imports" items={imports} />}
       {exports.length > 0 && <Row label="Exports" items={exports} />}
-      <Row label="Power" items={[{ key: 'use', icon: POWER, text: `uses ${fmt(solution.power.consumedMW)} MW` }]} />
+      <Row label="Power" items={power} />
       {short.length > 0 && (
         <div className="ne-short">Short: {short.map((f) => `${fmt(f.shortfall)} ${itemName(f.item)}`).join(', ')}</div>
       )}
@@ -157,12 +157,12 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
   const t = data?.transport ?? 'belt'
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}`} />
+      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`} />
       <EdgeLabelRenderer>
-        <div className="ne-edge-label nodrag nopan" style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}>
+        <div className={`ne-edge-label nodrag nopan${data?.dim ? ' ne-dim' : ''}`} style={{ transform: `translate(-50%,-50%) translate(${x}px,${y}px)` }}>
           <GameIcon id={transportIcon(t)} size={18} title={transportLabel(t)} />
           {t === 'power'
-            ? `${fmt(data?.powerMW ?? 0)} MW`
+            ? null
             : (data?.items ?? []).map((r) => (
                 <span key={r.item} className="ne-chip">
                   <GameIcon id={r.item} size={18} />

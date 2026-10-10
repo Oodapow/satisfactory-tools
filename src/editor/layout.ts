@@ -38,9 +38,9 @@ export type PortLink = {
 
 export type LayoutInput = {
   solved: Solved
-  /** Imports into this outpost and power lines arriving. */
+  /** Imports into this outpost, and power in from its grid. */
   incoming: PortLink[]
-  /** Other outposts' imports from this one and power lines leaving. */
+  /** Other outposts' imports from this one, and power out to its grid. */
   outgoing: PortLink[]
   /** Best conveyor belt Mk (1-6) and pipeline Mk (1-2) to build with. */
   maxBeltTier: number
@@ -252,8 +252,6 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
   }
   for (const l of outgoing.filter((o) => o.transport === 'power'))
     port({ direction: 'out', transport: 'power', perMin: 0, powerMW: l.powerMW, label: l.other, linkId: l.linkId })
-  if (solution.power.exportedMW > EPS && !outgoing.some((o) => o.transport === 'power'))
-    port({ direction: 'out', transport: 'power', perMin: 0, powerMW: solution.power.exportedMW, label: 'Grid' })
 
   // 5. Belts: per item, pair sources with consumers bottom to top, splitting where rates differ.
   type Slot = { end: End; perMin: number; order: number }

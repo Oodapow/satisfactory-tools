@@ -41,7 +41,7 @@ export interface ItemGoal {
   perMin: number
 }
 
-/** Power the outpost must feed into the grid, in MW, using one generator type and fuel. */
+/** Power the outpost's generators add to its grid, in MW, using one generator type and fuel. */
 export interface PowerGoal {
   kind: 'power'
   mw: number
@@ -145,7 +145,8 @@ export interface OutpostSolution {
   generators: GeneratorStep[]
   extraction: ExtractionStep[]
   flows: Map<ItemId, ItemFlow>
-  power: { consumedMW: number; generatedMW: number; exportedMW: number }
+  /** Power isn't exported: what the generators make feeds the outpost's grid (see ./grids.ts). */
+  power: { consumedMW: number; generatedMW: number }
   /** Recipe actually used per item (chosen or suggested). */
   recipes: Record<ItemId, RecipeId>
 }
