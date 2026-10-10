@@ -1,6 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { GameIcon, NoIconLinks } from './GameIcon'
+import { hide as hideTip, useTip } from './tooltip'
 
 export type IconOption = {
   value: string
@@ -22,6 +23,7 @@ export function IconSelect({
   onChange,
   placeholder = 'Pick one',
   className,
+  iconOnly = false,
   'aria-label': ariaLabel,
 }: {
   value?: string
@@ -29,6 +31,8 @@ export function IconSelect({
   onChange: (value: string) => void
   placeholder?: string
   className?: string
+  /** Show only the current option's icon (and extra); its label becomes a tooltip. The list keeps labels. */
+  iconOnly?: boolean
   'aria-label'?: string
 }) {
   const [open, setOpen] = useState(false)
@@ -39,6 +43,7 @@ export function IconSelect({
   const list = useRef<HTMLDivElement>(null)
   const listId = useId()
   const current = options.find((o) => o.value === value)
+  const tip = useTip(current?.label ?? placeholder, { tapShows: false })
 
   const shown = useMemo(() => {
     const t = q.trim().toLowerCase()
@@ -59,6 +64,7 @@ export function IconSelect({
   }
 
   const openList = () => {
+    hideTip()
     place()
     setQ('')
     setActive(Math.max(0, options.findIndex((o) => o.value === value)))
@@ -119,18 +125,19 @@ export function IconSelect({
       <button
         ref={button}
         type="button"
-        className={`icon-select ${className ?? ''}`}
+        className={`icon-select${iconOnly ? ' icon-only' : ''} ${className ?? ''}`}
         role="combobox"
-        aria-label={ariaLabel}
+        aria-label={iconOnly && current ? `${ariaLabel ?? ''}: ${current.label}` : ariaLabel}
         aria-expanded={open}
         aria-controls={listId}
         aria-haspopup="listbox"
-        onClick={() => (open ? close() : openList())}
         onKeyDown={onKey}
+        {...(iconOnly ? tip : {})}
+        onClick={() => (open ? close() : openList())}
       >
         <NoIconLinks>{current?.icon && <GameIcon id={current.icon} size={22} />}</NoIconLinks>
-        <span className="icon-select-label">{current?.label ?? placeholder}</span>
-        {current?.extra}
+        {!iconOnly && <span className="icon-select-label">{current?.label ?? placeholder}</span>}
+        {!iconOnly && current?.extra}
         <span className="icon-select-caret" aria-hidden>
           ▾
         </span>

@@ -114,13 +114,22 @@ export function PowerIcon({ size = ICON }: { size?: number }) {
   return <GameIcon id={POWER} size={size} />
 }
 
-/** A per-minute amount with its icon. */
+/**
+ * A name shown beside its icon only where the layout has plenty of room (see `.rate-name` in
+ * index.css); everywhere else the icon's tooltip carries it.
+ */
+export function RoomyName({ children }: { children: ReactNode }) {
+  return <span className="rate-name">{children}</span>
+}
+
+/** A per-minute amount with its icon: "[icon] 120/min", named only where there's room. */
 export function Amount({ item, perMin, unit = '/min' }: { item: string; perMin: number; unit?: string }) {
   return (
     <span className="rate">
       <GameIcon id={item} size={18} />
       <b>{fmt(perMin)}</b>
-      {unit} {itemName(item)}
+      {unit}
+      <RoomyName>{itemName(item)}</RoomyName>
     </span>
   )
 }
