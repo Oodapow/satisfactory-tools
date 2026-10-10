@@ -4,7 +4,7 @@
 // Each belt is an A* search over grid vertices that avoids blocks and the belts routed
 // before it, preferring few turns and few crossings. Short belts (manifolds) go first; power
 // lines go last, so they make way for belts and pipes.
-import { cellOf, edgeMedium, G, handleCell, isBlock, orientAll, SIZE, type Cell, type Orient, type Side } from './grid'
+import { cellOf, edgeMedium, G, handleCell, isBlock, orientAll, sizeOf, type Cell, type Orient, type Side } from './grid'
 import type { BeltEdge, MicroNode } from './model'
 import type { Point } from './router'
 
@@ -44,7 +44,7 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
   let maxY = -Infinity
   for (const n of blocks) {
     const c = cellOf(n)
-    const s = SIZE[n.type]
+    const s = sizeOf(n.type, n.data)
     minX = Math.min(minX, c.x)
     minY = Math.min(minY, c.y)
     maxX = Math.max(maxX, c.x + s.w)
@@ -61,7 +61,7 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
   const blocked = new Uint8Array(W * H)
   for (const n of blocks) {
     const c = cellOf(n)
-    const s = SIZE[n.type]
+    const s = sizeOf(n.type, n.data)
     for (let y = c.y; y <= c.y + s.h; y++) for (let x = c.x; x <= c.x + s.w; x++) if (inside(x, y)) blocked[idx(x, y)] = 1
   }
   // What committed belts use: per vertex, bit 1 = runs through horizontally, 2 = vertically,

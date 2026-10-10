@@ -13,6 +13,7 @@ import {
   type GameState,
 } from '../state/gameState'
 import { Backup } from './Backup'
+import { Help } from '../ui/Help'
 import { NoIconLinks } from '../ui/GameIcon'
 import { Costs, SchematicIcon, Unlocks } from '../ui/SchematicIcon'
 import { MamResearch } from './MamResearch'
@@ -84,11 +85,11 @@ export function Setup() {
     <div className="setup">
       <section className="panel state-head">
         <div>
-          <h2>Your game state</h2>
-          <p className="muted">
-            {state.source === 'save' ? `Loaded from ${state.saveName}. ` : ''}The rest of the app only shows what's ticked
-            here.
-          </p>
+          <h2>
+            Your game state
+            <Help text="The rest of the app only shows what's ticked here." />
+          </h2>
+          {state.source === 'save' && <p className="muted">{state.saveName}</p>}
         </div>
         <dl className="facts">
           <div>
@@ -141,7 +142,10 @@ export function Setup() {
       </section>
 
       <section className="panel">
-        <h3>How far are you?</h3>
+        <h3>
+          How far are you?
+          <Help text="Picking a tier ticks every milestone up to it. Fine-tune below." />
+        </h3>
         <div className="row tier-picks">
           {visibleTiers.map((t) => (
             <button
@@ -154,9 +158,11 @@ export function Setup() {
             </button>
           ))}
         </div>
-        <p className="muted small">Picking a tier ticks every milestone up to it. Fine-tune below.</p>
 
-        <h3>Space Elevator</h3>
+        <h3>
+          Space Elevator
+          <Help text="Each phase you deliver opens the next two tiers." />
+        </h3>
         <div className="segmented" role="radiogroup" aria-label="Space Elevator phase">
           {[{ phase: 0, name: 'Not started' }, ...phases].map((p) => (
             <label key={p.phase}>
@@ -176,7 +182,6 @@ export function Setup() {
             <Costs list={nextPhase.cost} />
           </p>
         )}
-        <p className="muted small">Each phase you deliver opens the next two tiers.</p>
       </section>
 
       <section className="panel">
@@ -222,14 +227,14 @@ export function Setup() {
       </section>
 
       <section className="panel">
-        <h3>Alternate recipes</h3>
+        <h3>
+          Alternate recipes
+          <Help text="Tick the ones you've unlocked from hard drives. Listed: alternates a hard drive could give you right now." />
+        </h3>
         {alternates.length === 0 ? (
           <p className="muted">Research Hard Drives in the MAM to start finding alternates.</p>
         ) : (
           <>
-            <p className="muted small">
-              Tick the ones you've unlocked from hard drives. Listed: alternates a hard drive could give you right now.
-            </p>
             <input
               className="filter"
               value={altQuery}
@@ -246,8 +251,10 @@ export function Setup() {
       </section>
 
       <section className="panel">
-        <h3>Spoilers</h3>
-        <p className="muted small">How locked recipes, items and buildings show up in the catalog.</p>
+        <h3>
+          Spoilers
+          <Help text="How locked recipes, items and buildings show up in the catalog." />
+        </h3>
         <div className="segmented" role="radiogroup" aria-label="Spoilers">
           {(
             [

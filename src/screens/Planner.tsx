@@ -6,7 +6,7 @@ import { autoName } from '../plan/naming'
 import { blankPlan, useOutposts } from '../plan/store'
 import { suggestGoalRate } from '../plan/suggest'
 import type { Goal } from '../plan/types'
-import { GameIcon } from '../ui/GameIcon'
+import { GameIcon, RoomyName } from '../ui/GameIcon'
 import { Rates } from './Rates'
 
 type Tab = 'recipes' | 'items' | 'buildings'
@@ -102,7 +102,7 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
         {r.producedIn.filter((b) => cat.available.buildings.has(b)).map((b) => (
           <span key={b} className="with-icon">
             <GameIcon id={b} size={20} />
-            <span className="rate-name">{buildingsById.get(b)?.name}</span>
+            <RoomyName>{buildingsById.get(b)?.name}</RoomyName>
           </span>
         ))}
       </p>
@@ -155,7 +155,7 @@ export function Planner({ state, kind, query = '' }: { state: GameState; kind?: 
 
   return (
     <div className="planner">
-      <section className="panel catalog">
+      <section className="panel catalog roomy">
         <div className="toolbar">
           <div className="tabs" role="tablist">
             {(

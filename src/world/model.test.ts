@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { worldMap } from '../data/game/worldMap'
 import { FOG_SIZE, type SaveMap } from '../save/readMap'
 import type { GameState } from '../state/gameState'
-import { AUTO_RADIUS, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, toUnit, toWorld } from './model'
+import { AUTO_RADIUS, COLLECTIBLES, decodeFog, exploredBox, fogAt, fogOpacity, knowsResource, markers, nearby, pickups, toUnit, toWorld } from './model'
 
 const b = worldMap.bounds
 const encode = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes))
@@ -19,7 +19,7 @@ function fogWith(box: { left: number; top: number; right: number; bottom: number
     }
   return fog
 }
-const saveMap = (fog: Uint8Array, occupied: string[] = []): SaveMap => ({ fog: encode(fog), occupied, hub: null, players: [], crashSites: [] })
+const saveMap = (fog: Uint8Array, occupied: string[] = [], collected: string[] = []): SaveMap => ({ fog: encode(fog), occupied, hub: null, players: [], collected })
 
 describe('world map data', () => {
   it('places every node inside the map bounds', () => {
@@ -38,6 +38,14 @@ describe('world map data', () => {
     expect(back[0]).toBeCloseTo(p[0], 3)
     expect(back[1]).toBeCloseTo(p[1], 3)
     expect(toWorld(worldMap, [0, 0])).toEqual([b.west, b.north])
+  })
+
+  it('places every collectible inside the map bounds', () => {
+    for (const c of worldMap.collectibles) {
+      const [u, v] = toUnit(worldMap, [c.x, c.y])
+      expect(u > 0 && u < 1 && v > 0 && v < 1, c.id).toBe(true)
+      expect(COLLECTIBLES).toContain(c.item)
+    }
   })
 
   it('only uses resources the game data knows', () => {
@@ -133,4 +141,35 @@ describe('outposts on the map', () => {
     expect(nearby(all, [b.west - 1e6, b.north - 1e6])).toEqual([])
   })
 
+})
+
+describe('collectibles', () => {
+  const start: GameState = { source: 'save', purchased: [], spaceElevatorPhase: 0, spoilers: 'hide' }
+  const everywhere = fogWith({ left: 0, top: 0, right: 1, bottom: 1 })
+  const slug = worldMap.collectibles.find((c) => c.item === 'Desc_Crystal_C')!
+  const sloop = worldMap.collectibles.find((c) => c.item === 'Desc_WAT1_C')!
+  const pod = worldMap.collectibles.find((c) => c.item === 'Desc_HardDrive_C')!
+
+  it('shows only collectibles in explored ground', () => {
+    expect(pickups(worldMap, start, false)).toEqual([])
+    const east = pickups(worldMap, { ...start, map: saveMap(fogWith({ left: 0.5, top: 0, right: 1, bottom: 1 })) }, false)
+    expect(east.length).toBeGreaterThan(0)
+    expect(east.length).toBeLessThan(worldMap.collectibles.length)
+  })
+
+  it("hides what a collectible is until the player has met one, except crash sites", () => {
+    const shown = pickups(worldMap, { ...start, map: saveMap(everywhere) }, false)
+    expect(shown.find((p) => p.collectible.id === slug.id)?.item).toBeNull()
+    expect(shown.find((p) => p.collectible.id === pod.id)?.item).toBe('Desc_HardDrive_C')
+  })
+
+  it('marks collected pickups by pickup id, and opened crash sites by name', () => {
+    const shown = pickups(worldMap, { ...start, map: saveMap(everywhere, [], [slug.guid!, pod.id]) }, false)
+    const of = (id: string) => shown.find((p) => p.collectible.id === id)!
+    expect(of(slug.id)).toMatchObject({ item: 'Desc_Crystal_C', collected: true })
+    expect(of(pod.id).collected).toBe(true)
+    expect(of(sloop.id)).toMatchObject({ item: null, collected: false })
+    // Having collected one slug names every blue slug.
+    expect(shown.filter((p) => p.collectible.item === 'Desc_Crystal_C').every((p) => p.item === 'Desc_Crystal_C')).toBe(true)
+  })
 })
