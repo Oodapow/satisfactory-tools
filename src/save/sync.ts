@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from 'react'
 import { readStored, writeStored } from '../storage/persisted'
 import type { GameState } from '../state/gameState'
+import { freshness } from './freshness'
 import { forgetLinked, loadLinked, permission, savesIn, storeLinked, type LinkedSave } from './linked'
 import { gameStateFromSave, parseSave, type SaveImport, type SaveSummary } from './parseSave'
 
@@ -40,16 +41,18 @@ async function sync(): Promise<SyncResult | null> {
     if (!files.length) throw new Error(`No .sav files in ${name}.`)
     const prev = readStored<GameState | null>('gameState', null)
     for (const file of files) {
-      // Same file, unchanged since last time: nothing to do.
-      if (prev?.source === 'save' && prev.saveName === file.name && prev.saveModified === file.lastModified) {
-        set({ kind: 'synced', name, fileName: file.name, modified: file.lastModified, skipped: 0 })
+      // Same file unchanged since last time, or older than the save loaded now: nothing to do.
+      // Files come newest first, so the rest are older too.
+      const age = freshness(prev, file)
+      if (age !== 'newer') {
+        set({ kind: 'synced', name, fileName: prev?.saveName ?? file.name, modified: prev?.saveModified ?? file.lastModified, skipped: 0 })
         return null
       }
       set({ kind: 'reading', name, fileName: file.name, progress: 0 })
       const summary = await parseSave(file, (progress) => set({ kind: 'reading', name, fileName: file.name, progress }))
       if (link.session && summary.sessionName !== link.session) continue
-      const result = gameStateFromSave(summary, file.name)
-      const state: GameState = { ...result.state, spoilers: prev?.spoilers ?? 'hide', saveModified: file.lastModified }
+      const result = gameStateFromSave(summary, file)
+      const state: GameState = { ...result.state, spoilers: prev?.spoilers ?? 'hide' }
       writeStored('gameState', state)
       if (!link.session) await storeLinked((link = { ...link, session: summary.sessionName }))
       set({ kind: 'synced', name, fileName: file.name, modified: file.lastModified, skipped: result.unknown.length })
