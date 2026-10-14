@@ -24,7 +24,7 @@ export type Routes = {
   /** Corner points in px, from the source handle to the target handle. */
   routes: Map<string, Point[]>
   orients: Map<string, Orient>
-  /** Belts that had to share grid space with another one (no clean path). */
+  /** Belts that had to share grid space with another one, or found no path at all. */
   clashes: string[]
 }
 
@@ -100,7 +100,11 @@ export function routeFloorPlan(nodes: MicroNode[], edges: BeltEdge[]): Routes {
   for (const { e, a, b } of ends) {
     if (!inside(a.x, a.y) || !inside(b.x, b.y)) continue
     const path = search(a, b)
-    if (!path) continue
+    // No way through at all (say a block was dropped over its end): flag it like a shared route.
+    if (!path) {
+      clashes.push(e.id)
+      continue
+    }
     commit(path.cells)
     if (path.clash) clashes.push(e.id)
     routes.set(e.id, corners(path.cells).map((c) => ({ x: c.x * G, y: c.y * G })))

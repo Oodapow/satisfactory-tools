@@ -4,7 +4,7 @@ import { availability } from '../data/game/availability'
 import { solvePlan } from '../plan/network'
 import type { OutpostPlan } from '../plan/types'
 import { proposeLayout } from './generate'
-import { G, cellOf, isBlock, sizeOf } from './grid'
+import { G, anchors, cellOf, isBlock, sizeOf } from './grid'
 import { routeFloorPlan, routeSegments } from './gridRouter'
 import { planLayout } from './layout'
 import { inferFlows } from './flow'
@@ -119,11 +119,33 @@ describe('floor plan on the grid', () => {
 
   it('turns splitters and mergers to face their belts', () => {
     const { orients } = routeFloorPlan(graph.nodes, graph.edges)
-    // Manifold splitters take in from the left; manifold mergers send out to the left.
+    // Manifolds run down beside their machines: splitters take in from above and feed the
+    // machine on their right; mergers take from the machine on their left and send out upwards.
     const splitter = graph.nodes.find((n) => n.type === 'splitter' && graph.edges.some((e) => e.source === n.id && e.sourceHandle === 'down'))!
-    expect(orients.get(splitter.id)).toEqual({ rot: 0, mirror: false })
+    const s = anchors('splitter', splitter.data, orients.get(splitter.id))
+    expect([s.in.side, s.down.side]).toEqual(['t', 'r'])
     const merger = graph.nodes.find((n) => n.type === 'merger' && graph.edges.some((e) => e.target === n.id && e.targetHandle === 'up'))!
-    expect(orients.get(merger.id)?.rot).toBe(2)
+    const m = anchors('merger', merger.data, orients.get(merger.id))
+    expect([m.up.side, m.out.side]).toEqual(['l', 't'])
+  })
+
+  it('flows left to right: machines turned inputs left, outputs right, first floor leftmost (#88)', () => {
+    const machines = graph.nodes.filter((n) => n.data.kind === 'machine')
+    for (const m of machines) {
+      const a = anchors('machine', m.data)
+      expect(a.in.side, m.id).toBe('l')
+      expect(a.out.side, m.id).toBe('r')
+    }
+    const x = (building: string) => Math.min(...machines.filter((m) => m.data.kind === 'machine' && m.data.building === building).map((m) => m.position.x))
+    expect(x('Desc_SmelterMk1_C')).toBeLessThan(x('Desc_AssemblerMk1_C'))
+    const ports = graph.nodes.filter((n) => n.data.kind === 'port' && n.data.transport !== 'power')
+    const left = Math.min(...machines.map((m) => m.position.x))
+    const right = Math.max(...machines.map((m) => m.position.x))
+    for (const p of ports) {
+      if (p.data.kind !== 'port') continue
+      if (p.data.direction === 'in') expect(p.position.x, p.id).toBeLessThan(left)
+      else expect(p.position.x, p.id).toBeGreaterThan(right)
+    }
   })
 })
 

@@ -15,7 +15,7 @@ export type FloorPlanView = {
   orients: Map<string, Orient>
   dragging: Set<string>
   loads: Map<string, LineLoad>
-  /** Lines that found no route of their own and share grid space with another. */
+  /** Lines that found no route of their own: they share grid space with another, or have no way through. */
   clashes: Set<string>
   /** Taken connection points, as `node:handle`. */
   used: Set<string>

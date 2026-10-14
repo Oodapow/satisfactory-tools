@@ -47,7 +47,7 @@ import {
   type PortData,
 } from './model'
 import { G, isBlock } from './grid'
-import { connection, place } from './connect'
+import { connection, place, turnMachine } from './connect'
 import { routeFloorPlan } from './gridRouter'
 import { inferFlows } from './flow'
 import { FloorPlanContext, type FloorPlanView, type LineLoad } from './floorPlanView'
@@ -470,10 +470,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const turn = useCallback(
     (nodeId: string) =>
       setGraph((g) => {
-        const n = g.nodes.find((x) => x.id === nodeId)
-        if (!n || n.data.kind !== 'machine') return g
-        const turned = { ...n, data: { ...n.data, rot: (((n.data.rot ?? 0) + 1) % 4) as MachineData['rot'] } }
-        return { ...g, generatedAt: undefined, nodes: g.nodes.map((x) => (x.id === nodeId ? place(g.nodes, turned) : x)) }
+        const t = turnMachine(g, nodeId)
+        return t === g ? g : { ...t, generatedAt: undefined }
       }),
     [setGraph],
   )
@@ -647,7 +645,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             )}
             {view.clashes.size > 0 && (
               <li>
-                {view.clashes.size} line{view.clashes.size === 1 ? '' : 's'} (dashed red) found no grid route of {view.clashes.size === 1 ? 'its' : 'their'} own and share grid space. Move blocks apart to make room.
+                {view.clashes.size} line{view.clashes.size === 1 ? '' : 's'} (dashed red) found no clean grid route of {view.clashes.size === 1 ? 'its' : 'their'} own. Move blocks apart to make room.
               </li>
             )}
             {graph.notes?.map((n) => <li key={n}>{n}</li>)}
@@ -711,7 +709,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             <h3>{solved.plan.name}</h3>
             <p className="ne-help">
               {graph.generatedAt
-                ? 'Proposed from the plan: one floor per production type with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, and a line split in two wherever one belt of your best tier can\'t carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. Belts and pipes run along the grid and never share a grid line.'
+                ? 'Proposed from the plan: everything flows left to right, from the ports bringing things in, through one floor per production type, to the ports taking products out. Machines are turned to take in on their left and send out on their right, fed by splitter manifolds and collected by mergers, and a line is split in two wherever one belt of your best tier can\'t carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. Belts and pipes run along the grid and never share a grid line.'
                 : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan.'}
             </p>
             <p className="ne-help">

@@ -7,7 +7,7 @@ import { connection, place } from './connect'
 import { inferFlows } from './flow'
 import { routeFloorPlan, routeSegments } from './gridRouter'
 import { proposeLayout } from './generate'
-import { cellOf, edgeMedium, overlaps, poleSize, sizeOf, type BlockKind } from './grid'
+import { cellOf, edgeMedium, G, handleCell, overlaps, poleSize, sizeOf, type BlockKind } from './grid'
 import type { MicroGraph, MicroNode } from './model'
 
 const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
@@ -182,6 +182,59 @@ describe('grid (#52)', () => {
     expect(placed.position).not.toEqual(m.position)
     for (const n of g.nodes.filter((x) => x.type && x.type !== 'floor'))
       expect(overlaps(cellOf(placed), sizeOf('machine', placed.data), cellOf(n), sizeOf(n.type as BlockKind, n.data), 1), n.id).toBe(false)
+  })
+})
+
+describe('dropping a block on a line (#83)', () => {
+  const at = (n: MicroNode) => cellOf(n)
+  it('keeps the block where it was dropped and reroutes the line round it', () => {
+    const g = plates()
+    const r = routeFloorPlan(g.nodes, g.edges)
+    // A grid point in the middle of a long belt, clear of every block.
+    const blocks = g.nodes.filter((n) => n.type && n.type !== 'floor')
+    const clear = (c: { x: number; y: number }) =>
+      blocks.every((n) => !overlaps(c, sizeOf('splitter', { kind: 'splitter', floor: 0 }), cellOf(n), sizeOf(n.type as BlockKind, n.data), 1))
+    let spot: { x: number; y: number } | undefined
+    let crossed = ''
+    for (const e of g.edges.filter((x) => x.data?.medium !== 'power'))
+      for (const s of routeSegments(r.routes.get(e.id)!)) {
+        const [x, y] = s.slice(1).split(',').map(Number)
+        if (!spot && clear({ x: x - 1, y: y - 1 })) {
+          spot = { x: x - 1, y: y - 1 }
+          crossed = e.id
+        }
+      }
+    expect(spot).toBeDefined()
+    const dropped = place(g.nodes, { id: 'new', type: 'splitter', position: { x: spot!.x * G, y: spot!.y * G }, data: { kind: 'splitter', floor: 0 } })
+    expect(at(dropped)).toEqual(spot)
+    const after = routeFloorPlan([...g.nodes, dropped], g.edges)
+    expect(after.routes.has(crossed)).toBe(true)
+    // The line no longer runs through the block's area.
+    for (const s of routeSegments(after.routes.get(crossed)!)) {
+      const [x, y] = s.slice(1).split(',').map(Number)
+      const inside = x > spot!.x && x < spot!.x + 2 && y > spot!.y && y < spot!.y + 2
+      expect(inside, s).toBe(false)
+    }
+  })
+
+  it('still moves a block dropped onto another block', () => {
+    const g = plates()
+    const s = g.nodes.find((n) => n.type === 'splitter')!
+    const dropped = place(g.nodes, { id: 'new', type: 'splitter', position: { ...s.position }, data: s.data })
+    expect(dropped.position).not.toEqual(s.position)
+  })
+
+  it('flags a line that has no way through instead of moving the block', () => {
+    const g = plates()
+    const e = g.edges.find((x) => x.targetHandle === 'in' && g.nodes.find((n) => n.id === x.target)?.type === 'machine')!
+    const m = g.nodes.find((n) => n.id === e.target)!
+    const end = handleCell(m, 'in')!
+    // A splitter put down right against the machine, over the grid point its input belt arrives through.
+    const wall: MicroNode = { id: 'wall', type: 'splitter', position: { x: (end.x - 2) * G, y: (end.y - 1) * G }, data: { kind: 'splitter', floor: 0 } }
+    expect(place(g.nodes, wall).position).toEqual(wall.position)
+    const nodes = [...g.nodes, wall]
+    const r = routeFloorPlan(nodes, g.edges)
+    expect(r.clashes).toContain(e.id)
   })
 })
 
