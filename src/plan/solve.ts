@@ -1,7 +1,7 @@
 import { buildingsById, itemsById, progression, recipesById, recipesProducing, resourcesById, schematicsById } from '../data'
 import type { Availability } from '../data/game/availability'
 import type { Building, BuildingId, ItemId, Recipe, RecipeId } from '../data'
-import type { ExtractionStep, ItemFlow, OutpostPlan, OutpostSolution, ProductionStep, Purity } from './types'
+import type { ClockMode, ExtractionStep, ItemFlow, OutpostPlan, OutpostSolution, ProductionStep, Purity } from './types'
 
 export const perMin = (amount: number, r: Recipe) => (amount * 60) / r.durationSeconds
 
@@ -70,17 +70,20 @@ export function machinePowerMW(b: Building | undefined, clock = 1, boost = 1) {
   return b.powerConsumptionMW * Math.pow(clock, b.powerConsumptionExponent || DEFAULT_EXPONENT) * Math.pow(boost, sloopExp)
 }
 
+/** The sizing strategy for new plans' steps, unless the planner-wide setting says otherwise. */
+export const DEFAULT_CLOCK_MODE: ClockMode = 'uniform'
+
 /**
  * Whole machines for `machines` worth of work at 100% clock, run no faster than
- * `maxClock`: the fewest machines, all at the same clock. By default none runs below
- * 100%: 2.5 machines of work is 3 machines at 100%, and the manifold leaves the last one
- * idle half the time. With `underclock` they all slow down to match instead (3 at 83.3%).
+ * `maxClock`: the fewest machines, all at the same clock. 'uniform' slows them all
+ * down to hit the rate exactly: 2.5 machines of work is 3 machines at 83.3%. 'full'
+ * keeps them at 100% and the manifold leaves the last one idle half the time.
  */
-export function sizeMachines(machines: number, maxClock = 1, underclock = false) {
+export function sizeMachines(machines: number, maxClock = 1, mode: ClockMode = DEFAULT_CLOCK_MODE) {
   if (machines <= 1e-9) return { count: 0, clock: 0 }
   const limit = Math.min(MAX_CLOCK, Math.max(0.01, maxClock))
   const count = Math.max(1, Math.ceil(machines / limit - 1e-9))
-  return { count, clock: underclock ? machines / count : Math.max(Math.min(1, limit), machines / count) }
+  return { count, clock: mode === 'uniform' ? machines / count : Math.max(Math.min(1, limit), machines / count) }
 }
 
 /** Power for `count` machines at `clock` doing `machines` worth of 100% work: idle time draws nothing. */
@@ -94,16 +97,29 @@ export function somersloopBoost(b: Building | undefined, n = 0) {
   return { slots, used, boost: 1 + used * (b?.overclock?.somersloopBoostPerSlot ?? 0) }
 }
 
+export type SolveOptions = {
+  /** Sizing strategy for steps the user hasn't set one on (the planner-wide setting). */
+  clockMode?: ClockMode
+}
+
+/** The recipe's machine: the first one the player has unlocked. */
+export const buildingFor = (r: Recipe, available: Availability) => r.producedIn.find((b) => available.buildings.has(b)) ?? r.producedIn[0]
+
 /**
  * Derive machines, power and flows for a plan. Demand is walked back from the
  * goals; imports are used before producing locally, then byproducts of the
  * outpost's own recipes, then new production. Resources come from the plan's
  * nodes. Anything left over (byproducts, unused node output) is exported.
- * Machines are sized to the plan's highest clock speed and run at full clock, the last
- * one idling part of the time (or all underclocked to match, when the plan asks), with
- * power following the game's clock exponent and Somersloop boost.
+ * Machines are sized to the plan's highest clock speed, all at one clock that hits the
+ * rate ('uniform') or at full clock with the last one idling ('full'), unless the user
+ * set a step's count (the clock follows the rate, and machines are only added past the
+ * highest clock) or its clock (the step makes no more than those machines can, and the
+ * rest of the demand is short). Power follows the game's clock exponent and
+ * Somersloop boost.
  */
-export function solve(plan: OutpostPlan, available: Availability, suggested: Choice = {}): OutpostSolution {
+export function solve(plan: OutpostPlan, available: Availability, suggested: Choice = {}, options: SolveOptions = {}): OutpostSolution {
+  const defaultMode = options.clockMode ?? DEFAULT_CLOCK_MODE
+  const skipped = new Set(plan.skipped ?? [])
   const choose = (item: ItemId) => {
     const options = recipesFor(item, available)
     return (
@@ -117,6 +133,15 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
   const maxClock = features.has('overclocking') ? (plan.maxClock ?? 1) : Math.min(1, plan.maxClock ?? 1)
   const sloopsFor = (id: RecipeId) => (features.has('production-amplification') ? plan.somersloops?.[id] : 0)
   const nodeClock = (c = 1) => Math.min(features.has('overclocking') ? MAX_CLOCK : 1, Math.max(0.01, c))
+  // Highest clock a user may set on a machine: 250% once overclocking is researched, if it overclocks at all.
+  const clockCap = (b: Building | undefined) => (features.has('overclocking') && b?.overclock?.canOverclock !== false ? MAX_CLOCK : 1)
+  const clampClock = (c: number, b: Building | undefined) => Math.min(clockCap(b), Math.max(0.01, c))
+  /** Most work, in machines at 100%, a step with a clock the user set can do. */
+  const capacity = (r: Recipe) => {
+    const set = plan.steps?.[r.id]
+    if (!set?.count || !set.clock) return Infinity
+    return Math.max(1, Math.round(set.count)) * clampClock(set.clock, buildingsById.get(buildingFor(r, available)))
+  }
 
   // A power goal is the generators' total output; the outpost's own machines draw from it
   // like any other on the grid, so what it adds to the grid is that less its own use.
@@ -148,7 +173,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
     }
     // Byproducts from the last pass, usable before making more of the item.
     const spare = new Map(byproducts)
-    const runs = new Map<RecipeId, { item: ItemId; machines: number; boost: number; sloops: number }>()
+    const runs = new Map<RecipeId, { item: ItemId; machines: number; demand: number; boost: number; sloops: number }>()
     const rawDemand = new Map<ItemId, number>()
     const recipes: Choice = {}
     const take = (from: Map<ItemId, number>, item: ItemId, rate: number) => {
@@ -165,17 +190,24 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
         rawDemand.set(item, (rawDemand.get(item) ?? 0) + rest)
         return
       }
-      const recipe = depth < 25 ? choose(item) : undefined
+      // Items the user chose not to make here have to come in from elsewhere.
+      const recipe = depth < 25 && !skipped.has(item) ? choose(item) : undefined
       if (!recipe) {
         flow(item).shortfall += rest
         return
       }
       recipes[item] = recipe.id
       const { boost, used } = somersloopBoost(buildingsById.get(recipe.producedIn[0]), sloopsFor(recipe.id))
-      const m = rest / (perMin(recipe.products.find((p) => p.item === item)!.amount, recipe) * boost)
-      const run = runs.get(recipe.id) ?? { item, machines: 0, boost, sloops: used }
-      run.machines += m
+      const unit = perMin(recipe.products.find((p) => p.item === item)!.amount, recipe) * boost
+      const want = rest / unit
+      const run = runs.get(recipe.id) ?? { item, machines: 0, demand: 0, boost, sloops: used }
       runs.set(recipe.id, run)
+      run.demand += want
+      // A step the user sized makes what its machines can; the rest is short.
+      const m = Math.min(want, Math.max(0, capacity(recipe) - run.machines))
+      if (want - m > 1e-9) flow(item).shortfall += (want - m) * unit
+      if (m <= 1e-12) return
+      run.machines += m
       for (const x of recipe.ingredients) {
         const r = perMin(x.amount, recipe) * m
         flow(x.item).consumed += r
@@ -206,7 +238,8 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
           f.produced += rate
           f.byproduct += rate
         }
-        generators.push({ generator: powerGoal.generator, fuel: fuel.id, machines: mw / gen.powerProductionMW, mw })
+        const machines = mw / gen.powerProductionMW
+        generators.push({ generator: powerGoal.generator, fuel: fuel.id, machines, ...sizeMachines(machines, 1, defaultMode), mw })
       }
     }
 
@@ -221,16 +254,30 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
           made.set(p.item, (made.get(p.item) ?? 0) + rate)
         }
       }
-      const building = recipe.producedIn.find((b) => available.buildings.has(b)) ?? recipe.producedIn[0]
+      const building = buildingFor(recipe, available)
       const b = buildingsById.get(building)
-      const { count, clock } = sizeMachines(run.machines, b?.overclock?.canOverclock === false ? 1 : maxClock, plan.underclock)
+      const set = plan.steps?.[id]
+      const mode = set?.mode ?? defaultMode
+      const limit = Math.min(MAX_CLOCK, b?.overclock?.canOverclock === false ? 1 : maxClock)
+      let { count, clock } = sizeMachines(run.machines, limit, mode)
+      if (set?.count && set.clock) {
+        count = Math.max(1, Math.round(set.count))
+        clock = clampClock(set.clock, b)
+      } else if (set?.count) {
+        // The user's machines, at the clock that makes the rate; more only when that clock
+        // would go past the plan's highest clock.
+        count = Math.max(1, Math.round(set.count), Math.ceil(run.machines / limit - 1e-9))
+        clock = mode === 'full' ? Math.max(Math.min(1, limit), run.machines / count) : run.machines / count
+      }
       return {
         recipe: id,
         item: run.item,
         building,
         machines: run.machines,
+        demand: run.demand,
         count,
         clock,
+        mode,
         shards: count * shardsFor(clock),
         somersloops: run.sloops,
         boost: run.boost,
@@ -265,7 +312,7 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       const pump = nodelessExtractor(item, available.buildings)
       if (pump) {
         const machines = missing / extractorPerMin(pump, item)
-        const { count, clock } = sizeMachines(machines, maxClock, plan.underclock)
+        const { count, clock } = sizeMachines(machines, maxClock, defaultMode)
         f.extracted += missing
         extraction.push({
           resource: item,
@@ -336,19 +383,20 @@ const score = (s: OutpostSolution) => {
  * Pick a recipe for every item the user hasn't decided on: the one that leaves
  * nothing short, then uses the least raw input, then the fewest machines.
  */
-export function suggestRecipes(plan: OutpostPlan, available: Availability): Choice {
+export function suggestRecipes(plan: OutpostPlan, available: Availability, opts: SolveOptions = {}): Choice {
   const choice: Choice = {}
+  const solve_ = (c: Choice) => solve(plan, available, c, opts)
   for (let pass = 0; pass < 3; pass++) {
     let changed = false
-    const current = solve(plan, available, choice)
+    const current = solve_(choice)
     for (const item of Object.keys(current.recipes)) {
       if (plan.recipeChoices[item]) continue
       const options = recipesFor(item, available)
       if (options.length < 2) continue
       let best = choice[item] ?? current.recipes[item]
-      let bestScore = score(solve(plan, available, { ...choice, [item]: best }))
+      let bestScore = score(solve_({ ...choice, [item]: best }))
       for (const r of options) {
-        const sc = score(solve(plan, available, { ...choice, [item]: r.id }))
+        const sc = score(solve_({ ...choice, [item]: r.id }))
         if (sc < bestScore - 1e-9) {
           best = r.id
           bestScore = sc

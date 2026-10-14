@@ -187,7 +187,7 @@ describe('grid (#52)', () => {
 describe('full clock and overflow (#60)', () => {
   it('runs every machine at 100% and lets the last one on the manifold idle', () => {
     const g = proposeLayout({
-      solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], recipeChoices: { Desc_IronPlate_C: 'Recipe_IronPlate_C', Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all),
+      solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], recipeChoices: { Desc_IronPlate_C: 'Recipe_IronPlate_C', Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all, { clockMode: 'full' }),
       incoming: [{ linkId: 'ingots', other: 'Smelters', transport: 'belt', item: 'Desc_IronIngot_C', perMin: 75 }],
       outgoing: [],
       maxBeltTier: 3,
@@ -198,6 +198,17 @@ describe('full clock and overflow (#60)', () => {
     expect(fed[0]).toBeCloseTo(30)
     expect(fed[1]).toBeCloseTo(30)
     expect(fed[2]).toBeCloseTo(15)
+  })
+
+  it('by default runs them all at one clock that splits the input evenly (#84)', () => {
+    const g = proposeLayout({
+      solved: solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], recipeChoices: { Desc_IronPlate_C: 'Recipe_IronPlate_C', Desc_IronIngot_C: 'Recipe_IngotIron_C' } }), all),
+      incoming: [{ linkId: 'ingots', other: 'Smelters', transport: 'belt', item: 'Desc_IronIngot_C', perMin: 75 }],
+      outgoing: [],
+      maxBeltTier: 3,
+    })
+    const plates = g.nodes.filter((n) => n.data.kind === 'machine' && n.data.recipe === 'Recipe_IronPlate_C')
+    expect(plates.map((n) => (n.data.kind === 'machine' ? Math.round(n.data.clock * 1e6) / 1e6 : 0))).toEqual([0.833333, 0.833333, 0.833333])
   })
 
   it('exports surplus ore from the end of the manifold, past the last machine', () => {

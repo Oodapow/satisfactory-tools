@@ -25,6 +25,8 @@ function normalize(o: Legacy): OutpostPlan {
     imports: o.imports ?? [],
     recipeChoices: o.recipeChoices ?? o.choices ?? {},
     maxClock: o.maxClock,
+    steps: o.steps,
+    skipped: o.skipped,
     somersloops: o.somersloops,
     location: o.location,
     createdAt: o.createdAt ?? now,

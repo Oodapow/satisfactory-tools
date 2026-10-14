@@ -139,8 +139,8 @@ export function planLayout({ solved, incoming, outgoing, maxBeltTier, maxPipeTie
     if (spec?.supplemental && b?.generator?.supplementalPerMJ) ingredients.push({ item: spec.supplemental, perMin: g.mw * 60 * b.generator.supplementalPerMJ })
     const products: ItemRate[] = []
     if (spec?.byproduct && spec.byproductAmount && fuel?.energyMJ) products.push({ item: spec.byproduct, perMin: ((g.mw * 60) / fuel.energyMJ) * spec.byproductAmount })
-    const count = Math.max(1, Math.ceil(g.machines - EPS))
-    const clock = plan.underclock ? g.machines / count : 1
+    const count = Math.max(1, g.count)
+    const clock = g.clock || 1
     steps.push({ label: `${fmt(g.mw)} MW from ${itemName(g.fuel)}`, recipe: '', fuel: g.fuel, building: g.generator, count, clock, busy: g.machines / clock, boost: 1, ingredients, products })
   }
 

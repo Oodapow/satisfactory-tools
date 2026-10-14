@@ -54,9 +54,30 @@ export interface PowerGoal {
 
 export type Goal = ItemGoal | PowerGoal
 
+/**
+ * How a step's machines share the work when the user hasn't pinned a clock.
+ * 'uniform': N machines at one shared clock that hits the rate exactly (blueprint friendly).
+ * 'full': whole machines at full clock, the manifold's last one idling part of the time.
+ */
+export type ClockMode = 'uniform' | 'full'
+
+/** What the user set on one production step (keyed by recipe). Unset fields are derived. */
+export interface StepSetting {
+  /**
+   * Whole machines to build. Without a clock, they share one clock that hits the rate, and
+   * more are added only when that clock would pass the plan's highest clock.
+   */
+  count?: number
+  /** Clock speed every machine runs at, 1 = 100%. Always set together with `count`. */
+  clock?: number
+  /** Sizing strategy for this step; defaults to the planner-wide setting. */
+  mode?: ClockMode
+}
+
 export interface OutpostPlan {
   id: OutpostId
   name: string
+  /** Kept in storage and backups, no longer shown. */
   notes: string
   goals: Goal[]
   nodes: ResourceNode[]
@@ -68,11 +89,10 @@ export interface OutpostPlan {
    * Defaults to 1.
    */
   maxClock?: number
-  /**
-   * Underclock machines that don't divide evenly so they all run at the same lower clock.
-   * Off by default: they run at full clock and the manifold's last machine idles part of the time.
-   */
-  underclock?: boolean
+  /** Machine count, clock and sizing strategy the user set, per recipe. */
+  steps?: Record<RecipeId, StepSetting>
+  /** Items this outpost doesn't make itself: they have to be imported. */
+  skipped?: ItemId[]
   /** Somersloops slotted into each machine, per recipe. Each one adds output and multiplies power. */
   somersloops?: Record<RecipeId, number>
   /** Where the outpost sits on the world map, in world units (cm). */
@@ -90,10 +110,14 @@ export interface ProductionStep {
   building: BuildingId
   /** Fractional machine count at 100% clock (with any Somersloops counted in). */
   machines: number
+  /** Machines' worth the plan asks of this step; more than `machines` when a set count or clock can't keep up. */
+  demand: number
   /** Whole machines to build. */
   count: number
   /** Clock speed every one of them runs at, 1 = 100%. */
   clock: number
+  /** Sizing strategy used when the clock isn't set by the user. */
+  mode: ClockMode
   /** Power shards needed in total (one per 50% above 100%, per machine). */
   shards: number
   /** Somersloops per machine. */
@@ -107,6 +131,10 @@ export interface GeneratorStep {
   generator: BuildingId
   fuel: ItemId
   machines: number
+  /** Whole generators to build. */
+  count: number
+  /** Clock speed every one of them runs at, 1 = 100%. */
+  clock: number
   mw: number
 }
 
