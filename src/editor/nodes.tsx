@@ -1,7 +1,11 @@
 // Custom React Flow nodes and edges for both editor levels. Edges are drawn like a
 // schematic: orthogonal runs with 90° corners and hops where they cross (see router.ts).
-// Connection points are coloured by what they carry (belt, pipe, power): hollow while free,
-// filled once a line connects to them. Each takes one line.
+// Connection points are coloured by direction (#87): green where things go in, orange where they
+// come out; hollow while free, filled once a line connects. Their shape says what they carry: round
+// for belts, square for pipes. Power has no direction, so its points (small diamonds) and lines
+// (dotted) stay yellow. Every other line fades from orange at its output end to green at its input
+// end, and its style says what it is: a solid line for belts, a hollow tube for pipes, dashes for
+// trucks, trains and drones. Each point takes one line.
 import { useContext, useEffect, useMemo, type CSSProperties } from 'react'
 import {
   BaseEdge,
@@ -23,9 +27,11 @@ import { anchors, G, handleInfo, machineIO, machineSize, UPRIGHT, type Anchor, t
 import { labelPoints, route, useRoutedPath, type Point } from './router'
 import { JunctionSymbol, LiftSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
 import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
+import { netMW } from '../plan/solve'
 import {
   transportById,
   transportColor,
+  type Transport,
   type BeltEdge,
   type FloorData,
   type LinkEdge,
@@ -83,7 +89,10 @@ const position: Record<Side, Position> = { l: Position.Left, r: Position.Right, 
 /** A connection point at its exact grid spot on the block's border, coloured by what it carries. */
 function GridPort({ node, data, id, a }: { node: string; data: MicroNodeData; id: string; a: Anchor }) {
   const info = handleInfo(data, id)
-  const connected = !!useContext(FloorPlanContext)?.used.has(`${node}:${id}`)
+  const end = useContext(FloorPlanContext)?.used.get(`${node}:${id}`)
+  const connected = !!end
+  // Points that work either way (junctions) take the direction of their line. Power has no direction: it stays yellow.
+  const io = info?.medium === 'power' ? undefined : info?.role === 'in' || info?.role === 'out' ? info.role : end
   return (
     <Handle
       type={info?.role === 'in' ? 'target' : 'source'}
@@ -91,8 +100,8 @@ function GridPort({ node, data, id, a }: { node: string; data: MicroNodeData; id
       position={position[a.side]}
       isConnectable={!connected}
       title={`${info?.medium === 'fluid' ? 'Pipe' : info?.medium === 'power' ? 'Power' : 'Belt'} ${info?.role === 'any' ? 'connection' : info?.role === 'in' ? 'input' : 'output'}${connected ? '' : ' (free)'}`}
-      style={{ left: a.dx * G, top: a.dy * G, right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' }}
-      className={`ne-handle m-${info?.medium ?? 'solid'}${info?.role === 'in' ? ' in' : ''}${connected ? ' connected' : ''}`}
+      style={{ left: a.dx * G, top: a.dy * G, right: 'auto', bottom: 'auto', transform: `translate(-50%, -50%)${info?.medium === 'power' ? ' rotate(45deg)' : ''}` }}
+      className={`ne-handle m-${info?.medium ?? 'solid'}${io ? ` io-${io}` : ''}${connected ? ' connected' : ''}`}
     />
   )
 }
@@ -104,26 +113,32 @@ function GridPorts({ id, type, data, a }: { id: string; type: BlockKind; data: M
 
 // ---------- Macro ----------
 
+/** React Flow's own centring of a point on each edge, kept when a power point is turned into a diamond. */
+const centred: Record<Side, string> = { l: 'translate(-50%, -50%)', r: 'translate(50%, -50%)', t: 'translate(-50%, -50%)', b: 'translate(-50%, 50%)' }
+
 /** One connection point on an outpost's edge, with the item it carries next to it. */
 function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
-  const left = type === 'target'
+  const input = type === 'target'
   const free = p.id === NEW_IN
   const power = p.id === POWER_IN || p.id === POWER_OUT
   const rate = power ? `${fmt(p.perMin ?? 0)} MW` : fmt(p.perMin ?? 0)
+  const across = p.side === 'l' || p.side === 'r'
+  const at: CSSProperties = across ? { top: p.at * MAP_G } : { left: p.at * MAP_G }
   return (
     <>
       <Port
         type={type}
         id={p.id}
-        position={left ? Position.Left : Position.Right}
-        style={{ top: p.dy * MAP_G }}
-        className={power ? 'ne-handle-power' : undefined}
-        title={free ? 'Free import point' : power ? `Power line · ${left ? 'uses' : 'makes'} ${rate}` : `${itemName(p.item ?? '')} · ${rate}/min`}
+        position={position[p.side]}
+        style={{ ...at, ...(power ? { transform: `${centred[p.side]} rotate(45deg)` } : {}) }}
+        className={power ? 'm-power' : `${input ? 'io-in' : 'io-out'} m-${p.via === 'pipe' ? 'fluid' : 'solid'}`}
+        title={free ? 'Free import point' : power ? `Power line${(p.perMin ?? 0) > 1e-6 ? ` · ${input ? 'takes' : 'adds'} ${rate}` : ''}` : `${input ? 'Imports' : 'Exports'} ${itemName(p.item ?? '')} · ${rate}/min`}
       />
-      {!free && (
-        <span className={`ne-map-port ${left ? 'in' : 'out'}`} style={{ top: p.dy * MAP_G }}>
+      {/* A power point is listed only on the side the outpost's net power flows: the other is just somewhere to draw a line. */}
+      {!free && (!power || (p.perMin ?? 0) > 1e-6) && (
+        <span className={`ne-map-port ${p.side}`} style={at}>
           <GameIcon id={power ? POWER : p.item} size={18} />
-          {(!power || (p.perMin ?? 0) > 0) && <span>{fmt(p.perMin ?? 0)}</span>}
+          <span>{fmt(p.perMin ?? 0)}</span>
         </span>
       )}
     </>
@@ -133,7 +148,9 @@ function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
 export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   const { plan, solution, block } = data
   // Points come and go as links are made; React Flow re-measures them only when told to.
-  const points = [...block.ins, ...block.outs, block.powerIn, block.powerOut].map((p) => p && `${p.id}@${p.dy}`).join()
+  const points = [...block.ins, ...block.outs, block.powerIn, block.powerOut].map((p) => p && `${p.id}@${p.side}${p.at}`).join()
+  // The name and chips keep clear of the edges that carry points.
+  const edges = new Set([...block.ins, ...block.outs, block.powerIn, block.powerOut].flatMap((p) => (p && p.id !== NEW_IN ? [p.side] : [])))
   const updateInternals = useUpdateNodeInternals()
   useEffect(() => {
     updateInternals(id)
@@ -146,7 +163,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   if (goal) for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
   const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
   // Power isn't exported: what the outpost makes goes to its grid.
-  const net = solution.power.generatedMW - solution.power.consumedMW
+  const net = netMW(solution)
   const power = net > 1e-6 ? `+${fmt(net)}` : `${fmt(-net)}`
   const { x, y } = block.foundations
 
@@ -164,7 +181,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
       ))}
       {block.powerIn && <MapPortView p={block.powerIn} type="target" />}
       {block.powerOut && <MapPortView p={block.powerOut} type="source" />}
-      <div className="ne-outpost-body">
+      <div className={`ne-outpost-body${[...edges].map((e) => ` pad-${e}`).join('')}`}>
         <GameIcon id={icon} size={32} />
         <strong className="ne-outpost-name">{plan.name}</strong>
         <span className="ne-chips">
@@ -192,7 +209,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
 }
 
 export function LinkLine(props: EdgeProps<LinkEdge>) {
-  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected, markerEnd } = props
+  const { id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, selected } = props
   const pts = useMemo(
     () => route(id, { x: sourceX, y: sourceY }, sourcePosition, { x: targetX, y: targetY }, targetPosition),
     [id, sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition],
@@ -201,9 +218,14 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
   const { x, y } = labelPoints(pts).label
   const t = data?.transport ?? 'belt'
   const r = data?.items[0]
+  const g = gradientId(id)
+  const cls = `ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}${data?.lit ? ' ne-lit' : ''}`
   return (
     <>
-      <BaseEdge path={path} markerEnd={markerEnd} className={`ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}${data?.lit ? ' ne-lit' : ''}`} />
+      {/* Power has no direction, arrow or gradient: a power line joins two outposts into one grid, and stays yellow. */}
+      {t !== 'power' && <IoGradient id={g} from={pts[0]} to={pts[pts.length - 1]} />}
+      <BaseEdge path={path} markerEnd={t === 'power' ? undefined : 'url(#ne-arrow)'} style={t === 'power' ? undefined : { stroke: `url(#${g})` }} className={cls} />
+      {t === 'pipe' && <path d={path} className={`ne-tube-core${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`} />}
       <EdgeLabelRenderer>
         <div
           className={`ne-edge-label nodrag nopan${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`}
@@ -346,7 +368,7 @@ export function BeltLine(props: EdgeProps<BeltEdge>) {
   return <FlowLine {...props} load={load} medium={medium} grid={grid} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
 }
 
-/** A power line: on the grid like a belt, but thin, with no direction and nothing carried. */
+/** A power line: on the grid like a belt, but thin, dotted and yellow, with no direction and nothing carried. */
 function WireLine({ id, grid, selected, clash, sx, sy, tx, ty, sp, tp }: { id: string; grid?: Point[]; selected: boolean; clash: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
   const pts = useMemo(() => grid ?? route(id, { x: sx, y: sy }, sp, { x: tx, y: ty }, tp), [grid, id, sx, sy, sp, tx, ty, tp])
   const path = useRoutedPath(id, pts)
@@ -379,9 +401,14 @@ function FlowLine({
   const pipe = medium === 'fluid'
   const over = !!load?.over
   const what = `${load?.item ? itemName(load.item) : 'Unassigned'} · ${load?.perMin !== undefined ? `${fmt(load.perMin)}/min` : 'rate unknown'}${load?.tier ? ` · ${pipe ? 'Pipeline' : 'Belt'} Mk.${load.tier}` : ''}${load?.manual ? ' · set by hand' : ''}`
+  const g = gradientId(id)
+  // Overloaded and clashing lines stay red: that's a warning, not a direction.
+  const warn = over || clash
   return (
     <>
-      <BaseEdge path={path} markerEnd={`url(#ne-arrow-${pipe ? 'pipe' : 'belt'})`} className={`ne-belt${pipe ? ' pipe' : ''}${over ? ' over' : ''}${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
+      <IoGradient id={g} from={pts[0]} to={pts[pts.length - 1]} />
+      <BaseEdge path={path} markerEnd={warn ? undefined : 'url(#ne-arrow)'} style={warn ? undefined : { stroke: `url(#${g})` }} className={`ne-belt${pipe ? ' pipe' : ''}${over ? ' over' : ''}${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
+      {pipe && !warn && <path d={path} className={`ne-tube-core${selected ? ' selected' : ''}`} />}
       <EdgeLabelRenderer>
         {showLabel && (
           <div
@@ -409,17 +436,62 @@ function FlowLine({
   )
 }
 
-/** Arrowheads for belts and pipes, coloured to match. */
+/** The arrowhead at a line's input end, green like the point it meets. */
 export function LineMarkers() {
   return (
     <svg className="ne-markers" aria-hidden>
       <defs>
-        {(['belt', 'pipe'] as const).map((k) => (
-          <marker key={k} id={`ne-arrow-${k}`} viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-            <path d="M0,0L10,5L0,10z" className={`ne-arrow-${k}`} />
-          </marker>
-        ))}
+        <marker id="ne-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M0,0L10,5L0,10z" className="ne-arrow" />
+        </marker>
       </defs>
+    </svg>
+  )
+}
+
+const gradientId = (edge: string) => `ne-io-${edge.replace(/[^\w-]/g, '_')}`
+
+/**
+ * Orange at the output end, green at the input end, laid along the straight line between the two
+ * ends so each end matches the point it touches whatever way the line runs in between.
+ */
+function IoGradient({ id, from, to }: { id: string; from: Point; to: Point }) {
+  // A gradient between two points that coincide paints nothing; nudge it so it still has a direction.
+  const x2 = Math.abs(to.x - from.x) + Math.abs(to.y - from.y) < 1 ? from.x + 1 : to.x
+  return (
+    <defs>
+      <linearGradient id={id} gradientUnits="userSpaceOnUse" x1={from.x} y1={from.y} x2={x2} y2={to.y}>
+        <stop offset="0" className="ne-stop-out" />
+        <stop offset="0.5" className="ne-stop-mid" />
+        <stop offset="1" className="ne-stop-in" />
+      </linearGradient>
+    </defs>
+  )
+}
+
+/** Key to the point colours. */
+export function IoLegend() {
+  return (
+    <div className="ne-io-legend">
+      <span>
+        <i className="ne-dot io-out" /> Output
+      </span>
+      <span>
+        <i className="ne-dot io-in" /> Input
+      </span>
+    </div>
+  )
+}
+
+/** A short sample of a line's style for the legend. */
+export function LineSample({ transport }: { transport: Transport }) {
+  const id = `ne-io-sample-${transport}`
+  const path = 'M 2 6 L 34 6'
+  return (
+    <svg className="ne-sample" width="36" height="12" aria-hidden>
+      {transport !== 'power' && <IoGradient id={id} from={{ x: 2, y: 6 }} to={{ x: 34, y: 6 }} />}
+      <path d={path} className={`react-flow__edge-path ne-link ne-link-${transport}`} style={transport === 'power' ? undefined : { stroke: `url(#${id})` }} />
+      {transport === 'pipe' && <path d={path} className="ne-tube-core" />}
     </svg>
   )
 }

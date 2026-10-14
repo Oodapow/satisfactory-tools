@@ -29,7 +29,7 @@ import { useNetwork } from '../plan/useNetwork'
 import type { GameState } from '../state/gameState'
 import { fmt, proposeLayout } from './generate'
 import { fitTransport } from '../plan/unlocked'
-import { inHandleOf, itemOfOut, linkMarker, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
+import { facePorts, inHandleOf, itemOfOut, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
 import { GameIcon, NoIconLinks } from '../ui/GameIcon'
 import { Help } from '../ui/Help'
 import { GridInspector } from './PowerWidgets'
@@ -48,11 +48,12 @@ import {
   type PortData,
 } from './model'
 import { G, isBlock } from './grid'
-import { connection, place } from './connect'
+import { connection, place, turnMachine } from './connect'
 import { routeFloorPlan } from './gridRouter'
 import { inferFlows } from './flow'
+import { lineEnds } from './io'
 import { FloorPlanContext, type FloorPlanView, type LineLoad } from './floorPlanView'
-import { BeltLine, FloorBand, JunctionBlock, LineMarkers, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PoleBlock, PortBlock, SplitterBlock } from './nodes'
+import { BeltLine, FloorBand, IoLegend, JunctionBlock, LineMarkers, LineSample, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PoleBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
 import { JunctionSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
@@ -186,7 +187,6 @@ function macroEdges(all: Solved[], links: PowerLink[], sel: Selection, grid: Pow
           sourceHandle: outHandleOf(imp.item),
           target: plan.id,
           targetHandle: inHandleOf(imp.id),
-          markerEnd: linkMarker(imp.via),
           selected: sel?.kind === 'edge' && sel.id === imp.id,
           data: { transport: imp.via, items: [{ item: imp.item, perMin: imp.perMin }], ref: { kind: 'import', planId: plan.id, importId: imp.id } },
         })
@@ -222,20 +222,29 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
     () => new Map(all.map((s) => [s.plan.id, mapBlock(s, all, net.grids, unlocked.beltTier, unlocked.pipeTier)])),
     [all, net.grids, unlocked.beltTier, unlocked.pipeTier],
   )
+  const positions = useMemo(
+    () => new Map(all.map((s, i) => [s.plan.id, snap(layout.positions[s.plan.id] ?? { x: (i % 3) * 400, y: Math.floor(i / 3) * 320 })])),
+    [all, layout.positions],
+  )
+  const edges = useMemo(() => macroEdges(all, net.gridStore.links, sel, selGrid), [all, net.gridStore.links, sel, selGrid])
+  // Points slide round each block to face their links, following the blocks as they move.
+  const faced = useMemo(
+    () => facePorts(blocks, positions, edges.map((e) => ({ source: e.source, sourceHandle: e.sourceHandle!, target: e.target, targetHandle: e.targetHandle! }))),
+    [blocks, positions, edges],
+  )
   const nodes = useMemo<OutpostNode[]>(
     () =>
-      all.map((s, i) => ({
+      all.map((s) => ({
         id: s.plan.id,
         type: 'outpost',
-        position: snap(layout.positions[s.plan.id] ?? { x: (i % 3) * 400, y: Math.floor(i / 3) * 320 }),
-        data: { ...s, block: blocks.get(s.plan.id)! },
+        position: positions.get(s.plan.id)!,
+        data: { ...s, block: faced.get(s.plan.id)! },
         measured: measured[s.plan.id],
         selected: sel?.kind === 'node' && sel.id === s.plan.id,
         className: selGrid ? (selGrid.members.includes(s.plan.id) ? 'ne-on-grid' : 'ne-dim') : undefined,
       })),
-    [all, blocks, layout.positions, measured, sel, selGrid],
+    [all, faced, positions, measured, sel, selGrid],
   )
-  const edges = useMemo(() => macroEdges(all, net.gridStore.links, sel, selGrid), [all, net.gridStore.links, sel, selGrid])
 
   const removeOutposts = (ids: string[]) => {
     for (const id of ids) net.remove(id)
@@ -343,9 +352,10 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           Extraction site
         </PaletteItem>
         <h3>Links</h3>
+        <IoLegend />
         {unlocked.transports.map((t) => (
           <div key={t.id} className="ne-legend">
-            <span className={`ne-swatch ne-link-${t.id}`} />
+            <LineSample transport={t.id} />
             {t.label}
           </div>
         ))}
@@ -365,9 +375,10 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           onConnect={onConnect}
           isValidConnection={isValidConnection}
           onPaneClick={() => setSel(null)}
-          onNodeDoubleClick={(_, n) => (window.location.hash = editorPath(n.id))}
+          onNodeDoubleClick={(_, n) => (window.location.hash = `/outposts/${n.id}/plan`)}
         >
           {/* Dots every half foundation, lines every foundation. */}
+          <LineMarkers />
           <Background id="cells" gap={MAP_G} />
           <Background id="foundations" variant={BackgroundVariant.Lines} gap={MAP_G * 2} className="ne-foundation-grid" />
           <Controls />
@@ -471,10 +482,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
   const turn = useCallback(
     (nodeId: string) =>
       setGraph((g) => {
-        const n = g.nodes.find((x) => x.id === nodeId)
-        if (!n || n.data.kind !== 'machine') return g
-        const turned = { ...n, data: { ...n.data, rot: (((n.data.rot ?? 0) + 1) % 4) as MachineData['rot'] } }
-        return { ...g, generatedAt: undefined, nodes: g.nodes.map((x) => (x.id === nodeId ? place(g.nodes, turned) : x)) }
+        const t = turnMachine(g, nodeId)
+        return t === g ? g : { ...t, generatedAt: undefined }
       }),
     [setGraph],
   )
@@ -551,8 +560,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       floors.add(n.data.floor)
       if (!b?.generator) mw += (b?.powerConsumptionMW ?? 0) * n.data.count * Math.pow(n.data.clock, b?.powerConsumptionExponent ?? 1.321928)
     }
-    // What the grid has for this outpost: everything it makes, less what the grid's other outposts use.
-    const powerIn = grid ? grid.made - (grid.used - solved.solution.power.consumedMW) : solved.solution.power.generatedMW
+    // What the grid has for this outpost's machines: the grid's spare power plus what they already draw.
+    const powerIn = grid ? grid.headroom + solved.solution.power.consumedMW : solved.solution.power.generatedMW
     return { mw, machines, floors: floors.size, powerIn: Math.max(0, powerIn) }
   }, [graph, grid, solved])
 
@@ -598,6 +607,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           Power Pole Mk.{unlocked.poleTier}
         </PaletteItem>
         <h3>Ports</h3>
+        <IoLegend />
         {unlocked.transports.flatMap((t) =>
           (['in', 'out'] as const).map((dir) => (
             <PaletteItem key={t.id + dir} payload={{ kind: 'port', direction: dir, transport: t.id }} icon={t.icon} onAdd={drop.addAtCenter}>
@@ -648,7 +658,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             )}
             {view.clashes.size > 0 && (
               <li>
-                {view.clashes.size} line{view.clashes.size === 1 ? '' : 's'} (dashed red) found no grid route of {view.clashes.size === 1 ? 'its' : 'their'} own and share grid space. Move blocks apart to make room.
+                {view.clashes.size} line{view.clashes.size === 1 ? '' : 's'} (dashed red) found no clean grid route of {view.clashes.size === 1 ? 'its' : 'their'} own. Move blocks apart to make room.
               </li>
             )}
             {graph.notes?.map((n) => <li key={n}>{n}</li>)}
@@ -716,9 +726,9 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
               <Help
                 text={
                   (graph.generatedAt
-                    ? "Proposed from the plan: one floor per production type with raw processing at the bottom, machines fed by splitter manifolds and collected by mergers, and a line split in two wherever one belt of your best tier can't carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. "
+                    ? "Proposed from the plan: everything flows left to right, from the ports bringing things in, through one floor per production type, to the ports taking products out. Machines take in on their left and send out on their right, fed by splitter manifolds and collected by mergers, and a line is split in two wherever one belt of your best tier can't carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. "
                     : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan. ') +
-                  'Moving, adding or removing anything changes this drawing, not the plan. Drag blocks in from the left, or click them. Drag from a free connection point to another of the same colour: orange for belts, blue for pipes, yellow for power.'
+                  'Moving, adding or removing anything changes this drawing, not the plan. Drag blocks in from the left, or click them. Drag from a free connection point to another of the same shape: round for belts, square for pipes, a diamond for power. Outputs are orange and inputs green; each point takes one line.'
                 }
               />
             </h3>
@@ -767,7 +777,7 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
     }
     return out
   }, [nodes, edges, beltTier, pipes])
-  const used = useMemo(() => new Set((edges ?? []).flatMap((e) => [`${e.source}:${e.sourceHandle}`, `${e.target}:${e.targetHandle}`])), [edges])
+  const used = useMemo(() => lineEnds(edges ?? []), [edges])
   return useMemo(
     () => ({
       routes: routed?.routes ?? new Map(),

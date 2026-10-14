@@ -3,7 +3,7 @@ import { schematics } from '../data'
 import { availability } from '../data/game/availability'
 import { solvePlan } from '../plan/network'
 import type { OutpostPlan } from '../plan/types'
-import { place } from './connect'
+import { turnMachine } from './connect'
 import { proposeLayout } from './generate'
 import { anchors, machineSize, spread } from './grid'
 import { routeFloorPlan } from './gridRouter'
@@ -53,7 +53,7 @@ describe('machine footprints (#68)', () => {
 describe('turning a machine in a proposed floor plan (#68)', () => {
   const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
   const plan: OutpostPlan = {
-    id: 't', name: 't', notes: '', nodes: [], imports: [], selfPowered: false, createdAt: '', updatedAt: '',
+    id: 't', name: 't', notes: '', nodes: [], imports: [], createdAt: '', updatedAt: '',
     goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }],
     recipeChoices: { Desc_IronScrew_C: 'Recipe_Screw_C' },
   }
@@ -62,9 +62,8 @@ describe('turning a machine in a proposed floor plan (#68)', () => {
   it('keeps every line of the turned machine on the grid', () => {
     for (const m of g.nodes.filter((n) => n.data.kind === 'machine')) {
       if (m.data.kind !== 'machine') continue
-      const turned = place(g.nodes, { ...m, data: { ...m.data, rot: 1 } })
-      const nodes = g.nodes.map((n) => (n.id === m.id ? turned : n))
-      const { routes } = routeFloorPlan(nodes, g.edges)
+      const t = turnMachine(g, m.id)
+      const { routes } = routeFloorPlan(t.nodes, t.edges)
       const mine = g.edges.filter((e) => e.source === m.id || e.target === m.id)
       expect(mine.filter((e) => !routes.has(e.id)).map((e) => `${m.id}:${e.sourceHandle}->${e.targetHandle}`)).toEqual([])
     }

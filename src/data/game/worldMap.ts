@@ -6,7 +6,15 @@ export const worldMap = worldMapJson as WorldMap
 
 // The in-game map picture, cut by scripts/fetch-map.mjs (keep these in step with it).
 const base = `${import.meta.env.BASE_URL}map/`
-/** Whole map, small: for zoomed-out views. */
-export const worldMapOverview = { url: `${base}overview.webp`, size: 2048 }
-/** Full-resolution source cut into TILES × TILES tiles, row 0 at the north. */
-export const worldMapTiles = { count: 4, sourceSize: 5000, url: (row: number, col: number) => `${base}tiles/${row}-${col}.webp` }
+/** Whole map, small: shown at once, under the tiles. */
+export const worldMapBase = { url: `${base}base.webp`, size: 512 }
+/**
+ * The map at each zoom level (`sizes` in px, coarsest first, the last at the source's resolution),
+ * cut into `tile` px squares that reach `overlap` px into their neighbours. Row 0 is at the north.
+ */
+export const worldMapTiles = {
+  tile: 512,
+  overlap: 2,
+  sizes: [625, 1250, 2500, 5000],
+  url: (level: number, row: number, col: number) => `${base}${level}/${row}-${col}.webp`,
+}

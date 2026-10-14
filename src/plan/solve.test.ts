@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildingsById, schematics } from '../data'
 import { availability } from '../data/game/availability'
-import { machinePowerMW, shardsFor, sizeMachines, solve } from './solve'
+import { machinePowerMW, netMW, shardsFor, sizeMachines, solve } from './solve'
 import type { OutpostPlan } from './types'
 
 // Everything unlocked, and the same minus the MAM research that unlocks overclocking and Somersloops.
@@ -19,7 +19,6 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   goals: [],
   nodes: [],
   imports: [],
-  selfPowered: false,
   createdAt: '',
   updatedAt: '',
   ...patch,
@@ -28,13 +27,14 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
 const step = (s: ReturnType<typeof solve>, recipe: string) => s.steps.find((x) => x.recipe === recipe)!
 
 describe('machine sizing', () => {
-  it('runs the fewest machines at full clock, or underclocks them evenly when asked', () => {
-    expect(sizeMachines(2.5)).toEqual({ count: 3, clock: 1 })
-    expect(sizeMachines(2.5, 1, true)).toEqual({ count: 3, clock: 2.5 / 3 })
+  it('runs the fewest machines at one clock that hits the rate, or at full clock when asked', () => {
+    expect(sizeMachines(2.5)).toEqual({ count: 3, clock: 2.5 / 3 })
+    expect(sizeMachines(2.5, 1, 'full')).toEqual({ count: 3, clock: 1 })
     expect(sizeMachines(3, 2)).toEqual({ count: 2, clock: 1.5 })
     expect(sizeMachines(4)).toEqual({ count: 4, clock: 1 })
     expect(sizeMachines(4, 2)).toEqual({ count: 2, clock: 2 })
     expect(sizeMachines(4, 2.5)).toEqual({ count: 2, clock: 2 })
+    expect(sizeMachines(4, 2.5, 'full')).toEqual({ count: 2, clock: 2 })
     expect(sizeMachines(0)).toEqual({ count: 0, clock: 0 })
   })
   it('needs one shard per 50% above 100%', () => {
@@ -73,8 +73,8 @@ describe('solve', () => {
     expect(s.flows.get('Desc_OreIron_C')!.shortfall).toBeCloseTo(180)
   })
 
-  it('runs machines at full clock and counts only the work done for power', () => {
-    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }] }), all)
+  it('runs machines at full clock when asked and counts only the work done for power', () => {
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }] }), all, {}, { clockMode: 'full' })
     const plates = step(s, 'Recipe_IronPlate_C')
     expect(plates.count).toBe(3)
     expect(plates.clock).toBe(1)
@@ -82,12 +82,57 @@ describe('solve', () => {
     expect(plates.powerMW).toBeCloseTo(2.5 * 4, 3)
   })
 
-  it('underclocks to match when the plan asks', () => {
-    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], underclock: true }), all)
+  it('runs every machine at one clock that hits the rate by default', () => {
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }] }), all)
     const plates = step(s, 'Recipe_IronPlate_C')
     expect(plates.count).toBe(3)
     expect(plates.clock).toBeCloseTo(50 / 60)
+    expect(plates.mode).toBe('uniform')
     expect(plates.powerMW).toBeCloseTo(3 * 4 * Math.pow(50 / 60, 1.321929), 3)
+  })
+
+  it('lets one step run at full clock while the rest share one clock', () => {
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 50 }], steps: { Recipe_IronPlate_C: { mode: 'full' } } }), all)
+    expect(step(s, 'Recipe_IronPlate_C')).toMatchObject({ count: 3, clock: 1, mode: 'full' })
+    // 75 ingots/min is 2.5 smelters: 3 at 83.3%.
+    expect(step(s, 'Recipe_IngotIron_C').clock).toBeCloseTo(2.5 / 3)
+  })
+
+  it('derives the clock from a machine count the user set', () => {
+    // 100 screws/min is 2.5 constructors' work: five of them at 50%.
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count: 5 } } }), all)
+    expect(step(s, 'Recipe_Screw_C')).toMatchObject({ count: 5, clock: 0.5 })
+  })
+
+  it('makes no more than a user-sized step can and reports the rest short', () => {
+    // Two constructors at 50% make 40 screws/min, not 100.
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count: 2, clock: 0.5 } } }), all)
+    const screws = step(s, 'Recipe_Screw_C')
+    expect(screws).toMatchObject({ count: 2, clock: 0.5 })
+    expect(screws.machines).toBeCloseTo(1)
+    expect(screws.demand).toBeCloseTo(2.5)
+    expect(s.flows.get('Desc_IronScrew_C')!.shortfall).toBeCloseTo(60)
+    // Only what's made pulls rods.
+    expect(s.flows.get('Desc_IronRod_C')!.consumed).toBeCloseTo(10)
+  })
+
+  it('keeps a set machine count and only adds machines past the highest clock', () => {
+    // 10 constructors for 100 screws/min run at 25%; 12 at 20.8%, still 100/min.
+    const at = (count: number, patch: Partial<OutpostPlan> = {}) =>
+      step(solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count } }, ...patch }), all), 'Recipe_Screw_C')
+    expect(at(10)).toMatchObject({ count: 10, clock: 0.25 })
+    expect(at(12).clock).toBeCloseTo(100 / 40 / 12)
+    // Two would need 125%: a third machine comes in at 83.3% rather than overclocking.
+    expect(at(2).count).toBe(3)
+    expect(at(2).clock).toBeCloseTo(2.5 / 3)
+    // Unless the plan allows overclocking that far.
+    expect(at(2, { maxClock: 1.5 })).toMatchObject({ count: 2, clock: 1.25 })
+  })
+
+  it('leaves skipped items to imports', () => {
+    const s = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }], skipped: ['Desc_IronScrew_C'] }), all)
+    expect(s.steps.find((x) => x.recipe === 'Recipe_Screw_C')).toBeUndefined()
+    expect(s.flows.get('Desc_IronScrew_C')!.shortfall).toBeCloseTo(240)
   })
 
   it('overclocks up to the plan limit once researched', () => {
@@ -120,6 +165,20 @@ describe('solve', () => {
     expect(fast.perMin).toBeCloseTo(300)
     expect(fast.shards).toBe(3)
     expect(fast.powerMW).toBeCloseTo(5 * Math.pow(2.5, 1.321929), 3)
+  })
+
+  it("makes a power goal's MW in total, with the outpost's own machines drawing from it (#86)", () => {
+    const s = solve(
+      plan({
+        goals: [{ kind: 'power', mw: 300, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }],
+        nodes: [{ id: 'n', resource: 'Desc_Coal_C', purity: 'normal' }],
+      }),
+      all,
+    )
+    expect(s.power.generatedMW).toBeCloseTo(300)
+    expect(s.generators[0].machines).toBeCloseTo(4)
+    expect(s.power.consumedMW).toBeGreaterThan(0)
+    expect(netMW(s)).toBeCloseTo(300 - s.power.consumedMW)
   })
 
   it('feeds byproducts back before making more', () => {

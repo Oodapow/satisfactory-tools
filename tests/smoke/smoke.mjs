@@ -118,6 +118,43 @@ for (const s of scenarios) {
   await page.close()
 }
 
+// Number fields can be cleared while typing (#85), and a step's clock can be set on the Plan tab (#84).
+{
+  const page = await browser.newPage()
+  const errors = []
+  page.on('pageerror', (e) => errors.push(e.message))
+  await page.addInitScript((entries) => {
+    if (sessionStorage.getItem('seeded')) return
+    sessionStorage.setItem('seeded', '1')
+    localStorage.clear()
+    for (const [k, v] of Object.entries(entries)) localStorage.setItem(k, JSON.stringify(v))
+  }, {
+    'sft:gameState': legacy['sft:gameState'],
+    'sft:outposts': env([{ id: 'edit-1', name: 'Plates', goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 15 }], nodes: [], imports: [], recipeChoices: {} }]),
+  })
+  const problems = []
+  await page.goto(origin + '#/outposts/edit-1/goal')
+  const rate = page.getByLabel('Per minute').first()
+  await rate.fill('')
+  await rate.pressSequentially('125')
+  await rate.press('Enter')
+  if ((await rate.inputValue()) !== '125') problems.push(`rate field shows ${await rate.inputValue()} after clearing and typing 125`)
+  await rate.fill('15')
+  await page.evaluate(() => (location.hash = '#/outposts/edit-1/plan'))
+  const clock = page.getByLabel('Clock speed (%) for Iron Plate')
+  await clock.fill('50')
+  await clock.press('Enter')
+  await page.waitForTimeout(300)
+  if (!(await clock.getAttribute('class'))?.includes('set')) problems.push('setting a clock on a plan step did not stick')
+  if ((await page.getByLabel('Machines for Iron Plate').inputValue()) !== '2') problems.push('15 plates/min at 50% should take 2 constructors')
+  await page.evaluate(() => (location.hash = '#/outposts/edit-1/goal'))
+  if ((await page.getByLabel('Per minute').first().inputValue()) !== '20') problems.push(`goal did not snap to 20/min: ${await page.getByLabel('Per minute').first().inputValue()}`)
+  if (errors.length) problems.push(`uncaught error: ${errors[0]}`)
+  console.log(`${problems.length ? 'FAIL' : 'ok  '} editing numbers and plan steps${problems.length ? ` (${problems.join('; ')})` : ''}`)
+  failures.push(...problems.map((p) => `editing: ${p}`))
+  await page.close()
+}
+
 // Reading a real save runs the parser in a Web Worker, whose file must resolve under the Pages path.
 {
   const page = await browser.newPage()

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { POWER } from '../data/icons'
 import type { PowerGrid } from '../plan/grids'
 import type { Solved } from '../plan/network'
+import { netMW } from '../plan/solve'
 import { GameIcon } from '../ui/GameIcon'
 import { Help } from '../ui/Help'
 import { fmt } from './generate'
@@ -190,13 +191,15 @@ export function GridInspector({
       <h4>Outposts</h4>
       <ul className="pw-rows">
         {grid.members.map((id) => {
-          const p = byId.get(id)?.solution.power
+          // Each outpost counts by what it adds to the grid or takes from it.
+          const s = byId.get(id)
+          const net = s ? netMW(s.solution) : 0
           return (
             <li key={id}>
               <button type="button" className="ghost pw-row-btn" onClick={() => onSelect(id)}>
                 <span className="ne-grow">{nameOf(id)}</span>
-                {p && p.generatedMW > EPS && <b className="pw-mw good">+{fmt(p.generatedMW)} MW</b>}
-                {p && p.consumedMW > EPS && <b className="pw-mw">−{fmt(p.consumedMW)} MW</b>}
+                {net > EPS && <b className="pw-mw good">+{fmt(net)} MW</b>}
+                {net < -EPS && <b className="pw-mw">−{fmt(-net)} MW</b>}
               </button>
             </li>
           )
@@ -260,6 +263,7 @@ export function OutpostPower({
       <div className="pw-tiles">
         <Tile mw={used} label="uses" />
         {made > EPS && <Tile mw={made} label="makes" tone="good" />}
+        {made > EPS && <Tile mw={Math.abs(made - used)} label={made >= used ? 'to grid' : 'from grid'} tone={made >= used ? 'good' : undefined} />}
         {grid && <Tile mw={Math.abs(grid.headroom)} label={isShort(grid) ? 'grid short' : 'grid spare'} tone={isShort(grid) ? 'bad' : 'good'} />}
       </div>
       {grid && (

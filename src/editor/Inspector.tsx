@@ -9,6 +9,7 @@ import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
 import { Help } from '../ui/Help'
 import { IconSelect } from '../ui/IconSelect'
+import { NumberInput } from '../ui/NumberInput'
 import { POWER } from '../data/icons'
 import type { LineLoad } from './floorPlanView'
 import { transports, type BeltData, type LinkEdge, type MachineData, type PortData } from './model'
@@ -18,7 +19,6 @@ import { useContext } from 'react'
 import { GridCard, GridList, OutpostPower } from './PowerWidgets'
 import type { PowerGrid } from '../plan/grids'
 
-const num = (v: string, fallback = 0) => (v !== '' && Number.isFinite(Number(v)) ? Number(v) : fallback)
 
 function ItemSelect({ value, onChange }: { value?: string; onChange: (id: string) => void }) {
   const unlocked = useUnlocked()
@@ -319,7 +319,7 @@ export function LinkInspector({
           </label>
           <label className="ne-field">
             Per minute
-            <input type="number" min={0} value={imp.perMin} onChange={(e) => onImport({ ...imp, perMin: num(e.target.value) })} />
+            <NumberInput min={0} value={imp.perMin} onChange={(n) => onImport({ ...imp, perMin: n })} />
           </label>
         </>
       )}
@@ -401,21 +401,20 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
       <div className="ne-grid2">
         <label className="ne-field">
           Clock %
-          <input
-            type="number"
+          <NumberInput
             min={1}
             max={250}
             value={Math.round(data.clock * 1000) / 10}
-            onChange={(e) => onChange({ ...data, clock: Math.max(0.01, num(e.target.value, 100) / 100) })}
+            onChange={(n) => onChange({ ...data, clock: Math.max(0.01, n / 100) })}
           />
         </label>
         <label className="ne-field">
           Count
-          <input type="number" min={1} value={data.count} onChange={(e) => onChange({ ...data, count: Math.max(1, Math.round(num(e.target.value, 1))) })} />
+          <NumberInput min={1} value={data.count} onChange={(n) => onChange({ ...data, count: Math.max(1, Math.round(n)) })} />
         </label>
         <label className="ne-field">
           Floor
-          <input type="number" min={1} value={data.floor + 1} onChange={(e) => onChange({ ...data, floor: Math.max(0, num(e.target.value, 1) - 1) })} />
+          <NumberInput min={1} value={data.floor + 1} onChange={(n) => onChange({ ...data, floor: Math.max(0, Math.round(n) - 1) })} />
         </label>
       </div>
       {isGenerator && b?.generator && (
@@ -499,7 +498,7 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
       {data.transport === 'power' ? (
         <label className="ne-field">
           Power (MW)
-          <input type="number" min={0} value={data.powerMW ?? 0} onChange={(e) => onChange({ ...data, powerMW: num(e.target.value) })} />
+          <NumberInput min={0} value={data.powerMW ?? 0} onChange={(n) => onChange({ ...data, powerMW: n })} />
         </label>
       ) : (
         <>
@@ -509,7 +508,7 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
           </label>
           <label className="ne-field">
             Per minute
-            <input type="number" min={0} value={data.perMin} onChange={(e) => onChange({ ...data, perMin: num(e.target.value) })} />
+            <NumberInput min={0} value={data.perMin} onChange={(n) => onChange({ ...data, perMin: n })} />
           </label>
         </>
       )}
@@ -557,12 +556,11 @@ export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltDa
       </label>
       <label className="ne-field">
         Per minute
-        <input
-          type="number"
+        <NumberInput
           min={0}
-          value={load?.perMin !== undefined ? Math.round(load.perMin * 100) / 100 : ''}
+          value={load?.perMin !== undefined ? Math.round(load.perMin * 100) / 100 : undefined}
           placeholder="Unknown"
-          onChange={(e) => onChange({ ...data, manual: true, item: load?.item, perMin: num(e.target.value) })}
+          onChange={(n) => onChange({ ...data, manual: true, item: load?.item, perMin: n })}
         />
       </label>
       {load?.tier && (

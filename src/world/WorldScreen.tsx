@@ -2,9 +2,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent 
 import { taxonomy, taxonomyOf } from '../data'
 import { displayName, iconUrl } from '../data/icons'
 import type { Purity, WorldNode } from '../data/game/types'
-import { worldMap, worldMapOverview, worldMapTiles } from '../data/game/worldMap'
+import { worldMap, worldMapBase, worldMapTiles } from '../data/game/worldMap'
 import { autoName } from '../plan/naming'
+import { removeOutposts } from '../plan/grids'
 import { blankPlan, useOutposts } from '../plan/store'
+import { useGridStore } from '../plan/useGrids'
 import type { OutpostPlan, ResourceNode } from '../plan/types'
 import { go } from '../router'
 import { FOG_SIZE, type Point } from '../save/readMap'
@@ -14,6 +16,7 @@ import { GameIcon } from '../ui/GameIcon'
 import { Help, WithTip } from '../ui/Help'
 import { hide, useTip } from '../ui/tooltip'
 import { COLLECTIBLES, CRASH_SITE, decodeFog, exploredBox, fogOpacity, markers, nearby, pickable, pickups, PURITIES, toUnit, toWorld, type Marker, type Pickup } from './model'
+import { levelFor, overlaps, padded, parseKey, tileOf, tilesIn, type Box as TileBox, type Tile } from './tiles'
 import './world.css'
 
 // The map is laid out on a square "stage" of STAGE px and zoomed with a CSS transform;
@@ -55,8 +58,11 @@ const groupOf = (resource: string | null) =>
 export default function WorldScreen({ state, outpostId }: { state: GameState; outpostId?: string }) {
   const [filters, setFilters] = usePersistentState<Filters>('worldMapFilters', defaultFilters)
   const f = { ...defaultFilters, ...filters }
-  const panelOpen = f.panel ?? window.innerWidth >= 800
-  const { outposts, save: saveOutpost, update: updateOutpost } = useOutposts()
+  // On phones the legend sits below the map, where the page scrolls to it, so it can't be closed.
+  const narrow = window.innerWidth < 800
+  const panelOpen = narrow || (f.panel ?? true)
+  const { outposts, save: saveOutpost, update: updateOutpost, remove: removeOutpost } = useOutposts()
+  const gridStore = useGridStore()
   const active = outposts.find((o) => o.id === outpostId)
   // Placing: the next click on the map creates an outpost there ('new') or moves the selected one.
   // Every outpost belongs somewhere on the map, so one that isn't on it yet asks to be placed.
@@ -128,6 +134,14 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
   const toggle = <T,>(list: T[], x: T) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x])
   const setPanel = (panel: boolean) => setFilters({ ...f, panel })
 
+  const removeActive = () => {
+    if (!active || !confirm(`Delete "${active.name}"? Outposts importing from it lose those imports.`)) return
+    removeOutpost(active.id)
+    gridStore.update((s) => removeOutposts(s, [active.id]))
+    go('/world')
+  }
+
+  const player = save?.players[0] ? toUnit(worldMap, save.players[0]) : null
   const focus = active?.location ? toUnit(worldMap, [active.location.x, active.location.y]) : null
 
   return (
@@ -135,9 +149,11 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
       <aside className="wm-panel" aria-label="Map legend and outposts" hidden={!panelOpen}>
         <div className="wm-panel-head">
           <strong>World map</strong>
-          <button type="button" className="icon-btn" aria-label="Close the legend" onClick={() => setPanel(false)}>
-            ×
-          </button>
+          {!narrow && (
+            <button type="button" className="icon-btn" aria-label="Close the legend" onClick={() => setPanel(false)}>
+              ×
+            </button>
+          )}
         </div>
 
         <section className="wm-section">
@@ -155,21 +171,6 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
               </option>
             ))}
           </select>
-          <div className="row">
-            <button type="button" className={`small${placing === 'new' ? '' : ' secondary'}`} onClick={() => setPlacing(placing === 'new' ? null : 'new')}>
-              New outpost on the map
-            </button>
-            {active && (
-              <button type="button" className={`small${placing === 'move' ? '' : ' secondary'}`} onClick={() => setPlacing(placing === 'move' ? null : 'move')}>
-                {active.location ? 'Move it' : 'Put it on the map'}
-              </button>
-            )}
-          </div>
-          {placing && (
-            <p className="notice small">
-              Click the map where {placing === 'move' && active ? <strong>{active.name}</strong> : 'the outpost'} goes. Nodes within 100 m are given to it.
-            </p>
-          )}
           {active && <OutpostNodes plan={active} onRemove={(id) => updateOutpost(active.id, { nodes: active.nodes.filter((n) => n.id !== id) })} />}
         </section>
 
@@ -263,6 +264,39 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
           placing={placing !== null}
           onPlace={place}
           focus={focus}
+          player={player}
+          controls={
+            <button type="button" className={`small${placing === 'new' ? '' : ' secondary'}`} aria-pressed={placing === 'new'} onClick={() => setPlacing(placing === 'new' ? null : 'new')}>
+              New outpost
+            </button>
+          }
+          overlay={
+            placing ? (
+              <>
+                <span className="wm-overlay-text">
+                  Click the map where {placing === 'move' && active ? <strong>{active.name}</strong> : 'the new outpost'} goes. Nodes within 100 m are given to it.
+                </span>
+                <button type="button" className="secondary small" onClick={() => setPlacing(null)}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              active && (
+                <>
+                  <strong className="wm-overlay-text">{active.name}</strong>
+                  <button type="button" className="secondary small" onClick={() => setPlacing('move')}>
+                    {active.location ? 'Move' : 'Put on the map'}
+                  </button>
+                  <a className="button small" href={openHref(active)}>
+                    Open
+                  </a>
+                  <button type="button" className="danger small" onClick={removeActive}>
+                    Delete
+                  </button>
+                </>
+              )
+            )
+          }
           menu={
             !panelOpen && (
               <button type="button" className="wm-menu secondary small" aria-label="Open the legend" onClick={() => setPanel(true)}>
@@ -305,6 +339,9 @@ export default function WorldScreen({ state, outpostId }: { state: GameState; ou
     </div>
   )
 }
+
+/** Where opening an outpost lands: its plan, or its goal while it has none. */
+const openHref = (plan: OutpostPlan) => `#/outposts/${plan.id}/${plan.goals.length ? 'plan' : 'goal'}`
 
 const purityName = (p: Purity) => p[0].toUpperCase() + p.slice(1)
 
@@ -349,9 +386,6 @@ function OutpostNodes({ plan, onRemove }: { plan: OutpostPlan; onRemove: (id: st
           Plus {manual} node{manual === 1 ? '' : 's'} added by hand.
         </p>
       )}
-      <a className="button secondary small-link" href={`#/outposts/${plan.id}/resources`}>
-        Open {plan.name}
-      </a>
     </div>
   )
 }
@@ -463,17 +497,59 @@ function OutpostMarker({ plan, active, onSelect }: { plan: OutpostPlan; active: 
   )
 }
 
-/** Detail tiles of the map picture currently on screen, as "row-col" keys. */
-function visibleTiles(view: View, w: number, h: number) {
-  const n = worldMapTiles.count
-  const tile = (STAGE * view.k) / n
-  const keys: string[] = []
-  for (let r = 0; r < n; r++)
-    for (let c = 0; c < n; c++) {
-      const left = view.x + c * tile, top = view.y + r * tile
-      if (left < w && top < h && left + tile > 0 && top + tile > 0) keys.push(`${r}-${c}`)
+/** Tiles loading at once; the rest wait in a queue, nearest to the view first. */
+const PARALLEL = 4
+
+/** Map tiles around the view, loaded nearest first as it pans and zooms. */
+function useTiles() {
+  // Tiles drawn are the loaded ones at or below the view's level, around the view.
+  const [area, setArea] = useState<{ level: number; box: TileBox }>({ level: 0, box: { left: 0, top: 0, right: 0, bottom: 0 } })
+  const areaId = useRef('')
+  const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set())
+  const loader = useRef({ queue: [] as Tile[], busy: new Set<string>(), done: new Set<string>() })
+
+  const pump = () => {
+    const l = loader.current
+    while (l.busy.size < PARALLEL && l.queue.length) {
+      const t = l.queue.shift()!
+      if (l.done.has(t.key) || l.busy.has(t.key)) continue
+      l.busy.add(t.key)
+      const img = new Image()
+      img.onload = () => {
+        l.busy.delete(t.key)
+        l.done.add(t.key)
+        setLoaded(new Set(l.done))
+        pump()
+      }
+      img.onerror = () => {
+        l.busy.delete(t.key)
+        pump()
+      }
+      img.src = worldMapTiles.url(t.level, t.row, t.col)
     }
-  return keys
+  }
+
+  /** Called on every view change with the unit box on screen and how wide the map is drawn, in device px. */
+  const update = (view: TileBox, px: number) => {
+    const level = levelFor(px)
+    const box = padded(view, level)
+    const wanted = tilesIn(level, box, [(view.left + view.right) / 2, (view.top + view.bottom) / 2])
+    const id = `${level}:${wanted.map((t) => t.key).join(',')}`
+    if (id === areaId.current) return
+    areaId.current = id
+    setArea({ level, box })
+    // Whatever hasn't started yet gives way to what's around the new view.
+    loader.current.queue = wanted.filter((t) => !loader.current.done.has(t.key))
+    pump()
+  }
+
+  const shown = [...loaded]
+    .map(parseKey)
+    .filter(([level]) => level <= area.level)
+    .sort((a, b) => a[0] - b[0])
+    .map(([level, row, col]) => tileOf(level, row, col))
+    .filter((t) => overlaps(t.box, area.box))
+  return { shown, update }
 }
 
 /** Pan and zoom (drag, wheel, pinch, buttons) over the map picture with the fog drawn on top. */
@@ -483,7 +559,10 @@ function MapView({
   placing,
   onPlace,
   focus,
+  player,
   menu,
+  controls,
+  overlay,
   children,
 }: {
   fog: Uint8Array | null
@@ -492,7 +571,13 @@ function MapView({
   onPlace: (p: Point) => void
   /** Unit point to center on at first, e.g. the selected outpost. */
   focus: Point | null
+  /** The player's unit point: where the map opens when nothing else is selected. */
+  player: Point | null
   menu: ReactNode
+  /** More buttons with the zoom controls. */
+  controls?: ReactNode
+  /** Shown along the bottom of the map, e.g. the selected outpost's actions. */
+  overlay?: ReactNode
   children: ReactNode
 }) {
   const viewport = useRef<HTMLDivElement>(null)
@@ -500,11 +585,16 @@ function MapView({
   const canvas = useRef<HTMLCanvasElement>(null)
   const view = useRef<View>({ x: 0, y: 0, k: 1 })
   const [size, setSize] = useState({ w: 0, h: 0 })
-  // Full-resolution tiles load once the overview would be stretched, and only those on screen.
-  const [tiles, setTiles] = useState<string[]>([])
+  const tiles = useTiles()
+  // On a page that scrolls (phones), one finger scrolls the page and two fingers move the map.
+  const [cooperative, setCooperative] = useState(false)
+  const [hint, setHint] = useState(false)
 
   const fitZoom = () => Math.min(size.w, size.h) / STAGE
-  const maxZoom = () => (worldMapTiles.sourceSize / STAGE) * MAX_OVERZOOM
+  const sourceSize = worldMapTiles.sizes[worldMapTiles.sizes.length - 1]
+  /** Zoom where one pixel of the map picture is one pixel on screen. */
+  const nativeZoom = () => sourceSize / STAGE
+  const maxZoom = () => nativeZoom() * MAX_OVERZOOM
 
   const apply = () => {
     const { x, y, k } = view.current
@@ -513,12 +603,8 @@ function MapView({
     stage.current.style.setProperty('--k', String(k))
     // Markers shrink when the whole map is in view, so crowded areas stay readable.
     stage.current.style.setProperty('--s', String(Math.min(1, Math.max(0.6, k / (fitZoom() * 3)))))
-    const wanted = STAGE * k * window.devicePixelRatio > worldMapOverview.size * 1.1 ? visibleTiles(view.current, size.w, size.h) : []
-    setTiles((prev) => {
-      // Keep tiles already loaded, so panning back doesn't flash the overview.
-      const next = [...new Set([...prev, ...wanted])]
-      return next.length === prev.length ? prev : next
-    })
+    const span = STAGE * k
+    tiles.update({ left: -x / span, top: -y / span, right: (size.w - x) / span, bottom: (size.h - y) / span }, span * window.devicePixelRatio)
   }
 
   // Keep at least part of the map on screen.
@@ -555,6 +641,11 @@ function MapView({
     const cy = ((box.top + box.bottom) / 2) * STAGE
     set({ k, x: size.w / 2 - cx * k, y: size.h / 2 - cy * k })
   }
+  /** Center on a unit point at full detail. */
+  const centerOn = (p: Point) => {
+    const k = nativeZoom()
+    set({ k, x: size.w / 2 - p[0] * STAGE * k, y: size.h / 2 - p[1] * STAGE * k })
+  }
   const fitAll = () => fit({ left: 0, top: 0, right: 1, bottom: 1 })
   const fitExplored = () => {
     const box = fog && exploredBox(fog)
@@ -565,21 +656,26 @@ function MapView({
   useLayoutEffect(() => {
     const el = viewport.current
     if (!el) return
-    const measure = () => setSize({ w: el.clientWidth, h: el.clientHeight })
+    const measure = () => {
+      setSize({ w: el.clientWidth, h: el.clientHeight })
+      let scroller = el.parentElement
+      while (scroller && !/(auto|scroll)/.test(getComputedStyle(scroller).overflowY)) scroller = scroller.parentElement
+      setCooperative(Boolean(scroller && scroller.scrollHeight > scroller.clientHeight + 1))
+    }
     measure()
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
 
-  // First layout: zoom to the selected outpost, or to what's been explored.
+  // First layout: the selected outpost, else the player at full detail, else what's been explored.
   const placed = useRef(false)
   useLayoutEffect(() => {
     if (!size.w || !size.h) return
     if (!placed.current) {
       placed.current = true
-      const r = 0.05
-      if (focus) fit({ left: focus[0] - r, top: focus[1] - r, right: focus[0] + r, bottom: focus[1] + r })
+      if (focus) centerOn(focus)
+      else if (player) centerOn(player)
       else fitExplored()
     } else set(view.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -629,14 +725,23 @@ function MapView({
     const r = viewport.current!.getBoundingClientRect()
     return { x: e.clientX - r.left, y: e.clientY - r.top }
   }
+  // Touch on a scrolling page is handled by the touch listeners below instead.
+  const ours = (e: ReactPointerEvent) => !(cooperative && e.pointerType === 'touch')
   const onPointerDown = (e: ReactPointerEvent) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return
+    if ((e.pointerType === 'mouse' && e.button !== 0) || !ours(e)) return
     pointers.current.set(e.pointerId, local(e))
     gesture.current = { moved: pointers.current.size > 1, dist: pinchDistance() }
   }
   const pinchDistance = () => {
     const [a, b] = [...pointers.current.values()]
     return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0
+  }
+  /** Pan by the midpoint's move and zoom by the fingers' spread, around the midpoint. */
+  const pinch = (a: { x: number; y: number }, b: { x: number; y: number }, prevMid: { x: number; y: number }, prevDist: number) => {
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+    const dist = Math.hypot(a.x - b.x, a.y - b.y)
+    set({ ...view.current, x: view.current.x + mid.x - prevMid.x, y: view.current.y + mid.y - prevMid.y })
+    if (prevDist > 0) zoomAt(dist / prevDist, mid.x, mid.y)
   }
   const onPointerMove = (e: ReactPointerEvent) => {
     const prev = pointers.current.get(e.pointerId)
@@ -648,36 +753,84 @@ function MapView({
       viewport.current?.setPointerCapture(e.pointerId)
       hide()
     }
-    pointers.current.set(e.pointerId, p)
     if (pointers.current.size === 1) {
+      pointers.current.set(e.pointerId, p)
       set({ ...view.current, x: view.current.x + p.x - prev.x, y: view.current.y + p.y - prev.y })
     } else if (pointers.current.size === 2) {
-      const dist = pinchDistance()
       const [a, b] = [...pointers.current.values()]
-      if (gesture.current.dist > 0) zoomAt(dist / gesture.current.dist, (a.x + b.x) / 2, (a.y + b.y) / 2)
-      // Pan with the midpoint too.
-      set({ ...view.current, x: view.current.x + (p.x - prev.x) / 2, y: view.current.y + (p.y - prev.y) / 2 })
-      gesture.current.dist = dist
+      const before = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+      const dist = pinchDistance()
+      pointers.current.set(e.pointerId, p)
+      const [a2, b2] = [...pointers.current.values()]
+      pinch(a2, b2, before, dist)
     }
   }
   const onPointerUp = (e: ReactPointerEvent) => {
     pointers.current.delete(e.pointerId)
     gesture.current.dist = pinchDistance()
   }
+
+  // Cooperative touch: two fingers pan and pinch the map; one finger is left to scroll the page.
+  useEffect(() => {
+    const el = viewport.current
+    if (!el || !cooperative) return
+    let last: { mid: { x: number; y: number }; dist: number } | null = null
+    let hintTimer = 0
+    const two = (e: TouchEvent) => {
+      const [a, b] = [local(e.touches[0]), local(e.touches[1])]
+      return { a, b, mid: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, dist: Math.hypot(a.x - b.x, a.y - b.y) }
+    }
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) gesture.current.moved = false
+      if (e.touches.length >= 2) {
+        gesture.current.moved = true
+        hide()
+        setHint(false)
+        const t = two(e)
+        last = { mid: t.mid, dist: t.dist }
+      }
+    }
+    const onMove = (e: TouchEvent) => {
+      if (e.touches.length >= 2 && last) {
+        if (e.cancelable) e.preventDefault()
+        const t = two(e)
+        pinch(t.a, t.b, last.mid, last.dist)
+        last = { mid: t.mid, dist: t.dist }
+      } else if (e.touches.length === 1 && !last) {
+        setHint(true)
+        clearTimeout(hintTimer)
+        hintTimer = window.setTimeout(() => setHint(false), 1500)
+      }
+    }
+    const onEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) last = null
+    }
+    el.addEventListener('touchstart', onStart, { passive: true })
+    el.addEventListener('touchmove', onMove, { passive: false })
+    el.addEventListener('touchend', onEnd)
+    el.addEventListener('touchcancel', onEnd)
+    return () => {
+      clearTimeout(hintTimer)
+      el.removeEventListener('touchstart', onStart)
+      el.removeEventListener('touchmove', onMove)
+      el.removeEventListener('touchend', onEnd)
+      el.removeEventListener('touchcancel', onEnd)
+    }
+  })
+
   // A click (not the end of a drag) on the map itself, while placing an outpost.
   const onClick = (e: ReactMouseEvent) => {
-    if (!placing || gesture.current.moved || (e.target as Element).closest('.wm-marker, .wm-controls, .wm-menu')) return
+    if (!placing || gesture.current.moved || (e.target as Element).closest('.wm-marker, .wm-controls, .wm-menu, .wm-overlay')) return
     const p = local(e)
     const { x, y, k } = view.current
     onPlace(toWorld(worldMap, [(p.x - x) / k / STAGE, (p.y - y) / k / STAGE]))
   }
 
   const zoomButton = (factor: number) => zoomAt(factor, size.w / 2, size.h / 2)
-  const n = worldMapTiles.count
 
   return (
     <div
-      className={`wm-viewport${placing ? ' placing' : ''}`}
+      className={`wm-viewport${placing ? ' placing' : ''}${cooperative ? ' cooperative' : ''}`}
       ref={viewport}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -686,20 +839,18 @@ function MapView({
       onClick={onClick}
     >
       <div className="wm-stage" ref={stage} style={{ width: STAGE, height: STAGE }}>
-        <img className="wm-image" src={worldMapOverview.url} alt="Map of the world" draggable={false} />
-        {tiles.map((key) => {
-          const [r, c] = key.split('-').map(Number)
-          return (
-            <img
-              key={key}
-              className="wm-tile"
-              src={worldMapTiles.url(r, c)}
-              alt=""
-              draggable={false}
-              style={{ left: `${(c * 100) / n}%`, top: `${(r * 100) / n}%`, width: `${100 / n}%`, height: `${100 / n}%` }}
-            />
-          )
-        })}
+        <img className="wm-image" src={worldMapBase.url} alt="Map of the world" draggable={false} />
+        {tiles.shown.map(({ key, level, row, col, box }) => (
+          <img
+            key={key}
+            className="wm-tile"
+            src={worldMapTiles.url(level, row, col)}
+            alt=""
+            draggable={false}
+            decoding="async"
+            style={{ left: `${box.left * 100}%`, top: `${box.top * 100}%`, width: `${(box.right - box.left) * 100}%`, height: `${(box.bottom - box.top) * 100}%` }}
+          />
+        ))}
         <canvas className="wm-fog" ref={canvas} width={FOG_SIZE} height={FOG_SIZE} />
         {children}
       </div>
@@ -711,6 +862,11 @@ function MapView({
         <button type="button" className="secondary small" onClick={() => zoomButton(1 / 1.5)} aria-label="Zoom out">
           −
         </button>
+        {player && (
+          <button type="button" className="secondary small" onClick={() => centerOn(player)} title="Where you were when the game was saved">
+            You
+          </button>
+        )}
         {fog && (
           <button type="button" className="secondary small" onClick={fitExplored}>
             Explored
@@ -719,7 +875,10 @@ function MapView({
         <button type="button" className="secondary small" onClick={fitAll}>
           Whole map
         </button>
+        {controls}
       </div>
+      {hint && <p className="wm-hint">Use two fingers to move the map</p>}
+      {overlay && <div className="wm-overlay">{overlay}</div>}
       <p className="wm-credit">
         Map: <a href="https://satisfactory.wiki.gg/wiki/Map" target="_blank" rel="noreferrer">Official Satisfactory Wiki</a>
       </p>
