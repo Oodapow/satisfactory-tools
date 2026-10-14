@@ -4,7 +4,7 @@ import { fmt } from '../format'
 import { gridOf, type PowerGrid } from '../plan/grids'
 import { exportsOf, offers, type Solved } from '../plan/network'
 import { addStep, editStep, editStepRate, removeStep } from '../plan/edit'
-import { buildingFor, extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, perMin, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
+import { buildingFor, extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, netMW, perMin, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
 import type { PlannerSettings } from '../plan/settings'
 import { newId, type PlanPatch } from '../plan/store'
 import { suggestGoalItem, suggestGoalRate } from '../plan/suggest'
@@ -221,12 +221,6 @@ function GoalStep({ plan, state, update, available, all }: StepProps & { plan: O
           </button>
         )}
       </div>
-      {hasPower && (
-        <label className="check inline">
-          <input type="checkbox" checked={plan.selfPowered} onChange={(e) => update({ selfPowered: e.target.checked })} />
-          <span>Powers its own machines too</span>
-        </label>
-      )}
     </section>
   )
 }
@@ -928,7 +922,7 @@ function Balance({ solved, grid, nameOf }: { solved: Solved; grid?: PowerGrid; n
   const goalItems = new Set(plan.goals.flatMap((g) => (g.kind === 'item' ? [g.item] : [])))
   const short = flows.filter((f) => f.shortfall > 1e-6)
   const unused = unusedImports(plan, solution)
-  const net = solution.power.generatedMW - solution.power.consumedMW
+  const net = netMW(solution)
 
   return (
     <aside className="panel balance">
@@ -964,8 +958,12 @@ function Balance({ solved, grid, nameOf }: { solved: Solved; grid?: PowerGrid; n
       <h4 className="sub">Power</h4>
       <p className="small">
         Uses {fmt(solution.power.consumedMW, 1)} MW
-        {solution.power.generatedMW > 0 && `, makes ${fmt(solution.power.generatedMW, 1)} MW`}
-        {plan.selfPowered && net < -1e-6 && <span className="warn-text"> · short {fmt(-net, 1)} MW</span>}
+        {solution.power.generatedMW > 0 && (
+          <>
+            , makes {fmt(solution.power.generatedMW, 1)} MW
+            {net >= 0 ? `, ${fmt(net, 1)} MW to the grid` : `, ${fmt(-net, 1)} MW from the grid`}
+          </>
+        )}
       </p>
       {grid && (
         <p className="small">

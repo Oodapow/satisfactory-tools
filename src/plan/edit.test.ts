@@ -14,7 +14,6 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   goals: [],
   nodes: [],
   imports: [],
-  selfPowered: false,
   createdAt: '',
   updatedAt: '',
   ...patch,

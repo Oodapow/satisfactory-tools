@@ -550,8 +550,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       floors.add(n.data.floor)
       if (!b?.generator) mw += (b?.powerConsumptionMW ?? 0) * n.data.count * Math.pow(n.data.clock, b?.powerConsumptionExponent ?? 1.321928)
     }
-    // What the grid has for this outpost: everything it makes, less what the grid's other outposts use.
-    const powerIn = grid ? grid.made - (grid.used - solved.solution.power.consumedMW) : solved.solution.power.generatedMW
+    // What the grid has for this outpost's machines: the grid's spare power plus what they already draw.
+    const powerIn = grid ? grid.headroom + solved.solution.power.consumedMW : solved.solution.power.generatedMW
     return { mw, machines, floors: floors.size, powerIn: Math.max(0, powerIn) }
   }, [graph, grid, solved])
 

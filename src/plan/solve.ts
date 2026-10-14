@@ -143,18 +143,17 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
     return Math.max(1, Math.round(set.count)) * clampClock(set.clock, buildingsById.get(buildingFor(r, available)))
   }
 
+  // A power goal is the generators' total output; the outpost's own machines draw from it
+  // like any other on the grid, so what it adds to the grid is that less its own use.
   const powerGoal = plan.goals.find((g) => g.kind === 'power')
-  let generatedMW = powerGoal?.mw ?? 0
+  const generatedMW = powerGoal?.mw ?? 0
   let credit = new Map<ItemId, number>()
   let result!: ReturnType<typeof walk>
-  // Two things feed back into the walk, so it repeats until they settle: byproducts the
-  // outpost makes (they can cover demand for another step) and, when self-powered, the
-  // power its own machines draw.
+  // Byproducts the outpost makes can cover demand for another step, so the walk repeats
+  // until they settle.
   for (let i = 0; i < 12; i++) {
     result = walk(generatedMW, credit)
-    const next = powerGoal && plan.selfPowered ? powerGoal.mw + result.consumedMW : generatedMW
-    const settled = Math.abs(next - generatedMW) < 1e-6 && sameRates(credit, result.byproducts)
-    generatedMW = next
+    const settled = sameRates(credit, result.byproducts)
     credit = result.byproducts
     if (settled) break
   }
@@ -347,6 +346,9 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
     return { solution, consumedMW, byproducts: made }
   }
 }
+
+/** What an outpost adds to its grid: its generators' output less its own machines' draw. Below zero it takes power. */
+export const netMW = (s: OutpostSolution) => s.power.generatedMW - s.power.consumedMW
 
 function sameRates(a: Map<ItemId, number>, b: Map<ItemId, number>) {
   for (const k of new Set([...a.keys(), ...b.keys()])) if (Math.abs((a.get(k) ?? 0) - (b.get(k) ?? 0)) > 1e-6) return false

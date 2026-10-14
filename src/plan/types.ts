@@ -41,7 +41,10 @@ export interface ItemGoal {
   perMin: number
 }
 
-/** Power the outpost's generators add to its grid, in MW, using one generator type and fuel. */
+/**
+ * The outpost's generators' total output, in MW, using one generator type and fuel. Its own
+ * machines draw from it, so the grid gets this less what they use.
+ */
 export interface PowerGoal {
   kind: 'power'
   mw: number
@@ -81,8 +84,6 @@ export interface OutpostPlan {
   imports: Import[]
   /** Recipe per item where there is a choice. Missing entries use the suggested recipe. */
   recipeChoices: Record<ItemId, RecipeId>
-  /** Run the outpost's own machines on its own generators (only with a power goal). */
-  selfPowered: boolean
   /**
    * Highest clock speed machines are sized for, 1 = 100% (up to 2.5 with three power shards).
    * Defaults to 1.
