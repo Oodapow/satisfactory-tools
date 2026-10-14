@@ -7,6 +7,7 @@ import type { Import, Purity, ResourceNode, Transport as PlanTransport } from '.
 import { fitTransport, transportsFor } from '../plan/unlocked'
 import { fmt } from './generate'
 import { GameIcon } from '../ui/GameIcon'
+import { Help } from '../ui/Help'
 import { IconSelect } from '../ui/IconSelect'
 import { POWER } from '../data/icons'
 import type { LineLoad } from './floorPlanView'
@@ -92,6 +93,7 @@ function NodesEditor({ nodes, onChange }: { nodes: ResourceNode[]; onChange: (n:
           return (
             <li key={n.id} className="ne-node-row">
               <IconSelect
+                iconOnly
                 value={n.resource}
                 aria-label="Resource"
                 onChange={(resource) => set(n.id, { resource, extractor: resource === WATER ? 'Desc_WaterPump_C' : undefined })}
@@ -177,7 +179,13 @@ export function OutpostInspector({
             {plan.goals.map((g, i) => (
               <li key={i}>
                 <GameIcon id={g.kind === 'item' ? g.item : POWER} size={20} />
-                {g.kind === 'item' ? `${fmt(g.perMin)} ${itemName(g.item)}/min` : `${fmt(g.mw)} MW from ${itemName(g.fuel)}`}
+                {g.kind === 'item' ? (
+                  `${fmt(g.perMin)}/min`
+                ) : (
+                  <>
+                    {fmt(g.mw)} MW <GameIcon id={g.fuel} size={18} />
+                  </>
+                )}
               </li>
             ))}
           </ul>
@@ -235,7 +243,7 @@ export function OutpostInspector({
         <div key={`${o.from}-${o.item}`} className="ne-offer-row">
           <GameIcon id={o.item} size={20} />
           <span className="ne-grow">
-            {fmt(o.perMin)} {itemName(o.item)}/min · {o.fromName}
+            {fmt(o.perMin)}/min · {o.fromName}
           </span>
           <button type="button" className="ghost" onClick={() => addImport(o.from, o.item, o.perMin)}>
             Import
@@ -284,7 +292,10 @@ export function LinkInspector({
   if (imp && !exportItems.includes(imp.item)) exportItems.unshift(imp.item)
   return (
     <section>
-      <h3>{ref?.kind === 'power' ? 'Power line' : 'Import'}</h3>
+      <h3>
+        {ref?.kind === 'power' ? 'Power line' : 'Import'}
+        {ref?.kind === 'power' && <Help text="Puts both outposts on one power grid. Power goes wherever the grid needs it, so a line carries no set amount." />}
+      </h3>
       <p className="ne-help">
         {ref?.kind === 'power' ? `${nameOf(edge.source)} — ${nameOf(edge.target)}` : `${nameOf(edge.source)} → ${nameOf(edge.target)}`}
       </p>
@@ -314,9 +325,6 @@ export function LinkInspector({
       )}
       {ref?.kind === 'power' && (
         <>
-          <p className="ne-help">
-            Puts both outposts on one power grid. Power goes wherever the grid needs it, so a line carries no set amount.
-          </p>
           {grid && <GridCard grid={grid} onSelectGrid={onSelectGrid} onSelect={() => onSelectGrid(grid.id)} />}
         </>
       )}
@@ -416,18 +424,25 @@ export function MachineInspector({ data, onChange, onDelete }: { data: MachineDa
       {recipe && (
         <>
           <h4>Per minute</h4>
-          <ul className="ne-list">
-            {recipe.ingredients.map((i) => (
-              <li key={i.item}>
-                <GameIcon id={i.item} size={18} /> In: {fmt(rate(i.amount))} {itemName(i.item)}
-              </li>
-            ))}
-            {recipe.products.map((p) => (
-              <li key={p.item}>
-                <GameIcon id={p.item} size={18} /> Out: {fmt(rate(p.amount))} {itemName(p.item)}
-              </li>
-            ))}
-          </ul>
+          <div className="flow">
+            <span className="rates">
+              {recipe.ingredients.map((i) => (
+                <span key={i.item} className="rate">
+                  <GameIcon id={i.item} size={18} />
+                  <b>{fmt(rate(i.amount))}</b>
+                </span>
+              ))}
+            </span>
+            <span className="arrow">→</span>
+            <span className="rates">
+              {recipe.products.map((p) => (
+                <span key={p.item} className="rate">
+                  <GameIcon id={p.item} size={18} />
+                  <b>{fmt(rate(p.amount))}</b>
+                </span>
+              ))}
+            </span>
+          </div>
         </>
       )}
       <div className="ne-actions">
@@ -447,12 +462,16 @@ export function PortInspector({ data, onChange, onDelete }: { data: PortData; on
   const portTransports = transports.filter((t) => t.id === data.transport || unlocked.transports.includes(t))
   return (
     <section>
-      <h3>Port</h3>
-      <p className="ne-help">
-        {data.linkId
-          ? 'Comes from a link on the factory map. Change the link there; proposing a new layout picks it up.'
-          : 'A port you added by hand. It only changes this drawing.'}
-      </p>
+      <h3>
+        Port
+        <Help
+          text={
+            data.linkId
+              ? 'Comes from a link on the factory map. Change the link there; proposing a new layout picks it up.'
+              : 'A port you added by hand. It only changes this drawing.'
+          }
+        />
+      </h3>
       <div className="ne-grid2">
         <label className="ne-field">
           Direction
@@ -509,8 +528,10 @@ export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltDa
   if (medium === 'power')
     return (
       <section>
-        <h3>{name}</h3>
-        <p className="ne-help">Carries power between a pole and what it feeds. Power lines run on the grid like belts, after belts and pipes have their routes.</p>
+        <h3>
+          {name}
+          <Help text="Carries power between a pole and what it feeds. Power lines run on the grid like belts, after belts and pipes have their routes." />
+        </h3>
         <div className="ne-actions">
           <button type="button" className="danger" onClick={onDelete}>
             Delete
@@ -520,12 +541,16 @@ export function BeltInspector({ data, load, onChange, onDelete }: { data: BeltDa
     )
   return (
     <section>
-      <h3>{name}</h3>
-      <p className="ne-help">
-        {data.manual
-          ? 'Item and rate set by hand.'
-          : 'Item and rate are worked out from what this connects: the machine, port or joint that feeds it and what takes from it. Change either to set it by hand.'}
-      </p>
+      <h3>
+        {name}
+        <Help
+          text={
+            data.manual
+              ? 'Item and rate set by hand.'
+              : 'Item and rate are worked out from what this connects: the machine, port or joint that feeds it and what takes from it. Change either to set it by hand.'
+          }
+        />
+      </h3>
       <label className="ne-field">
         Item
         <ItemSelect value={load?.item} onChange={(item) => onChange({ ...data, manual: true, item, perMin: load?.perMin })} />

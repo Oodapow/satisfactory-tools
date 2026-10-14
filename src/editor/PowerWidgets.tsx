@@ -2,11 +2,11 @@
 // Each power grid (#61) gets its own card: outposts joined by power lines share one, and an
 // outpost with no power lines is a grid of its own.
 import { useState } from 'react'
-import { itemName } from '../data'
-import { displayName, POWER } from '../data/icons'
+import { POWER } from '../data/icons'
 import type { PowerGrid } from '../plan/grids'
 import type { Solved } from '../plan/network'
 import { GameIcon } from '../ui/GameIcon'
+import { Help } from '../ui/Help'
 import { fmt } from './generate'
 
 const EPS = 1e-6
@@ -61,7 +61,13 @@ function Balance({ grid }: { grid: PowerGrid }) {
 }
 
 function Generators({ grid }: { grid: PowerGrid }) {
-  if (!grid.generators.length) return <p className="ne-help">No generators on this grid. Draw a power line to an outpost that makes power.</p>
+  if (!grid.generators.length)
+    return (
+      <p className="ne-help">
+        No generators
+        <Help text="Draw a power line to an outpost that makes power." />
+      </p>
+    )
   return (
     <>
       <h5 className="pw-sub">Generators</h5>
@@ -69,11 +75,9 @@ function Generators({ grid }: { grid: PowerGrid }) {
         {grid.generators.map((x) => (
           <li key={`${x.generator}|${x.fuel}`}>
             <GameIcon id={x.generator} size={22} link={false} />
-            <span className="ne-grow">
-              {x.count} × {displayName(x.generator)}
-              <span className="pw-fuel">
-                <GameIcon id={x.fuel} size={14} link={false} /> {itemName(x.fuel)}
-              </span>
+            <span className="ne-grow pw-gen">
+              <b>×{x.count}</b>
+              <GameIcon id={x.fuel} size={18} link={false} />
             </span>
             <b className="pw-mw">{fmt(x.mw)} MW</b>
           </li>
@@ -214,7 +218,10 @@ export function GridInspector({
           ))}
         </ul>
       ) : (
-        <p className="ne-help">One outpost on its own. Draw a power line from it to another outpost to put both on one grid.</p>
+        <p className="ne-help">
+          On its own
+          <Help text="Draw a power line from it to another outpost to put both on one grid." />
+        </p>
       )}
     </section>
   )
@@ -282,7 +289,7 @@ export function OutpostPower({
           ))}
         </ul>
       ) : (
-        <p className="ne-help">None: this outpost is a grid of its own.</p>
+        <p className="ne-help">None</p>
       )}
       {candidates.length > 0 && (
         <div className="ne-offer-row">
