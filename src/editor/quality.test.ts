@@ -9,7 +9,7 @@ import { lineQuality } from './quality'
 
 const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
 const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
-  id: 'test', name: 'Test', notes: '', goals: [], nodes: [], imports: [], selfPowered: false, createdAt: '', updatedAt: '', recipeChoices: {}, ...patch,
+  id: 'test', name: 'Test', notes: '', goals: [], nodes: [], imports: [], createdAt: '', updatedAt: '', recipeChoices: {}, ...patch,
 })
 
 // Bends and crossings of every line (belts, pipes and power) in the top-to-bottom layout that
