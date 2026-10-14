@@ -364,7 +364,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           onConnect={onConnect}
           isValidConnection={isValidConnection}
           onPaneClick={() => setSel(null)}
-          onNodeDoubleClick={(_, n) => (window.location.hash = editorPath(n.id))}
+          onNodeDoubleClick={(_, n) => (window.location.hash = `/outposts/${n.id}/plan`)}
         >
           {/* Dots every half foundation, lines every foundation. */}
           <Background id="cells" gap={MAP_G} />

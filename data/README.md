@@ -25,7 +25,7 @@ few hand-written supplements for things that file does not contain.
 | `src/data/game/availability.ts` | Given a game state, what is unlocked and what can be bought next. |
 | `scripts/fetch-icons.mjs` | Collects icons into `public/icons/<id>.webp` (96 px) and lists them in `src/data/game/icons.json`. |
 | `src/data/game/icons.ts` | `iconUrl(id)` for items and buildings, and `powerIconUrl` for electricity. |
-| `scripts/fetch-map.mjs` | Downloads the in-game map picture and writes `public/map/overview.webp` (2048 px) plus 4×4 full-resolution tiles in `public/map/tiles/`. |
+| `scripts/fetch-map.mjs` | Downloads the in-game map picture and writes `public/map/base.webp` (512 px, shown at once) plus 512 px tiles for four zoom levels in `public/map/<level>/`, up to the full 5000 px. |
 | `src/data/game/worldMap.ts` | Typed `world-map.json` and the map picture's URL, for the world map screen only. |
 
 Generated files:
