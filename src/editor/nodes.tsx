@@ -23,6 +23,7 @@ import { anchors, G, handleInfo, machineIO, machineSize, UPRIGHT, type Anchor, t
 import { labelPoints, route, useRoutedPath, type Point } from './router'
 import { JunctionSymbol, LiftSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
 import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
+import { netMW } from '../plan/solve'
 import {
   transportById,
   transportColor,
@@ -118,12 +119,13 @@ function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
         position={left ? Position.Left : Position.Right}
         style={{ top: p.dy * MAP_G }}
         className={power ? 'ne-handle-power' : undefined}
-        title={free ? 'Free import point' : power ? `Power line · ${left ? 'uses' : 'makes'} ${rate}` : `${itemName(p.item ?? '')} · ${rate}/min`}
+        title={free ? 'Free import point' : power ? `Power line${(p.perMin ?? 0) > 1e-6 ? ` · ${left ? 'takes' : 'adds'} ${rate}` : ''}` : `${itemName(p.item ?? '')} · ${rate}/min`}
       />
-      {!free && (
+      {/* A power point is listed only on the side the outpost's net power flows: the other is just somewhere to draw a line. */}
+      {!free && (!power || (p.perMin ?? 0) > 1e-6) && (
         <span className={`ne-map-port ${left ? 'in' : 'out'}`} style={{ top: p.dy * MAP_G }}>
           <GameIcon id={power ? POWER : p.item} size={18} />
-          {(!power || (p.perMin ?? 0) > 0) && <span>{fmt(p.perMin ?? 0)}</span>}
+          <span>{fmt(p.perMin ?? 0)}</span>
         </span>
       )}
     </>
@@ -146,7 +148,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   if (goal) for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
   const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
   // Power isn't exported: what the outpost makes goes to its grid.
-  const net = solution.power.generatedMW - solution.power.consumedMW
+  const net = netMW(solution)
   const power = net > 1e-6 ? `+${fmt(net)}` : `${fmt(-net)}`
   const { x, y } = block.foundations
 

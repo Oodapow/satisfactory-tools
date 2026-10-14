@@ -1,8 +1,11 @@
 // Power grids (#61). Power is not an import: every outpost sits on exactly one grid, and
 // everything inside an outpost is on that grid. Outposts joined by power lines, directly or
 // through others, share a grid; an outpost with no power lines is a grid of its own. A grid's
-// generators are all its members' generators, and its consumption all their machines.
+// generators are all its members' generators. An outpost's own machines run on its own
+// generators first, so each outpost counts once, by its net power (#86): what a power plant
+// has left over is what the grid gets, and what an outpost can't cover is what it takes.
 import type { Solved } from './network'
+import { netMW } from './solve'
 import type { OutpostId } from './types'
 
 const EPS = 1e-6
@@ -24,12 +27,14 @@ export interface PowerGrid {
   named: boolean
   members: OutpostId[]
   links: PowerLink[]
+  /** What the members put into the grid: each one's output less its own use, where that is above zero. */
   made: number
+  /** What the members take from the grid: each one's use less its own output, where that is above zero. */
   used: number
   /** Made minus used; below zero the grid is short. */
   headroom: number
   generators: GridGenerators[]
-  /** Outposts that use power, most first. */
+  /** Outposts that take power from the grid, most first. */
   consumers: GridConsumer[]
 }
 
@@ -65,8 +70,8 @@ export function powerGrids(all: Solved[], store: GridStore): PowerGrid[] {
     const id = members[0].plan.id
     // A name given to a grid that has since merged into this one still counts.
     const given = store.names[id] ?? members.map((m) => store.names[m.plan.id]).find(Boolean)
-    const made = members.reduce((t, s) => t + s.solution.power.generatedMW, 0)
-    const used = members.reduce((t, s) => t + s.solution.power.consumedMW, 0)
+    const made = members.reduce((t, s) => t + Math.max(0, netMW(s.solution)), 0)
+    const used = members.reduce((t, s) => t + Math.max(0, -netMW(s.solution)), 0)
     const gens = new Map<string, GridGenerators>()
     for (const s of members)
       for (const g of s.solution.generators) {
@@ -90,8 +95,8 @@ export function powerGrids(all: Solved[], store: GridStore): PowerGrid[] {
       headroom: made - used,
       generators: [...gens.values()].sort((a, b) => b.mw - a.mw),
       consumers: members
-        .filter((s) => s.solution.power.consumedMW > EPS)
-        .map((s) => ({ id: s.plan.id, name: s.plan.name, mw: s.solution.power.consumedMW }))
+        .filter((s) => -netMW(s.solution) > EPS)
+        .map((s) => ({ id: s.plan.id, name: s.plan.name, mw: -netMW(s.solution) }))
         .sort((a, b) => b.mw - a.mw),
     }
   })
@@ -102,7 +107,7 @@ export function powerGrids(all: Solved[], store: GridStore): PowerGrid[] {
 export const gridOf = (grids: PowerGrid[], outpost: OutpostId) => grids.find((g) => g.members.includes(outpost))
 
 /** Grids that make or use any power: the ones worth showing. */
-export const activeGrids = (grids: PowerGrid[]) => grids.filter((g) => g.made > EPS || g.used > EPS || g.members.length > 1)
+export const activeGrids = (grids: PowerGrid[]) => grids.filter((g) => g.made > EPS || g.used > EPS || g.generators.length > 0 || g.members.length > 1)
 
 /** A new line, unless the two are already on the same grid line or are the same outpost. */
 export function addLink(store: GridStore, a: OutpostId, b: OutpostId, id: string = crypto.randomUUID()): GridStore {

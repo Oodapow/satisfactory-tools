@@ -53,7 +53,7 @@ describe('machine footprints (#68)', () => {
 describe('turning a machine in a proposed floor plan (#68)', () => {
   const all = availability({ purchased: schematics.map((s) => s.id), spaceElevatorPhase: 5 })
   const plan: OutpostPlan = {
-    id: 't', name: 't', notes: '', nodes: [], imports: [], selfPowered: false, createdAt: '', updatedAt: '',
+    id: 't', name: 't', notes: '', nodes: [], imports: [], createdAt: '', updatedAt: '',
     goals: [{ kind: 'item', item: 'Desc_IronPlateReinforced_C', perMin: 20 }],
     recipeChoices: { Desc_IronScrew_C: 'Recipe_Screw_C' },
   }
