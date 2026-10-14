@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 import type { Flow } from './flow'
 import type { Orient } from './grid'
+import type { Io } from './io'
 import type { Point } from './router'
 
 /** A line's worked-out load, with the lowest Mk that carries it. */
@@ -17,7 +18,9 @@ export type FloorPlanView = {
   loads: Map<string, LineLoad>
   /** Lines that found no route of their own and share grid space with another. */
   clashes: Set<string>
-  /** Taken connection points, as `node:handle`. */
-  used: Set<string>
+  /** Taken connection points, as `node:handle`, each the output or input end of its line. */
+  used: Map<string, Io>
+  /** Power lines drawn against the flow of power: their target end feeds their source end. */
+  flipped: Set<string>
 }
 export const FloorPlanContext = createContext<FloorPlanView | null>(null)

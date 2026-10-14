@@ -29,7 +29,7 @@ import { useNetwork } from '../plan/useNetwork'
 import type { GameState } from '../state/gameState'
 import { fmt, proposeLayout } from './generate'
 import { fitTransport } from '../plan/unlocked'
-import { inHandleOf, itemOfOut, linkMarker, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
+import { facePorts, inHandleOf, itemOfOut, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
 import { GameIcon, NoIconLinks } from '../ui/GameIcon'
 import { GridInspector } from './PowerWidgets'
 import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostInspector, PortInspector } from './Inspector'
@@ -50,8 +50,9 @@ import { G, isBlock } from './grid'
 import { connection, place } from './connect'
 import { routeFloorPlan } from './gridRouter'
 import { inferFlows } from './flow'
+import { lineEnds } from './io'
 import { FloorPlanContext, type FloorPlanView, type LineLoad } from './floorPlanView'
-import { BeltLine, FloorBand, JunctionBlock, LineMarkers, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PoleBlock, PortBlock, SplitterBlock } from './nodes'
+import { BeltLine, FloorBand, IoLegend, JunctionBlock, LineMarkers, LineSample, LinkLine, MachineBlock, MergerBlock, OutpostBlock, PoleBlock, PortBlock, SplitterBlock } from './nodes'
 import { editorPath } from './route'
 import { RouteContext, RouteRegistry } from './router'
 import { JunctionSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
@@ -185,7 +186,6 @@ function macroEdges(all: Solved[], links: PowerLink[], sel: Selection, grid: Pow
           sourceHandle: outHandleOf(imp.item),
           target: plan.id,
           targetHandle: inHandleOf(imp.id),
-          markerEnd: linkMarker(imp.via),
           selected: sel?.kind === 'edge' && sel.id === imp.id,
           data: { transport: imp.via, items: [{ item: imp.item, perMin: imp.perMin }], ref: { kind: 'import', planId: plan.id, importId: imp.id } },
         })
@@ -221,20 +221,29 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
     () => new Map(all.map((s) => [s.plan.id, mapBlock(s, all, net.grids, unlocked.beltTier, unlocked.pipeTier)])),
     [all, net.grids, unlocked.beltTier, unlocked.pipeTier],
   )
+  const positions = useMemo(
+    () => new Map(all.map((s, i) => [s.plan.id, snap(layout.positions[s.plan.id] ?? { x: (i % 3) * 400, y: Math.floor(i / 3) * 320 })])),
+    [all, layout.positions],
+  )
+  const edges = useMemo(() => macroEdges(all, net.gridStore.links, sel, selGrid), [all, net.gridStore.links, sel, selGrid])
+  // Points slide round each block to face their links, following the blocks as they move.
+  const faced = useMemo(
+    () => facePorts(blocks, positions, edges.map((e) => ({ source: e.source, sourceHandle: e.sourceHandle!, target: e.target, targetHandle: e.targetHandle! }))),
+    [blocks, positions, edges],
+  )
   const nodes = useMemo<OutpostNode[]>(
     () =>
-      all.map((s, i) => ({
+      all.map((s) => ({
         id: s.plan.id,
         type: 'outpost',
-        position: snap(layout.positions[s.plan.id] ?? { x: (i % 3) * 400, y: Math.floor(i / 3) * 320 }),
-        data: { ...s, block: blocks.get(s.plan.id)! },
+        position: positions.get(s.plan.id)!,
+        data: { ...s, block: faced.get(s.plan.id)! },
         measured: measured[s.plan.id],
         selected: sel?.kind === 'node' && sel.id === s.plan.id,
         className: selGrid ? (selGrid.members.includes(s.plan.id) ? 'ne-on-grid' : 'ne-dim') : undefined,
       })),
-    [all, blocks, layout.positions, measured, sel, selGrid],
+    [all, faced, positions, measured, sel, selGrid],
   )
-  const edges = useMemo(() => macroEdges(all, net.gridStore.links, sel, selGrid), [all, net.gridStore.links, sel, selGrid])
 
   const removeOutposts = (ids: string[]) => {
     for (const id of ids) net.remove(id)
@@ -342,9 +351,10 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           Extraction site
         </PaletteItem>
         <h3>Links</h3>
+        <IoLegend />
         {unlocked.transports.map((t) => (
           <div key={t.id} className="ne-legend">
-            <span className={`ne-swatch ne-link-${t.id}`} />
+            <LineSample transport={t.id} />
             {t.label}
           </div>
         ))}
@@ -367,6 +377,7 @@ function MacroEditor({ net, layout, update }: { net: Net; layout: EditorLayout; 
           onNodeDoubleClick={(_, n) => (window.location.hash = editorPath(n.id))}
         >
           {/* Dots every half foundation, lines every foundation. */}
+          <LineMarkers />
           <Background id="cells" gap={MAP_G} />
           <Background id="foundations" variant={BackgroundVariant.Lines} gap={MAP_G * 2} className="ne-foundation-grid" />
           <Controls />
@@ -597,6 +608,7 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           Power Pole Mk.{unlocked.poleTier}
         </PaletteItem>
         <h3>Ports</h3>
+        <IoLegend />
         {unlocked.transports.flatMap((t) =>
           (['in', 'out'] as const).map((dir) => (
             <PaletteItem key={t.id + dir} payload={{ kind: 'port', direction: dir, transport: t.id }} icon={t.icon} onAdd={drop.addAtCenter}>
@@ -719,8 +731,9 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
               imports, edit the plan or the factory map.
             </p>
             <p className="ne-help">
-              Drag blocks in from the left, or click them. Drag from any free connection point to another of the same colour: orange for belts,
-              blue for pipes, yellow for power. Each point takes one line, and belts and pipes always run from an output to an input.
+              Drag blocks in from the left, or click them. Drag from any free connection point to another of the same shape: round for belts,
+              square for pipes, a diamond for power. Outputs are orange and inputs green, and every line fades from orange to green the way
+              things flow. Each point takes one line, and belts and pipes always run from an output to an input.
             </p>
           </section>
         )}
@@ -767,7 +780,7 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
     }
     return out
   }, [nodes, edges, beltTier, pipes])
-  const used = useMemo(() => new Set((edges ?? []).flatMap((e) => [`${e.source}:${e.sourceHandle}`, `${e.target}:${e.targetHandle}`])), [edges])
+  const ends = useMemo(() => lineEnds(nodes ?? [], edges ?? []), [nodes, edges])
   return useMemo(
     () => ({
       routes: routed?.routes ?? new Map(),
@@ -775,8 +788,9 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
       clashes: new Set(routed?.clashes ?? []),
       dragging: new Set(dragKey ? dragKey.split(',') : []),
       loads,
-      used,
+      used: ends.ends,
+      flipped: ends.flipped,
     }),
-    [routed, dragKey, loads, used],
+    [routed, dragKey, loads, ends],
   )
 }
