@@ -24,7 +24,7 @@ export function Upload() {
     if (!file) return
     setStatus({ step: 'reading', fileName: file.name, progress: 0 })
     parseSave(file, (progress) => setStatus({ step: 'reading', fileName: file.name, progress }))
-      .then((summary) => setStatus({ step: 'done', result: gameStateFromSave(summary, file.name), summary }))
+      .then((summary) => setStatus({ step: 'done', result: gameStateFromSave(summary, file), summary }))
       .catch((err: Error) => setStatus({ step: 'failed', fileName: file.name, message: err.message }))
   }
 
