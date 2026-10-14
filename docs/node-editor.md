@@ -56,7 +56,7 @@ What you can do:
 
 ![An outpost's power widget](node-editor/9c-outpost-power.png)
 - **See what you could import**: select an outpost. The panel lists its imports and exports, and everything the other outposts still have spare, each with an Import button. Power isn't offered here: run a power line instead.
-- **Open the floor plan**: double-click an outpost, or use "Open floor plan" in its panel.
+- **Open an outpost**: double-click it to open its Plan tab (#81), which has a Floor plan button; "Open floor plan" in its panel goes straight to the floor plan.
 - **Delete**: select a block or link and press Delete or Backspace, or use the button in the panel. Deleting an outpost deletes its plan and any imports that came from it.
 - **Edit the plan itself** (goal, resource nodes, recipes): "Edit goal, resources and recipes" opens the outpost in the planning flow.
 
