@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { schematics } from '../data'
 import { availability } from '../data/game/availability'
-import { addStep, editStep, removeStep } from './edit'
+import { addStep, editStep, editStepRate, removeStep } from './edit'
 import { solvePlan } from './network'
 import type { OutpostPlan } from './types'
 
@@ -40,6 +40,27 @@ describe('editing the plan', () => {
     const after = solvePlan({ ...solved.plan, ...patch }, all).solution
     expect(after.steps.find((s) => s.recipe === 'Recipe_IronRod_C')).toMatchObject({ count: 2, clock: 1 })
     expect(after.flows.get('Desc_IronRod_C')!.shortfall).toBeCloseTo(0)
+  })
+
+  it('changes the rate of a step and keeps its machines, with the clock following', () => {
+    // 10 constructors making 100 screws/min; ask for 80 instead.
+    const solved = solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count: 10 } } }), all)
+    const screws = solved.solution.steps.find((s) => s.recipe === 'Recipe_Screw_C')!
+    const patch = editStepRate(solved, ctx, screws, 'out', 'Desc_IronScrew_C', 80)
+    expect(goalRate(patch, 'Desc_IronScrew_C')).toBeCloseTo(80)
+    const after = solvePlan({ ...solved.plan, ...patch }, all).solution.steps.find((s) => s.recipe === 'Recipe_Screw_C')!
+    expect(after).toMatchObject({ count: 10, clock: 0.2 })
+    // Setting the input works the same way: 30 rods/min in is 120 screws/min out.
+    const viaInput = editStepRate(solved, ctx, screws, 'in', 'Desc_IronRod_C', 30)
+    expect(goalRate(viaInput, 'Desc_IronScrew_C')).toBeCloseTo(120)
+  })
+
+  it('pins the current machine count when a suggested step gets a new rate, and drops a set clock', () => {
+    const solved = solvePlan(plan({ goals: [{ kind: 'item', item: 'Desc_IronPlate_C', perMin: 20 }], steps: { Recipe_IronPlate_C: { count: 2, clock: 0.5 } } }), all)
+    const plates = solved.solution.steps.find((s) => s.recipe === 'Recipe_IronPlate_C')!
+    const patch = editStepRate(solved, ctx, plates, 'out', 'Desc_IronPlate_C', 30)
+    expect(patch.steps).toEqual({ Recipe_IronPlate_C: { count: 2 } })
+    expect(goalRate(patch, 'Desc_IronPlate_C')).toBeCloseTo(30)
   })
 
   it("doesn't touch goals for a count alone, and resets to the suggestion", () => {

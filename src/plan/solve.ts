@@ -112,8 +112,9 @@ export const buildingFor = (r: Recipe, available: Availability) => r.producedIn.
  * nodes. Anything left over (byproducts, unused node output) is exported.
  * Machines are sized to the plan's highest clock speed, all at one clock that hits the
  * rate ('uniform') or at full clock with the last one idling ('full'), unless the user
- * set a step's count or clock: then that step makes no more than those machines can,
- * and the rest of the demand is short. Power follows the game's clock exponent and
+ * set a step's count (the clock follows the rate, and machines are only added past the
+ * highest clock) or its clock (the step makes no more than those machines can, and the
+ * rest of the demand is short). Power follows the game's clock exponent and
  * Somersloop boost.
  */
 export function solve(plan: OutpostPlan, available: Availability, suggested: Choice = {}, options: SolveOptions = {}): OutpostSolution {
@@ -135,12 +136,11 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
   // Highest clock a user may set on a machine: 250% once overclocking is researched, if it overclocks at all.
   const clockCap = (b: Building | undefined) => (features.has('overclocking') && b?.overclock?.canOverclock !== false ? MAX_CLOCK : 1)
   const clampClock = (c: number, b: Building | undefined) => Math.min(clockCap(b), Math.max(0.01, c))
-  /** Most work, in machines at 100%, a step the user sized can do. */
+  /** Most work, in machines at 100%, a step with a clock the user set can do. */
   const capacity = (r: Recipe) => {
     const set = plan.steps?.[r.id]
-    if (!set?.count) return Infinity
-    const b = buildingsById.get(buildingFor(r, available))
-    return Math.max(1, Math.round(set.count)) * (set.clock ? clampClock(set.clock, b) : clockCap(b))
+    if (!set?.count || !set.clock) return Infinity
+    return Math.max(1, Math.round(set.count)) * clampClock(set.clock, buildingsById.get(buildingFor(r, available)))
   }
 
   const powerGoal = plan.goals.find((g) => g.kind === 'power')
@@ -259,11 +259,16 @@ export function solve(plan: OutpostPlan, available: Availability, suggested: Cho
       const b = buildingsById.get(building)
       const set = plan.steps?.[id]
       const mode = set?.mode ?? defaultMode
-      let { count, clock } = sizeMachines(run.machines, b?.overclock?.canOverclock === false ? 1 : maxClock, mode)
-      if (set?.count) {
-        // The user's count, at their clock or one derived from the rate.
+      const limit = Math.min(MAX_CLOCK, b?.overclock?.canOverclock === false ? 1 : maxClock)
+      let { count, clock } = sizeMachines(run.machines, limit, mode)
+      if (set?.count && set.clock) {
         count = Math.max(1, Math.round(set.count))
-        clock = clampClock(set.clock ?? (mode === 'full' ? Math.max(1, run.machines / count) : run.machines / count), b)
+        clock = clampClock(set.clock, b)
+      } else if (set?.count) {
+        // The user's machines, at the clock that makes the rate; more only when that clock
+        // would go past the plan's highest clock.
+        count = Math.max(1, Math.round(set.count), Math.ceil(run.machines / limit - 1e-9))
+        clock = mode === 'full' ? Math.max(Math.min(1, limit), run.machines / count) : run.machines / count
       }
       return {
         recipe: id,

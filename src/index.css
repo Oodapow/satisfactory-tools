@@ -405,3 +405,5 @@ label.mam-node.open:hover, label.mam-node.done:hover { border-color: var(--accen
 .step-options select { padding: 2px 4px; font-size: .8rem; }
 .plan-table td.actions { text-align: right; }
 .add-step { margin-top: 8px; }
+.step-rate input[type=number] { width: 64px; padding: 2px 4px; border: 0; background: transparent; font-weight: 700; }
+.step-rate input[type=number]:hover, .step-rate input[type=number]:focus { background: var(--surface); outline: 1px solid var(--border); }

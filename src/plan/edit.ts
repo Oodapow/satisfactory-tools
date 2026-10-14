@@ -6,7 +6,7 @@ import type { Availability } from '../data/game/availability'
 import type { Solved } from './network'
 import { perMin, solve, type SolveOptions } from './solve'
 import type { PlanPatch } from './store'
-import type { Goal, OutpostPlan, StepSetting } from './types'
+import type { Goal, OutpostPlan, ProductionStep, StepSetting } from './types'
 
 type Ctx = { available: Availability; options?: SolveOptions }
 
@@ -51,6 +51,20 @@ export function editStep(solved: Solved, ctx: Ctx, recipe: RecipeId, setting: St
   const step = solve(next, ctx.available, solved.suggested, ctx.options).steps.find((s) => s.recipe === recipe)
   if (!step) return { steps }
   return { steps, goals: fitGoals(next, solved, ctx, recipe, step.count * step.clock) }
+}
+
+/**
+ * Set how much of `item` a step makes (`side` 'out') or takes in ('in'), per minute. The
+ * step keeps its machines and their clock follows; the goals it serves scale to match.
+ */
+export function editStepRate(solved: Solved, ctx: Ctx, step: ProductionStep, side: 'in' | 'out', item: ItemId, rate: number): PlanPatch {
+  const r = recipesById.get(step.recipe)
+  const x = (side === 'out' ? r?.products : r?.ingredients)?.find((i) => i.item === item)
+  if (!r || !x) return {}
+  const target = Math.max(0, rate) / (perMin(x.amount, r) * (side === 'out' ? step.boost : 1))
+  const { plan } = solved
+  const steps = { ...plan.steps, [step.recipe]: { ...(plan.steps?.[step.recipe]?.mode && { mode: plan.steps[step.recipe].mode }), count: step.count } }
+  return { steps, goals: fitGoals({ ...plan, steps }, solved, ctx, step.recipe, target) }
 }
 
 /**

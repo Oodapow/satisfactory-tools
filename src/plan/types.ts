@@ -60,7 +60,10 @@ export type ClockMode = 'uniform' | 'full'
 
 /** What the user set on one production step (keyed by recipe). Unset fields are derived. */
 export interface StepSetting {
-  /** Whole machines to build. Without a clock, they share one clock that hits the rate. */
+  /**
+   * Whole machines to build. Without a clock, they share one clock that hits the rate, and
+   * more are added only when that clock would pass the plan's highest clock.
+   */
   count?: number
   /** Clock speed every machine runs at, 1 = 100%. Always set together with `count`. */
   clock?: number

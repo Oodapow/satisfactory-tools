@@ -3,12 +3,12 @@ import { buildingsById, itemName, recipes, recipesById, resourcesById } from '..
 import { fmt } from '../format'
 import { gridOf, type PowerGrid } from '../plan/grids'
 import { exportsOf, offers, type Solved } from '../plan/network'
-import { addStep, editStep, removeStep } from '../plan/edit'
+import { addStep, editStep, editStepRate, removeStep } from '../plan/edit'
 import { buildingFor, extractorPerMin, extractorsFor, generatorsFor, MAX_CLOCK, perMin, recipesFor, somersloopBoost, unlockedFeatures, unusedImports } from '../plan/solve'
 import type { PlannerSettings } from '../plan/settings'
 import { newId, type PlanPatch } from '../plan/store'
 import { suggestGoalItem, suggestGoalRate } from '../plan/suggest'
-import type { ClockMode, ExtractionStep, Goal, ItemGoal, OutpostPlan, Purity, StepSetting, Transport } from '../plan/types'
+import type { ClockMode, ExtractionStep, Goal, ItemGoal, OutpostPlan, ProductionStep, Purity, StepSetting, Transport } from '../plan/types'
 import { fitTransport, transportsFor, transportUnlocked } from '../plan/unlocked'
 import { useNetwork } from '../plan/useNetwork'
 import { editorPath } from '../editor/route'
@@ -18,7 +18,6 @@ import { Amount, GameIcon, PowerIcon } from '../ui/GameIcon'
 import { Help, WithTip } from '../ui/Help'
 import { IconSelect } from '../ui/IconSelect'
 import { NumberInput } from '../ui/NumberInput'
-import { Rates } from './Rates'
 
 const pct = (clock: number) => `${Math.round(clock * 1000) / 10}%`
 const CLOCKS = [1, 1.5, 2, 2.5]
@@ -605,9 +604,9 @@ function PlanStep({ solved, update, available, settings, setSettings }: StepProp
                           min={1}
                           step={1}
                           value={s.count}
-                          onChange={(n) => setStep(s.recipe, { ...set, count: Math.max(1, Math.round(n)) })}
+                          onChange={(n) => setStep(s.recipe, { mode: set?.mode, count: Math.max(1, Math.round(n)) })}
                           aria-label={`Machines for ${itemName(s.item)}`}
-                          title={set?.count ? 'Set by you' : 'Suggested: type a number to set it'}
+                          title={set?.count ? 'Set by you: the clock follows the rate' : 'Suggested: type a number to set it; the rate stays and the clock follows'}
                         />
                         <NumberInput
                           lazy
@@ -671,11 +670,11 @@ function PlanStep({ solved, update, available, settings, setSettings }: StepProp
                       )}
                     </td>
                     <td>
-                      <Rates list={recipe.ingredients} recipe={recipe} scale={s.machines} />
+                      <StepRates step={s} side="in" onRate={(item, rate) => update(editStepRate(solved, ctx, s, 'in', item, rate))} />
                     </td>
                     <td className="arrow">→</td>
                     <td>
-                      <Rates list={recipe.products} recipe={recipe} scale={s.machines * s.boost} />
+                      <StepRates step={s} side="out" onRate={(item, rate) => update(editStepRate(solved, ctx, s, 'out', item, rate))} />
                     </td>
                     <td className="num">{fmt(s.powerMW, 1)} MW</td>
                     <td className="num actions">
@@ -742,6 +741,32 @@ function PlanStep({ solved, update, available, settings, setSettings }: StepProp
 
       {solution.extraction.length > 0 && <Extraction solved={solved} update={update} available={available} />}
     </>
+  )
+}
+
+/** A step's inputs or outputs per minute, each editable: the machines stay and their clock follows. */
+function StepRates({ step, side, onRate }: { step: ProductionStep; side: 'in' | 'out'; onRate: (item: string, perMin: number) => void }) {
+  const recipe = recipesById.get(step.recipe)!
+  const list = side === 'in' ? recipe.ingredients : recipe.products
+  const scale = side === 'in' ? step.machines : step.machines * step.boost
+  return (
+    <span className="rates">
+      {list.map((x) => (
+        <span key={x.item} className="rate step-rate">
+          <GameIcon id={x.item} size={20} />
+          <NumberInput
+            lazy
+            min={0}
+            step="any"
+            value={perMin(x.amount, recipe) * scale}
+            format={(n) => fmt(n)}
+            onChange={(n) => onRate(x.item, n)}
+            aria-label={`${itemName(x.item)} per minute ${side === 'in' ? 'into' : 'out of'} the ${itemName(step.item)} step`}
+            title="Per minute. Change it and the machines stay, their clock follows, and the goals scale to match."
+          />
+        </span>
+      ))}
+    </span>
   )
 }
 

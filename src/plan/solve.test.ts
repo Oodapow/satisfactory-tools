@@ -115,10 +115,19 @@ describe('solve', () => {
     expect(s.flows.get('Desc_IronScrew_C')!.shortfall).toBeCloseTo(60)
     // Only what's made pulls rods.
     expect(s.flows.get('Desc_IronRod_C')!.consumed).toBeCloseTo(10)
-    // A count without a clock can't go past 100% before overclocking is researched.
-    const capped = solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count: 2 } } }), noResearch)
-    expect(step(capped, 'Recipe_Screw_C').clock).toBe(1)
-    expect(capped.flows.get('Desc_IronScrew_C')!.shortfall).toBeCloseTo(20)
+  })
+
+  it('keeps a set machine count and only adds machines past the highest clock', () => {
+    // 10 constructors for 100 screws/min run at 25%; 12 at 20.8%, still 100/min.
+    const at = (count: number, patch: Partial<OutpostPlan> = {}) =>
+      step(solve(plan({ goals: [{ kind: 'item', item: 'Desc_IronScrew_C', perMin: 100 }], steps: { Recipe_Screw_C: { count } }, ...patch }), all), 'Recipe_Screw_C')
+    expect(at(10)).toMatchObject({ count: 10, clock: 0.25 })
+    expect(at(12).clock).toBeCloseTo(100 / 40 / 12)
+    // Two would need 125%: a third machine comes in at 83.3% rather than overclocking.
+    expect(at(2).count).toBe(3)
+    expect(at(2).clock).toBeCloseTo(2.5 / 3)
+    // Unless the plan allows overclocking that far.
+    expect(at(2, { maxClock: 1.5 })).toMatchObject({ count: 2, clock: 1.25 })
   })
 
   it('leaves skipped items to imports', () => {
