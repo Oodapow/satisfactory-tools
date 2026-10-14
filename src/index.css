@@ -396,3 +396,12 @@ label.mam-node.open:hover, label.mam-node.done:hover { border-color: var(--accen
 /* How busy a part-time last machine is, as a small pie. */
 .busy { display: inline-flex; cursor: help; }
 .pie { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--muted); background: conic-gradient(var(--muted) var(--p), transparent 0); }
+/* Editable step size: machine count and clock. Values you set stand out; suggested ones are muted. */
+.step-size input[type=number] { width: 52px; padding: 4px 6px; }
+.step-size input.clock[type=number] { width: 72px; }
+.step-size input.derived { color: var(--muted); }
+.step-size input.set { font-weight: 700; border-color: var(--accent); }
+.step-options { margin-top: 4px; gap: 6px; }
+.step-options select { padding: 2px 4px; font-size: .8rem; }
+.plan-table td.actions { text-align: right; }
+.add-step { margin-top: 8px; }

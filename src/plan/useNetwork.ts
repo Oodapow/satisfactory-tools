@@ -3,6 +3,7 @@ import { availability } from '../data/game/availability'
 import type { GameState } from '../state/gameState'
 import { powerGrids, removeOutposts } from './grids'
 import { solvePlan } from './network'
+import { usePlannerSettings } from './settings'
 import { useOutposts } from './store'
 import { useGridStore } from './useGrids'
 
@@ -10,8 +11,10 @@ import { useGridStore } from './useGrids'
 export function useNetwork(state: GameState) {
   const store = useOutposts()
   const gridStore = useGridStore()
+  const [settings, setSettings] = usePlannerSettings()
+  const { clockMode } = settings
   const available = useMemo(() => availability(state), [state])
-  const solved = useMemo(() => store.outposts.map((p) => solvePlan(p, available)), [store.outposts, available])
+  const solved = useMemo(() => store.outposts.map((p) => solvePlan(p, available, { clockMode })), [store.outposts, available, clockMode])
   const grids = useMemo(() => powerGrids(solved, gridStore.store), [solved, gridStore.store])
   return {
     ...store,
@@ -20,6 +23,8 @@ export function useNetwork(state: GameState) {
       gridStore.update((s) => removeOutposts(s, [id]))
     },
     available,
+    settings,
+    setSettings,
     solved,
     grids,
     gridStore: gridStore.store,

@@ -1,13 +1,13 @@
 import type { Availability } from '../data/game/availability'
 import type { ItemId } from '../data'
-import { solve, suggestRecipes } from './solve'
+import { solve, suggestRecipes, type SolveOptions } from './solve'
 import type { OutpostId, OutpostPlan, OutpostSolution } from './types'
 
 export type Solved = { plan: OutpostPlan; solution: OutpostSolution; suggested: Record<ItemId, string> }
 
-export function solvePlan(plan: OutpostPlan, available: Availability): Solved {
-  const suggested = suggestRecipes(plan, available)
-  return { plan, solution: solve(plan, available, suggested), suggested }
+export function solvePlan(plan: OutpostPlan, available: Availability, options: SolveOptions = {}): Solved {
+  const suggested = suggestRecipes(plan, available, options)
+  return { plan, solution: solve(plan, available, suggested, options), suggested }
 }
 
 /** What an outpost sends out, per minute, including leftover resources and byproducts. */
