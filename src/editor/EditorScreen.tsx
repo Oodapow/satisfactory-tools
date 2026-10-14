@@ -31,6 +31,7 @@ import { fmt, proposeLayout } from './generate'
 import { fitTransport } from '../plan/unlocked'
 import { facePorts, inHandleOf, itemOfOut, MAP_G, mapBlock, NEW_IN, outHandleOf, portLinks, POWER_IN, POWER_OUT, snap } from './macro'
 import { GameIcon, NoIconLinks } from '../ui/GameIcon'
+import { Help } from '../ui/Help'
 import { GridInspector } from './PowerWidgets'
 import { BeltInspector, LinkInspector, MachineInspector, MacroOverview, OutpostInspector, PortInspector } from './Inspector'
 import {
@@ -701,8 +702,10 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           <PortInspector data={selNode.data} onChange={patchNode} onDelete={removeSelected} />
         ) : selNode ? (
           <section>
-            <h3>{jointInfo[selNode.data.kind]?.[0] ?? 'Block'}</h3>
-            <p className="ne-help">{jointInfo[selNode.data.kind]?.[1]}</p>
+            <h3>
+              {jointInfo[selNode.data.kind]?.[0] ?? 'Block'}
+              {jointInfo[selNode.data.kind] && <Help text={jointInfo[selNode.data.kind]![1]} />}
+            </h3>
             <div className="ne-actions">
               <button type="button" className="danger" onClick={removeSelected}>
                 Delete
@@ -718,21 +721,17 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
           />
         ) : (
           <section>
-            <h3>{solved.plan.name}</h3>
-            <p className="ne-help">
-              {graph.generatedAt
-                ? 'Proposed from the plan: everything flows left to right, from the ports bringing things in, through one floor per production type, to the ports taking products out. Machines are turned to take in on their left and send out on their right, fed by splitter manifolds and collected by mergers, and a line is split in two wherever one belt of your best tier can\'t carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. Belts and pipes run along the grid and never share a grid line.'
-                : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan.'}
-            </p>
-            <p className="ne-help">
-              Move, add or remove anything; it changes this drawing, not the plan. To change what the outpost makes or
-              imports, edit the plan or the factory map.
-            </p>
-            <p className="ne-help">
-              Drag blocks in from the left, or click them. Drag from any free connection point to another of the same shape: round for belts,
-              square for pipes, a diamond for power. Outputs are orange and inputs green, and every belt and pipe fades from orange to green the way
-              things flow; power stays yellow. Each point takes one line, and belts and pipes always run from an output to an input.
-            </p>
+            <h3>
+              {solved.plan.name}
+              <Help
+                text={
+                  (graph.generatedAt
+                    ? "Proposed from the plan: everything flows left to right, from the ports bringing things in, through one floor per production type, to the ports taking products out. Machines take in on their left and send out on their right, fed by splitter manifolds and collected by mergers, and a line is split in two wherever one belt of your best tier can't carry it. Fluids run in pipes through pipeline junctions, and a power pole beside every machine is wired to the power ports. "
+                    : 'Edited floor plan. Propose layout replaces it with a fresh proposal from the plan. ') +
+                  'Moving, adding or removing anything changes this drawing, not the plan. Drag blocks in from the left, or click them. Drag from a free connection point to another of the same shape: round for belts, square for pipes, a diamond for power. Outputs are orange and inputs green; each point takes one line.'
+                }
+              />
+            </h3>
           </section>
         )}
       </aside>

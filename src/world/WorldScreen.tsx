@@ -12,6 +12,8 @@ import { go } from '../router'
 import { FOG_SIZE, type Point } from '../save/readMap'
 import type { GameState } from '../state/gameState'
 import { usePersistentState } from '../storage/persisted'
+import { GameIcon } from '../ui/GameIcon'
+import { Help, WithTip } from '../ui/Help'
 import { hide, useTip } from '../ui/tooltip'
 import { COLLECTIBLES, CRASH_SITE, decodeFog, exploredBox, fogOpacity, markers, nearby, pickable, pickups, PURITIES, toUnit, toWorld, type Marker, type Pickup } from './model'
 import { levelFor, overlaps, padded, parseKey, tileOf, tilesIn, type Box as TileBox, type Tile } from './tiles'
@@ -360,17 +362,18 @@ function OutpostNodes({ plan, onRemove }: { plan: OutpostPlan; onRemove: (id: st
   return (
     <div className="wm-outpost">
       <p className="muted small">
-        Click a node on the map to add it to <strong>{plan.name}</strong>, or click it again to take it out.
+        Nodes
+        <Help text={`Click a node on the map to add it to ${plan.name}, or click it again to take it out.`} />
       </p>
       {fromMap.length > 0 && (
         <ul className="plain wm-outpost-nodes">
           {fromMap.map((n) => (
             <li key={n.id}>
-              <img src={iconUrl(n.resource)} alt="" width={20} height={20} />
-              <span className={`wm-dot ${n.purity}`} />
-              <span>
-                {purityName(n.purity)} {displayName(n.resource)}
-              </span>
+              <GameIcon id={n.resource} size={20} link={false} />
+              <WithTip text={purityName(n.purity)}>
+                <span className={`wm-dot ${n.purity}`} />
+              </WithTip>
+              <span className="ne-grow" />
               <button type="button" className="icon-btn" aria-label={`Remove ${displayName(n.resource)} node`} onClick={() => onRemove(n.id)}>
                 ×
               </button>
