@@ -56,13 +56,15 @@ export function overlaps(a: Cell, sa: Size, b: Cell, sb: Size, gap = 0) {
 }
 
 /**
- * The free grid spot nearest to `want` for a block of `type`: a grid line clear all round it, so
- * belts and power lines can reach its connection points.
+ * Where a block of `size` dropped at `want` lands. It stays exactly there unless it covers another
+ * block; lines are no obstacle, they reroute round it (#83). A block that does cover another moves
+ * to the nearest grid spot with a grid line clear all round it, so belts and power lines can reach
+ * its connection points. `roomy` asks for that clear line even where nothing is covered.
  */
-export function freeSpot(nodes: MicroNode[], id: string, size: Size, want: Cell): Cell {
+export function freeSpot(nodes: MicroNode[], id: string, size: Size, want: Cell, roomy = false): Cell {
   const others = nodes.filter((n) => n.id !== id && isBlock(n)).map((n) => ({ at: cellOf(n), size: sizeOf(n.type as BlockKind, n.data) }))
   const free = (c: Cell) => others.every((o) => !overlaps(c, size, o.at, o.size, 2))
-  if (free(want)) return want
+  if (roomy ? free(want) : others.every((o) => !overlaps(want, size, o.at, o.size))) return want
   for (let r = 1; r < 200; r++) {
     let best: Cell | undefined
     let bestD = Infinity
@@ -288,7 +290,11 @@ export function orientAll(nodes: MicroNode[], edges: BeltEdge[]): Map<string, Or
         const d = sideDir[h.side]
         // The single belt (into a splitter, out of a merger) matters most: it is the trunk of the joint.
         const trunk = (n.type === 'splitter' && l.handle === 'in') || (n.type === 'merger' && l.handle === 'out') ? 2 : 1
-        score += (trunk * (d.x * vx + d.y * vy)) / len
+        // Unless something sits right beside it, like the machine a manifold joint feeds: facing it away costs a loop.
+        const close = len <= 4 ? 3 : 1
+        score += (trunk * close * (d.x * vx + d.y * vy)) / len
+        // A point it can reach in a straight line, with no bend at all.
+        if (d.x * vy === d.y * vx && d.x * vx + d.y * vy > 0) score += 2
       }
       if (score > bestScore + 1e-6) {
         best = o
@@ -298,4 +304,76 @@ export function orientAll(nodes: MicroNode[], edges: BeltEdge[]): Map<string, Or
     out.set(n.id, best)
   }
   return out
+}
+
+/**
+ * Give each pole's power lines the connection points round the pole that face them, so lines don't
+ * wrap round the pole. Lines to machines and ports pick first, since those sit right beside it.
+ * Lines in `fixed` keep the points given there; `only` limits it to some poles. Changes `edges` in place.
+ */
+export function facePoles(nodes: MicroNode[], edges: BeltEdge[], fixed = new Map<string, { source?: string; target?: string }>(), only?: Set<string>) {
+  const byId = new Map(nodes.map((n) => [n.id, n]))
+  const blocks = nodes.filter(isBlock).map((n) => ({ id: n.id, at: cellOf(n), size: sizeOf(n.type, n.data) }))
+  const point = (id: string, handle: string | null | undefined) => {
+    const n = byId.get(id)!
+    // Another pole's points are being reassigned too: aim at its middle.
+    const a = n.type === 'pole' ? { dx: SIZE.pole.w / 2, dy: SIZE.pole.h / 2 } : anchors(n.type as 'machine', n.data)[handle ?? '']
+    return { x: n.position.x / G + (a?.dx ?? 0), y: n.position.y / G + (a?.dy ?? 0) }
+  }
+  for (const pole of nodes) {
+    if (pole.data.kind !== 'pole' || (only && !only.has(pole.id))) continue
+    const a = anchors('pole', pole.data)
+    const free = new Set(Object.keys(a))
+    const c = { x: pole.position.x / G + SIZE.pole.w / 2, y: pole.position.y / G + SIZE.pole.h / 2 }
+    const mine = edges
+      .filter((e) => e.source === pole.id || e.target === pole.id)
+      .map((e) => {
+        const far = e.source === pole.id ? point(e.target, e.targetHandle) : point(e.source, e.sourceHandle)
+        const other = byId.get(e.source === pole.id ? e.target : e.source)
+        return { e, far, angle: Math.atan2(far.y - c.y, far.x - c.x), toPole: other?.type === 'pole' }
+      })
+      .sort((p, q) => Number(p.toPole) - Number(q.toPole))
+    // A point whose first step out lands on a block can't be used.
+    const p0 = cellOf(pole)
+    const shut = (h: string, far: Cell) => {
+      const d = sideDir[a[h].side]
+      const x = p0.x + a[h].dx + d.x
+      const y = p0.y + a[h].dy + d.y
+      if (x === far.x && y === far.y) return false
+      return blocks.some((b) => b.id !== pole.id && x >= b.at.x && x <= b.at.x + b.size.w && y >= b.at.y && y <= b.at.y + b.size.h)
+    }
+    const diff = (h: string, angle: number, far: Cell) => {
+      const t = Math.atan2(a[h].dy - SIZE.pole.h / 2, a[h].dx - SIZE.pole.w / 2) - angle
+      return Math.abs(Math.atan2(Math.sin(t), Math.cos(t))) + (shut(h, far) ? 10 : 0)
+    }
+    // Machines and ports first, in order; then whichever line to another pole is best served by a free point.
+    const todo = mine.filter(({ e }) => {
+      const h = fixed.get(e.id)?.[e.source === pole.id ? 'source' : 'target']
+      if (!h || !free.has(h)) return true
+      free.delete(h)
+      if (e.source === pole.id) e.sourceHandle = h
+      else e.targetHandle = h
+      return false
+    })
+    while (todo.length) {
+      const near = todo.filter((m) => !m.toPole)
+      let pick = near[0] ?? todo[0]
+      let best = ''
+      let bestD = Infinity
+      for (const m of near.length ? [pick] : todo)
+        for (const h of free) {
+          const d = diff(h, m.angle, m.far)
+          if (d < bestD - 1e-9) {
+            best = h
+            bestD = d
+            pick = m
+          }
+        }
+      const { e } = pick
+      todo.splice(todo.indexOf(pick), 1)
+      free.delete(best)
+      if (e.source === pole.id) e.sourceHandle = best
+      else e.targetHandle = best
+    }
+  }
 }
