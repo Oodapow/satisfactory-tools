@@ -5,6 +5,7 @@
 import { buildingsById } from '../data'
 import { gridOf, type PowerGrid } from '../plan/grids'
 import { exportsOf, type Solved } from '../plan/network'
+import { netMW } from '../plan/solve'
 import type { ItemId } from '../data'
 import type { Transport } from '../plan/types'
 import { planLayout, type PortLink } from './layout'
@@ -70,7 +71,7 @@ export function portLinks(all: Solved[], grids: PowerGrid[], id: string) {
   const outgoing: PortLink[] = all.flatMap((s) =>
     s.plan.imports.filter((i) => i.from === id).map((i) => ({ linkId: i.id, other: s.plan.name, transport: i.via, item: i.item, perMin: i.perMin })),
   )
-  const net = solution.power.generatedMW - solution.power.consumedMW
+  const net = netMW(solution)
   if (grid && Math.abs(net) > 1e-6)
     (net > 0 ? outgoing : incoming).push({ linkId: `grid:${id}`, other: grid.name, transport: 'power', perMin: 0, powerMW: Math.abs(net) })
   return { incoming, outgoing }
@@ -112,10 +113,13 @@ export function mapBlock(s: Solved, all: Solved[], grids: PowerGrid[], beltTier:
   const outs: MapPort[] = [...rates].map(([item, perMin], k) => ({ id: outHandleOf(item), dy: PORT_TOP + k * PORT_PITCH, item, perMin }))
 
   // Both power points on anything that makes or uses power or has a power line, so a line can start or end at any of them.
+  // Only one carries a rate: the outpost's net power, out to the grid when its generators make more than its machines
+  // use, in from it otherwise.
   const lined = !!gridOf(grids, plan.id)?.links.some((l) => l.a === plan.id || l.b === plan.id)
   const powered = lined || solution.power.consumedMW > 1e-6 || solution.power.generatedMW > 1e-6
-  const powerOut: MapPort | undefined = powered ? { id: POWER_OUT, dy: PORT_TOP + outs.length * PORT_PITCH, perMin: solution.power.generatedMW } : undefined
-  const powerIn: MapPort | undefined = powered ? { id: POWER_IN, dy: PORT_TOP + ins.length * PORT_PITCH, perMin: solution.power.consumedMW } : undefined
+  const net = netMW(solution)
+  const powerOut: MapPort | undefined = powered ? { id: POWER_OUT, dy: PORT_TOP + outs.length * PORT_PITCH, perMin: Math.max(0, net) } : undefined
+  const powerIn: MapPort | undefined = powered ? { id: POWER_IN, dy: PORT_TOP + ins.length * PORT_PITCH, perMin: Math.max(0, -net) } : undefined
 
   const foundations = footprint(s, all, grids, beltTier, pipeTier)
   const points = Math.max(ins.length + (powerIn ? 1 : 0), outs.length + (powerOut ? 1 : 0))

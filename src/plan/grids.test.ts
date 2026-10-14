@@ -13,7 +13,6 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   goals: [],
   nodes: [],
   imports: [],
-  selfPowered: false,
   createdAt: '',
   updatedAt: '',
   recipeChoices: {},
@@ -44,12 +43,15 @@ describe('power grids (#61)', () => {
     expect(grids[0].links).toHaveLength(2)
   })
 
-  it('adds up what generators make and what outposts use, per grid', () => {
+  it('adds up what outposts put into and take from the grid, net of their own use (#86)', () => {
     const grids = powerGrids(outposts, addLink(EMPTY_GRIDS, 'p', 'w'))
     const g = gridOf(grids, 'w')!
-    expect(g.made).toBeCloseTo(200)
-    expect(g.used).toBeCloseTo(p.solution.power.consumedMW + w.solution.power.consumedMW)
-    expect(g.headroom).toBeCloseTo(g.made - g.used)
+    // The power plant's own extractors run on its generators: the grid gets the rest.
+    expect(p.solution.power.consumedMW).toBeGreaterThan(0)
+    expect(g.made).toBeCloseTo(200 - p.solution.power.consumedMW)
+    expect(g.used).toBeCloseTo(w.solution.power.consumedMW)
+    expect(g.headroom).toBeCloseTo(200 - p.solution.power.consumedMW - w.solution.power.consumedMW)
+    expect(g.consumers.map((c) => c.id)).toEqual(['w'])
     expect(g.generators).toEqual([{ generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C', count: 3, mw: 200 }])
     expect(g.consumers.every((c, i, a) => i === 0 || a[i - 1].mw >= c.mw)).toBe(true)
     // The outpost left out has no generators and is short of everything it uses.

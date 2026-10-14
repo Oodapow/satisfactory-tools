@@ -27,7 +27,7 @@ describe('suggested goal item', () => {
 describe('suggested goal rate', () => {
   const machines = (item: string, perMin: number) =>
     solvePlan(
-      { id: 't', name: '', notes: '', goals: [{ kind: 'item', item, perMin }], nodes: [], imports: [], recipeChoices: {}, selfPowered: false, createdAt: '', updatedAt: '' },
+      { id: 't', name: '', notes: '', goals: [{ kind: 'item', item, perMin }], nodes: [], imports: [], recipeChoices: {}, createdAt: '', updatedAt: '' },
       tier2,
     ).solution.steps
   it('is a multiple of one machine at which the whole chain runs at 100%', () => {
