@@ -2,7 +2,7 @@
 /* Direction colours (#87): orange where things come out, green where they go in. The canvas sits a
    step darker than the blocks, which get a firm border and a shadow so they stand off it (#82). */
 .ne-screen {
-  --ne-out: #e8590c; --ne-in: #2b9a45; --ne-any: #8b8f99;
+  --ne-out: #e8590c; --ne-in: #2b9a45; --ne-any: #8b8f99; --ne-power: #d4b000;
   --ne-canvas: #e6e2d8; --ne-dots: #b9b2a4; --ne-block-border: #9c968a; --ne-block-shadow: 0 1px 2px #0003, 0 4px 12px #0002;
   display: flex; flex-direction: column; height: 100%; background: var(--bg);
 }
@@ -57,9 +57,10 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 
 /* Macro blocks */
 /* Outposts on the factory map: sized in grid cells, connection points on the grid along the edges. */
-.ne-outpost { position: relative; box-sizing: border-box; background: var(--surface); border: 2px solid var(--ne-block-border); border-radius: 8px; font-size: .75rem; box-shadow: var(--ne-block-shadow); }
-.ne-outpost.selected { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent), var(--ne-block-shadow); }
-.ne-outpost.short { border-color: #d0453a; }
+/* The border is an inset outline, not a CSS border, so connection points placed from the block's corner land exactly on the grid. */
+.ne-outpost { position: relative; box-sizing: border-box; background: var(--surface); outline: 2px solid var(--ne-block-border); outline-offset: -2px; border-radius: 8px; font-size: .75rem; box-shadow: var(--ne-block-shadow); }
+.ne-outpost.selected { outline-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent), var(--ne-block-shadow); }
+.ne-outpost.short { outline-color: #d0453a; }
 .ne-outpost-body { position: absolute; inset: 6px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; container-type: inline-size; overflow: hidden; }
 .ne-outpost-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .85rem; }
 /* Names only where there is room for them; the tooltip always has it. */
@@ -93,7 +94,7 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .react-flow__edge-path.ne-link-truck { stroke-dasharray: 12 6; stroke-linecap: butt; }
 .react-flow__edge-path.ne-link-train { stroke-width: 4; stroke-dasharray: 18 4 2 4; stroke-linecap: butt; }
 .react-flow__edge-path.ne-link-drone { stroke-dasharray: 4 5; stroke-linecap: butt; }
-.react-flow__edge-path.ne-link-power { stroke-width: 2; stroke-dasharray: 0.5 5; }
+.react-flow__edge-path.ne-link-power { stroke: var(--ne-power); stroke-width: 2.5; stroke-dasharray: 0.5 5; }
 .react-flow__edge .react-flow__edge-path.ne-link.selected { stroke-width: 5; }
 .react-flow__edge .react-flow__edge-path.ne-link-pipe.selected { stroke-width: 9; }
 /* Pipes are hollow tubes: a thin core in the canvas colour down the middle of the line. */
@@ -102,8 +103,9 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-belt.selected { stroke-width: 5; }
 
 /* Micro blocks */
-.ne-machine { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: center; background: var(--surface); border: 2px solid var(--ne-block-border); box-shadow: var(--ne-block-shadow); border-radius: 6px; font-size: .65rem; overflow: visible; }
+.ne-machine { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: center; background: var(--surface); outline: 2px solid var(--ne-block-border); outline-offset: -2px; box-shadow: var(--ne-block-shadow); border-radius: 6px; font-size: .65rem; overflow: visible; }
 .ne-machine-clock { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ne-machine.selected { outline-color: var(--accent); }
 .ne-machine.selected, .ne-joint.selected, .ne-port.selected { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 40%, transparent), var(--ne-block-shadow); }
 .ne-joint { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--ne-block-border); background: var(--surface); box-shadow: var(--ne-block-shadow); }
 /* Ports are tinted like the factory map point they stand for: green for an import, orange for an export. */
@@ -142,7 +144,7 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .react-flow__handle.ne-handle.io-in { --m: var(--ne-in); }
 .react-flow__handle.ne-handle.io-out { --m: var(--ne-out); }
 .react-flow__handle.ne-handle.m-fluid { border-radius: 2px; }
-.react-flow__handle.ne-handle.m-power { width: 8px; height: 8px; border-width: 2px; border-radius: 1px; }
+.react-flow__handle.ne-handle.m-power { --m: var(--ne-power); width: 8px; height: 8px; border-width: 2px; border-radius: 1px; }
 .react-flow__handle.ne-handle.connected { background: var(--m); }
 .react-flow__handle.ne-handle:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--m) 35%, transparent); }
 .react-flow__handle.ne-handle.connected:hover { box-shadow: none; }
@@ -158,7 +160,7 @@ a.button { display: inline-block; border-radius: 8px; text-decoration: none; fon
 .ne-belt.pipe { stroke-width: 7; }
 .ne-belt.clash { stroke: #d0453a; stroke-dasharray: 6 4; }
 .ne-belt.pipe.selected { stroke-width: 9; }
-.ne-wire { stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
+.ne-wire { stroke: var(--ne-power); stroke-width: 2; stroke-dasharray: 0.5 4; stroke-linecap: round; fill: none; }
 .ne-wire.selected { stroke-width: 3.5; }
 .ne-belt-label.pipe { border-color: #2b8fd6; }
 .ne-markers { position: absolute; width: 0; height: 0; overflow: hidden; }

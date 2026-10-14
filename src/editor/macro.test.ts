@@ -16,7 +16,6 @@ const plan = (id: string, patch: Partial<OutpostPlan>): OutpostPlan => ({
   nodes: [],
   imports: [],
   recipeChoices: {},
-  selfPowered: false,
   createdAt: '',
   updatedAt: '',
   ...patch,
@@ -60,6 +59,19 @@ describe('factory map blocks', () => {
     expect(new Set(b.ins.map((p) => p.at)).size).toBe(3)
     expect(b.powerIn?.id).toBe(POWER_IN)
     expect(b.powerIn!.at).toBeGreaterThan(Math.max(...b.ins.map((p) => p.at)))
+  })
+
+  it("puts an outpost's net power on one power point only (#86)", () => {
+    const plant = solvePlan(
+      plan('plant', { goals: [{ kind: 'power', mw: 300, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }], nodes: [{ id: 'n', resource: 'Desc_Coal_C', purity: 'normal' }] }),
+      all,
+    )
+    const p = mapBlock(plant, [plant], noLines, 3, 2)
+    expect(p.powerOut!.perMin).toBeCloseTo(300 - plant.solution.power.consumedMW)
+    expect(p.powerIn!.perMin).toBe(0)
+    const w = mapBlock(works, both, noLines, 3, 2)
+    expect(w.powerIn!.perMin).toBeCloseTo(works.solution.power.consumedMW)
+    expect(w.powerOut!.perMin).toBe(0)
   })
 
   it('is at least as big as its largest floor, with every point inside', () => {

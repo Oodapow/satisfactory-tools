@@ -561,8 +561,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
       floors.add(n.data.floor)
       if (!b?.generator) mw += (b?.powerConsumptionMW ?? 0) * n.data.count * Math.pow(n.data.clock, b?.powerConsumptionExponent ?? 1.321928)
     }
-    // What the grid has for this outpost: everything it makes, less what the grid's other outposts use.
-    const powerIn = grid ? grid.made - (grid.used - solved.solution.power.consumedMW) : solved.solution.power.generatedMW
+    // What the grid has for this outpost's machines: the grid's spare power plus what they already draw.
+    const powerIn = grid ? grid.headroom + solved.solution.power.consumedMW : solved.solution.power.generatedMW
     return { mw, machines, floors: floors.size, powerIn: Math.max(0, powerIn) }
   }, [graph, grid, solved])
 
@@ -732,8 +732,8 @@ function MicroEditor({ net, solved, layout, update }: { net: Net; solved: Solved
             </p>
             <p className="ne-help">
               Drag blocks in from the left, or click them. Drag from any free connection point to another of the same shape: round for belts,
-              square for pipes, a diamond for power. Outputs are orange and inputs green, and every line fades from orange to green the way
-              things flow. Each point takes one line, and belts and pipes always run from an output to an input.
+              square for pipes, a diamond for power. Outputs are orange and inputs green, and every belt and pipe fades from orange to green the way
+              things flow; power stays yellow. Each point takes one line, and belts and pipes always run from an output to an input.
             </p>
           </section>
         )}
@@ -780,7 +780,7 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
     }
     return out
   }, [nodes, edges, beltTier, pipes])
-  const ends = useMemo(() => lineEnds(nodes ?? [], edges ?? []), [nodes, edges])
+  const used = useMemo(() => lineEnds(edges ?? []), [edges])
   return useMemo(
     () => ({
       routes: routed?.routes ?? new Map(),
@@ -788,9 +788,8 @@ function useFloorPlanView(graph: MicroGraph | undefined, pipeTier: number): Floo
       clashes: new Set(routed?.clashes ?? []),
       dragging: new Set(dragKey ? dragKey.split(',') : []),
       loads,
-      used: ends.ends,
-      flipped: ends.flipped,
+      used,
     }),
-    [routed, dragKey, loads, ends],
+    [routed, dragKey, loads, used],
   )
 }

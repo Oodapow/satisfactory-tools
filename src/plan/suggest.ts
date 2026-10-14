@@ -97,7 +97,6 @@ function probe(item: ItemId, rate: number): OutpostPlan {
     nodes: [],
     imports: [],
     recipeChoices: {},
-    selfPowered: false,
     createdAt: '',
     updatedAt: '',
   }

@@ -2,9 +2,10 @@
 // schematic: orthogonal runs with 90° corners and hops where they cross (see router.ts).
 // Connection points are coloured by direction (#87): green where things go in, orange where they
 // come out; hollow while free, filled once a line connects. Their shape says what they carry: round
-// for belts, square for pipes, a small diamond for power. Every line fades from orange at its output
-// end to green at its input end, and its style says what it is: a solid line for belts, a hollow
-// tube for pipes, dashes for trucks, trains and drones, dots for power. Each point takes one line.
+// for belts, square for pipes. Power has no direction, so its points (small diamonds) and lines
+// (dotted) stay yellow. Every other line fades from orange at its output end to green at its input
+// end, and its style says what it is: a solid line for belts, a hollow tube for pipes, dashes for
+// trucks, trains and drones. Each point takes one line.
 import { useContext, useEffect, useMemo, type CSSProperties } from 'react'
 import {
   BaseEdge,
@@ -25,8 +26,8 @@ import { FloorPlanContext, type LineLoad } from './floorPlanView'
 import { anchors, G, handleInfo, machineIO, machineSize, UPRIGHT, type Anchor, type BlockKind, type Side } from './grid'
 import { labelPoints, route, useRoutedPath, type Point } from './router'
 import { JunctionSymbol, LiftSymbol, MergerSymbol, PoleSymbol, SplitterSymbol } from './Symbols'
-import { powerRole } from './io'
 import { MAP_G, NEW_IN, POWER_IN, POWER_OUT, type MapPort } from './macro'
+import { netMW } from '../plan/solve'
 import {
   transportById,
   transportColor,
@@ -90,8 +91,8 @@ function GridPort({ node, data, id, a }: { node: string; data: MicroNodeData; id
   const info = handleInfo(data, id)
   const end = useContext(FloorPlanContext)?.used.get(`${node}:${id}`)
   const connected = !!end
-  // Points that work either way (junctions, poles, power) take the direction of their line, or of their block while free.
-  const io = info?.role === 'in' || info?.role === 'out' ? info.role : (end ?? (info?.medium === 'power' ? powerRole(data) : undefined))
+  // Points that work either way (junctions) take the direction of their line. Power has no direction: it stays yellow.
+  const io = info?.medium === 'power' ? undefined : info?.role === 'in' || info?.role === 'out' ? info.role : end
   return (
     <Handle
       type={info?.role === 'in' ? 'target' : 'source'}
@@ -100,7 +101,7 @@ function GridPort({ node, data, id, a }: { node: string; data: MicroNodeData; id
       isConnectable={!connected}
       title={`${info?.medium === 'fluid' ? 'Pipe' : info?.medium === 'power' ? 'Power' : 'Belt'} ${info?.role === 'any' ? 'connection' : info?.role === 'in' ? 'input' : 'output'}${connected ? '' : ' (free)'}`}
       style={{ left: a.dx * G, top: a.dy * G, right: 'auto', bottom: 'auto', transform: `translate(-50%, -50%)${info?.medium === 'power' ? ' rotate(45deg)' : ''}` }}
-      className={`ne-handle m-${info?.medium ?? 'solid'} io-${io ?? 'any'}${connected ? ' connected' : ''}`}
+      className={`ne-handle m-${info?.medium ?? 'solid'}${io ? ` io-${io}` : ''}${connected ? ' connected' : ''}`}
     />
   )
 }
@@ -130,13 +131,14 @@ function MapPortView({ p, type }: { p: MapPort; type: HandleType }) {
         id={p.id}
         position={position[p.side]}
         style={{ ...at, ...(power ? { transform: `${centred[p.side]} rotate(45deg)` } : {}) }}
-        className={`${input ? 'io-in' : 'io-out'} m-${power ? 'power' : p.via === 'pipe' ? 'fluid' : 'solid'}`}
-        title={free ? 'Free import point' : power ? `Power line · ${input ? 'uses' : 'makes'} ${rate}` : `${input ? 'Imports' : 'Exports'} ${itemName(p.item ?? '')} · ${rate}/min`}
+        className={power ? 'm-power' : `${input ? 'io-in' : 'io-out'} m-${p.via === 'pipe' ? 'fluid' : 'solid'}`}
+        title={free ? 'Free import point' : power ? `Power line${(p.perMin ?? 0) > 1e-6 ? ` · ${input ? 'takes' : 'adds'} ${rate}` : ''}` : `${input ? 'Imports' : 'Exports'} ${itemName(p.item ?? '')} · ${rate}/min`}
       />
-      {!free && (
+      {/* A power point is listed only on the side the outpost's net power flows: the other is just somewhere to draw a line. */}
+      {!free && (!power || (p.perMin ?? 0) > 1e-6) && (
         <span className={`ne-map-port ${p.side}`} style={at}>
           <GameIcon id={power ? POWER : p.item} size={18} />
-          {(!power || (p.perMin ?? 0) > 0) && <span>{fmt(p.perMin ?? 0)}</span>}
+          <span>{fmt(p.perMin ?? 0)}</span>
         </span>
       )}
     </>
@@ -161,7 +163,7 @@ export function OutpostBlock({ id, data, selected }: NodeProps<OutpostNode>) {
   if (goal) for (const x of solution.extraction) resources.set(x.resource, (resources.get(x.resource) ?? 0) + x.perMin)
   const short = [...solution.flows.values()].filter((f) => f.shortfall > 1e-6)
   // Power isn't exported: what the outpost makes goes to its grid.
-  const net = solution.power.generatedMW - solution.power.consumedMW
+  const net = netMW(solution)
   const power = net > 1e-6 ? `+${fmt(net)}` : `${fmt(-net)}`
   const { x, y } = block.foundations
 
@@ -220,9 +222,9 @@ export function LinkLine(props: EdgeProps<LinkEdge>) {
   const cls = `ne-link ne-link-${t}${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}${data?.lit ? ' ne-lit' : ''}`
   return (
     <>
-      <IoGradient id={g} from={pts[0]} to={pts[pts.length - 1]} />
-      {/* Power has no arrow: a power line joins two outposts into one grid. */}
-      <BaseEdge path={path} markerEnd={t === 'power' ? undefined : 'url(#ne-arrow)'} style={{ stroke: `url(#${g})` }} className={cls} />
+      {/* Power has no direction, arrow or gradient: a power line joins two outposts into one grid, and stays yellow. */}
+      {t !== 'power' && <IoGradient id={g} from={pts[0]} to={pts[pts.length - 1]} />}
+      <BaseEdge path={path} markerEnd={t === 'power' ? undefined : 'url(#ne-arrow)'} style={t === 'power' ? undefined : { stroke: `url(#${g})` }} className={cls} />
       {t === 'pipe' && <path d={path} className={`ne-tube-core${selected ? ' selected' : ''}${data?.dim ? ' ne-dim' : ''}`} />}
       <EdgeLabelRenderer>
         <div
@@ -362,22 +364,15 @@ export function BeltLine(props: EdgeProps<BeltEdge>) {
   const load = view?.loads.get(id)
   const medium = load?.medium ?? data?.medium ?? 'solid'
   const grid = view && !view.dragging.has(source) && !view.dragging.has(target) ? view.routes.get(id) : undefined
-  if (medium === 'power') return <WireLine id={id} grid={grid} selected={!!selected} clash={!!view?.clashes.has(id)} flipped={!!view?.flipped.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
+  if (medium === 'power') return <WireLine id={id} grid={grid} selected={!!selected} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
   return <FlowLine {...props} load={load} medium={medium} grid={grid} clash={!!view?.clashes.has(id)} sx={sourceX} sy={sourceY} tx={targetX} ty={targetY} sp={sourcePosition} tp={targetPosition} />
 }
 
-/** A power line: on the grid like a belt, but thin and dotted, with nothing carried. It fades from what feeds it to what it feeds. */
-function WireLine({ id, grid, selected, clash, flipped, sx, sy, tx, ty, sp, tp }: { id: string; grid?: Point[]; selected: boolean; clash: boolean; flipped: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
+/** A power line: on the grid like a belt, but thin, dotted and yellow, with no direction and nothing carried. */
+function WireLine({ id, grid, selected, clash, sx, sy, tx, ty, sp, tp }: { id: string; grid?: Point[]; selected: boolean; clash: boolean; sx: number; sy: number; tx: number; ty: number; sp: Position; tp: Position }) {
   const pts = useMemo(() => grid ?? route(id, { x: sx, y: sy }, sp, { x: tx, y: ty }, tp), [grid, id, sx, sy, sp, tx, ty, tp])
   const path = useRoutedPath(id, pts)
-  const g = gradientId(id)
-  const [from, to] = flipped ? [pts[pts.length - 1], pts[0]] : [pts[0], pts[pts.length - 1]]
-  return (
-    <>
-      <IoGradient id={g} from={from} to={to} />
-      <BaseEdge path={path} style={clash ? undefined : { stroke: `url(#${g})` }} className={`ne-wire${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
-    </>
-  )
+  return <BaseEdge path={path} className={`ne-wire${clash ? ' clash' : ''}${selected ? ' selected' : ''}`} />
 }
 
 function FlowLine({
@@ -494,8 +489,8 @@ export function LineSample({ transport }: { transport: Transport }) {
   const path = 'M 2 6 L 34 6'
   return (
     <svg className="ne-sample" width="36" height="12" aria-hidden>
-      <IoGradient id={id} from={{ x: 2, y: 6 }} to={{ x: 34, y: 6 }} />
-      <path d={path} className={`react-flow__edge-path ne-link ne-link-${transport}`} style={{ stroke: `url(#${id})` }} />
+      {transport !== 'power' && <IoGradient id={id} from={{ x: 2, y: 6 }} to={{ x: 34, y: 6 }} />}
+      <path d={path} className={`react-flow__edge-path ne-link ne-link-${transport}`} style={transport === 'power' ? undefined : { stroke: `url(#${id})` }} />
       {transport === 'pipe' && <path d={path} className="ne-tube-core" />}
     </svg>
   )

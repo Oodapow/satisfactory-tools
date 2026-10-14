@@ -20,7 +20,5 @@ export type FloorPlanView = {
   clashes: Set<string>
   /** Taken connection points, as `node:handle`, each the output or input end of its line. */
   used: Map<string, Io>
-  /** Power lines drawn against the flow of power: their target end feeds their source end. */
-  flipped: Set<string>
 }
 export const FloorPlanContext = createContext<FloorPlanView | null>(null)

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildingsById, schematics } from '../data'
 import { availability } from '../data/game/availability'
-import { machinePowerMW, shardsFor, sizeMachines, solve } from './solve'
+import { machinePowerMW, netMW, shardsFor, sizeMachines, solve } from './solve'
 import type { OutpostPlan } from './types'
 
 // Everything unlocked, and the same minus the MAM research that unlocks overclocking and Somersloops.
@@ -19,7 +19,6 @@ const plan = (patch: Partial<OutpostPlan>): OutpostPlan => ({
   goals: [],
   nodes: [],
   imports: [],
-  selfPowered: false,
   createdAt: '',
   updatedAt: '',
   ...patch,
@@ -120,6 +119,20 @@ describe('solve', () => {
     expect(fast.perMin).toBeCloseTo(300)
     expect(fast.shards).toBe(3)
     expect(fast.powerMW).toBeCloseTo(5 * Math.pow(2.5, 1.321929), 3)
+  })
+
+  it("makes a power goal's MW in total, with the outpost's own machines drawing from it (#86)", () => {
+    const s = solve(
+      plan({
+        goals: [{ kind: 'power', mw: 300, generator: 'Desc_GeneratorCoal_C', fuel: 'Desc_Coal_C' }],
+        nodes: [{ id: 'n', resource: 'Desc_Coal_C', purity: 'normal' }],
+      }),
+      all,
+    )
+    expect(s.power.generatedMW).toBeCloseTo(300)
+    expect(s.generators[0].machines).toBeCloseTo(4)
+    expect(s.power.consumedMW).toBeGreaterThan(0)
+    expect(netMW(s)).toBeCloseTo(300 - s.power.consumedMW)
   })
 
   it('feeds byproducts back before making more', () => {

@@ -33,12 +33,13 @@ export interface SaveImport {
 }
 
 /** Keep the schematics our game data knows; the rest (mods, removed content) is reported back. */
-export function gameStateFromSave(summary: SaveSummary, fileName: string): SaveImport {
+export function gameStateFromSave(summary: SaveSummary, file: { name: string; lastModified: number }): SaveImport {
   const known = summary.purchased.filter((id) => schematicsById.has(id))
   return {
     state: {
       ...emptyGameState('save'),
-      saveName: fileName,
+      saveName: file.name,
+      saveModified: file.lastModified,
       purchased: known,
       spaceElevatorPhase: summary.spaceElevatorPhase,
       map: summary.map ?? undefined,
